@@ -1,0 +1,817 @@
+/* ============================
+Template Name  : Dentax
+Description    : Dentist & Dental Clinic HTML5 Template
+Author         : Youtoview
+Version        : 1.0
+=============================== */
+
+
+@media only screen and (max-width: 767px) {
+    .ptb-100 {
+        padding-top: 50px;
+        padding-bottom: 50px;
+    }
+    .pt-100 {
+        padding-top: 50px;
+    }
+    .pb-100 {
+        padding-bottom: 50px;
+    }
+    .pb-70 {
+        padding-bottom: 20px;
+    }
+    .section-title-warp {
+        text-align: center;
+        margin-bottom: 35px;
+    }
+    .section-title-warp h2 {
+        font-size: 25px;
+    }
+    .section-warp-btn {
+        display: none;
+    }
+    .top-header-area {
+        padding-top: 20px;
+        padding-bottom: 20px;
+    }
+    .top-header-information {
+        text-align: center;
+    }
+    .top-header-optional {
+        text-align: center;
+        margin-top: 15px;
+    }
+    .top-header-optional .languages-list {
+        position: relative;
+        z-index: 9999;
+    }
+    .top-header-information li {
+        margin-right: 0px;
+    }
+    .middle-header-area {
+        border-bottom: 1px solid #eee;
+    }
+    .middle-header .logo {
+        display: none;
+    }
+    .middle-header-content {
+        text-align: center;
+    }
+    .middle-header-content li {
+        padding-left: 0;
+        margin-right: 10px;
+        text-align: center;
+        font-size: 12px;
+    }
+    .middle-header-content li i {
+        position: relative;
+        top: unset;
+        -webkit-transform: unset;
+        transform: unset;
+        display: block;
+    }
+    .middle-header-content li span {
+        font-size: 16px;
+    }
+    .mean-container a.meanmenu-reveal {
+        padding: 0;
+    }
+    .mean-container a.meanmenu-reveal span {
+        display: block;
+        background: #000;
+        height: 4px;
+        margin-top: -5px;
+        border-radius: 3px;
+        position: relative;
+        top: 8px;
+    }
+    .mean-container .mean-bar {
+        background-color: unset;
+        border-bottom: none;
+    }
+    .mean-container .mean-nav {
+        margin-top: 55px;
+    }
+    .others-option-for-responsive .dot-menu {
+        top: -35px;
+    }
+    .others-option-for-responsive .container .container {
+        right: 20px;
+        max-width: 230px;
+        padding-top: 10px;
+        padding-bottom: 10px;
+        border-radius: 5px;
+        text-align: center;
+    }
+    .others-option-for-responsive .option-inner .others-options {
+        margin-left: 0;
+    }
+    .others-option-for-responsive .option-inner .others-options .option-item {
+        margin-bottom: 10px;
+        margin-right: 0;
+    }
+    .others-option-for-responsive .option-inner .others-options .option-item:last-child {
+        margin-bottom: 0;
+    }
+    .others-option-for-responsive .option-inner .others-options .option-item .language-switcher .dropdown-menu {
+        margin-top: 10px;
+    }
+    .others-option-for-responsive .option-inner .others-options.d-flex {
+        display: block !important;
+    }
+    .main-slides-item {
+        padding-top: 95px;
+        padding-bottom: 170px;
+        position: relative;
+        z-index: 1;
+    }
+    .main-slides-content {
+        text-align: center;
+    }
+    .main-slides-content h1 {
+        font-size: 35px;
+    }
+    .main-slides-content .slides-btn {
+        margin-top: 20px;
+    }
+    .main-slides-content .slides-btn .checkup-content {
+        margin-left: 0;
+        margin-top: 40px;
+    }
+    .home-slides.owl-theme .owl-nav {
+        opacity: 1;
+        visibility: visible;
+    }
+    .home-slides.owl-theme .owl-nav [class*="owl-"] {
+        top: unset;
+        -webkit-transform: unset;
+        transform: unset;
+        bottom: 30px;
+    }
+    .features-area {
+        margin-top: 0;
+        padding-top: 50px;
+    }
+    .single-features {
+        text-align: center;
+        padding: 35px 25px;
+    }
+    .single-features .content {
+        padding-left: 0;
+    }
+    .single-features .content .icon {
+        position: relative;
+        top: 0;
+        margin-bottom: 20px;
+    }
+    .single-features .content .icon i {
+        line-height: 1;
+    }
+    .single-features .content h3 {
+        font-size: 22px;
+        margin-bottom: 10px;
+    }
+    .single-features .content p {
+        font-size: 15px;
+    }
+    .single-services .services-content {
+        padding: 30px 25px;
+    }
+    .single-services .services-content h3 {
+        font-size: 22px;
+    }
+    .single-services .services-content p {
+        font-size: 14px;
+    }
+    .overview-area {
+        padding-top: 50px;
+    }
+    .overview-content {
+        margin-top: 0;
+    }
+    .overview-content h3 {
+        font-size: 25px;
+        margin-bottom: 10px;
+    }
+    .overview-content p {
+        font-size: 16px;
+    }
+    .overview-image {
+        text-align: center;
+        margin-top: 30px;
+    }
+    .appointment-overview-area {
+        margin-top: 0;
+        padding-top: 50px;
+    }
+    .appointment-overview-contact {
+        margin-bottom: 30px;
+    }
+    .appointment-overview-contact::before {
+        background: unset;
+    }
+    .appointment-overview-contact .appointment-info {
+        position: relative;
+        padding: 35px 20px;
+    }
+    .appointment-overview-contact .appointment-info li {
+        font-size: 15px;
+        color: #222 !important;
+    }
+    .appointment-overview-contact .appointment-info li i{
+        color: #3F4199 !important;
+    }
+    .appointment-overview-contact .appointment-info li span {
+        font-size: 20px;
+        color: #222 !important;
+    }
+    .appointment-overview-contact .appointment-info span a {
+        color: #222 !important;
+    }
+    .appointment-overview-contact .appointment-info p {
+        font-size: 14px;
+        color: #222 !important;
+    }
+    .appointment-overview-box .content h4 {
+        font-size: 22px;
+    }
+    .appointment-overview-box .content .box-image {
+        margin-bottom: 30px;
+    }
+    .appointment-overview-box .make-appointment-content h4 {
+        font-size: 20px;
+    }
+    .about-content h3 {
+        font-size: 25px;
+    }
+    .about-image {
+        text-align: center;
+        margin-top: 30px;
+    }
+    .single-core-features {
+        text-align: center;
+    }
+    .single-core-features h3 {
+        font-size: 22px;
+    }
+    .single-core-features p {
+        font-size: 15px;
+    }
+    .single-doctor .doctor-content {
+        padding: 25px 20px;
+    }
+    .single-doctor .doctor-content h3 {
+        font-size: 22px;
+    }
+    .single-review-item {
+        padding: 55px 20px;
+    }
+    .single-review-item p {
+        font-size: 15px;
+    }
+    .single-review-item .review-info {
+        margin-top: 30px;
+    }
+    .single-review-item .review-info h3 {
+        font-size: 18px;
+    }
+    .single-review-item .review-info img {
+        top: -10px;
+    }
+    .review-slides.owl-theme .owl-nav.disabled + .owl-dots {
+        margin-top: 10px;
+    }
+    .single-blog .blog-content {
+        padding: 20px;
+    }
+    .single-blog .blog-content h3 {
+        font-size: 22px;
+    }
+    .main-slides-content .slides-btn .optional-btn {
+        margin-left: 0;
+        margin-top: 30px;
+    }
+    .section-title h2 {
+        font-size: 25px;
+    }
+    .section-title p {
+        font-size: 15px;
+    }
+    .single-services-box {
+        padding: 20px;
+    }
+    .single-services-box h3 {
+        font-size: 22px;
+    }
+    .about-image .about-inner-box {
+        display: none;
+    }
+    .single-gallery .content {
+        padding: 25px;
+    }
+    .gallery-area.bg-091e3e {
+        padding-bottom: 115px;
+    }
+    .appointment-inner-box {
+        padding: 50px 10px;
+    }
+    .appointment-inner-box .appointment-form h4 {
+        font-size: 18px;
+    }
+    .main-banner-item {
+        padding-top: 50px;
+    }
+    .main-banner-item .container-fluid {
+        padding-right: 15px;
+    }
+    .main-banner-content {
+        text-align: center;
+        margin: auto;
+    }
+    .main-banner-content h1 {
+        font-size: 30px;
+    }
+    .main-banner-content .banner-btn {
+        margin-top: 20px;
+    }
+    .main-banner-content .banner-btn .optional-btn {
+        margin-left: 0;
+        margin-top: 25px;
+    }
+    .main-banner-image {
+        margin-top: 30px;
+    }
+    .main-banner-image img {
+        border-radius: 0;
+    }
+    .single-services-item .services-content {
+        padding: 35px 15px;
+    }
+    .single-services-item .services-content h3 {
+        font-size: 22px;
+    }
+    .appointment-form h4 {
+        font-size: 20px;
+    }
+    .page-banner-area {
+        padding-top: 80px;
+        padding-bottom: 90px;
+    }
+    .page-banner-content h2 {
+        font-size: 35px;
+    }
+    .page-banner-content .pages-list li {
+        font-size: 15px;
+    }
+    .single-fun-fact h3 {
+        font-size: 35px;
+    }
+    .dentist-details-content {
+        margin-top: 30px;
+    }
+    .dentist-details-content h3 {
+        font-size: 25px;
+    }
+    .widget-area {
+        margin-top: 30px;
+    }
+    .services-details-list li i {
+        top: 0;
+    }
+    .pagination-area .page-numbers {
+        width: 25px;
+        height: 25px;
+        line-height: 25px;
+        margin: 0 2px;
+        font-size: 15px;
+    }
+    .login-form {
+        padding: 25px;
+    }
+    .login-form form .lost-your-password {
+        text-align: left;
+        margin-top: 5px;
+    }
+    .register-form {
+        padding: 25px;
+    }
+    .error-content h3 {
+        font-size: 25px;
+    }
+    .coming-soon-content {
+        padding: 30px 25px;
+    }
+    .coming-soon-content #timer {
+        margin-top: 20px;
+    }
+    .coming-soon-content #timer div {
+        width: 100px;
+        height: 105px;
+        margin-left: 5px;
+        margin-right: 5px;
+        font-size: 20px;
+        margin-top: 10px;
+    }
+    .coming-soon-content h2 {
+        font-size: 22px;
+    }
+    .searchmodal .modal-content {
+        padding: 30px;
+    }
+
+    .newsletter-wrap {
+        padding: 30px 0;
+    }
+    .newsletter-item h2 {
+        font-size: 22px;
+        margin-bottom: 10px;
+    }
+    .newsletter-item p {
+        font-size: 14px;
+        margin-bottom: 30px;
+    }
+    .newsletter-item .newsletter-form .form-control {
+        height: 58px;
+        font-size: 15px;
+    }
+    .newsletter-item .newsletter-form .newsletter-btn {
+        padding: 10px 15px;
+        font-size: 15px;
+    }
+
+
+}
+@media only screen and (min-width: 576px) and (max-width: 767px) {
+    .login-form form .lost-your-password {
+        text-align: right;
+        margin-top: 0;
+    }
+    .main-slides-content .slides-btn .checkup-content {
+        margin-left: 15px;
+        margin-top: 0;
+    }
+    .home-slides.owl-theme .owl-nav [class*="owl-"] {
+        bottom: 80px;
+    }
+}
+@media only screen and (min-width: 768px) and (max-width: 991px) {
+    .ptb-100 {
+        padding-top: 70px;
+        padding-bottom: 70px;
+    }
+    .pt-100 {
+        padding-top: 70px;
+    }
+    .pb-100 {
+        padding-bottom: 70px;
+    }
+    .pb-70 {
+        padding-bottom: 40px;
+    }
+    .section-title-warp {
+        text-align: center;
+        margin-bottom: 35px;
+    }
+    .section-title-warp h2 {
+        font-size: 35px;
+    }
+    .section-warp-btn {
+        display: none;
+    }
+    .top-header-area {
+        padding-top: 20px;
+        padding-bottom: 20px;
+    }
+    .top-header-information {
+        text-align: center;
+    }
+    .top-header-optional {
+        text-align: center;
+        margin-top: 15px;
+    }
+    .middle-header .logo {
+        display: none;
+    }
+    .middle-header-area {
+        border-bottom: 1px solid #eee;
+    }
+    .middle-header h1 {
+        display: none;
+    }
+    .middle-header-content {
+        text-align: center;
+    }
+    .middle-header-content li {
+        padding-left: 0;
+        text-align: center;
+        font-size: 15px;
+    }
+    .middle-header-content li i {
+        position: relative;
+        top: unset;
+        -webkit-transform: unset;
+        transform: unset;
+        display: block;
+    }
+    .middle-header-content li span {
+        font-size: 20px;
+    }
+    .mean-container a.meanmenu-reveal {
+        padding: 0;
+    }
+    .mean-container a.meanmenu-reveal span {
+        display: block;
+        background: #000;
+        height: 4px;
+        margin-top: -5px;
+        border-radius: 3px;
+        position: relative;
+        top: 8px;
+    }
+    .mean-container .mean-bar {
+        background-color: unset;
+        border-bottom: none;
+    }
+    .mean-container .mean-nav {
+        margin-top: 55px;
+    }
+    .others-option-for-responsive .dot-menu {
+        top: -35px;
+    }
+    .others-option-for-responsive .container .container {
+        right: 20px;
+        max-width: 230px;
+        padding-top: 10px;
+        padding-bottom: 10px;
+        border-radius: 5px;
+        text-align: center;
+    }
+    .others-option-for-responsive .option-inner .others-options {
+        margin-left: 0;
+    }
+    .others-option-for-responsive .option-inner .others-options .option-item {
+        margin-bottom: 10px;
+        margin-right: 0;
+    }
+    .others-option-for-responsive .option-inner .others-options .option-item:last-child {
+        margin-bottom: 0;
+    }
+    .others-option-for-responsive .option-inner .others-options .option-item .language-switcher .dropdown-menu {
+        margin-top: 10px;
+    }
+    .others-option-for-responsive .option-inner .others-options.d-flex {
+        display: block !important;
+    }
+    .main-slides-item {
+        padding-top: 95px;
+        padding-bottom: 170px;
+        position: relative;
+        z-index: 1;
+    }
+    .home-slides.owl-theme .owl-nav {
+        opacity: 1;
+        visibility: visible;
+    }
+    .home-slides.owl-theme .owl-nav [class*="owl-"] {
+        top: unset;
+        -webkit-transform: unset;
+        transform: unset;
+        bottom: 30px;
+    }
+    .features-area {
+        margin-top: 0;
+        padding-top: 50px;
+    }
+    .single-features {
+        text-align: center;
+        padding: 35px 25px;
+    }
+    .single-features .content {
+        padding-left: 0;
+    }
+    .single-features .content .icon {
+        position: relative;
+        top: 0;
+        margin-bottom: 20px;
+    }
+    .single-features .content .icon i {
+        line-height: 1;
+    }
+    .overview-area {
+        padding-top: 70px;
+    }
+    .overview-content {
+        margin-top: 0;
+    }
+    .overview-image {
+        text-align: center;
+        margin-top: 30px;
+    }
+    .appointment-overview-area {
+        margin-top: 0;
+        padding-top: 70px;
+    }
+    .appointment-overview-contact {
+        margin-bottom: 30px;
+    }
+    .appointment-overview-box .content .box-image {
+        margin-bottom: 30px;
+    }
+    .about-image {
+        text-align: center;
+        margin-top: 30px;
+    }
+    .single-core-features {
+        text-align: center;
+    }
+    .single-core-features h3 {
+        font-size: 22px;
+    }
+    .single-core-features p {
+        font-size: 15px;
+    }
+    .single-doctor .doctor-content {
+        padding: 25px 20px;
+    }
+    .single-doctor .doctor-content h3 {
+        font-size: 22px;
+    }
+    .single-review-item {
+        padding: 55px 20px;
+    }
+    .single-review-item p {
+        font-size: 15px;
+    }
+    .single-review-item .review-info {
+        margin-top: 30px;
+    }
+    .single-review-item .review-info h3 {
+        font-size: 18px;
+    }
+    .single-review-item .review-info img {
+        top: -10px;
+    }
+    .review-slides.owl-theme .owl-nav.disabled + .owl-dots {
+        margin-top: 30px;
+    }
+    .single-blog .blog-content {
+        padding: 20px;
+    }
+    .single-blog .blog-content h3 {
+        font-size: 22px;
+    }
+    .about-image .about-inner-box {
+        right: 35px;
+    }
+    .gallery-area.bg-091e3e {
+        padding-bottom: 120px;
+    }
+    .single-features-box {
+        padding: 20px;
+    }
+    .single-features-box h3 {
+        font-size: 20px;
+    }
+    .main-banner-item {
+        padding-top: 80px;
+    }
+    .main-banner-item .container-fluid {
+        padding-right: 15px;
+    }
+    .main-banner-content {
+        text-align: center;
+        margin: auto;
+    }
+    .main-banner-image {
+        margin-top: 50px;
+    }
+    .main-banner-image img {
+        border-radius: 0;
+    }
+    .widget-area {
+        margin-top: 30px;
+    }
+    .newsletter-item p {
+        font-size: 14px;
+        margin-bottom: 25px;
+    }
+
+}
+@media only screen and (min-width: 992px) and (max-width: 1199px) {
+    .top-header-information li {
+        font-size: 14px;
+        margin-right: 10px;
+    }
+    .section-title-warp h2 {
+        font-size: 32px;
+    }
+    .main-navbar .navbar .navbar-nav .nav-item {
+        margin-left: 15px;
+        margin-right: 15px;
+    }
+    .main-navbar .navbar .navbar-nav .nav-item a {
+        font-size: 15px;
+    }
+    .main-navbar .navbar .others-options .option-item {
+        margin-right: 15px;
+    }
+    .main-navbar .navbar .others-options .option-item .navbar-btn .default-btn {
+        padding: 20px 25px;
+        font-size: 14px;
+    }
+    .home-slides.owl-theme .owl-nav {
+        opacity: 1;
+        visibility: visible;
+    }
+    .home-slides.owl-theme .owl-nav [class*="owl-"] {
+        top: unset;
+        -webkit-transform: unset;
+        transform: unset;
+        bottom: 100px;
+    }
+    .single-features {
+        padding: 31px 25px;
+    }
+    .single-features .content {
+        padding-left: 65px;
+    }
+    .single-features .content h3 {
+        font-size: 20px;
+    }
+    .single-features .content p {
+        font-size: 15px;
+    }
+    .single-features .content .icon i {
+        font-size: 50px;
+    }
+    .single-services .services-content {
+        padding: 35px 25px;
+    }
+    .single-services .services-content p {
+        font-size: 14px;
+    }
+    .appointment-overview-contact::before {
+        height: 100%;
+    }
+    .appointment-overview-contact .appointment-info {
+        padding: 12px;
+    }
+    .appointment-overview-contact .appointment-info p {
+        font-size: 14px;
+    }
+    .appointment-overview-box .content h4 {
+        font-size: 20px;
+        margin-bottom: 25px;
+    }
+    .appointment-overview-box .make-appointment-content h4 {
+        font-size: 20px;
+        margin-bottom: 18px;
+    }
+    .single-core-features {
+        padding: 20px;
+    }
+    .single-core-features h3 {
+        font-size: 20px;
+        margin-bottom: 10px;
+    }
+    .single-doctor .doctor-content h3 {
+        font-size: 20px;
+    }
+    .single-features-box {
+        padding: 20px;
+    }
+    .single-features-box h3 {
+        font-size: 20px;
+    }
+    .single-services-box {
+        padding: 25px;
+    }
+    .main-banner-content {
+        max-width: 470px;
+    }
+    .main-banner-content h1 {
+        font-size: 38px;
+    }
+    .single-services-item .services-content {
+        padding: 35px 15px;
+    }
+    .services-details-list li i {
+        top: 0;
+    }
+    .single-footer-widget .logo {
+        width: 200px;
+    }
+    .single-footer-widget .footer-social a {
+        width: 30px;
+        height: 30px;
+        line-height: 30px;
+        margin: 4px;
+    }
+
+}
+
+@media only screen and (min-width: 1200px) and (max-width: 2500px) {
+    .container {
+        max-width: 1280px;
+    }
+}
