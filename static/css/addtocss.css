@@ -1,0 +1,36 @@
+.gold-button {
+    padding: 15px 25px;
+    font-size: 15px;
+    font-weight: 500;
+    color: #091e3e;
+    background: linear-gradient(0deg, #d4af37, #ffd700, #b8860b);
+    background-size: 300% 300%;
+    border: none;
+    border-radius: 6px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.4s ease-in-out;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    animation: gradientAnimation 10s infinite linear;
+}
+
+.gold-button:hover {
+    transform: scale(1.03);
+    background: linear-gradient(180deg, #b8860b, #ffd700, #d4af37);
+    animation: gradientHoverAnimation 1s infinite linear;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.6);
+    color: #091e3e;
+
+}
+
+@keyframes gradientAnimation {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+@keyframes gradientHoverAnimation {
+    0% { background-position: 100% 50%; }
+    50% { background-position: 50% 50%; }
+    100% { background-position: 100% 50%; }
+}

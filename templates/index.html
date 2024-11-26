@@ -12,25 +12,29 @@
     <title>Dentax - Dentist & Dental Clinic HTML5 Template</title>
 
     <!-- favicon -->
-    <link rel="icon" type="image/png" href="assets/img/favicon.png">
+    <link rel="icon" type="image/png" href="static/img/favicon.png">
 
     <!-- icon css -->
-    <link rel="stylesheet" href="assets/css/fontawesome.min.css">
-    <link rel="stylesheet" href="assets/css/boxicons.min.css">
-    <link rel="stylesheet" href="assets/css/flaticon.css">
+    <link rel="stylesheet" href="static/css/fontawesome.min.css">
+    <link rel="stylesheet" href="static/css/boxicons.min.css">
+    <link rel="stylesheet" href="static/css/flaticon.css">
+
+    <!-- bootstrap-icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
     <!-- plugin css -->
-    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
-    <link rel="stylesheet" href="assets/css/animate.min.css">
-    <link rel="stylesheet" href="assets/css/meanmenu.css">
-    <link rel="stylesheet" href="assets/css/nice-select.min.css">
-    <link rel="stylesheet" href="assets/css/owl.carousel.min.css">
-    <link rel="stylesheet" href="assets/css/owl.theme.default.min.css">
-    <link rel="stylesheet" href="assets/css/magnific-popup.min.css">
+    <link rel="stylesheet" href="static/css/bootstrap.min.css">
+    <link rel="stylesheet" href="static/css/animate.min.css">
+    <link rel="stylesheet" href="static/css/meanmenu.css">
+    <link rel="stylesheet" href="static/css/nice-select.min.css">
+    <link rel="stylesheet" href="static/css/owl.carousel.min.css">
+    <link rel="stylesheet" href="static/css/owl.theme.default.min.css">
+    <link rel="stylesheet" href="static/css/magnific-popup.min.css">
 
     <!-- custom css -->
-    <link rel="stylesheet" href="assets/css/style.css">
-    <link rel="stylesheet" href="assets/css/responsive.css">
+    <link rel="stylesheet" href="static/css/style.css">
+    <link rel="stylesheet" href="static/css/addtocss.css">
+    <link rel="stylesheet" href="static/css/responsive.css">
 
 </head>
 
@@ -44,6 +48,52 @@
     </div>
     <!-- preloader end -->
 
+    <!-- top header  -->
+    <div class="top-header-area">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-sm-6 col-lg-8 col-md-12">
+                    <ul class="top-header-information">
+                        <li>
+                            <i class="far fa-map-marker-alt"></i>
+                            ul. Arkuszowa 63, Warszawa
+                        </li>
+                        <li>
+                            <i class="far fa-envelope-open"></i>
+                            <a href="mailto:arkuszowa@duodent.com.pl"><span>arkuszowa@duodent.com.pl</span></a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-sm-6 col-lg-4 col-md-12">
+                    <ul class="top-header-optional">
+                        <li>
+                            <a href="#">
+                                <i class="bx bxl-facebook"></i>
+                            </a>
+                            <!-- <a href="#">
+                                <i class="bx bxl-twitter"></i>
+                            </a>
+                            <a href="#">
+                                <i class="bx bxl-linkedin"></i>
+                            </a> -->
+                            <a href="#">
+                                <i class="bx bxl-instagram"></i>
+                            </a>
+                        </li>
+                        <!-- <li class="languages-list">
+                            <select>
+                                <option value="1">English</option>
+                                <option value="3">Russian</option>
+                                <option value="3">Spanish</option>
+                            </select>
+                        </li> -->
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- top header end -->
+
     <!-- middle-header -->
     <div class="middle-header-area">
         <div class="container">
@@ -52,7 +102,7 @@
                     <div class="middle-header">
                         <div class="logo">
                             <a href="index.html">
-                                <img src="assets/img/logo.png" alt="logo">
+                                <img src="static/img/logotyp_duodent_bielany_solidfill_light.png" alt="logo">
                             </a>
                         </div>
                     </div>
@@ -61,13 +111,18 @@
                     <ul class="middle-header-content">
                         <li>
                             <i class="flaticon-emergency-call"></i>
-                            Call Now
-                            <span><a href="tel:01235678945">+1 234 567 8945</a></span>
+                            Zadzwoń
+                            <span><a href="tel:+48790777350">790 777 350</a></span>
                         </li>
                         <li>
                             <i class="flaticon-wall-clock"></i>
-                            Office Hour
-                            <span>08:00 AM to 10:00 PM</span>
+                            Pon – Pt 
+                            <span>8:00 – 19:00</span>
+                        </li>
+                        <li>
+                            <i class="flaticon-calendar"></i>
+                            Sob 
+                            <span>8:00 – 13:00</span>
                         </li>
                     </ul>
                 </div>
@@ -85,7 +140,7 @@
                 <div class="main-responsive-menu">
                     <div class="logo">
                         <a href="index.html">
-                            <img src="assets/img/logo.png" alt="logo">
+                            <img src="static/img/logotyp_duodent_bielany_solidfill_light.png" alt="logo">
                         </a>
                     </div>
                     <div class="others-search-btn">
@@ -106,14 +161,68 @@
                 <nav class="navbar navbar-expand-md navbar-light">
                     <div class="collapse navbar-collapse mean-menu" id="navbarSupportedContent">
                         <ul class="navbar-nav">
+                            <li class="nav-item active">
+                                <a href="about-us.html" class="nav-link">
+                                    <i class="bi bi-houses-fill" style="font-size: 1rem;"></i>
+                                </a>
+                            </li>
+                            
                             <li class="nav-item">
-                                <a href="#" class="nav-link active">
-                                    Home
+                                <a href="about-us.html" class="nav-link">Poznaj nas bliżej</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="#" class="nav-link">
+                                    Zabiegi
                                     <i class="far fa-angle-down"></i>
                                 </a>
                                 <ul class="dropdown-menu">
                                     <li class="nav-item">
-                                        <a href="index.html" class="nav-link active">Home Demo One</a>
+                                        <a href="diagnostyka.html" class="nav-link">Diagnostyka</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="profilaktyka.html" class="nav-link">Profilaktyka</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="stomatologia-zachowawcza.html" class="nav-link">Stomatologia Zachowawcza</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="stomatologia-dziecieca.html" class="nav-link">Stomatologia Dziecięca</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="endodoncja.html" class="nav-link">Endodoncja</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="periodontologia.html" class="nav-link">Periodontologia</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="protetyka.html" class="nav-link">Protetyka</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="chirurgia-implantologia.html" class="nav-link">Chirurgia i Implantologia</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="ortodoncja.html" class="nav-link">Ortodoncja</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="nav-item">
+                                <a href="contact-us.html" class="nav-link">Zespół</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="contact-us.html" class="nav-link">Dla Pacjenta</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="contact-us.html" class="nav-link">Kontakt</a>
+                            </li>
+                            
+                            <!-- <li class="nav-item">
+                                <a href="#" class="nav-link active">
+                                    Zabiegi
+                                    <i class="far fa-angle-down"></i>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li class="nav-item">
+                                        <a href="index.html" class="nav-link active">Zabiegi </a>
                                     </li>
                                     <li class="nav-item">
                                         <a href="index-2.html" class="nav-link">Home Demo Two</a>
@@ -122,11 +231,8 @@
                                         <a href="index-3.html" class="nav-link">Home Demo Three</a>
                                     </li>
                                 </ul>
-                            </li>
-                            <li class="nav-item">
-                                <a href="about-us.html" class="nav-link">About Us</a>
-                            </li>
-                            <li class="nav-item">
+                            </li> -->
+                            <!-- <li class="nav-item">
                                 <a href="#" class="nav-link">
                                     Dentist
                                     <i class="far fa-angle-down"></i>
@@ -139,8 +245,8 @@
                                         <a href="dentist-details.html" class="nav-link">Dentist Details</a>
                                     </li>
                                 </ul>
-                            </li>
-                            <li class="nav-item">
+                            </li> -->
+                            <!-- <li class="nav-item">
                                 <a href="#" class="nav-link">
                                     Services
                                     <i class="far fa-angle-down"></i>
@@ -153,8 +259,8 @@
                                         <a href="services-details.html" class="nav-link">Services Details</a>
                                     </li>
                                 </ul>
-                            </li>
-                            <li class="nav-item">
+                            </li> -->
+                            <!-- <li class="nav-item">
                                 <a href="#" class="nav-link">
                                     Pages
                                     <i class="far fa-angle-down"></i>
@@ -203,8 +309,8 @@
                                         <a href="coming-soon.html" class="nav-link">Coming Soon</a>
                                     </li>
                                 </ul>
-                            </li>
-                            <li class="nav-item">
+                            </li> -->
+                            <!-- <li class="nav-item">
                                 <a href="#" class="nav-link">
                                     Blog
                                     <i class="far fa-angle-down"></i>
@@ -217,10 +323,7 @@
                                         <a href="blog-details.html" class="nav-link">Blog Details</a>
                                     </li>
                                 </ul>
-                            </li>
-                            <li class="nav-item">
-                                <a href="contact-us.html" class="nav-link">Contact Us</a>
-                            </li>
+                            </li> -->
                         </ul>
                         <div class="others-options d-flex align-items-center">
                             <div class="option-item">
@@ -233,7 +336,7 @@
                             </div>
                             <div class="option-item">
                                 <div class="navbar-btn">
-                                    <a href="appointment.html" class="default-btn">Book Appointment</a>
+                                    <a href="appointment.html" class="gold-button">Umów wizytę</a>
                                 </div>
                             </div>
                         </div>
@@ -267,7 +370,31 @@
 
     <!-- home sliders -->
     <div class="home-slides owl-carousel owl-theme">
-        <div class="main-slides-item" style="background-image: url(assets/img/slider/slider-1.jpg);">
+        <div class="main-slides-item" style="background-image: url(static/img/slider/istockphoto-1942678905-1024x1024.jpg);">
+            <div class="container">
+                <div class="main-slides-content">
+                    <span class="sub-title">
+                        <i class="flaticon-hashtag-symbol"></i>
+                        Doświadczeni stomatolodzy
+                    </span>
+                    <h1>Twoi <span>eksperci </span>stomatologii</h1>
+                    <p>
+                        Nasz zespół to wykwalifikowani specjaliści, którzy łączą wiedzę i doświadczenie z różnych dziedzin stomatologii. 
+                        Jesteśmy gotowi kompleksowo zadbać o zdrowie Twoich zębów i piękny uśmiech.
+                    </p>
+                    <div class="slides-btn">
+                        <a href="appointment.html" class="default-btn">Zarezerwuj wizytę</a>
+                        <div class="checkup-content">
+                            <a href="https://www.youtube.com/watch?v=ckHzmP1evNU" class="icon popup-youtube">
+                                <i class="far fa-play"></i>
+                            </a>
+                            <span>Our Intro Video</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="main-slides-item" style="background-image: url(static/img/slider/istockphoto-1302069818-1024x1024.jpg);">
             <div class="container">
                 <div class="main-slides-content">
                     <span class="sub-title">
@@ -292,32 +419,7 @@
                 </div>
             </div>
         </div>
-        <div class="main-slides-item" style="background-image: url(assets/img/slider/slider-2.jpg);">
-            <div class="container">
-                <div class="main-slides-content">
-                    <span class="sub-title">
-                        <i class="flaticon-hashtag-symbol"></i>
-                        Clean Teeth Everyday
-                    </span>
-                    <h1>Best <span>Dental</span> Care Service For You</h1>
-                    <p>
-                        There are many variations of passages of orem psum available but the majority have suffered
-                        alteration in some form by injected humour or randomised words which don't look even slightly
-                        believable.
-                    </p>
-                    <div class="slides-btn">
-                        <a href="appointment.html" class="default-btn">Book Appointment</a>
-                        <div class="checkup-content">
-                            <a href="https://www.youtube.com/watch?v=ckHzmP1evNU" class="icon popup-youtube">
-                                <i class="far fa-play"></i>
-                            </a>
-                            <span>Our Intro Video</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="main-slides-item" style="background-image: url(assets/img/slider/slider-3.jpg);">
+        <div class="main-slides-item" style="background-image: url(static/img/slider/istockphoto-1277540261-1024x1024.jpg);">
             <div class="container">
                 <div class="main-slides-content">
                     <span class="sub-title">
@@ -394,8 +496,9 @@
     </section>
     <!-- feature area end -->
 
+
     <!-- service area -->
-    <section class="services-area services-area2 pt-100 pb-70">
+    <section class="services-area pb-70">
         <div class="container">
             <div class="row align-items-center">
                 <div class="col-lg-6 mx-auto">
@@ -414,163 +517,123 @@
             </div>
             <div class="row">
                 <div class="col-lg-4 col-md-6">
-                    <div class="single-services-box">
-                        <div class="icon">
-                            <i class="flaticon-chair"></i>
+                    <div class="single-services">
+                        <div class="services-image">
+                            <a href="services-details.html"><img src="static/img/services/1.jpg" alt="image"></a>
+                            <div class="icon">
+                                <a href="services-details.html"><i class="flaticon-chair"></i></a>
+                            </div>
                         </div>
-                        <h3>
-                            <a href="services-details.html">Root Canel</a>
-                        </h3>
-                        <p>There are many variations of passages of orem available but the majority have suffered
-                            alteration in some injected humour</p>
-                        <a href="services-details.html" class="services-btn">Read More</a>
+                        <div class="services-content">
+                            <h3>
+                                <a href="services-details.html">Root Canel</a>
+                            </h3>
+                            <p>
+                                There are many variations of passages of orem available but the majority have suffered
+                                alteration in some injected humour
+                            </p>
+                        </div>
                     </div>
                 </div>
                 <div class="col-lg-4 col-md-6">
-                    <div class="single-services-box">
-                        <div class="icon">
-                            <i class="flaticon-dental-implant"></i>
+                    <div class="single-services">
+                        <div class="services-image">
+                            <a href="services-details.html"><img src="static/img/services/2.jpg" alt="image"></a>
+                            <div class="icon">
+                                <a href="services-details.html"><i class="flaticon-dental-implant"></i></a>
+                            </div>
                         </div>
-                        <h3>
-                            <a href="services-details.html">Dental Implants</a>
-                        </h3>
-                        <p>There are many variations of passages of orem available but the majority have suffered
-                            alteration in some injected humour</p>
-                        <a href="services-details.html" class="services-btn">Read More</a>
+                        <div class="services-content">
+                            <h3>
+                                <a href="services-details.html">Dental Implants</a>
+                            </h3>
+                            <p>
+                                There are many variations of passages of orem available but the majority have suffered
+                                alteration in some injected humour
+                            </p>
+                        </div>
                     </div>
                 </div>
                 <div class="col-lg-4 col-md-6">
-                    <div class="single-services-box">
-                        <div class="icon">
-                            <i class="flaticon-dental-care"></i>
+                    <div class="single-services">
+                        <div class="services-image">
+                            <a href="services-details.html"><img src="static/img/services/3.jpg" alt="image"></a>
+                            <div class="icon">
+                                <a href="services-details.html"><i class="flaticon-dental-care"></i></a>
+                            </div>
                         </div>
-                        <h3>
-                            <a href="services-details.html">Teeth Whitening</a>
-                        </h3>
-                        <p>There are many variations of passages of orem available but the majority have suffered
-                            alteration in some injected humour</p>
-                        <a href="services-details.html" class="services-btn">Read More</a>
+                        <div class="services-content">
+                            <h3>
+                                <a href="services-details.html">Teeth Whitening</a>
+                            </h3>
+                            <p>
+                                There are many variations of passages of orem available but the majority have suffered
+                                alteration in some injected humour
+                            </p>
+                        </div>
                     </div>
                 </div>
                 <div class="col-lg-4 col-md-6">
-                    <div class="single-services-box">
-                        <div class="icon">
-                            <i class="flaticon-tooth-1"></i>
+                    <div class="single-services">
+                        <div class="services-image">
+                            <a href="services-details.html"><img src="static/img/services/4.jpg" alt="image"></a>
+                            <div class="icon">
+                                <a href="services-details.html"><i class="flaticon-tooth-1"></i></a>
+                            </div>
                         </div>
-                        <h3>
-                            <a href="services-details.html">Cosmetic Dentist</a>
-                        </h3>
-                        <p>There are many variations of passages of orem available but the majority have suffered
-                            alteration in some injected humour</p>
-                        <a href="services-details.html" class="services-btn">Read More</a>
+                        <div class="services-content">
+                            <h3>
+                                <a href="services-details.html">Cosmetic Dentist</a>
+                            </h3>
+                            <p>
+                                There are many variations of passages of orem available but the majority have suffered
+                                alteration in some injected humour
+                            </p>
+                        </div>
                     </div>
                 </div>
                 <div class="col-lg-4 col-md-6">
-                    <div class="single-services-box">
-                        <div class="icon">
-                            <i class="flaticon-tooth-2"></i>
+                    <div class="single-services">
+                        <div class="services-image">
+                            <a href="services-details.html"><img src="static/img/services/5.jpg" alt="image"></a>
+                            <div class="icon">
+                                <a href="services-details.html"><i class="flaticon-tooth-2"></i></a>
+                            </div>
                         </div>
-                        <h3>
-                            <a href="services-details.html">Teeth Filling</a>
-                        </h3>
-                        <p>There are many variations of passages of orem available but the majority have suffered
-                            alteration in some injected humour</p>
-                        <a href="services-details.html" class="services-btn">Read More</a>
+                        <div class="services-content">
+                            <h3>
+                                <a href="services-details.html">Teeth Filling</a>
+                            </h3>
+                            <p>
+                                There are many variations of passages of orem available but the majority have suffered
+                                alteration in some injected humour
+                            </p>
+                        </div>
                     </div>
                 </div>
                 <div class="col-lg-4 col-md-6">
-                    <div class="single-services-box">
-                        <div class="icon">
-                            <i class="flaticon-tooth"></i>
+                    <div class="single-services">
+                        <div class="services-image">
+                            <a href="services-details.html"><img src="static/img/services/6.jpg" alt="image"></a>
+                            <div class="icon">
+                                <a href="services-details.html"><i class="flaticon-tooth"></i></a>
+                            </div>
                         </div>
-                        <h3>
-                            <a href="services-details.html">Crowns Bridges</a>
-                        </h3>
-                        <p>There are many variations of passages of orem available but the majority have suffered
-                            alteration in some injected humour</p>
-                        <a href="services-details.html" class="services-btn">Read More</a>
+                        <div class="services-content">
+                            <h3>
+                                <a href="services-details.html">Crowns Bridges</a>
+                            </h3>
+                            <p>
+                                There are many variations of passages of orem available but the majority have suffered
+                                alteration in some injected humour
+                            </p>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
     <!-- service area end -->
-
-
-    <!-- about-area -->
-    <section class="about-area ptb-100">
-        <div class="container">
-            <div class="row align-items-center">
-                <div class="col-lg-6">
-                    <div class="about-content">
-                        <span class="sub-title">
-                            <i class="flaticon-hashtag-symbol"></i>
-                            About Our Dental Care
-                        </span>
-                        <h3>
-                            We Can Grant You A <span>Beautiful Teeth</span> And Smile
-                        </h3>
-                        <p>
-                            There are many variations of passages of Lorem Ipsum available, but the majority have
-                            suffered alteration in some form, by injected humour, or randomised words which don't look
-                            even slightly believable. If you are going to use a passage need to be sure there isn't
-                            anything.
-                        </p>
-                        <div>
-                            <ul class="about-list">
-                                <li>
-                                    <i class="flaticon-check"></i>
-                                    Sed ut perspiciatis unde omnis iste natus error sit
-                                </li>
-                                <li>
-                                    <i class="flaticon-check"></i>
-                                    Voluptatem accusantium doloremque laudantium
-                                </li>
-                                <li>
-                                    <i class="flaticon-check"></i>
-                                    Totam rem aperiam, eaque ipsa quae ab illo
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="row">
-                            <div class="col-lg-6 col-md-6">
-                                <div class="about-info">
-                                    <i class="flaticon-caduceus"></i>
-                                    <h4>35+ Years Of</h4>
-                                    <span>Dental Experienced</span>
-                                </div>
-                            </div>
-                            <div class="col-lg-6 col-md-6">
-                                <div class="about-info">
-                                    <i class="flaticon-dental-care"></i>
-                                    <h4>5505+ Quality</h4>
-                                    <span>Dental Services</span>
-                                </div>
-                            </div>
-                        </div>
-                        <a href="#" class="default-btn">Learn More</a>
-                    </div>
-                </div>
-                <div class="col-lg-6">
-                    <div class="about-image about-image2">
-                        <img src="assets/img/about/about-2.jpg" alt="image">
-                        <div class="about-inner-box">
-                            <div class="content">
-                                <div class="about-years">
-                                    25+
-                                </div>
-                                <h3>
-                                    Years Of Experience
-                                </h3>
-                                <p>Phasellus dignissim augue eros sed elementum velit</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    <!-- about-area end -->
 
 
     <!-- emergency call -->
@@ -589,7 +652,7 @@
                 </div>
                 <div class="col-lg-6">
                     <div class="overview-image">
-                        <img src="assets/img/emergency.png" alt="image">
+                        <img src="static/img/emergency.png" alt="image">
                     </div>
                 </div>
             </div>
@@ -604,7 +667,7 @@
             <div class="row">
                 <div class="col-lg-4 col-md-12">
                     <div class="appointment-overview-contact">
-                        <img src="assets/img/appointment/1.jpg" alt="image">
+                        <img src="static/img/appointment/1.jpg" alt="image">
                         <div class="appointment-info">
                             <ul class="call-info">
                                 <li>
@@ -672,6 +735,71 @@
         </div>
     </section>
     <!-- appointment end -->
+
+
+    <!-- about area -->
+    <section class="about-area pb-100">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6">
+                    <div class="about-content">
+                        <span class="sub-title">
+                            <i class="flaticon-hashtag-symbol"></i>
+                            About Our Dental Care
+                        </span>
+                        <h3>
+                            We Can Grant You A <span>Beautiful Teeth</span> And Smile
+                        </h3>
+                        <p>
+                            There are many variations of passages of Lorem Ipsum available, but the majority have
+                            suffered alteration in some form, by injected humour, or randomised words which don't look
+                            even slightly believable. If you are going to use a passage need to be sure there isn't
+                            anything.
+                        </p>
+                        <div>
+                            <ul class="about-list">
+                                <li>
+                                    <i class="flaticon-check"></i>
+                                    Sed ut perspiciatis unde omnis iste natus error sit
+                                </li>
+                                <li>
+                                    <i class="flaticon-check"></i>
+                                    Voluptatem accusantium doloremque laudantium
+                                </li>
+                                <li>
+                                    <i class="flaticon-check"></i>
+                                    Totam rem aperiam, eaque ipsa quae ab illo
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-6 col-md-6">
+                                <div class="about-info">
+                                    <i class="flaticon-caduceus"></i>
+                                    <h4>35+ Years Of</h4>
+                                    <span>Dental Experienced</span>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6">
+                                <div class="about-info">
+                                    <i class="flaticon-dental-care"></i>
+                                    <h4>5505+ Quality</h4>
+                                    <span>Dental Services</span>
+                                </div>
+                            </div>
+                        </div>
+                        <a href="#" class="default-btn">Learn More</a>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="about-image">
+                        <img src="static/img/about/about-1.png" alt="image">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- about area end -->
 
 
     <!-- main feature -->
@@ -742,7 +870,7 @@
     </section>
     <!-- main feature end -->
 
-
+    
     <!-- counter area -->
     <section class="counter-area pb-70">
         <div class="container">
@@ -752,7 +880,7 @@
                         <div class="counter-single">
                             <i class="far fa-layer-group"></i>
                             <h3>
-                                <span class="counter">300</span> +
+                                <span class="counter">300</span> + 
                             </h3>
                             <p>Service Completed</p>
                         </div>
@@ -806,7 +934,7 @@
             <div class="row">
                 <div class="col-lg-3 col-md-6">
                     <div class="single-doctor">
-                        <a href="dentist-details.html"><img src="assets/img/doctor/1.jpg" alt="image"></a>
+                        <a href="dentist-details.html"><img src="static/img/doctor/1.jpg" alt="image"></a>
                         <div class="doctor-content">
                             <h3>
                                 <a href="dentist-details.html">Dr. Lovelace</a>
@@ -823,7 +951,7 @@
                 </div>
                 <div class="col-lg-3 col-md-6">
                     <div class="single-doctor">
-                        <a href="dentist-details.html"><img src="assets/img/doctor/2.jpg" alt="image"></a>
+                        <a href="dentist-details.html"><img src="static/img/doctor/2.jpg" alt="image"></a>
                         <div class="doctor-content">
                             <h3>
                                 <a href="dentist-details.html">Dr. Emma Brown</a>
@@ -840,7 +968,7 @@
                 </div>
                 <div class="col-lg-3 col-md-6">
                     <div class="single-doctor">
-                        <a href="dentist-details.html"><img src="assets/img/doctor/3.jpg" alt="image"></a>
+                        <a href="dentist-details.html"><img src="static/img/doctor/3.jpg" alt="image"></a>
                         <div class="doctor-content">
                             <h3>
                                 <a href="dentist-details.html">Dr. Todd Miller</a>
@@ -857,7 +985,7 @@
                 </div>
                 <div class="col-lg-3 col-md-6">
                     <div class="single-doctor">
-                        <a href="dentist-details.html"><img src="assets/img/doctor/4.jpg" alt="image"></a>
+                        <a href="dentist-details.html"><img src="static/img/doctor/4.jpg" alt="image"></a>
                         <div class="doctor-content">
                             <h3>
                                 <a href="dentist-details.html">Dr. Crabtree</a>
@@ -907,7 +1035,7 @@
                         are going to use a passage.
                     </p>
                     <div class="review-info">
-                        <img src="assets/img/testimonial/1.jpg" alt="image">
+                        <img src="static/img/testimonial/1.jpg" alt="image">
                         <h3>Jorge Lovelace</h3>
                         <span>Patient</span>
                     </div>
@@ -922,7 +1050,7 @@
                         are going to use a passage.
                     </p>
                     <div class="review-info">
-                        <img src="assets/img/testimonial/2.jpg" alt="image">
+                        <img src="static/img/testimonial/2.jpg" alt="image">
                         <h3>John Camargo</h3>
                         <span>Patient</span>
                     </div>
@@ -937,7 +1065,7 @@
                         are going to use a passage.
                     </p>
                     <div class="review-info">
-                        <img src="assets/img/testimonial/3.jpg" alt="image">
+                        <img src="static/img/testimonial/3.jpg" alt="image">
                         <h3>Kelly Scarboro</h3>
                         <span>Patient</span>
                     </div>
@@ -971,7 +1099,7 @@
                 <div class="col-lg-4 col-md-6">
                     <div class="single-blog">
                         <div class="blog-image">
-                            <a href="blog-details.html"><img src="assets/img/blog/1.jpg" alt="image"></a>
+                            <a href="blog-details.html"><img src="static/img/blog/1.jpg" alt="image"></a>
                             <div class="tag">20 Feb</div>
                             <div class="tag-two"><a href="blog.html">Teeth</a></div>
                         </div>
@@ -998,7 +1126,7 @@
                 <div class="col-lg-4 col-md-6">
                     <div class="single-blog">
                         <div class="blog-image">
-                            <a href="blog-details.html"><img src="assets/img/blog/2.jpg" alt="image"></a>
+                            <a href="blog-details.html"><img src="static/img/blog/2.jpg" alt="image"></a>
                             <div class="tag">22 Jun</div>
                             <div class="tag-two"><a href="blog.html">Dental</a></div>
                         </div>
@@ -1025,7 +1153,7 @@
                 <div class="col-lg-4 col-md-6 offset-lg-0 offset-md-3">
                     <div class="single-blog">
                         <div class="blog-image">
-                            <a href="blog-details.html"><img src="assets/img/blog/3.jpg" alt="image"></a>
+                            <a href="blog-details.html"><img src="static/img/blog/3.jpg" alt="image"></a>
                             <div class="tag">13 May</div>
                             <div class="tag-two"><a href="blog.html">Hygiene</a></div>
                         </div>
@@ -1058,17 +1186,17 @@
     <div class="client-area">
         <div class="container">
             <div class="client-slides owl-carousel owl-theme">
-                <img src="assets/img/clients/1.png" alt="">
-                <img src="assets/img/clients/2.png" alt="">
-                <img src="assets/img/clients/3.png" alt="">
-                <img src="assets/img/clients/4.png" alt="">
-                <img src="assets/img/clients/2.png" alt="">
-                <img src="assets/img/clients/3.png" alt="">
+                <img src="static/img/clients/1.png" alt="">
+                <img src="static/img/clients/2.png" alt="">
+                <img src="static/img/clients/3.png" alt="">
+                <img src="static/img/clients/4.png" alt="">
+                <img src="static/img/clients/2.png" alt="">
+                <img src="static/img/clients/3.png" alt="">
             </div>
         </div>
     </div>
     <!-- client area area end-->
-
+    
     <!-- newsletter-area -->
     <div class="newsletter-area pb-100">
         <div class="container">
@@ -1103,18 +1231,18 @@
                     <div class="single-footer-widget">
                         <div class="logo">
                             <a href="index.html">
-                                <img src="assets/img/logo-light.png" alt="logo">
+                                <img src="static/img/logo-light.png" alt="logo">
                             </a>
                         </div>
                         <p>We are the many variations of passages of orem psum available but the majority have suffered.
                         </p>
                         <div class="footer-info">
-                            <img src="assets/img/footer/ceo.jpg" alt="image">
+                            <img src="static/img/footer/ceo.jpg" alt="image">
                             <h4>Dr. Mary Squires</h4>
                             <span>CEO & Founder</span>
                         </div>
                         <div class="signature">
-                            <img src="assets/img/footer/signature.png" alt="image">
+                            <img src="static/img/footer/signature.png" alt="image">
                         </div>
                     </div>
                 </div>
@@ -1158,7 +1286,7 @@
                         <div class="footer-widget-blog">
                             <article class="item">
                                 <a href="blog-details.html" class="thumb">
-                                    <span class="fullimage" style="background-image: url(assets/img/blog/bs-1.jpg);"
+                                    <span class="fullimage" style="background-image: url(static/img/blog/bs-1.jpg);"
                                         role="img"></span>
                                 </a>
                                 <div class="info">
@@ -1168,7 +1296,7 @@
                             </article>
                             <article class="item">
                                 <a href="blog-details.html" class="thumb">
-                                    <span class="fullimage" style="background-image: url(assets/img/blog/bs-2.jpg);"
+                                    <span class="fullimage" style="background-image: url(static/img/blog/bs-2.jpg);"
                                         role="img"></span>
                                 </a>
                                 <div class="info">
@@ -1178,7 +1306,7 @@
                             </article>
                             <article class="item">
                                 <a href="blog-details.html" class="thumb">
-                                    <span class="fullimage" style="background-image: url(assets/img/blog/bs-3.jpg);"
+                                    <span class="fullimage" style="background-image: url(static/img/blog/bs-3.jpg);"
                                         role="img"></span>
                                 </a>
                                 <div class="info">
@@ -1244,19 +1372,19 @@
 
 
     <!-- plugin js -->
-    <script src="assets/js/jquery-3.6.0.min.js"></script>
-    <script src="assets/js/bootstrap.bundle.min.js"></script>
-    <script src="assets/js/jquery.meanmenu.js"></script>
-    <script src="assets/js/owl.carousel.min.js"></script>
-    <script src="assets/js/jquery.appear.js"></script>
-    <script src="assets/js/nice-select.min.js"></script>
-    <script src="assets/js/jquery.magnific-popup.min.js"></script>
-    <script src="assets/js/wow.min.js"></script>
-    <script src="assets/js/waypoints.min.js"></script>
-    <script src="assets/js/jquery.counterup.min.js"></script>
+    <script src="static/js/jquery-3.6.0.min.js"></script>
+    <script src="static/js/bootstrap.bundle.min.js"></script>
+    <script src="static/js/jquery.meanmenu.js"></script>
+    <script src="static/js/owl.carousel.min.js"></script>
+    <script src="static/js/jquery.appear.js"></script>
+    <script src="static/js/nice-select.min.js"></script>
+    <script src="static/js/jquery.magnific-popup.min.js"></script>
+    <script src="static/js/wow.min.js"></script>
+    <script src="static/js/waypoints.min.js"></script>
+    <script src="static/js/jquery.counterup.min.js"></script>
 
     <!-- custom js -->
-    <script src="assets/js/main.js"></script>
+    <script src="static/js/main.js"></script>
 
 </body>
 
