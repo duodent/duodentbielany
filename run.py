@@ -1,6 +1,6 @@
 from flask import Flask, render_template, redirect, url_for, jsonify, session, request, send_from_directory
 from flask_paginate import Pagination, get_page_args
-import mysqlDB as msq
+# import mysqlDB as msq
 import secrets
 from datetime import datetime, timedelta
 # from googletrans import Translator
