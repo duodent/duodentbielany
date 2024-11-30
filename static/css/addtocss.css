@@ -46,8 +46,8 @@
     }
 }
 
-.phone-icon {
-    animation: phone-ring 1min linear infinite; /* Uruchamia cykl co minutę */
+.phone-icon i{
+    animation: phone-ring 15s linear infinite; /* Uruchamia cykl co minutę */
 }
 
 @keyframes phone-ring {
