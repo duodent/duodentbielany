@@ -82,9 +82,15 @@
     }
 }
 
+.middle-header-area_bg {
+    background: none; /* Domyślnie brak tła */
+    background-size: cover; /* Dopasowanie obrazu do kontenera */
+    background-repeat: no-repeat; /* Zapobieganie powtarzaniu tła */
+}
 
 @media (max-width: 325px) {
-    .middle-header-area {
-        background-image: url(static/img/slider/slider-1-pani-usmiech.jpg);
+    .middle-header-area_bg {
+        background-image: url('static/img/nav-sm-logo-duodent.png'); /* Wstawia obraz jako tło */
+        background-position: center; /* Wyśrodkowanie tła */
     }
 }
