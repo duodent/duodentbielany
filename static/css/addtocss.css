@@ -41,7 +41,7 @@
 
 @media (max-width: 768px) {
     .slider-height-controller {
-        max-height: 665px; /* Ograniczenie wysokości dla urządzeń mobilnych */
+        max-height: 500px; /* Ograniczenie wysokości dla urządzeń mobilnych */
         overflow: hidden; /* Ukrywa nadmiar treści */
     }
 }
