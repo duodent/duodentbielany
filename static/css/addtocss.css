@@ -47,32 +47,30 @@
 }
 
 .phone-icon i {
-    position: relative;
     color: black; /* Domyślny kolor */
-    top: -130px;
     animation: phone-ring 15s linear infinite; /* Animacja co 15 sekund */
 }
 
 @keyframes phone-ring {
     0% {
-        transform: scale(1) translate(0, 0);
+        transform: scale(1) rotate(0deg); /* Początkowy brak rotacji */
         color: black;
     }
     1% {
-        transform: scale(1.05) translate(2px, -2px);
-        color: green;
+        transform: scale(1.05) rotate(-5deg); /* Rotacja w lewo */
+        color: green; /* Zmiana koloru */
     }
     10% {
-        transform: scale(1.05) translate(-2px, 2px);
+        transform: scale(1.05) rotate(5deg); /* Rotacja w prawo */
     }
     20% {
-        transform: scale(1.05) translate(2px, -2px);
+        transform: scale(1.05) rotate(-5deg); /* Rotacja w lewo */
     }
     30% {
-        transform: scale(1) translate(0, 0);
+        transform: scale(1) rotate(0deg); /* Powrót do pozycji wyjściowej */
         color: black;
     }
     100% {
-        transform: scale(1) translate(0, 0);
+        transform: scale(1) rotate(0deg); /* Brak rotacji */
     }
 }

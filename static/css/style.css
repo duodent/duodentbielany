@@ -426,20 +426,6 @@ img {
     margin-right: 0;
 }
 
-.middle-header-content .phone-icon {
-    position: relative; /* Umożliwia przesunięcie */
-    top: -130px; /* Podnosi element w górę */
-}
-
-.middle-header-content .phone-icon i {
-    position: absolute; /* Ikona precyzyjnie pozycjonowana wewnątrz */
-    left: 0;
-    top: 50%; /* Centrowanie pionowe */
-    transform: translateY(-50%); /* Korekta wyrównania */
-    font-size: 38px;
-    color: black; /* Domyślny kolor */
-    animation: phone-ring 15s linear infinite; /* Animacja */
-}
 
 
 .main-responsive-nav {
