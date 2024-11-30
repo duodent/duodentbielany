@@ -98,3 +98,11 @@
         background-position: center;
     }
 }
+
+@media (max-width: 325px) {
+    .slides-btn {
+        position: static; /* Wyłącza absolute */
+        top: auto; /* Usuwa przesunięcie */
+        left: auto; /* Usuwa przesunięcie */
+    }
+}
