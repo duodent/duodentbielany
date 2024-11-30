@@ -46,41 +46,31 @@
     }
 }
 
-.phone-icon i{
-    animation: phone-ring 15s linear infinite; /* Uruchamia cykl co minutę */
+.phone-icon i {
+    color: black; /* Domyślny kolor */
+    animation: phone-ring 15s linear infinite; /* Animacja co 15 sekund */
 }
 
 @keyframes phone-ring {
     0% {
-        transform: scale(1) translate(0, 0); /* Początek animacji */
-        color: inherit; /* Domyślny kolor */
+        transform: scale(1) translate(0, 0);
+        color: black;
     }
     1% {
-        transform: scale(1.05) translate(2px, -2px); /* Powiększenie i przesunięcie */
-        color: green; /* Zmiana koloru na zielony */
+        transform: scale(1.05) translate(2px, -2px);
+        color: green;
     }
     10% {
-        transform: scale(1.05) translate(-2px, 2px); /* Ruch w przeciwną stronę */
+        transform: scale(1.05) translate(-2px, 2px);
     }
     20% {
-        transform: scale(1.05) translate(2px, -2px); /* Powtórzenie ruchu */
+        transform: scale(1.05) translate(2px, -2px);
     }
     30% {
-        transform: scale(1) translate(0, 0); /* Powrót do normalnego rozmiaru */
-        color: inherit; /* Powrót do domyślnego koloru */
+        transform: scale(1) translate(0, 0);
+        color: black;
     }
     100% {
-        transform: scale(1) translate(0, 0); /* Zachowanie spokoju do końca cyklu */
+        transform: scale(1) translate(0, 0);
     }
-}
-
-.phone-icon-test i {
-    color: red;
-    animation: test-animation 1s linear infinite;
-}
-
-@keyframes test-animation {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.5); }
-    100% { transform: scale(1); }
 }
