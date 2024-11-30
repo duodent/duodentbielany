@@ -1117,6 +1117,11 @@ img {
 
 .main-slides-content h1 span {
     color: #74EBE9;
+    text-shadow: 
+        -1px -1px 0 black, /* Cień w górnym-lewym kierunku */
+         1px -1px 0 black, /* Cień w górnym-prawym kierunku */
+        -1px  1px 0 black, /* Cień w dolnym-lewym kierunku */
+         1px  1px 0 black; /* Cień w dolnym-prawym kierunku */
 }
 
 .main-slides-content p {
