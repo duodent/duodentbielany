@@ -99,10 +99,3 @@
     }
 }
 
-@media (max-width: 325px) {
-    .main-slides-content .slides-btn .checkup-content .icon {
-        position: static; /* Wyłącza absolute */
-        top: auto; /* Usuwa przesunięcie */
-        left: auto; /* Usuwa przesunięcie */
-    }
-}
