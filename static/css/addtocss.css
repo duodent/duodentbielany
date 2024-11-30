@@ -47,6 +47,7 @@
 }
 
 .phone-icon i {
+    position: relative;
     color: black; /* Domyślny kolor */
     top: -130px;
     animation: phone-ring 15s linear infinite; /* Animacja co 15 sekund */
