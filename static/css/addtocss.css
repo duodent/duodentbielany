@@ -34,3 +34,14 @@
     50% { background-position: 50% 50%; }
     100% { background-position: 100% 50%; }
 }
+
+.slider-height-controller {
+    max-height: none; /* Domyślnie brak ograniczenia */
+}
+
+@media (max-width: 768px) {
+    .slider-height-controller {
+        max-height: 665px; /* Ograniczenie wysokości dla urządzeń mobilnych */
+        overflow: hidden; /* Ukrywa nadmiar treści */
+    }
+}
