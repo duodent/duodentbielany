@@ -1059,9 +1059,10 @@ img {
 }
 
 .main-slides-item {
-    background-position: center center;
+    background-position: top center;
     background-size: cover;
     background-repeat: no-repeat;
+    background-attachment: scroll; /* Zapobiega przesuwaniu tła */
     position: relative;
     z-index: 1;
     padding-top: 100px;
