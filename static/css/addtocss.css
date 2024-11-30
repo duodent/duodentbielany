@@ -81,3 +81,10 @@
         transform: scale(1) rotate(0deg); /* Brak rotacji */
     }
 }
+
+
+@media (max-width: 325px) {
+    .middle-header-area {
+        background-image: url(static/img/slider/slider-1-pani-usmiech.jpg);
+    }
+}
