@@ -86,12 +86,11 @@
     background: none; /* Domyślnie brak tła */
     background-size: cover; /* Dopasowanie obrazu do kontenera */
     background-repeat: no-repeat; /* Zapobieganie powtarzaniu tła */
-    background-image: url('static/img/nav-sm-logo-duodent.png'); 
 }
 
 @media (max-width: 325px) {
     .middle-header-area_bg {
-        background-image: url('static/img/nav-sm-logo-duodent.png'); 
+        background-image: url('../img/nav-sm-logo-duodent.png'); 
         background-position: center; /* Wyśrodkowanie tła */
     }
 }
