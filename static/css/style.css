@@ -1118,10 +1118,10 @@ img {
 .main-slides-content h1 span {
     color: #74EBE9;
     text-shadow: 
-        -1px -1px 0 #002731, /* Cień w górnym-lewym kierunku */
-         1px -1px 0 #002731, /* Cień w górnym-prawym kierunku */
-        -1px  1px 0 #002731, /* Cień w dolnym-lewym kierunku */
-         1px  1px 0 #002731; /* Cień w dolnym-prawym kierunku */
+        -1px -1px 0 hsla(192, 100%, 10%, 0.505), /* Cień w górnym-lewym kierunku */
+         1px -1px 0 hsla(192, 100%, 10%, 0.505), /* Cień w górnym-prawym kierunku */
+        -1px  1px 0 hsla(192, 100%, 10%, 0.505), /* Cień w dolnym-lewym kierunku */
+         1px  1px 0 hsla(192, 100%, 10%, 0.505); /* Cień w dolnym-prawym kierunku */
 }
 
 .main-slides-content p {
