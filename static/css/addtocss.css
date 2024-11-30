@@ -49,6 +49,7 @@
 .phone-icon i {
     color: black; /* Domyślny kolor */
     animation: phone-ring 15s linear infinite; /* Animacja co 15 sekund */
+    padding-bottom: 50px;
 }
 
 @keyframes phone-ring {
