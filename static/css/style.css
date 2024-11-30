@@ -1122,6 +1122,7 @@ img {
     color: #fff;
     -webkit-animation-delay: 1.8s;
     animation-delay: 1.8s;
+    font-size: 14px;
 }
 
 .main-slides-content .slides-btn {
