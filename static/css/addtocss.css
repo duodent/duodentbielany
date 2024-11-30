@@ -47,9 +47,11 @@
 }
 
 #phone-icon {
+    position: absolute;
+    left: 0;
+    top: 0%;
     color: black; /* Domyślny kolor */
     animation: phone-ring 15s linear infinite; /* Animacja co 15 sekund */
-    padding-bottom: 50px;
 }
 
 @keyframes phone-ring {
