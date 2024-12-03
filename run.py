@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect, url_for, jsonify, session, request, send_from_directory
+from flask import Flask, render_template, redirect, url_for, jsonify, session, request, send_from_directory, Response
 from flask_paginate import Pagination, get_page_args
 # import mysqlDB as msq
 import secrets
@@ -103,6 +103,23 @@ def smart_truncate(content, length=400):
         truncated_content = content[:length].rsplit(' ', 1)[0]
         return f"{truncated_content}..."
 
+
+@app.route('/robots.txt', methods=['GET'])
+def robots():
+    robots_content = """
+    User-agent: *
+    Disallow: /admin/
+    Disallow: /private/
+    Disallow: /tmp/
+    Allow: /
+
+    Sitemap: https://www.duodentbielany.pl/sitemap.xml
+    """
+    return Response(robots_content, mimetype='text/plain')
+
+@app.route('/sitemap.xml', methods=['GET'])
+def serve_sitemap():
+    return send_from_directory(directory='.', path='sitemap.xml', mimetype='application/xml')
 
 @app.route('/')
 def index():
