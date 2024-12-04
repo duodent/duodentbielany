@@ -99,11 +99,3 @@
     }
 }
 
-.icon-train-front {
-    color: #06a3da; /* Kolor ikony */
-    font-size: 38px; /* Rozmiar ikony */
-}
-svg {
-    width: 1em; /* Dopasowuje szerokość do font-size */
-    height: 1em; /* Dopasowuje wysokość do font-size */
-}
