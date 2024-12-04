@@ -100,12 +100,10 @@
 }
 
 .icon-train-front {
-    display: inline-block;
-    width: 1em; /* Dostosowuje rozmiar do font-size */
-    height: 1em; /* Dostosowuje rozmiar do font-size */
-    background-image: url('../fonts/train-icon.svg');
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center;
     color: #06a3da; /* Kolor ikony */
+    font-size: 38px; /* Rozmiar ikony */
+}
+svg {
+    width: 1em; /* Dopasowuje szerokość do font-size */
+    height: 1em; /* Dopasowuje wysokość do font-size */
 }
