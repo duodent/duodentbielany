@@ -1119,6 +1119,10 @@ img {
 
 .main-slides-content h1 span {
     color: #74EBE9;
+    
+}
+
+.temp-shadow-outline {
     text-shadow: 
         -1px -1px 0 hsla(192, 100%, 10%, 0.505), /* Cień w górnym-lewym kierunku */
          1px -1px 0 hsla(192, 100%, 10%, 0.505), /* Cień w górnym-prawym kierunku */
