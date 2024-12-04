@@ -4721,13 +4721,14 @@ blockquote p, .blockquote p {
 
 .single-footer-widget .footer-widget-blog .item .info span {
     display: block;
-    color: #fff;
+    color: #06a3da;
     margin-top: 5px;
-    font-size: 14px;
+    font-size: 12px;
 }
 
 .single-footer-widget .footer-widget-blog .item .info span a {
     color: #06a3da;
+    font-size: 12px;
 }
 
 .single-footer-widget .footer-widget-blog .item .info h4 {
