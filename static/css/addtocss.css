@@ -101,11 +101,11 @@
 
 .icon-train-front {
     display: inline-block;
-    /* width: 16px;
-    height: 16px; */
+    min-width: 16px;
+    min-height: 16px;
     background-image: url('../fonts/train-icon.svg');
     background-size: contain; /* Dopasowanie tła */
     background-repeat: no-repeat; /* Brak powtarzania tła */
     background-position: center; /* Centrowanie ikony */
-    background-color: currentColor;
+    /* background-color: currentColor; */
 }
