@@ -107,5 +107,5 @@
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
-    color: #06a3da; /* Kolor ikony */
+    color: #06a3da !important; /* Kolor ikony */
 }
