@@ -3395,7 +3395,7 @@ img {
     width: 100%;
     background-color: #021a2f;
     z-index: -1;
-    opacity: 0.3;
+    opacity: 0.75;
 }
 
 .coming-soon-content {
@@ -3428,8 +3428,8 @@ img {
 }
 
 .coming-soon-content #timer div {
-    background-color: #0f0c32;
-    color: #fff;
+    background-color: #fff;
+    color: #0f0c32;
     width: 130px;
     height: 130px;
     border-radius: 50%;
