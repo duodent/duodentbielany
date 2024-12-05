@@ -84,7 +84,7 @@ jQuery(
 
         //countdown
         function makeTimer() {
-            var endTime = new Date("December 13, 2030 18:00:00 PDT");
+            var endTime = new Date("January 26, 2025 00:00:00");
             var endTime = Date.parse(endTime) / 1000;
             var now = new Date();
             var now = Date.parse(now) / 1000;
