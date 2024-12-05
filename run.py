@@ -141,7 +141,6 @@ def internal_server_error(e):
 
 
 # Strona główna
-# Strona główna
 @app.route('/')
 def index():
     session['page'] = 'index'
@@ -254,6 +253,44 @@ def contact_api():
             message=message
         )
 
+@app.route('/umow-wizyte-online', methods=['GET'])
+def book_appointment_page():
+    session['page'] = 'umow_wizyte_online'
+    pageTitle = 'Umów wizytę online'
+    return render_template('book_appointment.html', pageTitle=pageTitle)
+
+@app.route('/api/umow-wizyte', methods=['POST'])
+def book_appointment_api():
+    # Sprawdzamy, czy dane zostały przesłane w formacie JSON
+    if request.is_json:
+        data = request.get_json()
+        name = data.get('name')
+        email = data.get('email')
+        phone = data.get('phone')
+        birth_date = data.get('birth_date')
+        visit_date = data.get('visit_date')
+        visit_time = data.get('visit_time')
+        consent = data.get('consent')
+
+        # Walidacja checkboxa zgody
+        if not consent:
+            return jsonify({"status": "error", "message": "Musisz wyrazić zgodę na przetwarzanie danych osobowych."}), 400
+
+        # Tutaj możesz zapisać dane do bazy lub wysłać e-mail
+        return jsonify({
+            "status": "success",
+            "message": "Rezerwacja przyjęta!",
+            "data": {
+                "name": name,
+                "email": email,
+                "phone": phone,
+                "birth_date": birth_date,
+                "visit_date": visit_date,
+                "visit_time": visit_time
+            }
+        }), 200
+    else:
+        return jsonify({"status": "error", "message": "Nieprawidłowy format danych"}), 400
 
 
 if __name__ == '__main__':

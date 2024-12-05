@@ -54,7 +54,9 @@
     <link rel="stylesheet" href="static/css/style.css">
     <link rel="stylesheet" href="static/css/addtocss.css">
     <link rel="stylesheet" href="static/css/responsive.css">
-
+    
+    <!-- jquery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 
 <body>
@@ -579,56 +581,57 @@
                     <div class="appointment-overview-box">
                         <div class="make-appointment-content">
                             <h4><i class="far fa-calendar-alt"></i> Umów wizytę</h4>
-                            <form>
+                            <form id="appointmentForm">
 
                                 <div class="row">
                                     <div class="col-lg-6">
                                         <div class="form-group">
                                             <label>Imię i Nazwisko</label>
-                                            <input type="text" class="form-control" placeholder="Imię i Nazwisko">
+                                            <input type="text" class="form-control" id="name" name="name" required placeholder="Imię i Nazwisko">
                                         </div>
                                     </div>
                                     <div class="col-lg-6">
                                         <div class="form-group">
                                             <label>Email</label>
-                                            <input type="text" class="form-control" placeholder="Email">
+                                            <input type="text" class="form-control" id="email" name="email" required placeholder="Email">
                                         </div>
                                     </div>
                                     <div class="col-lg-6">
                                         <div class="form-group">
                                             <label>Telefon</label>
-                                            <input type="text" class="form-control" placeholder="Telefon">
+                                            <input type="text" class="form-control" id="phone" name="phone" required placeholder="Telefon" >
                                         </div>
                                     </div>
                                     <div class="col-lg-6">
                                         <div class="form-group">
                                             <label>Data urodzenia</label>
-                                            <input type="date" class="form-control">
+                                            <input type="date" id="birth_date" name="birth_date" required class="form-control">
                                         </div>
                                     </div>
                                     <div class="col-lg-6">
                                         <div class="form-group">
                                             <label>Data wizyty</label>
-                                            <input type="date" class="form-control">
+                                            <input type="date" id="visit_date" name="visit_date" required class="form-control">
                                         </div>
                                     </div>
                                     <div class="col-lg-6">
                                         <div class="form-group">
                                             <label>Godzina wizyty</label>
-                                            <input type="time" class="form-control">
+                                            <input type="time" id="visit_time" name="visit_time" required class="form-control">
                                         </div>
                                     </div>
                                 </div>
                                 <div class="form-check form-switch mb-3">
-                                    <input class="form-check-input" type="checkbox" role="switch" id="rodoSwitch">
-                                    <label class="form-check-label" for="rodoSwitch" style="font-size: 10px; color:#acacac">
-                                        Wyrażam zgodę na przetwarzanie moich danych osobowych przez Duodent Bielany 
-                                        w celu rejestracji wizyty i kontaktu, zgodnie z obowiązującymi przepisami
+                                    <input class="form-check-input" type="checkbox" role="switch" id="consent" name="consent" required>
+                                    <label class="form-check-label" for="consent" style="font-size: 10px; color:#acacac">
+                                        Wyrażam zgodę na <strong>przetwarzanie</strong> moich <strong>danych osobowych</strong> przez Duodent Bielany 
+                                        w celu <strong>rejestracji wizyty i kontaktu</strong>, zgodnie z obowiązującymi przepisami
                                         Rozporządzenia Parlamentu Europejskiego i Rady (UE) 2016/679 z dnia 27 
-                                        kwietnia 2016 r. (RODO).
+                                        kwietnia 2016 r. <strong>(RODO)</strong>.
                                     </label>
                                 </div>
                                 <button type="submit" class="default-btn">Wyslij wniosek</button>
+                                <div id="responseMessage" style="margin-top: 20px;"></div>
                             </form>
                         </div>
                     </div>
@@ -1158,7 +1161,38 @@
 
     <!-- custom js -->
     <script src="static/js/main.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#appointmentForm').on('submit', function (event) {
+                event.preventDefault(); // Zapobiegamy standardowemu przesyłaniu formularza
 
+                const formData = {
+                    name: $('#name').val(),
+                    email: $('#email').val(),
+                    phone: $('#phone').val(),
+                    birth_date: $('#birth_date').val(),
+                    visit_date: $('#visit_date').val(),
+                    visit_time: $('#visit_time').val(),
+                    consent: $('#consent').is(':checked')
+                };
+
+                // Wysyłamy dane przez AJAX
+                $.ajax({
+                    url: '/api/umow-wizyte',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify(formData),
+                    success: function (response) {
+                        $('#responseMessage').html(`<p>${response.message}</p>`);
+                        $('#appointmentForm')[0].reset(); // Czyścimy formularz
+                    },
+                    error: function (error) {
+                        $('#responseMessage').html(`<p style="color: red;">Błąd: ${error.responseJSON.message}</p>`);
+                    }
+                });
+            });
+        });
+    </script>
 </body>
 
 </html>
