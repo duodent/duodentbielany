@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect, url_for, jsonify, session, request, send_from_directory, Response
+from flask import Flask, render_template, redirect, url_for, jsonify, session, request, send_from_directory, Response, abort
 from flask_paginate import Pagination, get_page_args
 # import mysqlDB as msq
 import secrets
@@ -170,16 +170,29 @@ def treatments():
         pageTitle=pageTitle
     )
 
-# Zabiegi - szczegóły
-@app.route('/zabieg/<string:nazwa_uslugi>')
-def treatment_details(nazwa_uslugi):
-    session['page'] = f'treatment_{nazwa_uslugi}'
-    pageTitle = f'Szczegóły: {nazwa_uslugi}'
-    return render_template(
-        'treatment_details.html',
-        pageTitle=pageTitle,
-        nazwa_uslugi=nazwa_uslugi
-    )
+treatments = {
+    'ortodoncja-aparaty-na-prosty-usmiech': 'Ortodoncja',
+    'chirurgia-stomatologiczna-implantologia-odbudowa-usmiechu': 'Chirurgia i Implantologia',
+    'protetyka-stomatologiczna-estetyczna-odbudowa': 'Protetyka',
+    'endodoncja-leczenie-kanalowe-precyzyjnie': 'Endodoncja',
+    'periodontologia-choroby-przyzebia-leczenie': 'Periodontologia',
+    'nowoczesna-diagnostyka-rtg-i-scanner-3d': 'Nowoczesna diagnostyka',
+    'profilaktyka-stomatologiczna-higienizacja-i-wybielanie': 'Profilaktyka',
+    'stomatologia-dziecieca-zdrowy-usmiech-dziecka': 'Stomatologia dziecięca'
+}
+
+@app.route('/<path:treatment_slug>')
+def treatment_dynamic(treatment_slug):
+    if treatment_slug in treatments:
+        pageTitle = treatments[treatment_slug]
+        session['page'] = treatment_slug
+        return render_template(
+            'treatment_details.html',
+            pageTitle=pageTitle,
+            nazwa_uslugi=treatments[treatment_slug]
+        )
+    else:
+        abort(404)
 
 # Zespół
 @app.route('/poznaj-nasz-zespol-specjalistow-stomatologii')
