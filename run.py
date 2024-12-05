@@ -121,80 +121,138 @@ def robots():
 def serve_sitemap():
     return send_from_directory(directory='.', path='sitemap.xml', mimetype='application/xml')
 
+@app.route('/favicon.png')
+def favicon():
+    return send_from_directory(
+        directory='static/img',
+        path='favicon.png',
+        mimetype='image/png'
+    )
+
+# ERROR 404
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template('404.html', pageTitle='Strona nie znaleziona'), 404
+
+# ERROR 500
+@app.errorhandler(500)
+def internal_server_error(e):
+    return render_template('500.html', pageTitle='Błąd serwera'), 500
+
+
+# Strona główna
+# Strona główna
 @app.route('/')
 def index():
     session['page'] = 'index'
     pageTitle = 'Strona Główna'
-
-    # if f'TEAM-ALL' not in session:
-    #     team_list = generator_teamDB()
-    #     session[f'TEAM-ALL'] = team_list
-    # else:
-    #     team_list = session[f'TEAM-ALL']
-
-    # treeListTeam = []
-    # for i, member in enumerate(team_list):
-    #     if  i < 3: treeListTeam.append(member)
-       
-    # if f'BLOG-SHORT' not in session:
-    #     blog_post = generator_daneDBList_short()
-    #     session[f'BLOG-SHORT'] = blog_post
-    # else:
-    #     blog_post = session[f'BLOG-SHORT']
-    
-    # blog_post_three = []
-    # for i, member in enumerate(blog_post):
-    #     if  i < 3: blog_post_three.append(member)
-
-
     return render_template(
-        f'index.html',
+        'index.html',
+        pageTitle=pageTitle
+    )
+
+# Poznaj nas bliżej
+@app.route('/o-nas-twoja-klinika-stomatologiczna')
+def about_us():
+    session['page'] = 'about_us'
+    pageTitle = 'Poznaj nas bliżej'
+    return render_template(
+        'about_us.html',
+        pageTitle=pageTitle
+    )
+
+# Zabiegi - lista
+@app.route('/zabiegi-stomatologiczne-kompleksowa-oferta')
+def treatments():
+    session['page'] = 'treatments'
+    pageTitle = 'Zabiegi'
+    return render_template(
+        'treatments.html',
+        pageTitle=pageTitle
+    )
+
+# Zabiegi - szczegóły
+@app.route('/zabieg/<string:nazwa_uslugi>')
+def treatment_details(nazwa_uslugi):
+    session['page'] = f'treatment_{nazwa_uslugi}'
+    pageTitle = f'Szczegóły: {nazwa_uslugi}'
+    return render_template(
+        'treatment_details.html',
         pageTitle=pageTitle,
-        # blog_post_three=blog_post_three,
-        # treeListTeam=treeListTeam
+        nazwa_uslugi=nazwa_uslugi
+    )
+
+# Zespół
+@app.route('/poznaj-nasz-zespol-specjalistow-stomatologii')
+def team():
+    session['page'] = 'team'
+    pageTitle = 'Zespół'
+    return render_template(
+        'team.html',
+        pageTitle=pageTitle
+    )
+
+# Szczegóły członka zespołu
+@app.route('/zespol/<int:id_pracownika>')
+def team_member_details(id_pracownika):
+    session['page'] = f'team_member_{id_pracownika}'
+    pageTitle = f'Pracownik #{id_pracownika}'
+    return render_template(
+        'team_member.html',
+        pageTitle=pageTitle,
+        id_pracownika=id_pracownika
+    )
+
+# Dla Pacjenta
+@app.route('/informacje-dla-pacjentow-stomatologicznych')
+def for_patients():
+    session['page'] = 'for_patients'
+    pageTitle = 'Dla Pacjenta'
+    return render_template(
+        'for_patients.html',
+        pageTitle=pageTitle
+    )
+
+# Kontakt
+# Strona kontaktu
+@app.route('/kontakt-z-klinika-stomatologiczna', methods=['GET'])
+def contact_page():
+    session['page'] = 'kontakt'
+    pageTitle = 'Kontakt z kliniką stomatologiczną'
+    return render_template('contact.html', pageTitle=pageTitle)
+
+# API do obsługi formularza i danych JSON
+@app.route('/api/kontakt', methods=['POST'])
+def contact_api():
+    if request.is_json:
+        # Obsługa danych JSON
+        data = request.get_json()
+        name = data.get('name')
+        email = data.get('email')
+        message = data.get('message')
+        # Możesz tutaj zapisać dane do bazy lub wysłać e-mail
+        return jsonify({
+            "status": "success",
+            "message": "Dziękujemy za kontakt!",
+            "data": {
+                "name": name,
+                "email": email,
+                "message": message
+            }
+        }), 200
+    else:
+        # Obsługa formularza HTML
+        name = request.form.get('name')
+        email = request.form.get('email')
+        message = request.form.get('message')
+        # Możesz tutaj zapisać dane do bazy lub wysłać e-mail
+        return render_template(
+            'contact_success.html',
+            pageTitle='Dziękujemy za kontakt!',
+            name=name,
+            email=email,
+            message=message
         )
-
-# @app.route('/my-zespol')
-# def myZespol():
-#     session['page'] = 'myZespol'
-#     pageTitle = 'Zespół'
-
-#     if f'TEAM-ALL' not in session:
-#         team_list = generator_teamDB()
-#         session[f'TEAM-ALL'] = team_list
-#     else:
-#         team_list = session[f'TEAM-ALL']
-
-#     fullListTeam = []
-#     for i, member in enumerate(team_list):
-#        fullListTeam.append(member)
-    
-#     return render_template(
-#         f'my-zespol.html',
-#         pageTitle=pageTitle,
-#         fullListTeam=fullListTeam
-#         )
-
-# @app.route('/subpage', methods=['GET'])
-# def subpage():
-#     session['page'] = 'subpage'
-#     pageTitle = 'subpage'
-
-#     if 'target' in request.args:
-#         if request.args['target'] in ['polityka', 'zasady', 'pomoc', 'faq']:
-#             targetPage = request.args['target']
-#             pageTitle = targetPage
-#         else: 
-#             targetPage = "pomoc"
-#             pageTitle = targetPage
-#     else:
-#         targetPage = "pomoc"
-#         pageTitle = targetPage
-
-#     return render_template(
-#         f'{targetPage}.html',
-#         pageTitle=pageTitle
-#         )
 
 
 
