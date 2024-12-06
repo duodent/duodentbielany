@@ -170,7 +170,7 @@ def treatments():
         pageTitle=pageTitle
     )
 
-treatments = {
+treatments_dict = {
     'ortodoncja-aparaty-na-prosty-usmiech': 'Ortodoncja',
     'chirurgia-stomatologiczna-implantologia-odbudowa-usmiechu': 'Chirurgia i Implantologia',
     'protetyka-stomatologiczna-estetyczna-odbudowa': 'Protetyka',
@@ -183,13 +183,13 @@ treatments = {
 
 @app.route('/<path:treatment_slug>')
 def treatment_dynamic(treatment_slug):
-    if treatment_slug in treatments:
-        pageTitle = treatments[treatment_slug]
+    if treatment_slug in treatments_dict:
+        pageTitle = treatments_dict[treatment_slug]
         session['page'] = treatment_slug
         return render_template(
             'treatment_details.html',
             pageTitle=pageTitle,
-            nazwa_uslugi=treatments[treatment_slug]
+            nazwa_uslugi=treatments_dict[treatment_slug]
         )
     else:
         abort(404)
@@ -222,6 +222,36 @@ def for_patients():
     pageTitle = 'Dla Pacjenta'
     return render_template(
         'for_patients.html',
+        pageTitle=pageTitle
+    )
+
+# Polityka Prywatności
+@app.route('/polityka-prywatnosci')
+def privacy_policy():
+    session['page'] = 'privacy_policy'
+    pageTitle = 'Polityka Prywatności'
+    return render_template(
+        'privacy_policy.html',
+        pageTitle=pageTitle
+    )
+
+# FAQ
+@app.route('/faq')
+def faq():
+    session['page'] = 'faq'
+    pageTitle = 'FAQ'
+    return render_template(
+        'faq.html',
+        pageTitle=pageTitle
+    )
+
+# Zasady Witryny
+@app.route('/zasady-witryny')
+def site_rules():
+    session['page'] = 'site_rules'
+    pageTitle = 'Zasady Witryny'
+    return render_template(
+        'site_rules.html',
         pageTitle=pageTitle
     )
 
