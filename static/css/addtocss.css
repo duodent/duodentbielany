@@ -99,3 +99,12 @@
     }
 }
 
+.transport-icon {
+    display: inline-block; /* Ustawienie obrazu w linii z tekstem */
+    width: 30px; /* Szerokość ikony */
+    height: 30px; /* Wysokość ikony */
+    background-size: contain; /* Dopasowanie obrazu do wymiarów */
+    background-repeat: no-repeat; /* Zapobiega powtarzaniu obrazu */
+    background-position: center; /* Ustawienie obrazu w środku kontenera */
+    vertical-align: middle; /* Wyrównanie ikony do środka linii tekstu */
+}
