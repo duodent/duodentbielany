@@ -1,121 +1,130 @@
-<!doctype html>
-<html lang="en">
-
-<head>
-
-    <!-- meta tags -->
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-
-    <!-- title -->
-    <title>Duodent Bielany - Profesjonalna Klinika Stomatologiczna</title>
-
-    <!-- favicon -->
-    <link rel="icon" type="image/png" href="static/img/favicon.png">
-
-    <!-- icon css -->
-    <link rel="stylesheet" href="static/css/fontawesome.min.css">
-    <link rel="stylesheet" href="static/css/boxicons.min.css">
-    <link rel="stylesheet" href="static/css/flaticon.css">
-
-    <!-- plugin css -->
-    <link rel="stylesheet" href="static/css/bootstrap.min.css">
-    <link rel="stylesheet" href="static/css/animate.min.css">
-    <link rel="stylesheet" href="static/css/meanmenu.css">
-    <link rel="stylesheet" href="static/css/nice-select.min.css">
-    <link rel="stylesheet" href="static/css/owl.carousel.min.css">
-    <link rel="stylesheet" href="static/css/owl.theme.default.min.css">
-    <link rel="stylesheet" href="static/css/magnific-popup.min.css">
-
-    <!-- custom css -->
-    <link rel="stylesheet" href="static/css/style.css">
-    <link rel="stylesheet" href="static/css/responsive.css">
-
-</head>
-
-<body>
-
-    <!-- preloader -->
-    <div class="preloader">
-        <div class="loader">
-            <div class="loader-content"></div>
+{% extends 'base.html' %}
+{% block content %}
+<!-- page banner -->
+<div class="page-banner-area mb-5" style="background-image: url(static/img/banners/wizytaonline-1-banner.jpg);">
+    <div class="container">
+        <div class="page-banner-content">
+            <h2>{{pageTitle}}</h2>
+            <ul class="pages-list">
+                <li><a href="/">Duodent Bielany</a></li>
+                <li>{{pageTitle}}</li>
+            </ul>
         </div>
     </div>
-    <!-- preloader end -->
+</div>
+<!-- page banner end -->
 
-    <!-- coming-soon-area -->
-    <div class="coming-soon-area">
-        <div class="d-table">
-            <div class="d-table-cell">
-                <div class="coming-soon-content">
-                    <div class="logo">
-                        <a href="/">
-                            <img src="static/img/logo-light.png" alt="logo">
-                        </a>
-                    </div>
-                    <h2 style="color:aqua;">Już w krótce</h2>
-                    <div id="timer" class="flex-wrap d-flex justify-content-center">
-                        <div id="days" class="align-items-center flex-column d-flex justify-content-center"></div>
-                        <div id="hours" class="align-items-center flex-column d-flex justify-content-center"></div>
-                        <div id="minutes" class="align-items-center flex-column d-flex justify-content-center"></div>
-                        <div id="seconds" class="align-items-center flex-column d-flex justify-content-center"></div>
-                    </div>
-                    <!-- <form class="newsletter-form" data-toggle="validator">
-                        <div class="form-group">
-                            <input type="email" class="input-newsletter" placeholder="Enter your email" name="EMAIL"
-                                required autocomplete="off">
+<!-- contact-area -->
+<section class="contact-area ptb-100">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-7">
+                <div class="section-title">
+                    <span class="sub-title">
+                        <i class="flaticon-hashtag-symbol"></i>
+                        Message Us
+                    </span>
+                    <h2>Send Your Message To Us</h2>
+                    <p>
+                        It is a long established fact that a reader will be distracted by the readable content of a
+                        page when looking at its layout.
+                    </p>
+                </div>
+                <div class="contact-form">
+                    <form method="post"  id="contact-form">
+                        <div class="row">
+                            <div class="col-lg-6 col-md-6">
+                                <div class="form-group">
+                                    <input type="text" name="name" class="form-control" required placeholder="Name">
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6">
+                                <div class="form-group">
+                                    <input type="email" name="email" class="form-control" required placeholder="Email">
+                                </div>
+                            </div>
+                            <div class="col-lg-12 col-md-12">
+                                <div class="form-group">
+                                    <input type="text" name="subject"  class="form-control" required placeholder="Subject">
+                                </div>
+                            </div>
+                            <div class="col-lg-12 col-md-12">
+                                <div class="form-group">
+                                    <textarea name="message" class="form-control" cols="30" rows="5" required  placeholder="Your Message"></textarea>
+                                </div>
+                            </div>
+                            <div class="col-lg-12 col-md-12">
+                                <button type="submit" class="default-btn">Send Message</button>
+                            </div>
+                            <div class="col-md-12 mt-3">
+                                <div class="form-messege text-success text-center"></div>
+                            </div>
                         </div>
-                        <button type="submit" class="default-btn">Subscribe Now</button>
-                        <div id="validator-newsletter" class="form-result"></div>
-                    </form> -->
+                    </form>
+                </div>
+            </div>
+            <div class="col-lg-5">
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d96708.34194156103!2d-74.03927096447748!3d40.759040329405195!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x4a01c8df6fb3cb8!2sSolomon%20R.%20Guggenheim%20Museum!5e0!3m2!1sen!2sbd!4v1619410634508!5m2!1sen!2sbd" class="w-100" height="620" style="border:0;border-radius: 10px;" allowfullscreen="" loading="lazy"></iframe>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- contact-area end -->
 
-                    <div class="coming-social">
-                        <a href="https://www.facebook.com/duodent.przychodnia">
-                            <i class="bx bxl-facebook"></i>
-                        </a>
-                        <!-- <a href="#">
-                            <i class="bx bxl-twitter"></i>
-                        </a>
-                        <a href="#">
-                            <i class="bx bxl-linkedin"></i>
-                        </a>
-                        <a href="#">
-                            <i class="bx bxl-instagram"></i>
-                        </a>
-                        <a href="#">
-                            <i class="bx bxl-whatsapp"></i>
-                        </a> -->
+
+<!-- contact info -->
+<section class="features-area-two pb-70">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-4 col-sm-6">
+                <div class="single-features-box">
+                    <div class="content">
+                        <div class="icon">
+                            <i class="far fa-map-marker-alt"></i>
+                        </div>
+                        <h3>
+                            Office Location
+                        </h3>
+                        <p>
+                            662 Whispering Pines Circle, Washington
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-sm-6">
+                <div class="single-features-box">
+                    <div class="content">
+                        <div class="icon">
+                            <i class="far fa-envelope-open"></i>
+                        </div>
+                        <h3>
+                            Email Us
+                        </h3>
+                        <p>
+                            <a href="mailto:info@example.com">info@example.com</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-sm-6">
+                <div class="single-features-box">
+                    <div class="content">
+                        <div class="icon">
+                            <i class="far fa-phone"></i>
+                        </div>
+                        <h3>
+                            Call Us
+                        </h3>
+                        <p>
+                            <a href="tel:+12345678945">+1 234 567 8945</a>
+                        </p>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <!-- coming-soon-area end -->
+</section>
+<!-- contact info end -->
 
-
-    <!-- go top -->
-    <div class="go-top">
-        <i class="far fa-arrow-up"></i>
-    </div>
-    <!-- go top end -->
-
-
-    <!-- plugin js -->
-    <script src="static/js/jquery-3.6.0.min.js"></script>
-    <script src="static/js/bootstrap.bundle.min.js"></script>
-    <script src="static/js/jquery.meanmenu.js"></script>
-    <script src="static/js/owl.carousel.min.js"></script>
-    <script src="static/js/jquery.appear.js"></script>
-    <script src="static/js/nice-select.min.js"></script>
-    <script src="static/js/jquery.magnific-popup.min.js"></script>
-    <script src="static/js/wow.min.js"></script>
-    <script src="static/js/waypoints.min.js"></script>
-    <script src="static/js/jquery.counterup.min.js"></script>
-
-    <!-- custom js -->
-    <script src="static/js/main.js"></script>
-
-</body>
-
-</html>
+{% endblock %}
+{% block bottom_scripts %}{% endblock %}
