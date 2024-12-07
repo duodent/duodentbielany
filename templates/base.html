@@ -475,7 +475,7 @@
     </div>
     <!-- go top end -->
 
-
+    {% block plugin_js %}
     <!-- plugin js -->
     <script src="static/js/jquery-3.6.0.min.js"></script>
     <script src="static/js/bootstrap.bundle.min.js"></script>
@@ -487,9 +487,10 @@
     <script src="static/js/wow.min.js"></script>
     <script src="static/js/waypoints.min.js"></script>
     <script src="static/js/jquery.counterup.min.js"></script>
-
+    
     <!-- custom js -->
     <script src="static/js/main.js"></script>
+    {% endblock %}
     {% block bottom_scripts %}{% endblock %}
 </body>
 
