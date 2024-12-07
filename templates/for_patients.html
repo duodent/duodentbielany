@@ -1,121 +1,213 @@
-<!doctype html>
-<html lang="en">
-
-<head>
-
-    <!-- meta tags -->
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-
-    <!-- title -->
-    <title>Duodent Bielany - Profesjonalna Klinika Stomatologiczna</title>
-
-    <!-- favicon -->
-    <link rel="icon" type="image/png" href="static/img/favicon.png">
-
-    <!-- icon css -->
-    <link rel="stylesheet" href="static/css/fontawesome.min.css">
-    <link rel="stylesheet" href="static/css/boxicons.min.css">
-    <link rel="stylesheet" href="static/css/flaticon.css">
-
-    <!-- plugin css -->
-    <link rel="stylesheet" href="static/css/bootstrap.min.css">
-    <link rel="stylesheet" href="static/css/animate.min.css">
-    <link rel="stylesheet" href="static/css/meanmenu.css">
-    <link rel="stylesheet" href="static/css/nice-select.min.css">
-    <link rel="stylesheet" href="static/css/owl.carousel.min.css">
-    <link rel="stylesheet" href="static/css/owl.theme.default.min.css">
-    <link rel="stylesheet" href="static/css/magnific-popup.min.css">
-
-    <!-- custom css -->
-    <link rel="stylesheet" href="static/css/style.css">
-    <link rel="stylesheet" href="static/css/responsive.css">
-
-</head>
-
-<body>
-
-    <!-- preloader -->
-    <div class="preloader">
-        <div class="loader">
-            <div class="loader-content"></div>
+{% extends 'base.html' %}
+{% block content %}
+<!-- page banner -->
+<div class="page-banner-area mb-5" style="background-image: url(static/img/banners/about-1-banner.jpg);">
+    <div class="container">
+        <div class="page-banner-content">
+            <h2>{{pageTitle}}</h2>
+            <ul class="pages-list">
+                <li><a href="/">Duodent Bielany</a></li>
+                <li>{{pageTitle}}</li>
+            </ul>
         </div>
     </div>
-    <!-- preloader end -->
-
-    <!-- coming-soon-area -->
-    <div class="coming-soon-area">
-        <div class="d-table">
-            <div class="d-table-cell">
-                <div class="coming-soon-content">
-                    <div class="logo">
-                        <a href="/">
-                            <img src="static/img/logo-light.png" alt="logo">
-                        </a>
+</div>
+<!-- page banner end -->
+<section class="blog-area pt-100 pb-70">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6 mx-auto">
+                <div class="section-title-warp">
+                    <span class="sub-title">
+                        <i class="flaticon-hashtag-symbol"></i>
+                        Blogs
+                    </span>
+                    <h2>Our <span>Latest</span> Blog</h2>
+                    <p>
+                        It is a long established fact that a reader will be distracted by the readable content of a
+                        page when looking at its layout.
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-4 col-md-6">
+                <div class="single-blog">
+                    <!-- <div class="blog-image">
+                        <a href="blog-details.html"><img src="static/img/blog/1.jpg" alt="image"></a>
+                        <div class="tag">20 Feb</div>
+                        <div class="tag-two"><a href="blog.html">Teeth</a></div>
+                    </div> -->
+                    <div class="blog-content">
+                        <h3>
+                            <a href="blog-details.html">The Next Best Thing To Get New Natural Teeth</a>
+                        </h3>
+                        <p>There are many variations of passages of orem psum available but the majority.</p>
+                        <!-- <a href="blog-details.html" class="blog-btn">Read More <i
+                                class="far fa-long-arrow-right"></i></a> -->
+                        <ul class="entry-meta">
+                            <li>
+                                <i class="far fa-user"></i>
+                                <span>By <a href="#">Admin</a></span>
+                            </li>
+                            <li>
+                                <i class="far fa-comments"></i>
+                                20 Comments
+                            </li>
+                        </ul>
                     </div>
-                    <h2 style="color:aqua;">Już w krótce</h2>
-                    <div id="timer" class="flex-wrap d-flex justify-content-center">
-                        <div id="days" class="align-items-center flex-column d-flex justify-content-center"></div>
-                        <div id="hours" class="align-items-center flex-column d-flex justify-content-center"></div>
-                        <div id="minutes" class="align-items-center flex-column d-flex justify-content-center"></div>
-                        <div id="seconds" class="align-items-center flex-column d-flex justify-content-center"></div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6">
+                <div class="single-blog">
+                    <div class="blog-image">
+                        <a href="blog-details.html"><img src="static/img/blog/2.jpg" alt="image"></a>
+                        <div class="tag">22 Jun</div>
+                        <div class="tag-two"><a href="blog.html">Dental</a></div>
                     </div>
-                    <!-- <form class="newsletter-form" data-toggle="validator">
-                        <div class="form-group">
-                            <input type="email" class="input-newsletter" placeholder="Enter your email" name="EMAIL"
-                                required autocomplete="off">
-                        </div>
-                        <button type="submit" class="default-btn">Subscribe Now</button>
-                        <div id="validator-newsletter" class="form-result"></div>
-                    </form> -->
-
-                    <div class="coming-social">
-                        <a href="https://www.facebook.com/duodent.przychodnia">
-                            <i class="bx bxl-facebook"></i>
-                        </a>
-                        <!-- <a href="#">
-                            <i class="bx bxl-twitter"></i>
-                        </a>
-                        <a href="#">
-                            <i class="bx bxl-linkedin"></i>
-                        </a>
-                        <a href="#">
-                            <i class="bx bxl-instagram"></i>
-                        </a>
-                        <a href="#">
-                            <i class="bx bxl-whatsapp"></i>
-                        </a> -->
+                    <div class="blog-content">
+                        <h3>
+                            <a href="blog-details.html">Maximize Your Dental Care Insurance Benifts</a>
+                        </h3>
+                        <p>There are many variations of passages of orem psum available but the majority.</p>
+                        <a href="blog-details.html" class="blog-btn">Read More <i
+                                class="far fa-long-arrow-right"></i></a>
+                        <ul class="entry-meta">
+                            <li>
+                                <i class="far fa-user"></i>
+                                <span>By <a href="#">Admin</a></span>
+                            </li>
+                            <li>
+                                <i class="far fa-comments"></i>
+                                20 Comments
+                            </li>
+                        </ul>
                     </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6 offset-lg-0 offset-md-3">
+                <div class="single-blog">
+                    <div class="blog-image">
+                        <a href="blog-details.html"><img src="static/img/blog/3.jpg" alt="image"></a>
+                        <div class="tag">13 May</div>
+                        <div class="tag-two"><a href="blog.html">Hygiene</a></div>
+                    </div>
+                    <div class="blog-content">
+                        <h3>
+                            <a href="blog-details.html">Best Dental Care Make Your Smile Awesome</a>
+                        </h3>
+                        <p>There are many variations of passages of orem psum available but the majority.</p>
+                        <a href="blog-details.html" class="blog-btn">Read More <i
+                                class="far fa-long-arrow-right"></i></a>
+                        <ul class="entry-meta">
+                            <li>
+                                <i class="far fa-user"></i>
+                                <span>By <a href="#">Admin</a></span>
+                            </li>
+                            <li>
+                                <i class="far fa-comments"></i>
+                                20 Comments
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6">
+                <div class="single-blog">
+                    <div class="blog-image">
+                        <a href="blog-details.html"><img src="static/img/blog/4.jpg" alt="image"></a>
+                        <div class="tag">20 Feb</div>
+                        <div class="tag-two"><a href="blog.html">Teeth</a></div>
+                    </div>
+                    <div class="blog-content">
+                        <h3>
+                            <a href="blog-details.html">The Next Best Thing To Get New Natural Teeth</a>
+                        </h3>
+                        <p>There are many variations of passages of orem psum available but the majority.</p>
+                        <a href="blog-details.html" class="blog-btn">Read More <i
+                                class="far fa-long-arrow-right"></i></a>
+                        <ul class="entry-meta">
+                            <li>
+                                <i class="far fa-user"></i>
+                                <span>By <a href="#">Admin</a></span>
+                            </li>
+                            <li>
+                                <i class="far fa-comments"></i>
+                                20 Comments
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6">
+                <div class="single-blog">
+                    <div class="blog-image">
+                        <a href="blog-details.html"><img src="static/img/blog/5.jpg" alt="image"></a>
+                        <div class="tag">22 Jun</div>
+                        <div class="tag-two"><a href="blog.html">Dental</a></div>
+                    </div>
+                    <div class="blog-content">
+                        <h3>
+                            <a href="blog-details.html">Maximize Your Dental Care Insurance Benifts</a>
+                        </h3>
+                        <p>There are many variations of passages of orem psum available but the majority.</p>
+                        <a href="blog-details.html" class="blog-btn">Read More <i
+                                class="far fa-long-arrow-right"></i></a>
+                        <ul class="entry-meta">
+                            <li>
+                                <i class="far fa-user"></i>
+                                <span>By <a href="#">Admin</a></span>
+                            </li>
+                            <li>
+                                <i class="far fa-comments"></i>
+                                20 Comments
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6 offset-lg-0 offset-md-3">
+                <div class="single-blog">
+                    <div class="blog-image">
+                        <a href="blog-details.html"><img src="static/img/blog/6.jpg" alt="image"></a>
+                        <div class="tag">13 May</div>
+                        <div class="tag-two"><a href="blog.html">Hygiene</a></div>
+                    </div>
+                    <div class="blog-content">
+                        <h3>
+                            <a href="blog-details.html">Best Dental Care Make Your Smile Awesome</a>
+                        </h3>
+                        <p>There are many variations of passages of orem psum available but the majority.</p>
+                        <a href="blog-details.html" class="blog-btn">Read More <i
+                                class="far fa-long-arrow-right"></i></a>
+                        <ul class="entry-meta">
+                            <li>
+                                <i class="far fa-user"></i>
+                                <span>By <a href="#">Admin</a></span>
+                            </li>
+                            <li>
+                                <i class="far fa-comments"></i>
+                                20 Comments
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-12 col-md-12">
+                <div class="pagination-area">
+                    <a href="#" class="prev page-numbers">
+                        <i class="far fa-arrow-left"></i>
+                    </a>
+                    <span class="page-numbers">1</span>
+                    <a href="#" class="page-numbers current" aria-current="page">2</a>
+                    <a href="#" class="page-numbers">3</a>
+                    <a href="#" class="next page-numbers">
+                        <i class="far fa-arrow-right"></i>
+                    </a>
                 </div>
             </div>
         </div>
     </div>
-    <!-- coming-soon-area end -->
-
-
-    <!-- go top -->
-    <div class="go-top">
-        <i class="far fa-arrow-up"></i>
-    </div>
-    <!-- go top end -->
-
-
-    <!-- plugin js -->
-    <script src="static/js/jquery-3.6.0.min.js"></script>
-    <script src="static/js/bootstrap.bundle.min.js"></script>
-    <script src="static/js/jquery.meanmenu.js"></script>
-    <script src="static/js/owl.carousel.min.js"></script>
-    <script src="static/js/jquery.appear.js"></script>
-    <script src="static/js/nice-select.min.js"></script>
-    <script src="static/js/jquery.magnific-popup.min.js"></script>
-    <script src="static/js/wow.min.js"></script>
-    <script src="static/js/waypoints.min.js"></script>
-    <script src="static/js/jquery.counterup.min.js"></script>
-
-    <!-- custom js -->
-    <script src="static/js/main.js"></script>
-
-</body>
-
-</html>
+</section>
+{% endblock %}
+{% block bottom_scripts %}{% endblock %}
