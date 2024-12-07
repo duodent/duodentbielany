@@ -1,0 +1,494 @@
+<!doctype html>
+<html lang="pl">
+
+<head>
+
+    <!-- meta tags -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <!-- SEO -->
+    <title>Duodent Bielany - Profesjonalna Klinika Stomatologiczna</title>
+    {% block meta_tags %}
+    <meta name="description" content="Duodent Bielany - Twoja klinika stomatologiczna. Oferujemy diagnostykę, profilaktykę, stomatologię dziecięcą, zachowawczą, endodoncję, protetykę i wiele więcej.">
+    <meta name="keywords" content="stomatologia, klinika stomatologiczna, Bielany, diagnostyka stomatologiczna, profilaktyka, stomatologia dziecięca, endodoncja, protetyka, implanty, ortodoncja">
+    <meta name="author" content="Duodent Bielany">
+    <meta name="robots" content="index, follow">
+
+    <!-- Social Media (Open Graph) -->
+    <meta property="og:title" content="Duodent Bielany - Profesjonalna Klinika Stomatologiczna">
+    <meta property="og:description" content="Zadbaj o zdrowie i piękny uśmiech z Duodent Bielany. Oferujemy kompleksowe usługi stomatologiczne.">
+    <meta property="og:url" content="https://www.duodentbielany.pl/">
+    <meta property="og:image" content="https://www.duodentbielany.pl/static/img/duodent-social.jpg">
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="pl_PL">
+
+    <!-- Twitter Cards -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Duodent Bielany - Profesjonalna Klinika Stomatologiczna">
+    <meta name="twitter:description" content="Zadbaj o zdrowie i piękny uśmiech z Duodent Bielany. Oferujemy kompleksowe usługi stomatologiczne.">
+    <meta name="twitter:image" content="https://www.duodentbielany.pl/static/img/duodent-social.jpg">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="static/img/favicon.png">
+    <link rel="apple-touch-icon" href="https://www.duodentbielany.pl/apple-touch-icon.png">
+    {% endblock %}
+    <!-- icon css -->
+    <link rel="stylesheet" href="static/css/fontawesome.min.css">
+    <link rel="stylesheet" href="static/css/boxicons.min.css">
+    <link rel="stylesheet" href="static/css/flaticon.css">
+
+    <!-- bootstrap-icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <!-- plugin css -->
+    <link rel="stylesheet" href="static/css/bootstrap.min.css">
+    <link rel="stylesheet" href="static/css/animate.min.css">
+    <link rel="stylesheet" href="static/css/meanmenu.css">
+    <link rel="stylesheet" href="static/css/nice-select.min.css">
+    <link rel="stylesheet" href="static/css/owl.carousel.min.css">
+    <link rel="stylesheet" href="static/css/owl.theme.default.min.css">
+    <link rel="stylesheet" href="static/css/magnific-popup.min.css">
+
+    <!-- custom css -->
+    <link rel="stylesheet" href="static/css/style.css">
+    <link rel="stylesheet" href="static/css/addtocss.css">
+    <link rel="stylesheet" href="static/css/responsive.css">
+
+    <!-- jquery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+
+<body>
+
+    <!-- preloader -->
+    <div class="preloader">
+        <div class="loader">
+            <div class="loader-content"></div>
+        </div>
+    </div>
+    <!-- preloader end -->
+
+    <!-- top header  -->
+    <div class="top-header-area">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-sm-6 col-lg-8 col-md-12">
+                    <ul class="top-header-information">
+                        <li>
+                            <i class="far fa-map-marker-alt"></i>
+                            <a href="https://www.google.com/maps/search/?api=1&query=52.283455,20.900840" target="_blank"><span>ul. Arkuszowa 63, Warszawa</span></a>
+                        </li>
+                        <li>
+                            <i class="far fa-envelope-open"></i>
+                            <a href="mailto:arkuszowa@duodent.com.pl"><span>arkuszowa@duodent.com.pl</span></a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-sm-6 col-lg-4 col-md-12">
+                    <ul class="top-header-optional">
+                        <li>
+                            <a href="https://www.facebook.com/duodent.przychodnia" target="_blank">
+                                <i class="bx bxl-facebook"></i>
+                            </a>
+                            <a href="https://www.instagram.com/duodent_przychodnia">
+                                <i class="bx bxl-instagram"></i>
+                            </a>
+                        </li>
+                        <!-- <li class="languages-list">
+                            <select>
+                                <option value="1">English</option>
+                                <option value="3">Russian</option>
+                                <option value="3">Spanish</option>
+                            </select>
+                        </li> -->
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- top header end -->
+
+    <!-- middle-header -->
+    <div class="middle-header-area">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-4 col-md-12">
+                    <div class="middle-header">
+                        <div class="logo">
+                            <a href="index.html">
+                                <img src="static/img/logotyp_duodent_bielany_solidfill_light.png" alt="logo">
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-8 col-md-12 middle-header-area_bg">
+                    <ul class="middle-header-content">
+                        <li>
+                            <i id="phone-icon" class="flaticon-emergency-call"></i>
+
+                            Zadzwoń
+                            <span><a href="tel:+48790777350">790 777 350</a></span>
+                        </li>
+                        <li>
+                            <i class="flaticon-wall-clock"></i>
+                            Pon – Pt 
+                            <span>8:00 – 20:00</span>
+                        </li>
+                        <li>
+                            <i class="flaticon-calendar"></i>
+                            Sob 
+                            <span>8:00 – 13:00</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- middle-header end -->
+
+    <!-- navbar area -->
+    <div class="navbar-area">
+
+        <!-- mobile navbar -->
+        <div class="main-responsive-nav">
+            <div class="container">
+                <div class="main-responsive-menu">
+                    <div class="logo">
+                        <a href="index.html">
+                            <img src="static/img/logotyp_duodent_bielany_solidfill_light.png" alt="logo">
+                        </a>
+                    </div>
+                    <div class="others-search-btn">
+                        <div class="search-btn">
+                            <a class="#" href="#searchmodal" data-bs-toggle="modal" data-bs-target="#searchmodal">
+                                <i class="flaticon-search"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="responsive-menu-bar"></div>
+                </div>
+            </div>
+        </div>
+        <!-- mobile navbar end -->
+
+        <div class="main-navbar">
+            <div class="container">
+                <nav class="navbar navbar-expand-md navbar-light">
+                    <div class="collapse navbar-collapse mean-menu" id="navbarSupportedContent">
+                        <ul class="navbar-nav">
+                            <li class="nav-item active">
+                                <a href="/" class="nav-link">
+                                    <i class="bi bi-houses-fill" style="font-size: 1rem;"></i>
+                                </a>
+                            </li>
+                            <!-- 
+                            Poznaj nas bliżej
+                            Zabiegi
+                                Ortodoncja
+                                    Informacje o leczeniu ortodontycznym (do uzupełnienia)
+                                Chirurgia i implantologia
+                                Protetyka
+                                Endodoncja
+                                    Leczenie kanałowe
+                                Periodontologia
+                                    Choroby przyzębia
+                                    Opis stanu wokół zęba
+                                Nowoczesna diagnostyka
+                                    RTG
+                                    Scanner 3D
+                                Profilaktyka
+                                    Higienizacja
+                                    Wybielanie
+                                Stomatologia dziecięca
+                            Zespół | zależy od ilości osób
+                                Szczególy pracownikae
+                                    Kwalifikacja
+                                    Certyfikacja
+                                    Umiejętności zawodowe
+                                    Doświadczenie albo stopien naukowy
+                                    Nagrody
+                                    Jeden akapit opisu ogólnego lekarza/pracownika
+                            Dla Pacjenta
+                            Kontakt
+                            -->
+                            <li class="nav-item">
+                                <a href="/o-nas-twoja-klinika-stomatologiczna" class="nav-link">Poznaj nas bliżej</a>
+                            </li>
+                            
+                            <li class="nav-item">
+                                <a href="/zabiegi-stomatologiczne-kompleksowa-oferta" class="nav-link">
+                                    Zabiegi
+                                    <i class="far fa-angle-down"></i>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li class="nav-item">
+                                        <a href="/ortodoncja-aparaty-na-prosty-usmiech" class="nav-link">Ortodoncja</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="/chirurgia-stomatologiczna-implantologia-odbudowa-usmiechu" class="nav-link">Chirurgia i Implantologia</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="/protetyka-stomatologiczna-estetyczna-odbudowa" class="nav-link">Protetyka</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="/endodoncja-leczenie-kanalowe-precyzyjnie" class="nav-link">Endodoncja</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="/periodontologia-choroby-przyzebia-leczenie" class="nav-link">Periodontologia</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="/nowoczesna-diagnostyka-rtg-i-scanner-3d" class="nav-link">Nowoczesna diagnostyka</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="/profilaktyka-stomatologiczna-higienizacja-i-wybielanie" class="nav-link">Profilaktyka</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="/stomatologia-dziecieca-zdrowy-usmiech-dziecka" class="nav-link">Stomatologia dziecięca</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="nav-item">
+                                <a href="/poznaj-nasz-zespol-specjalistow-stomatologii" class="nav-link">Zespół</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="/informacje-dla-pacjentow-stomatologicznych" class="nav-link">Dla Pacjenta</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="/kontakt-z-klinika-stomatologiczna" class="nav-link">Kontakt</a>
+                            </li>
+                            
+                        </ul>
+                        <div class="others-options d-flex align-items-center">
+                            <div class="option-item">
+                                <div class="search-btn">
+                                    <a class="#" href="#searchmodal" data-bs-toggle="modal"
+                                        data-bs-target="#searchmodal">
+                                        <i class="flaticon-search"></i>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="option-item">
+                                <div class="navbar-btn">
+                                    <a href="/umow-wizyte-online" class="gold-button">Umów wizytę</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </div>
+    <!-- navbar area end -->
+
+    <!-- search modal -->
+    <div class="modal fade fade-scale searchmodal" id="searchmodal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-bs-dismiss="modal">
+                        <i class="bx bx-x"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form class="modal-search-form">
+                        <input type="search" class="search-field" placeholder="Jak możemy pomóc?">
+                        <button type="submit"><i class="bx bx-search"></i></button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- search modal end-->
+
+
+    {% block content %}
+        <!-- Tutaj będzie treść strony -->
+    {% endblock %}
+
+    <!-- footer area -->
+    <footer class="footer-area pt-100 pb-70">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 col-md-6">
+                    <div class="single-footer-widget">
+                        <div class="logo">
+                            <a href="index.html">
+                                <img src="static/img/logo-light.png" alt="logo">
+                            </a>
+                        </div>
+                        <p>
+                            W Duodent piękny uśmiech to wynik pasji, precyzji i doświadczenia.
+                        </p>
+                        <div class="footer-info">
+                            <img src="static/img/footer/zalozyciel.jpg" alt="image">
+                            <span style="color: #9fb9c2; margin-top: 3px; display: inline-block;">Doktor nauk medycznych</span>
+                            <h4>Stanisław Żmuda</h4>
+                            <span>Założyciel Przychodni Lekarskiej Duodent</span>
+                        </div>
+                        <div class="signature">
+                            <img src="static/img/footer/podpis.png" alt="image">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-sm-6">
+                    <div class="single-footer-widget">
+                        <h3>Szybkie skróty</h3>
+                        <ul class="quick-links">
+                            <li>
+                                <a href="/o-nas-twoja-klinika-stomatologiczna"> <i class="far fa-angle-double-right"></i> Poznaj nas bliżej</a>
+                            </li>
+                            <li>
+                                <a href="/zabiegi-stomatologiczne-kompleksowa-oferta"> <i class="far fa-angle-double-right"></i> Zabiegi</a>
+                            </li>
+                            <li>
+                                <a href="/informacje-dla-pacjentow-stomatologicznych"> <i class="far fa-angle-double-right"></i> Dla Pacjenta</a>
+                            </li>
+                            <li>
+                                <a href="/kontakt-z-klinika-stomatologiczna"> <i class="far fa-angle-double-right"></i> Kontakt</a>
+                            </li>
+                            <li>
+                                <a href="/polityka-prywatnosci"> <i class="far fa-angle-double-right"></i> Polityka prywatności</a>
+                            </li>
+                            <li>
+                                <a href="/faq"> <i class="far fa-angle-double-right"></i> FAQs</a>
+                            </li>
+                            <li>
+                                <a href="/zasady-witryny"> <i class="far fa-angle-double-right"></i> Zasady witryny</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-sm-6">
+                    <div class="single-footer-widget">
+                        <h3>Zabiegi</h3>
+                        <div class="footer-widget-blog">
+                            <article class="item">
+                                <a href="/protetyka-stomatologiczna-piekny-usmiech" class="thumb">
+                                    <span class="fullimage" style="background-image: url(static/img/services/protetyka-home.jpg);"
+                                        role="img"></span>
+                                </a>
+                                <div class="info">
+                                    <h4><a href="/protetyka-stomatologiczna-piekny-usmiech"><i class="flaticon-chair"></i> Protetyka</a></h4>
+                                    <span>
+                                        Nowoczesne rozwiązania protetyczne!
+                                    </span>
+                                </div>
+                            </article>
+                            <article class="item">
+                                <a href="/chirurgia-implantologia-odbudowa-usmiechu" class="thumb">
+                                    <span class="fullimage" style="background-image: url(static/img/services/implantologia-home.jpg);"
+                                        role="img"></span>
+                                </a>
+                                <div class="info">
+                                    <h4><a href="/chirurgia-implantologia-odbudowa-usmiechu"><i class="flaticon-dental-implant"></i> Implantologia</a></h4>
+                                    <span>
+                                        Odzyskaj wygodę i komfort jedzenia!
+                                    </span>
+                                </div>
+                            </article>
+                            <article class="item">
+                                <a href="/ortodoncja-aparaty-na-prosty-usmiech" class="thumb">
+                                    <span class="fullimage" style="background-image: url(static/img/services/ortodoncja-home.jpg);"
+                                        role="img"></span>
+                                </a>
+                                <div class="info">
+                                    <h4><a href="/ortodoncja-aparaty-na-prosty-usmiech"><i class="flaticon-tooth"></i> Ortodoncja</a></h4>
+                                    <span>
+                                        Zadbaj o idealne ustawienie zębów!
+                                    </span>
+                                </div>
+                            </article>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-sm-6">
+                    <div class="single-footer-widget">
+                        <h3>Kontakt</h3>
+                        <ul class="footer-information">
+                            <li>
+                                <i class="flaticon-red-cross"></i>
+                                Warszawa Bielany
+                                <a href="https://www.google.com/maps/search/?api=1&query=52.283455,20.900840" target="_blank">
+                                    <span>ul. Arkuszowa 63</span>
+                                </a>
+                            </li>
+                            <li>
+                                <i class="flaticon-emergency-call"></i>
+                                Telefon
+                                <span><a href="tel:+48790777350">+48 790 777 350</a></span>
+                            </li>
+                            <li>
+                                <i class="flaticon-wall-clock"></i>
+                                <strong>
+                                    Godziny otwarcia<br />
+                                </strong>
+                                Pon-Pt 8:00 – 20:00<br />
+                                Sob 8:00 – 13:00<br />
+                                <br />
+                                <strong>
+                                    Dojazd<br />
+                                </strong>
+                                Autobusy: 110, 210<br />
+                                Tramwaje: 26, 33<br />
+                                Metro: M1 (Młociny)<br />
+                            </li>
+                        </ul>
+
+                        <div class="footer-social">
+                            <a href="mailto:arkuszowa@duodent.com.pl"><i class="far fa-envelope-open"></i></a>
+                            <a href="https://www.facebook.com/duodent.przychodnia"><i class="bx bxl-facebook"></i></a>
+                            <a href="#"><i class="bx bxl-instagram"></i></a>
+                            <!-- <a href="#"><i class="bx bxl-twitter"></i></a> -->
+                            <!-- <a href="#"><i class="bx bxl-linkedin"></i></a> -->
+                            <!-- <a href="#"><i class="bx bxl-whatsapp"></i></a> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!-- footer area end -->
+
+    <!-- copyright area -->
+    <div class="copyright-area">
+        <div class="container">
+            <div class="copyright-area-content">
+                <p>
+                    &copy; 
+                    <a href="#">
+                        Duodent Bielany <span id="date"></span>.
+                    </a>
+                    Wszelkie prawa zastrzeżone.
+                </p>
+            </div>
+        </div>
+    </div>
+    <!-- copyright area end -->
+
+    <!-- go top -->
+    <div class="go-top">
+        <i class="far fa-arrow-up"></i>
+    </div>
+    <!-- go top end -->
+
+
+    <!-- plugin js -->
+    <script src="static/js/jquery-3.6.0.min.js"></script>
+    <script src="static/js/bootstrap.bundle.min.js"></script>
+    <script src="static/js/jquery.meanmenu.js"></script>
+    <script src="static/js/owl.carousel.min.js"></script>
+    <script src="static/js/jquery.appear.js"></script>
+    <script src="static/js/nice-select.min.js"></script>
+    <script src="static/js/jquery.magnific-popup.min.js"></script>
+    <script src="static/js/wow.min.js"></script>
+    <script src="static/js/waypoints.min.js"></script>
+    <script src="static/js/jquery.counterup.min.js"></script>
+
+    <!-- custom js -->
+    <script src="static/js/main.js"></script>
+    {% block bottom_scripts %}{% endblock %}
+</body>
+
+</html>
