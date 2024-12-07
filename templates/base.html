@@ -309,6 +309,7 @@
         <!-- Tutaj będzie treść strony -->
     {% endblock %}
 
+    {% block footer_area %}
     <!-- footer area -->
     <footer class="footer-area pt-100 pb-70">
         <div class="container">
@@ -316,7 +317,7 @@
                 <div class="col-lg-3 col-md-6">
                     <div class="single-footer-widget">
                         <div class="logo">
-                            <a href="index.html">
+                            <a href="/">
                                 <img src="static/img/logo-light.png" alt="logo">
                             </a>
                         </div>
@@ -452,7 +453,7 @@
         </div>
     </footer>
     <!-- footer area end -->
-
+    {% endblock %}
     <!-- copyright area -->
     <div class="copyright-area">
         <div class="container">
