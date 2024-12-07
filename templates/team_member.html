@@ -49,6 +49,180 @@
     <!-- jquery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     {% endblock %}
+
+{% block navbar_area_middle_header %}
+<!-- middle-header -->
+<div class="middle-header-area">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-4 col-md-12">
+                <div class="middle-header">
+                    <div class="logo">
+                        <a href="/">
+                            <img src="../static/img/logotyp_duodent_bielany_solidfill_light.png" alt="logo">
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-8 col-md-12 middle-header-area_bg">
+                <ul class="middle-header-content">
+                    <li>
+                        <i id="phone-icon" class="flaticon-emergency-call"></i>
+                        
+                        Zadzwoń
+                        <span><a href="tel:+48790777350">790 777 350</a></span>
+                    </li>
+                    <li>
+                        <i class="flaticon-wall-clock"></i>
+                        Pon – Pt 
+                        <span>8:00 – 20:00</span>
+                    </li>
+                    <li>
+                        <i class="flaticon-calendar"></i>
+                        Sob 
+                        <span>8:00 – 13:00</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- middle-header end -->
+
+<!-- navbar area -->
+<div class="navbar-area">
+
+    <!-- mobile navbar -->
+    <div class="main-responsive-nav">
+        <div class="container">
+            <div class="main-responsive-menu">
+                <div class="logo">
+                    <a href="/">
+                        <img src="../static/img/logotyp_duodent_bielany_solidfill_light.png" alt="logo">
+                    </a>
+                </div>
+                <div class="others-search-btn">
+                    <div class="search-btn">
+                        <a class="#" href="#searchmodal" data-bs-toggle="modal" data-bs-target="#searchmodal">
+                            <i class="flaticon-search"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="responsive-menu-bar"></div>
+            </div>
+        </div>
+    </div>
+    <!-- mobile navbar end -->
+    
+    <div class="main-navbar">
+        <div class="container">
+            <nav class="navbar navbar-expand-md navbar-light">
+                <div class="collapse navbar-collapse mean-menu" id="navbarSupportedContent">
+                    <ul class="navbar-nav">
+                        <li class="nav-item {% if pageTitle=='Strona Główna' %}active{% endif %}">
+                            <a href="/" class="nav-link">
+                                <i class="bi bi-houses-fill" style="font-size: 1rem;"></i>
+                            </a>
+                        </li>
+                        <!-- 
+                            Poznaj nas bliżej
+                            Zabiegi
+                            Ortodoncja
+                            Informacje o leczeniu ortodontycznym (do uzupełnienia)
+                            Chirurgia i implantologia
+                            Protetyka
+                            Endodoncja
+                            Leczenie kanałowe
+                            Periodontologia
+                            Choroby przyzębia
+                            Opis stanu wokół zęba
+                            Nowoczesna diagnostyka
+                                RTG
+                                Scanner 3D
+                            Profilaktyka
+                            Higienizacja
+                            Wybielanie
+                            Stomatologia dziecięca
+                        Zespół | zależy od ilości osób
+                            Szczególy pracownikae
+                            Kwalifikacja
+                            Certyfikacja
+                            Umiejętności zawodowe
+                            Doświadczenie albo stopien naukowy
+                            Nagrody
+                            Jeden akapit opisu ogólnego lekarza/pracownika
+                            Dla Pacjenta
+                        Kontakt
+                        -->
+                        <li class="nav-item {% if pageTitle=='Poznaj nas bliżej' %}active{% endif %}">
+                            <a href="/o-nas-twoja-klinika-stomatologiczna" class="nav-link">Poznaj nas bliżej</a>
+                        </li>
+                        
+                        <li class="nav-item {% if pageTitle=='Zabiegi' %}active{% endif %}">
+                            <a href="/zabiegi-stomatologiczne-kompleksowa-oferta" class="nav-link">
+                                Zabiegi
+                                <i class="far fa-angle-down"></i>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li class="nav-item">
+                                    <a href="/ortodoncja-aparaty-na-prosty-usmiech" class="nav-link">Ortodoncja</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="/chirurgia-stomatologiczna-implantologia-odbudowa-usmiechu" class="nav-link">Chirurgia i Implantologia</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="/protetyka-stomatologiczna-estetyczna-odbudowa" class="nav-link">Protetyka</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="/endodoncja-leczenie-kanalowe-precyzyjnie" class="nav-link">Endodoncja</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="/periodontologia-choroby-przyzebia-leczenie" class="nav-link">Periodontologia</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="/nowoczesna-diagnostyka-rtg-i-scanner-3d" class="nav-link">Nowoczesna diagnostyka</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="/profilaktyka-stomatologiczna-higienizacja-i-wybielanie" class="nav-link">Profilaktyka</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="/stomatologia-dziecieca-zdrowy-usmiech-dziecka" class="nav-link">Stomatologia dziecięca</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="nav-item {% if pageTitle=='Zespół' %}active{% endif %}">
+                            <a href="/poznaj-nasz-zespol-specjalistow-stomatologii" class="nav-link">Zespół</a>
+                        </li>
+                        <li class="nav-item {% if pageTitle=='Dla Pacjenta' %}active{% endif %}">
+                            <a href="/informacje-dla-pacjentow-stomatologicznych" class="nav-link">Dla Pacjenta</a>
+                        </li>
+                        <li class="nav-item {% if pageTitle=='Kontakt z kliniką stomatologiczną' %}active{% endif %}">
+                            <a href="/kontakt-z-klinika-stomatologiczna" class="nav-link">Kontakt</a>
+                        </li>
+                        
+                    </ul>
+                    <div class="others-options d-flex align-items-center">
+                        <div class="option-item">
+                            <div class="search-btn">
+                                <a class="#" href="#searchmodal" data-bs-toggle="modal"
+                                    data-bs-target="#searchmodal">
+                                    <i class="flaticon-search"></i>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="option-item">
+                            <div class="navbar-btn">
+                                <a href="/umow-wizyte-online" class="gold-button">Umów wizytę</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </div>
+</div>
+<!-- navbar area end -->
+{% endblock %}
 {% block content %}
 <!-- page banner -->
 <div class="page-banner-area mb-5" style="background-image: url(../static/img/banners/zespol-1-banner.jpg);">

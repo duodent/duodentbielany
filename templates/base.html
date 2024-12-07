@@ -111,7 +111,8 @@
         </div>
     </div>
     <!-- top header end -->
-
+     
+    {% block navbar_area_middle_header %}
     <!-- middle-header -->
     <div class="middle-header-area">
         <div class="container">
@@ -129,7 +130,7 @@
                     <ul class="middle-header-content">
                         <li>
                             <i id="phone-icon" class="flaticon-emergency-call"></i>
-
+                            
                             Zadzwoń
                             <span><a href="tel:+48790777350">790 777 350</a></span>
                         </li>
@@ -149,7 +150,7 @@
         </div>
     </div>
     <!-- middle-header end -->
-
+    
     <!-- navbar area -->
     <div class="navbar-area">
 
@@ -174,7 +175,7 @@
             </div>
         </div>
         <!-- mobile navbar end -->
-
+        
         <div class="main-navbar">
             <div class="container">
                 <nav class="navbar navbar-expand-md navbar-light">
@@ -186,33 +187,33 @@
                                 </a>
                             </li>
                             <!-- 
-                            Poznaj nas bliżej
-                            Zabiegi
+                                Poznaj nas bliżej
+                                Zabiegi
                                 Ortodoncja
-                                    Informacje o leczeniu ortodontycznym (do uzupełnienia)
+                                Informacje o leczeniu ortodontycznym (do uzupełnienia)
                                 Chirurgia i implantologia
                                 Protetyka
                                 Endodoncja
-                                    Leczenie kanałowe
+                                Leczenie kanałowe
                                 Periodontologia
-                                    Choroby przyzębia
-                                    Opis stanu wokół zęba
+                                Choroby przyzębia
+                                Opis stanu wokół zęba
                                 Nowoczesna diagnostyka
                                     RTG
                                     Scanner 3D
                                 Profilaktyka
-                                    Higienizacja
-                                    Wybielanie
+                                Higienizacja
+                                Wybielanie
                                 Stomatologia dziecięca
                             Zespół | zależy od ilości osób
                                 Szczególy pracownikae
-                                    Kwalifikacja
-                                    Certyfikacja
-                                    Umiejętności zawodowe
-                                    Doświadczenie albo stopien naukowy
-                                    Nagrody
-                                    Jeden akapit opisu ogólnego lekarza/pracownika
-                            Dla Pacjenta
+                                Kwalifikacja
+                                Certyfikacja
+                                Umiejętności zawodowe
+                                Doświadczenie albo stopien naukowy
+                                Nagrody
+                                Jeden akapit opisu ogólnego lekarza/pracownika
+                                Dla Pacjenta
                             Kontakt
                             -->
                             <li class="nav-item {% if pageTitle=='Poznaj nas bliżej' %}active{% endif %}">
@@ -283,6 +284,7 @@
         </div>
     </div>
     <!-- navbar area end -->
+    {% endblock %}
 
     <!-- search modal -->
     <div class="modal fade fade-scale searchmodal" id="searchmodal" tabindex="-1" role="dialog">
