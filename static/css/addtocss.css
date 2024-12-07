@@ -113,8 +113,8 @@
     background-color: #000000; /* Czarne tło */
     color: #ffffff; /* Biały tekst */
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; /* Systemowa czcionka Apple */
-    padding: 3px 5px; /* Wewnętrzne odstępy */
-    border-radius: 8px; /* Zaokrąglone rogi */
+    padding: 3px 3px; /* Wewnętrzne odstępy */
+    border-radius: 3px; /* Zaokrąglone rogi */
     text-align: center; /* Wyśrodkowanie tekstu */
     display: inline-block; /* Aby element zachowywał się jak tekst w linii */
 }
