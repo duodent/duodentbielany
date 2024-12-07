@@ -107,4 +107,5 @@
     background-repeat: no-repeat; /* Zapobiega powtarzaniu obrazu */
     background-position: center; /* Ustawienie obrazu w środku kontenera */
     vertical-align: middle; /* Wyrównanie ikony do środka linii tekstu */
+    margin-right: 3px;
 }
