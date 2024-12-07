@@ -1,121 +1,107 @@
-<!doctype html>
-<html lang="en">
-
-<head>
-
-    <!-- meta tags -->
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-
-    <!-- title -->
-    <title>Duodent Bielany - Profesjonalna Klinika Stomatologiczna</title>
-
-    <!-- favicon -->
-    <link rel="icon" type="image/png" href="static/img/favicon.png">
-
-    <!-- icon css -->
-    <link rel="stylesheet" href="static/css/fontawesome.min.css">
-    <link rel="stylesheet" href="static/css/boxicons.min.css">
-    <link rel="stylesheet" href="static/css/flaticon.css">
-
-    <!-- plugin css -->
-    <link rel="stylesheet" href="static/css/bootstrap.min.css">
-    <link rel="stylesheet" href="static/css/animate.min.css">
-    <link rel="stylesheet" href="static/css/meanmenu.css">
-    <link rel="stylesheet" href="static/css/nice-select.min.css">
-    <link rel="stylesheet" href="static/css/owl.carousel.min.css">
-    <link rel="stylesheet" href="static/css/owl.theme.default.min.css">
-    <link rel="stylesheet" href="static/css/magnific-popup.min.css">
-
-    <!-- custom css -->
-    <link rel="stylesheet" href="static/css/style.css">
-    <link rel="stylesheet" href="static/css/responsive.css">
-
-</head>
-
-<body>
-
-    <!-- preloader -->
-    <div class="preloader">
-        <div class="loader">
-            <div class="loader-content"></div>
+{% extends 'base.html' %}
+{% block content %}
+<!-- page banner -->
+<div class="page-banner-area mb-5" style="background-image: url(static/img/banners/zespol-1-banner.jpg);">
+    <div class="container">
+        <div class="page-banner-content">
+            <h2>{{pageTitle}}</h2>
+            <ul class="pages-list">
+                <li><a href="/">Duodent Bielany</a></li>
+                <li>{{pageTitle}}</li>
+            </ul>
         </div>
     </div>
-    <!-- preloader end -->
-
-    <!-- coming-soon-area -->
-    <div class="coming-soon-area">
-        <div class="d-table">
-            <div class="d-table-cell">
-                <div class="coming-soon-content">
-                    <div class="logo">
-                        <a href="/">
-                            <img src="static/img/logo-light.png" alt="logo">
-                        </a>
-                    </div>
-                    <h2 style="color:aqua;">Już w krótce</h2>
-                    <div id="timer" class="flex-wrap d-flex justify-content-center">
-                        <div id="days" class="align-items-center flex-column d-flex justify-content-center"></div>
-                        <div id="hours" class="align-items-center flex-column d-flex justify-content-center"></div>
-                        <div id="minutes" class="align-items-center flex-column d-flex justify-content-center"></div>
-                        <div id="seconds" class="align-items-center flex-column d-flex justify-content-center"></div>
-                    </div>
-                    <!-- <form class="newsletter-form" data-toggle="validator">
-                        <div class="form-group">
-                            <input type="email" class="input-newsletter" placeholder="Enter your email" name="EMAIL"
-                                required autocomplete="off">
+</div>
+<!-- page banner end -->
+ <!-- doctor area -->
+ <section class="doctor-area pb-70">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6 mx-auto">
+                <div class="section-title-warp">
+                    <span class="sub-title">
+                        <i class="flaticon-hashtag-symbol"></i>
+                        Nasz Zespół
+                    </span>
+                    <h2><span>Specjaliści</span>, którym możesz zaufać</h2>
+                    <p>
+                        Poznaj nasz zespół doświadczonych lekarzy, którzy z pasją dbają o Twoje zdrowie i dobre samopoczucie.
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-3 col-md-6">
+                <div class="single-doctor">
+                    <a href="#"><img src="static/img/doctor/1.jpg" alt="image"></a>
+                    <div class="doctor-content">
+                        <h3>
+                            <a href="#">Elżbieta Fedorowicz</a>
+                        </h3>
+                        <span>Doktor nauk medycznych</span>
+                        <div class="share-link">
+                            <!-- <a href="#"><i class="bx bxl-facebook"></i></a>
+                            <a href="#"><i class="bx bxl-twitter"></i></a>
+                            <a href="#"><i class="bx bxl-instagram"></i></a>
+                            <a href="#"><i class="bx bxl-linkedin"></i></a> -->
                         </div>
-                        <button type="submit" class="default-btn">Subscribe Now</button>
-                        <div id="validator-newsletter" class="form-result"></div>
-                    </form> -->
-
-                    <div class="coming-social">
-                        <a href="https://www.facebook.com/duodent.przychodnia">
-                            <i class="bx bxl-facebook"></i>
-                        </a>
-                        <!-- <a href="#">
-                            <i class="bx bxl-twitter"></i>
-                        </a>
-                        <a href="#">
-                            <i class="bx bxl-linkedin"></i>
-                        </a>
-                        <a href="#">
-                            <i class="bx bxl-instagram"></i>
-                        </a>
-                        <a href="#">
-                            <i class="bx bxl-whatsapp"></i>
-                        </a> -->
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="single-doctor">
+                    <a href="#"><img src="static/img/doctor/2.jpg" alt="image"></a>
+                    <div class="doctor-content">
+                        <h3>
+                            <a href="#">Arkadiusz Żmuda</a>
+                        </h3>
+                        <span>Lekarz dentysta</span>
+                        <div class="share-link">
+                            <!-- <a href="#"><i class="bx bxl-facebook"></i></a>
+                            <a href="#"><i class="bx bxl-twitter"></i></a>
+                            <a href="#"><i class="bx bxl-instagram"></i></a>
+                            <a href="#"><i class="bx bxl-linkedin"></i></a> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="single-doctor">
+                    <a href="#"><img src="static/img/doctor/3.jpg" alt="image"></a>
+                    <div class="doctor-content">
+                        <h3>
+                            <a href="#">Przemysław Żmuda</a>
+                        </h3>
+                        <span>Lekarz dentysta</span>
+                        <div class="share-link">
+                            <!-- <a href="#"><i class="bx bxl-facebook"></i></a>
+                            <a href="#"><i class="bx bxl-twitter"></i></a>
+                            <a href="#"><i class="bx bxl-instagram"></i></a>
+                            <a href="#"><i class="bx bxl-linkedin"></i></a> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="single-doctor">
+                    <a href="#"><img src="static/img/doctor/4.jpg" alt="image"></a>
+                    <div class="doctor-content">
+                        <h3>
+                            <a href="#">Sylwia Żmuda</a>
+                        </h3>
+                        <span>Lekarz dentysta</span>
+                        <div class="share-link">
+                            <!-- <a href="#"><i class="bx bxl-facebook"></i></a>
+                            <a href="#"><i class="bx bxl-twitter"></i></a>
+                            <a href="#"><i class="bx bxl-instagram"></i></a>
+                            <a href="#"><i class="bx bxl-linkedin"></i></a> -->
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <!-- coming-soon-area end -->
-
-
-    <!-- go top -->
-    <div class="go-top">
-        <i class="far fa-arrow-up"></i>
-    </div>
-    <!-- go top end -->
-
-
-    <!-- plugin js -->
-    <script src="static/js/jquery-3.6.0.min.js"></script>
-    <script src="static/js/bootstrap.bundle.min.js"></script>
-    <script src="static/js/jquery.meanmenu.js"></script>
-    <script src="static/js/owl.carousel.min.js"></script>
-    <script src="static/js/jquery.appear.js"></script>
-    <script src="static/js/nice-select.min.js"></script>
-    <script src="static/js/jquery.magnific-popup.min.js"></script>
-    <script src="static/js/wow.min.js"></script>
-    <script src="static/js/waypoints.min.js"></script>
-    <script src="static/js/jquery.counterup.min.js"></script>
-
-    <!-- custom js -->
-    <script src="static/js/main.js"></script>
-
-</body>
-
-</html>
+</section>
+<!-- doctor area end -->
+{% endblock %}
+{% block bottom_scripts %}{% endblock %}
