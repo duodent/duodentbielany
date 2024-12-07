@@ -156,7 +156,7 @@
             <div class="container">
                 <div class="main-responsive-menu">
                     <div class="logo">
-                        <a href="index.html">
+                        <a href="/">
                             <img src="static/img/logotyp_duodent_bielany_solidfill_light.png" alt="logo">
                         </a>
                     </div>
@@ -178,7 +178,7 @@
                 <nav class="navbar navbar-expand-md navbar-light">
                     <div class="collapse navbar-collapse mean-menu" id="navbarSupportedContent">
                         <ul class="navbar-nav">
-                            <li class="nav-item active">
+                            <li class="nav-item {% if pageTitle=='Strona Główna' %}active{% endif %}">
                                 <a href="/" class="nav-link">
                                     <i class="bi bi-houses-fill" style="font-size: 1rem;"></i>
                                 </a>
@@ -213,11 +213,11 @@
                             Dla Pacjenta
                             Kontakt
                             -->
-                            <li class="nav-item">
+                            <li class="nav-item {% if pageTitle=='Poznaj nas bliżej' %}active{% endif %}">
                                 <a href="/o-nas-twoja-klinika-stomatologiczna" class="nav-link">Poznaj nas bliżej</a>
                             </li>
                             
-                            <li class="nav-item">
+                            <li class="nav-item {% if pageTitle=='Zabiegi' %}active{% endif %}">
                                 <a href="/zabiegi-stomatologiczne-kompleksowa-oferta" class="nav-link">
                                     Zabiegi
                                     <i class="far fa-angle-down"></i>
@@ -249,13 +249,13 @@
                                     </li>
                                 </ul>
                             </li>
-                            <li class="nav-item">
+                            <li class="nav-item {% if pageTitle=='Zespół' %}active{% endif %}">
                                 <a href="/poznaj-nasz-zespol-specjalistow-stomatologii" class="nav-link">Zespół</a>
                             </li>
-                            <li class="nav-item">
+                            <li class="nav-item {% if pageTitle=='Dla Pacjenta' %}active{% endif %}">
                                 <a href="/informacje-dla-pacjentow-stomatologicznych" class="nav-link">Dla Pacjenta</a>
                             </li>
-                            <li class="nav-item">
+                            <li class="nav-item {% if pageTitle=='Kontakt z kliniką stomatologiczną' %}active{% endif %}">
                                 <a href="/kontakt-z-klinika-stomatologiczna" class="nav-link">Kontakt</a>
                             </li>
                             
