@@ -116,5 +116,5 @@
     padding: 3px 3px; /* Wewnętrzne odstępy */
     border-radius: 3px; /* Zaokrąglone rogi */
     text-align: center; /* Wyśrodkowanie tekstu */
-    display: inline-block; /* Aby element zachowywał się jak tekst w linii */
+    /* display: inline-block;  */
 }
