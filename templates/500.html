@@ -1,121 +1,37 @@
-<!doctype html>
-<html lang="en">
+{% extends 'base.html' %}
 
-<head>
-
-    <!-- meta tags -->
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-
-    <!-- title -->
-    <title>Duodent Bielany - Profesjonalna Klinika Stomatologiczna</title>
-
-    <!-- favicon -->
-    <link rel="icon" type="image/png" href="static/img/favicon.png">
-
-    <!-- icon css -->
-    <link rel="stylesheet" href="static/css/fontawesome.min.css">
-    <link rel="stylesheet" href="static/css/boxicons.min.css">
-    <link rel="stylesheet" href="static/css/flaticon.css">
-
-    <!-- plugin css -->
-    <link rel="stylesheet" href="static/css/bootstrap.min.css">
-    <link rel="stylesheet" href="static/css/animate.min.css">
-    <link rel="stylesheet" href="static/css/meanmenu.css">
-    <link rel="stylesheet" href="static/css/nice-select.min.css">
-    <link rel="stylesheet" href="static/css/owl.carousel.min.css">
-    <link rel="stylesheet" href="static/css/owl.theme.default.min.css">
-    <link rel="stylesheet" href="static/css/magnific-popup.min.css">
-
-    <!-- custom css -->
-    <link rel="stylesheet" href="static/css/style.css">
-    <link rel="stylesheet" href="static/css/responsive.css">
-
-</head>
-
-<body>
-
-    <!-- preloader -->
-    <div class="preloader">
-        <div class="loader">
-            <div class="loader-content"></div>
+{% block content %}
+<!-- page banner -->
+<div class="page-banner-area mb-5" style="background-image: url(static/img/banners/error500-1-banner.jpg);">
+<!-- <div class="page-banner-area mb-5" style="background-image: url('{{ url_for(\'static\', filename=\'img/banners/error404-1-banner.jpg\') }}');"> -->
+    <div class="container">
+        <div class="page-banner-content">
+            <h2>500 Error</h2>
+            <ul class="pages-list">
+                <li><a href="/">Duodent Bielany</a></li>
+                <li>500 Error</li>
+            </ul>
         </div>
     </div>
-    <!-- preloader end -->
-
-    <!-- coming-soon-area -->
-    <div class="coming-soon-area">
-        <div class="d-table">
-            <div class="d-table-cell">
-                <div class="coming-soon-content">
-                    <div class="logo">
-                        <a href="/">
-                            <img src="static/img/logo-light.png" alt="logo">
-                        </a>
-                    </div>
-                    <h2 style="color:aqua;">Już w krótce</h2>
-                    <div id="timer" class="flex-wrap d-flex justify-content-center">
-                        <div id="days" class="align-items-center flex-column d-flex justify-content-center"></div>
-                        <div id="hours" class="align-items-center flex-column d-flex justify-content-center"></div>
-                        <div id="minutes" class="align-items-center flex-column d-flex justify-content-center"></div>
-                        <div id="seconds" class="align-items-center flex-column d-flex justify-content-center"></div>
-                    </div>
-                    <!-- <form class="newsletter-form" data-toggle="validator">
-                        <div class="form-group">
-                            <input type="email" class="input-newsletter" placeholder="Enter your email" name="EMAIL"
-                                required autocomplete="off">
-                        </div>
-                        <button type="submit" class="default-btn">Subscribe Now</button>
-                        <div id="validator-newsletter" class="form-result"></div>
-                    </form> -->
-
-                    <div class="coming-social">
-                        <a href="https://www.facebook.com/duodent.przychodnia">
-                            <i class="bx bxl-facebook"></i>
-                        </a>
-                        <!-- <a href="#">
-                            <i class="bx bxl-twitter"></i>
-                        </a>
-                        <a href="#">
-                            <i class="bx bxl-linkedin"></i>
-                        </a>
-                        <a href="#">
-                            <i class="bx bxl-instagram"></i>
-                        </a>
-                        <a href="#">
-                            <i class="bx bxl-whatsapp"></i>
-                        </a> -->
-                    </div>
+</div>
+<!-- page banner end -->
+<!-- error-area -->
+<section class="error-area ptb-100">
+    <div class="d-table">
+        <div class="d-table-cell">
+            <div class="container">
+                <div class="error-content">
+                    <!-- <img src="{{ url_for('static', filename='img/404.svg') }}" alt="Błąd 404"> -->
+                    <h3>Ups! Wystąpił błąd serwera</h3>
+                    <p>
+                        Wystąpił błąd serwera. Spróbuj ponownie później lub skontaktuj się z administratorem, jeśli problem będzie się powtarzał.
+                    </p>
+                    <a href="/" class="default-btn">Wróć na stronę główną</a>
                 </div>
             </div>
         </div>
     </div>
-    <!-- coming-soon-area end -->
+</section>
+<!-- error-area end -->
 
-
-    <!-- go top -->
-    <div class="go-top">
-        <i class="far fa-arrow-up"></i>
-    </div>
-    <!-- go top end -->
-
-
-    <!-- plugin js -->
-    <script src="static/js/jquery-3.6.0.min.js"></script>
-    <script src="static/js/bootstrap.bundle.min.js"></script>
-    <script src="static/js/jquery.meanmenu.js"></script>
-    <script src="static/js/owl.carousel.min.js"></script>
-    <script src="static/js/jquery.appear.js"></script>
-    <script src="static/js/nice-select.min.js"></script>
-    <script src="static/js/jquery.magnific-popup.min.js"></script>
-    <script src="static/js/wow.min.js"></script>
-    <script src="static/js/waypoints.min.js"></script>
-    <script src="static/js/jquery.counterup.min.js"></script>
-
-    <!-- custom js -->
-    <script src="static/js/main.js"></script>
-
-</body>
-
-</html>
+{% endblock %}
