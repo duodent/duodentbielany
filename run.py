@@ -195,7 +195,8 @@ def treatment_dynamic(treatment_slug):
         pageTitle = treatments_dict[treatment_slug]
         session['page'] = treatment_slug
         return render_template(
-            'treatment_details.html',
+            'team.html',
+            # 'treatment_details.html',
             pageTitle=pageTitle,
             nazwa_uslugi=treatments_dict[treatment_slug]
         )
@@ -220,7 +221,7 @@ team_memeber_dict = {
     'dr-marcin-nowak': 4
 }
 
-@app.route('/<path:name_pracownika>')
+@app.route('/<string:name_pracownika>')
 def team_mambers(name_pracownika):
     if name_pracownika in team_memeber_dict:
         pageTitle = team_memeber_dict[name_pracownika]
