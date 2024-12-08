@@ -214,10 +214,10 @@ def team():
 
 # Szczegóły członka zespołu
 team_memeber_dict = {
-    'dr-anna-kowalska': 1,
-    'dr-marcin-kowalski': 2,
-    'dr-anna-nowak': 3,
-    'dr-marcin-nowak': 4
+    'doktor-nauk-medycznych-elzbieta-fedorowicz': 1,
+    'lekarz-dentysta-arkadiusz-zmuda': 2,
+    'lekarz-dentysta-przemyslaw-zmuda': 3,
+    'lekarz-dentysta-sylwia-zmuda': 4
 }
 
 @app.route('/zespol/<string:name_pracownika>')
