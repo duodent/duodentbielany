@@ -145,6 +145,8 @@ def internal_server_error(e):
 def index():
     session['page'] = 'index'
     pageTitle = 'Strona Główna'
+
+
     return render_template(
         'index.html',
         pageTitle=pageTitle
@@ -205,15 +207,24 @@ def team():
     )
 
 # Szczegóły członka zespołu
-@app.route('/zespol/<int:id_pracownika>')
-def team_member_details(id_pracownika):
-    session['page'] = f'team_member_{id_pracownika}'
-    pageTitle = f'Pracownik #{id_pracownika}'
-    return render_template(
-        'team_member.html',
-        pageTitle=pageTitle,
-        id_pracownika=id_pracownika
-    )
+team_memeber_dict = {
+    'dr-anna-kowalska': 1,
+    'dr-marcin-kowalski': 2,
+    'dr-anna-nowak': 3,
+    'dr-marcin-nowak': 4
+}
+@app.route('/<path:name_pracownika>')
+def treatment_dynamic(name_pracownika):
+    if name_pracownika in team_memeber_dict:
+        pageTitle = team_memeber_dict[name_pracownika]
+        session['page'] = name_pracownika.replace('-', ' ')
+        return render_template(
+            'team_member.html',
+            pageTitle=pageTitle,
+            dane_pracownika=team_memeber_dict[name_pracownika]
+        )
+    else:
+        abort(404)
 
 # Dla Pacjenta
 @app.route('/informacje-dla-pacjentow-stomatologicznych')
