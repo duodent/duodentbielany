@@ -224,7 +224,7 @@ team_memeber_dict = {
 def team_mambers(name_pracownika):
     if name_pracownika in team_memeber_dict:
         idPracownika = team_memeber_dict[name_pracownika]
-        ready_name = name_pracownika.replace('-', ' ').upper()
+        ready_name = name_pracownika.replace('-', ' ').capitalize()
         pageTitle = ready_name
         session['page'] = ready_name
         return render_template(
