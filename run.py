@@ -223,8 +223,10 @@ team_memeber_dict = {
 @app.route('/zespol/<string:name_pracownika>')
 def team_mambers(name_pracownika):
     if name_pracownika in team_memeber_dict:
-        pageTitle = team_memeber_dict[name_pracownika]
-        session['page'] = name_pracownika.replace('-', ' ')
+        idPracownika = team_memeber_dict[name_pracownika]
+        ready_name = name_pracownika.replace('-', ' ').upper()
+        pageTitle = ready_name
+        session['page'] = ready_name
         return render_template(
             'team_member.html',
             pageTitle=pageTitle,
