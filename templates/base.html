@@ -31,31 +31,31 @@
     <meta name="twitter:image" content="https://www.duodentbielany.pl/static/img/duodent-social.jpg">
 
     <!-- Favicon -->
-    <link rel="icon" type="image/png" href="static/img/favicon.png">
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='img/favicon.png') }}">
     <link rel="apple-touch-icon" href="https://www.duodentbielany.pl/apple-touch-icon.png">
     {% endblock %}
     {% block liknscripts %}
     <!-- icon css -->
-    <link rel="stylesheet" href="static/css/fontawesome.min.css">
-    <link rel="stylesheet" href="static/css/boxicons.min.css">
-    <link rel="stylesheet" href="static/css/flaticon.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/fontawesome.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/boxicons.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/flaticon.css') }}">
 
     <!-- bootstrap-icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
     <!-- plugin css -->
-    <link rel="stylesheet" href="static/css/bootstrap.min.css">
-    <link rel="stylesheet" href="static/css/animate.min.css">
-    <link rel="stylesheet" href="static/css/meanmenu.css">
-    <link rel="stylesheet" href="static/css/nice-select.min.css">
-    <link rel="stylesheet" href="static/css/owl.carousel.min.css">
-    <link rel="stylesheet" href="static/css/owl.theme.default.min.css">
-    <link rel="stylesheet" href="static/css/magnific-popup.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/animate.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/meanmenu.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/nice-select.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/owl.carousel.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/owl.theme.default.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/magnific-popup.min.css') }}">
 
     <!-- custom css -->
-    <link rel="stylesheet" href="static/css/style.css">
-    <link rel="stylesheet" href="static/css/addtocss.css">
-    <link rel="stylesheet" href="static/css/responsive.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/addtocss.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/responsive.css') }}">
 
     <!-- jquery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -94,7 +94,7 @@
                             <a href="https://www.facebook.com/duodent.przychodnia" target="_blank">
                                 <i class="bx bxl-facebook"></i>
                             </a>
-                            <a href="https://www.instagram.com/duodent_przychodnia">
+                            <a href="https://www.instagram.com/duodent_bielany">
                                 <i class="bx bxl-instagram"></i>
                             </a>
                         </li>
@@ -121,7 +121,7 @@
                     <div class="middle-header">
                         <div class="logo">
                             <a href="/">
-                                <img src="static/img/logotyp_duodent_bielany_solidfill_light.png" alt="logo">
+                                <img src="{{ url_for('static', filename='img/logotyp_duodent_bielany_solidfill_light.png') }}" alt="logo">
                             </a>
                         </div>
                     </div>
@@ -160,7 +160,7 @@
                 <div class="main-responsive-menu">
                     <div class="logo">
                         <a href="/">
-                            <img src="static/img/logotyp_duodent_bielany_solidfill_light.png" alt="logo">
+                            <img src="{{ url_for('static', filename='img/logotyp_duodent_bielany_solidfill_light.png') }}" alt="logo">
                         </a>
                     </div>
                     <div class="others-search-btn">
@@ -320,20 +320,20 @@
                     <div class="single-footer-widget">
                         <div class="logo">
                             <a href="/">
-                                <img src="static/img/logo-light.png" alt="logo">
+                                <img src="{{ url_for('static', filename='img/logo-light.png') }}" alt="logo">
                             </a>
                         </div>
                         <p>
                             W Duodent piękny uśmiech to wynik pasji, precyzji i doświadczenia.
                         </p>
                         <div class="footer-info">
-                            <img src="static/img/footer/zalozyciel.jpg" alt="image">
+                            <img src="{{ url_for('static', filename='img/footer/zalozyciel.jpg') }}" alt="image">
                             <span style="color: #9fb9c2; margin-top: 3px; display: inline-block;">Doktor nauk medycznych</span>
                             <h4>Stanisław Żmuda</h4>
                             <span>Założyciel Przychodni Lekarskiej Duodent</span>
                         </div>
                         <div class="signature">
-                            <img src="static/img/footer/podpis.png" alt="image">
+                            <img src="{{ url_for('static', filename='img/footer/podpis.png') }}" alt="image">
                         </div>
                     </div>
                 </div>
@@ -480,19 +480,20 @@
 
     {% block plugin_js %}
     <!-- plugin js -->
-    <script src="static/js/jquery-3.6.0.min.js"></script>
-    <script src="static/js/bootstrap.bundle.min.js"></script>
-    <script src="static/js/jquery.meanmenu.js"></script>
-    <script src="static/js/owl.carousel.min.js"></script>
-    <script src="static/js/jquery.appear.js"></script>
-    <script src="static/js/nice-select.min.js"></script>
-    <script src="static/js/jquery.magnific-popup.min.js"></script>
-    <script src="static/js/wow.min.js"></script>
-    <script src="static/js/waypoints.min.js"></script>
-    <script src="static/js/jquery.counterup.min.js"></script>
+    
+    <script src="{{ url_for('static', filename='js/jquery-3.6.0.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/jquery.meanmenu.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/owl.carousel.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/jquery.appear.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/nice-select.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/jquery.magnific-popup.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/wow.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/waypoints.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/jquery.counterup.min.js') }}"></script>
     
     <!-- custom js -->
-    <script src="static/js/main.js"></script>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
     {% endblock %}
     {% block bottom_scripts %}{% endblock %}
 </body>

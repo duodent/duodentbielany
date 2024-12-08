@@ -189,14 +189,13 @@ treatments_dict = {
     'stomatologia-dziecieca-zdrowy-usmiech-dziecka': 'Stomatologia dziecięca'
 }
 
-@app.route('/<path:treatment_slug>')
+@app.route('/zabieg-stomatologiczny/<path:treatment_slug>')
 def treatment_dynamic(treatment_slug):
     if treatment_slug in treatments_dict:
         pageTitle = treatments_dict[treatment_slug]
         session['page'] = treatment_slug
         return render_template(
-            'team.html',
-            # 'treatment_details.html',
+            'treatment_details.html',
             pageTitle=pageTitle,
             nazwa_uslugi=treatments_dict[treatment_slug]
         )
@@ -221,7 +220,7 @@ team_memeber_dict = {
     'dr-marcin-nowak': 4
 }
 
-@app.route('/<string:name_pracownika>')
+@app.route('/zespol/<string:name_pracownika>')
 def team_mambers(name_pracownika):
     if name_pracownika in team_memeber_dict:
         pageTitle = team_memeber_dict[name_pracownika]
