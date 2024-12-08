@@ -19,6 +19,10 @@ app.config['SESSION_TYPE'] = 'filesystem'  # Można użyć np. 'redis', 'sqlalch
 app.config['SESSION_PERMANENT'] = True  # Sesja ma być permanentna
 app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=10)  # Czas wygaśnięcia sesji (10 minut)
 
+# Ścieżka do katalogu z plikami
+UPLOAD_FOLDER = 'dokumenty'
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
 # Ustawienie ilości elementów na stronę (nie dotyczy sesji)
 app.config['PER_PAGE'] = 6
 
@@ -129,6 +133,8 @@ def favicon():
         mimetype='image/png'
     )
 
+
+
 # ERROR 404
 @app.errorhandler(404)
 def page_not_found(e):
@@ -213,8 +219,9 @@ team_memeber_dict = {
     'dr-anna-nowak': 3,
     'dr-marcin-nowak': 4
 }
+
 @app.route('/<path:name_pracownika>')
-def treatment_dynamic(name_pracownika):
+def team_mambers(name_pracownika):
     if name_pracownika in team_memeber_dict:
         pageTitle = team_memeber_dict[name_pracownika]
         session['page'] = name_pracownika.replace('-', ' ')
@@ -235,6 +242,16 @@ def for_patients():
         'for_patients.html',
         pageTitle=pageTitle
     )
+
+@app.route('/dokumenty/<path:filename>')
+def download_file(filename):
+    # Sprawdź, czy plik istnieje w katalogu
+    file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+    if os.path.exists(file_path) and os.path.isfile(file_path):
+        return send_from_directory(app.config['UPLOAD_FOLDER'], filename, as_attachment=True)
+    else:
+        # Zwróć błąd 404, jeśli plik nie istnieje
+        abort(404)
 
 # Polityka Prywatności
 @app.route('/polityka-prywatnosci')
