@@ -371,8 +371,12 @@
                         <div class="footer-widget-blog">
                             <article class="item">
                                 <a href="/protetyka-stomatologiczna-piekny-usmiech" class="thumb">
-                                    <span class="fullimage" style="background-image: url(static/img/services/protetyka-home.jpg);"
-                                        role="img"></span>
+                                    {% set bg_image_protetyka =url_for('static', filename='img/services/protetyka-home.jpg') %}
+                                    <span 
+                                        class="fullimage" 
+                                        style="background-image: url('{{ bg_image_protetyka }}');"
+                                        role="img">
+                                    </span>
                                 </a>
                                 <div class="info">
                                     <h4><a href="/protetyka-stomatologiczna-piekny-usmiech"><i class="flaticon-chair"></i> Protetyka</a></h4>
@@ -383,8 +387,12 @@
                             </article>
                             <article class="item">
                                 <a href="/chirurgia-implantologia-odbudowa-usmiechu" class="thumb">
-                                    <span class="fullimage" style="background-image: url(static/img/services/implantologia-home.jpg);"
-                                        role="img"></span>
+                                    {% set bg_image_implantologia =url_for('static', filename='img/services/implantologia-home.jpg') %}
+                                    <span 
+                                        class="fullimage" 
+                                        style="background-image: url('{{ bg_image_implantologia }}');"
+                                        role="img">
+                                    </span>
                                 </a>
                                 <div class="info">
                                     <h4><a href="/chirurgia-implantologia-odbudowa-usmiechu"><i class="flaticon-dental-implant"></i> Implantologia</a></h4>
@@ -395,8 +403,12 @@
                             </article>
                             <article class="item">
                                 <a href="/ortodoncja-aparaty-na-prosty-usmiech" class="thumb">
-                                    <span class="fullimage" style="background-image: url(static/img/services/ortodoncja-home.jpg);"
-                                        role="img"></span>
+                                    {% set bg_image_ortodoncja =url_for('static', filename='img/services/ortodoncja-home.jpg') %}
+                                    <span 
+                                        class="fullimage" 
+                                        style="background-image: url('{{ bg_image_ortodoncja }}');"
+                                        role="img">
+                                    </span>
                                 </a>
                                 <div class="info">
                                     <h4><a href="/ortodoncja-aparaty-na-prosty-usmiech"><i class="flaticon-tooth"></i> Ortodoncja</a></h4>
