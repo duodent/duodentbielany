@@ -3821,7 +3821,7 @@ img {
     overflow: hidden; /* Ukrywa wystające części obrazu */
     background-color: #fff; /* Opcjonalnie: kolor tła wokół obrazu */
     /* margin: 10px;  */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Opcjonalny efekt cienia */
+    /* box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);  */
 }
 
 .widget-area .widget_info .image img {
