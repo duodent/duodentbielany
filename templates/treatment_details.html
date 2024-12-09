@@ -1,121 +1,178 @@
-<!doctype html>
-<html lang="en">
+{% extends 'base.html' %}
 
-<head>
-
-    <!-- meta tags -->
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-
-    <!-- title -->
-    <title>Duodent Bielany - Profesjonalna Klinika Stomatologiczna</title>
-
-    <!-- favicon -->
-    <link rel="icon" type="image/png" href="../static/img/favicon.png">
-
-    <!-- icon css -->
-    <link rel="stylesheet" href="../static/css/fontawesome.min.css">
-    <link rel="stylesheet" href="../static/css/boxicons.min.css">
-    <link rel="stylesheet" href="../static/css/flaticon.css">
-
-    <!-- plugin css -->
-    <link rel="stylesheet" href="../static/css/bootstrap.min.css">
-    <link rel="stylesheet" href="../static/css/animate.min.css">
-    <link rel="stylesheet" href="../static/css/meanmenu.css">
-    <link rel="stylesheet" href="../static/css/nice-select.min.css">
-    <link rel="stylesheet" href="../static/css/owl.carousel.min.css">
-    <link rel="stylesheet" href="../static/css/owl.theme.default.min.css">
-    <link rel="stylesheet" href="../static/css/magnific-popup.min.css">
-
-    <!-- custom css -->
-    <link rel="stylesheet" href="../static/css/style.css">
-    <link rel="stylesheet" href="../static/css/responsive.css">
-
-</head>
-
-<body>
-
-    <!-- preloader -->
-    <div class="preloader">
-        <div class="loader">
-            <div class="loader-content"></div>
+{% block content %}
+<!-- page banner -->
+<div class="page-banner-area mb-5" style="background-image: url(../static/img/banners/zespol-1-banner.jpg);">
+    <div class="container">
+        <div class="page-banner-content">
+            <h2>{{pageTitle}}</h2>
+            <ul class="pages-list">
+                <li><a href="/">Duodent Bielany</a></li>
+                <li><a href="/zabiegi-stomatologiczne-kompleksowa-oferta">Zabiegi</a></li>
+                <li>{{pageTitle}}</li>
+            </ul>
         </div>
     </div>
-    <!-- preloader end -->
+</div>
+<!-- page banner end -->
 
-    <!-- coming-soon-area -->
-    <div class="coming-soon-area">
-        <div class="d-table">
-            <div class="d-table-cell">
-                <div class="coming-soon-content">
-                    <div class="logo">
-                        <a href="/">
-                            <img src="../static/img/logo-light.png" alt="logo">
-                        </a>
+
+    <!-- services-details-area -->
+    <section class="services-details-area ptb-100">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-md-12">
+                    <div class="services-details-image">
+                        <img src="../static/img/services/single.jpg" alt="image">
                     </div>
-                    <h2 style="color:aqua;">Już w krótce</h2>
-                    <div id="timer" class="flex-wrap d-flex justify-content-center">
-                        <div id="days" class="align-items-center flex-column d-flex justify-content-center"></div>
-                        <div id="hours" class="align-items-center flex-column d-flex justify-content-center"></div>
-                        <div id="minutes" class="align-items-center flex-column d-flex justify-content-center"></div>
-                        <div id="seconds" class="align-items-center flex-column d-flex justify-content-center"></div>
+                    <div class="services-details-content">
+                        <h3>Dental Implants</h3>
+                        <p>
+                            Mauris dapibus arcu vitae dapibus laoreet. Duis vitae vestibulum sapien. Cras sed fermentum dui, a placerat lorem. Mauris quis justo consectetur, ullamcorper ante eget, porttitor arcu. Ut ac tellus id arcu mollis congue nec eget libero. Praesent quis pretium lacus. Sed fermentum ac magna id tempus. Phasellus bibendum commodo metus at suscipit. Sed eget nulla blandit, mattis libero non, tristique risus. Duis condimentum euismod nisi sed luctus. Cras posuere, felis eu euismod luctus, nulla nunc aliquet ante, nec mollis massa dolor a metus. Sed quis nibh eu leo fringilla rhoncus vitae porta mi. Sed eleifend neque vitae tempus placerat. Pellentesque vitae ipsum at orci ultrices tincidunt. Mauris tincidunt dolor et ante tincidunt maximus.
+                        </p>
                     </div>
-                    <!-- <form class="newsletter-form" data-toggle="validator">
-                        <div class="form-group">
-                            <input type="email" class="input-newsletter" placeholder="Enter your email" name="EMAIL"
-                                required autocomplete="off">
+                    <div class="row">
+                        <div class="col-lg-6 col-md-6">
+                            <ul class="services-details-list">
+                                <li>
+                                    <i class="flaticon-check"></i>
+                                    Praesent rhoncus varius pharetra.
+                                </li>
+                                <li>
+                                    <i class="flaticon-check"></i>
+                                    Ut hendrerit nisi eget urna vehicula rutrum.
+                                </li>
+                                <li>
+                                    <i class="flaticon-check"></i>
+                                    Nulla molestie bibendum blandit.
+                                </li>
+                            </ul>
                         </div>
-                        <button type="submit" class="default-btn">Subscribe Now</button>
-                        <div id="validator-newsletter" class="form-result"></div>
-                    </form> -->
-
-                    <div class="coming-social">
-                        <a href="https://www.facebook.com/duodent.przychodnia">
-                            <i class="bx bxl-facebook"></i>
-                        </a>
-                        <!-- <a href="#">
-                            <i class="bx bxl-twitter"></i>
-                        </a>
-                        <a href="#">
-                            <i class="bx bxl-linkedin"></i>
-                        </a>
-                        <a href="#">
-                            <i class="bx bxl-instagram"></i>
-                        </a>
-                        <a href="#">
-                            <i class="bx bxl-whatsapp"></i>
-                        </a> -->
+                        <div class="col-lg-6 col-md-6">
+                            <ul class="services-details-list">
+                                <li>
+                                    <i class="flaticon-check"></i>
+                                    Pellentesque volutpat lacus metus.
+                                </li>
+                                <li>
+                                    <i class="flaticon-check"></i>
+                                    Ut porta odio volutpat nec
+                                </li>
+                                <li>
+                                    <i class="flaticon-check"></i>
+                                    Curabitur ultricies ex odio vitae facilisis
+                                </li>
+                            </ul>
+                        </div>
                     </div>
+                    <p>
+                        Praesent rhoncus varius pharetra. Ut hendrerit nisi eget urna vehicula rutrum. Nulla molestie bibendum blandit. Pellentesque volutpat lacus metus, ut porta odio volutpat nec. Curabitur ultricies ex odio, vitae facilisis sem volutpat nec. Nunc ultricies ut dui id interdum. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.
+                    </p>
+                    <div class="services-details-overview">
+                        <div class="row">
+                            <div class="col-lg-6 col-md-6">
+                                <div class="single-gallery">
+                                    <img src="../static/img/services/1.jpg" alt="image">
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6">
+                                <div class="single-gallery">
+                                    <img src="../static/img/services/2.jpg" alt="image">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <p>
+                        Pellentesque sit amet consequat ligula. Fusce interdum magna eget arcu hendrerit, non facilisis eros pharetra. Etiam ultricies sit amet nunc suscipit tristique. Proin lectus nisl, bibendum pellentesque arcu vel, faucibus sollicitudin urna. Nullam tempus leo sed magna viverra vehicula. Duis posuere sollicitudin libero eget volutpat. Ut nec interdum velit. Nullam sed nulla ac erat scelerisque semper id nec ante. Integer ac orci et metus sollicitudin varius. Duis imperdiet lectus et mi dictum, sed consequat neque blandit. Proin ac sodales lacus.
+                    </p>
+                    <div class="services-details-overview-content">
+                        <h4>Praesent rhoncus varius : </h4>
+                        <p>
+                            It is a long established fact that a reader will
+                            be distracted by the readable content of a page when looking at its layout. The point of
+                            psum is that it has a more or-less normal distribution of letters, as opposed to using.
+                        </p>
+                        <h4> Odio rhoncus vulputate : </h4>
+                        <p>
+                            Mauris eu massa eu odio rhoncus vulputate sed eget nunc. Mauris molestie, nulla quis vulputate sollicitudin, ipsum lacus ullamcorper felis, vitae tincidunt ante ex ac libero. Vivamus tincidunt consectetur ligula vel fermentum. Duis feugiat nisi euismod dui viverra, vel consectetur leo tincidunt. Donec lacinia, mauris sit amet congue vulputate, eros orci porttitor eros, at luctus tortor massa ut mi. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Pellentesque eu est ut mi porta sodales sit amet a risus.
+                        </p>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-12">
+                    <aside class="widget-area">
+                        <div class="widget widget_categories">
+                            <h3 class="widget-title">All Services</h3>
+                            <ul>
+                                <li><a href="index.html">Root Canel</a></li>
+                                <li><a href="index.html">Dental Implants</a></li>
+                                <li><a href="index.html">Teeth Whitening</a></li>
+                                <li><a href="index.html">Cosmetic Dentist</a></li>
+                                <li><a href="index.html">Teeth Filling</a></li>
+                                <li><a href="index.html">Crowns Bridges</a></li>
+                            </ul>
+                        </div>
+                        <div class="widget widget_tag_cloud">
+                            <h3 class="widget-title">Popular Tags</h3>
+                            <div class="tagcloud">
+                                <a href="index.html">Care</a>
+                                <a href="index.html">Dental</a>
+                                <a href="index.html">Hospital</a>
+                                <a href="index.html">Technology</a>
+                                <a href="index.html">Clinic</a>
+                            </div>
+                        </div>
+                        <div class="widget widget_instagram">
+                            <h3 class="widget-title">Gallery</h3>
+                            <ul>
+                                <li>
+                                    <div class="box">
+                                        <img src="../static/img/gallery/1.jpg" alt="image">
+                                        <i class="bx bxl-instagram"></i>
+                                        <a href="#" class="link-btn"></a>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="box">
+                                        <img src="../static/img/gallery/2.jpg" alt="image">
+                                        <i class="bx bxl-instagram"></i>
+                                        <a href="#" class="link-btn"></a>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="box">
+                                        <img src="../static/img/gallery/3.jpg" alt="image">
+                                        <i class="bx bxl-instagram"></i>
+                                        <a href="#" class="link-btn"></a>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="box">
+                                        <img src="../static/img/gallery/4.jpg" alt="image">
+                                        <i class="bx bxl-instagram"></i>
+                                        <a href="#" class="link-btn"></a>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="box">
+                                        <img src="../static/img/gallery/5.jpg" alt="image">
+                                        <i class="bx bxl-instagram"></i>
+                                        <a href="#" class="link-btn"></a>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="box">
+                                        <img src="../static/img/gallery/6.jpg" alt="image">
+                                        <i class="bx bxl-instagram"></i>
+                                        <a href="#" class="link-btn"></a>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </aside>
                 </div>
             </div>
         </div>
-    </div>
-    <!-- coming-soon-area end -->
+    </section>
+    <!-- services-details-area end -->
 
-
-    <!-- go top -->
-    <div class="go-top">
-        <i class="far fa-arrow-up"></i>
-    </div>
-    <!-- go top end -->
-
-
-    <!-- plugin js -->
-    <script src="../static/js/jquery-3.6.0.min.js"></script>
-    <script src="../static/js/bootstrap.bundle.min.js"></script>
-    <script src="../static/js/jquery.meanmenu.js"></script>
-    <script src="../static/js/owl.carousel.min.js"></script>
-    <script src="../static/js/jquery.appear.js"></script>
-    <script src="../static/js/nice-select.min.js"></script>
-    <script src="../static/js/jquery.magnific-popup.min.js"></script>
-    <script src="../static/js/wow.min.js"></script>
-    <script src="../static/js/waypoints.min.js"></script>
-    <script src="../static/js/jquery.counterup.min.js"></script>
-
-    <!-- custom js -->
-    <script src="../static/js/main.js"></script>
-
-</body>
-
-</html>
+{% endblock %}
