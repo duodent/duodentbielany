@@ -3820,7 +3820,7 @@ img {
     border-radius: 50%;
     overflow: hidden; /* Ukrywa wystające części obrazu */
     background-color: #fff; /* Opcjonalnie: kolor tła wokół obrazu */
-    margin: 10px; /* Margines zewnętrzny */
+    /* margin: 10px;  */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Opcjonalny efekt cienia */
 }
 
