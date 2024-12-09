@@ -3805,12 +3805,30 @@ img {
     -webkit-transform: translateY(-5px);
     transform: translateY(-5px);
 }
-.widget-area .widget_info .image{
+/* .widget-area .widget_info .image{
     padding: 0 50px;
 }
 .widget-area .widget_info .image img {
     width: 100%;
     border-radius: 50%;
+} */
+.widget-area .widget_info .image {
+    width: 100%;
+    height: 0;
+    padding-top: 100%; /* Tworzy kwadrat */
+    position: relative;
+    border-radius: 50%;
+    overflow: hidden; /* Ukrywa wystające części obrazu */
+}
+
+.widget-area .widget_info .image img {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Skalowanie obrazu bez zniekształceń */
+    transform: translate(-50%, -50%);
 }
 
 .widget-area .tagcloud a {
