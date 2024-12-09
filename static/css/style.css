@@ -3815,21 +3815,24 @@ img {
 .widget-area .widget_info .image {
     width: 100%;
     height: 0;
-    padding-top: 100%;
-    margin: 15%;
+    padding-top: 100%; /* Tworzy kwadrat */
     position: relative;
     border-radius: 50%;
     overflow: hidden; /* Ukrywa wystające części obrazu */
+    background-color: #fff; /* Opcjonalnie: kolor tła wokół obrazu */
+    margin: 10px; /* Margines zewnętrzny */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Opcjonalny efekt cienia */
 }
 
 .widget-area .widget_info .image img {
     position: absolute;
     top: 50%;
     left: 50%;
-    width: 100%;
-    height: 100%;
+    width: 90%; /* Obraz mniejszy niż kontener */
+    height: 90%; /* Dostosowane proporcje */
     object-fit: cover; /* Skalowanie obrazu bez zniekształceń */
     transform: translate(-50%, -50%);
+    border-radius: 50%; /* Zachowanie zaokrąglenia obrazu */
 }
 
 .widget-area .tagcloud a {
