@@ -65,9 +65,12 @@
                 </div>
             
                 <!-- Pole do przesyłania zdjęcia -->
-                <div class="form-group">
+                <div class="form-group custom-file-upload">
                     <label for="photo">Zdjęcie pracownika</label>
-                    <input type="file" class="form-control-file" id="photo" name="photo">
+                    <div class="file-input-wrapper">
+                        <input type="file" class="form-control" id="photo" name="photo" accept="image/*">
+                        <span class="file-label">Prześlij zdjęcie</span>
+                    </div>
                 </div>
             
                 <!-- Sekcja uprawnień -->
