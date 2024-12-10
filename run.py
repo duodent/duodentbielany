@@ -170,7 +170,7 @@ def login():
     if form.validate_on_submit():
         username = form.username.data
         password = form.password.data
-        print(username, password)
+
         usersTempDict = {}
         permTempDict = {}
         users_data = {}
@@ -226,17 +226,26 @@ def logout():
 
     return redirect(url_for('index'))
 
+@app.route('/admin/rejestracja')
+def rejestracja():
+    session['page'] = 'rejestracja'
+    pageTitle = 'Rejestracja użytkownika'
+    return render_template(
+        'register.html',
+        pageTitle=pageTitle
+    )
+
 # Strona główna
 @app.route('/')
 def index():
     session['page'] = 'index'
     pageTitle = 'Strona Główna'
 
-
     return render_template(
         'index.html',
         pageTitle=pageTitle
     )
+
 
 # Poznaj nas bliżej
 @app.route('/o-nas-twoja-klinika-stomatologiczna')
