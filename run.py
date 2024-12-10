@@ -2,8 +2,9 @@ from flask import Flask, render_template, redirect, url_for, jsonify, session, r
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField
 from wtforms.validators import DataRequired
+import app.utils.passwordSalt as hash
 from flask_paginate import Pagination, get_page_args
-# import mysqlDB as msq
+import mysqlDB as msq
 import secrets
 from datetime import datetime, timedelta
 # from googletrans import Translator
@@ -74,13 +75,13 @@ def format_date(date_input, pl=True):
 
 
 #  Funkcja pobiera dane z bazy danych 
-# def take_data_where_ID(key, table, id_name, ID):
-#     dump_key = msq.connect_to_database(f'SELECT {key} FROM {table} WHERE {id_name} = {ID};')
-#     return dump_key
+def take_data_where_ID(key, table, id_name, ID):
+    dump_key = msq.connect_to_database(f'SELECT {key} FROM {table} WHERE {id_name} = {ID};')
+    return dump_key
 
-# def take_data_table(key, table):
-#     dump_key = msq.connect_to_database(f'SELECT {key} FROM {table};')
-#     return dump_key
+def take_data_table(key, table):
+    dump_key = msq.connect_to_database(f'SELECT {key} FROM {table};')
+    return dump_key
 
 def generator_userDataDB():
     return []
@@ -162,14 +163,14 @@ def admin():
         return redirect(url_for('index'))
     return render_template('gateway.html', form=LoginForm())
 
-@app.route('/admin/login', methods=['GET', 'POST'])
+@app.route('/admin/loged', methods=['GET', 'POST'])
 def login():
     form = LoginForm()
 
     if form.validate_on_submit():
         username = form.username.data
         password = form.password.data
-
+        print(username, password)
         usersTempDict = {}
         permTempDict = {}
         users_data = {}
