@@ -1,4 +1,7 @@
-from flask import Flask, render_template, redirect, url_for, jsonify, session, request, send_from_directory, Response, abort
+from flask import Flask, render_template, redirect, url_for, jsonify, session, request, send_from_directory, Response, abort, flash
+from flask_wtf import FlaskForm
+from wtforms import StringField, PasswordField, SubmitField
+from wtforms.validators import DataRequired
 from flask_paginate import Pagination, get_page_args
 # import mysqlDB as msq
 import secrets
@@ -28,6 +31,11 @@ app.config['PER_PAGE'] = 6
 
 # Inicjalizacja obsługi sesji
 Session(app)
+
+class LoginForm(FlaskForm):
+    username = StringField('Nazwa użytkownika', validators=[DataRequired()])
+    password = PasswordField('Hasło', validators=[DataRequired()])
+    submit = SubmitField('Zaloguj się')
 
 # def getLangText(text):
 #     """Funkcja do tłumaczenia tekstu z polskiego na angielski"""
@@ -74,6 +82,8 @@ def format_date(date_input, pl=True):
 #     dump_key = msq.connect_to_database(f'SELECT {key} FROM {table};')
 #     return dump_key
 
+def generator_userDataDB():
+    return []
 
 ############################
 ##      ######           ###
@@ -145,6 +155,75 @@ def page_not_found(e):
 def internal_server_error(e):
     return render_template('500.html', pageTitle='Błąd serwera'), 500
 
+@app.route('/admin')
+def admin():
+    if 'username' in session:
+        # username = session['username']
+        return redirect(url_for('index'))
+    return render_template('gateway.html', form=LoginForm())
+
+@app.route('/admin/login', methods=['GET', 'POST'])
+def login():
+    form = LoginForm()
+
+    if form.validate_on_submit():
+        username = form.username.data
+        password = form.password.data
+
+        usersTempDict = {}
+        permTempDict = {}
+        users_data = {}
+        brands_data = {}
+        userDataDB = generator_userDataDB()
+        for un in userDataDB: 
+            usersTempDict[un['username']] = {
+                'hashed_password': un['password'],
+                'salt': un['salt']
+            }
+            permTempDict[un['username']] = un['uprawnienia']
+            users_data[un['username']] = {
+                'id': un['id'], 
+                'username': un['username'],  
+                'email': un['email'],
+                'phone': un['phone'],
+                'facebook': un['facebook'],
+                'linkedin': un['linkedin'],
+                'instagram': un['instagram'],
+                'twiter': un['twiter'],
+                'name': un['name'], 
+                'stanowisko': un['stanowisko'],
+                'opis': un['opis'],
+                'status': un['status'],
+                'avatar': un['avatar']
+            }
+            brands_data[un['username']] = un['brands']
+
+        # weryfikacja danych użytkownika
+        if username in usersTempDict and \
+            hash.hash_password(
+                password, usersTempDict[username]['salt']
+                ) == usersTempDict[username]['hashed_password'] and \
+                    int(users_data[username]['status']) == 1:
+            
+            session['username'] = username
+            session['userperm'] = permTempDict[username]
+            session['user_data'] = users_data[username]
+            session['brands'] = brands_data[username]
+            return redirect(url_for('index'))
+        elif username in users_data and users_data.get(username, {}).get('status') == '0':
+            flash('Konto nie aktywne!', 'danger')
+        else:
+            flash('Błędne nazwa użytkownika lub hasło', 'danger')
+    return render_template('gateway.html', form=form)
+
+@app.route('/admin/logout')
+def logout():
+    if "username" in session:
+        session.pop('username', None)
+        session.pop('userperm', None)
+        session.pop('user_data', None)
+
+    return redirect(url_for('index'))
 
 # Strona główna
 @app.route('/')
