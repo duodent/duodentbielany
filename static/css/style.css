@@ -3089,7 +3089,7 @@ img {
 
 .login-form form .form-group .form-control {
     height: 55px;
-    padding: 0 0 0 15px;
+    padding: 15px 0 15px 15px;
     line-height: initial;
     color: #222;
     background-color: transparent;
