@@ -163,7 +163,7 @@ def admin():
         return redirect(url_for('index'))
     return render_template('gateway.html', form=LoginForm())
 
-@app.route('/admin/loged', methods=['GET', 'POST'])
+@app.route('/admin/login', methods=['GET', 'POST'])
 def login():
     form = LoginForm()
 
