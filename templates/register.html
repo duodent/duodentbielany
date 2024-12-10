@@ -23,101 +23,147 @@
                 <p>Tworzenie konta pracownika w systemie Duodent Bielany</p>
             </div>
             <form>
-                <div class="form-group">
-                    <label for="login">Login</label>
-                    <input type="text" class="form-control" id="login" name="login" placeholder="Wpisz login">
-                </div>
-                <div class="form-group">
-                    <label for="fullName">Imię i nazwisko</label>
-                    <input type="text" class="form-control" id="fullName" name="fullName" placeholder="Wpisz imię i nazwisko">
-                </div>
-                <div class="form-group">
-                    <label for="position">Stanowisko</label>
-                    <input type="text" class="form-control" id="position" name="position" placeholder="Wpisz stanowisko">
-                </div>
-                <div class="form-group">
-                    <label for="qualifications">Kwalifikacje</label>
-                    <input type="text" class="form-control" id="qualifications" name="qualifications" placeholder="Wpisz kwalifikacje">
-                </div>
-                <div class="form-group">
-                    <label for="experience">Doświadczenie zawodowe</label>
-                    <textarea class="form-control" id="experience" name="experience" placeholder="Opisz doświadczenie zawodowe" style="height: 100px;"></textarea>
-                </div>
-                <div class="form-group">
-                    <label for="education">Wykształcenie</label>
-                    <input type="text" class="form-control" id="education" name="education" placeholder="Wpisz wykształcenie">
-                </div>
-                <div class="form-group">
-                    <label for="description">Opis pracownika</label>
-                    <textarea class="form-control" id="description" name="description" placeholder="Dodaj opis pracownika" style="height: 100px;"></textarea>
-                </div>
-                <div class="form-group">
-                    <label for="email">Email</label>
-                    <input type="email" class="form-control" id="email" name="email" placeholder="Wpisz email">
-                </div>
-                <div class="form-group">
-                    <label for="phone">Telefon</label>
-                    <input type="text" class="form-control" id="phone" name="phone" placeholder="Wpisz numer telefonu">
-                </div>
-                <div class="form-group">
-                    <label for="facebook">Facebook</label>
-                    <input type="text" class="form-control" id="facebook" name="facebook" placeholder="Link do profilu na Facebooku">
-                </div>
-                <div class="form-group">
-                    <label for="instagram">Instagram</label>
-                    <input type="text" class="form-control" id="instagram" name="instagram" placeholder="Link do profilu na Instagramie">
-                </div>
-                <div class="form-group">
-                    <label for="twitter">Twitter</label>
-                    <input type="text" class="form-control" id="twitter" name="twitter" placeholder="Link do profilu na Twitterze">
-                </div>
-                <div class="form-group">
-                    <label for="linkedin">LinkedIn</label>
-                    <input type="text" class="form-control" id="linkedin" name="linkedin" placeholder="Link do profilu na LinkedIn">
-                </div>
-                <div class="form-group">
-                    <label for="password">Hasło</label>
-                    <input type="password" class="form-control" id="password" name="password" placeholder="Wpisz hasło">
-                </div>
-                <div class="form-group">
-                    <label for="confirmPassword">Potwierdź hasło</label>
-                    <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" placeholder="Potwierdź hasło">
-                </div>
+                <div class="row">
+                    <div class="col-lg-6 col-sm-12">
+                        <div class="form-group">
+                            <label for="login">Login</label>
+                            <input type="text" class="form-control" id="login" name="login" placeholder="Wpisz login">
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-sm-12">
+                        <div class="form-group">
+                            <label for="fullName">Imię i nazwisko</label>
+                            <input type="text" class="form-control" id="fullName" name="fullName" placeholder="Wpisz imię i nazwisko">
+                        </div>
+                    </div>
             
-                <!-- Pole do przesyłania zdjęcia -->
-                <div class="form-group custom-file-upload">
-                    <label for="photo">Zdjęcie pracownika</label>
-                    <div class="file-input-wrapper">
-                        <input type="file" class="form-control" id="photo" name="photo" accept="image/*">
-                        <span class="file-label"><i class="fas fa-upload upload-icon me-3"></i> Prześlij zdjęcie</span>
+                    <div class="col-lg-6 col-sm-12">
+                        <div class="form-group">
+                            <label for="position">Stanowisko</label>
+                            <input type="text" class="form-control" id="position" name="position" placeholder="Wpisz stanowisko">
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-sm-12">
+                        <div class="form-group">
+                            <label for="qualifications">Kwalifikacje</label>
+                            <input type="text" class="form-control" id="qualifications" name="qualifications" placeholder="Wpisz kwalifikacje">
+                        </div>
+                    </div>
+            
+                    <div class="col-lg-6 col-sm-12">
+                        <div class="form-group">
+                            <label for="experience">Doświadczenie zawodowe</label>
+                            <textarea class="form-control" id="experience" name="experience" placeholder="Opisz doświadczenie zawodowe" style="height: 100px;"></textarea>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-sm-12">
+                        <div class="form-group">
+                            <label for="education">Wykształcenie</label>
+                            <input type="text" class="form-control" id="education" name="education" placeholder="Wpisz wykształcenie">
+                        </div>
+                    </div>
+            
+                    <div class="col-lg-6 col-sm-12">
+                        <div class="form-group">
+                            <label for="description">Opis pracownika</label>
+                            <textarea class="form-control" id="description" name="description" placeholder="Dodaj opis pracownika" style="height: 100px;"></textarea>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-sm-12">
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" class="form-control" id="email" name="email" placeholder="Wpisz email">
+                        </div>
+                    </div>
+            
+                    <div class="col-lg-6 col-sm-12">
+                        <div class="form-group">
+                            <label for="phone">Telefon</label>
+                            <input type="text" class="form-control" id="phone" name="phone" placeholder="Wpisz numer telefonu">
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-sm-12">
+                        <div class="form-group">
+                            <label for="facebook">Facebook</label>
+                            <input type="text" class="form-control" id="facebook" name="facebook" placeholder="Link do profilu na Facebooku">
+                        </div>
+                    </div>
+            
+                    <div class="col-lg-6 col-sm-12">
+                        <div class="form-group">
+                            <label for="instagram">Instagram</label>
+                            <input type="text" class="form-control" id="instagram" name="instagram" placeholder="Link do profilu na Instagramie">
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-sm-12">
+                        <div class="form-group">
+                            <label for="twitter">Twitter</label>
+                            <input type="text" class="form-control" id="twitter" name="twitter" placeholder="Link do profilu na Twitterze">
+                        </div>
+                    </div>
+            
+                    <div class="col-lg-6 col-sm-12">
+                        <div class="form-group">
+                            <label for="linkedin">LinkedIn</label>
+                            <input type="text" class="form-control" id="linkedin" name="linkedin" placeholder="Link do profilu na LinkedIn">
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-sm-12">
+                        <div class="form-group">
+                            <label for="password">Hasło</label>
+                            <input type="password" class="form-control" id="password" name="password" placeholder="Wpisz hasło">
+                        </div>
+                    </div>
+            
+                    <div class="col-lg-6 col-sm-12">
+                        <div class="form-group">
+                            <label for="confirmPassword">Potwierdź hasło</label>
+                            <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" placeholder="Potwierdź hasło">
+                        </div>
+                    </div>
+            
+                    <div class="col-lg-6 col-sm-12">
+                        <!-- Pole do przesyłania zdjęcia -->
+                        <div class="form-group custom-file-upload">
+                            <label for="photo">Zdjęcie pracownika</label>
+                            <div class="file-input-wrapper">
+                                <input type="file" class="form-control" id="photo" name="photo" accept="image/*">
+                                <span class="file-label"><i class="fas fa-upload upload-icon me-3"></i> Prześlij zdjęcie</span>
+                            </div>
+                        </div>
+                    </div>
+            
+                    <div class="col-lg-12">
+                        <!-- Sekcja uprawnień -->
+                        <div class="form-group">
+                            <label>Uprawnienia</label>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="administrator" id="roleAdministrator" name="roles[]">
+                                <label class="form-check-label" for="roleAdministrator">
+                                    Administrator
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="super_user" id="roleSuperUser" name="roles[]">
+                                <label class="form-check-label" for="roleSuperUser">
+                                    Super User
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="user" id="roleUser" name="roles[]">
+                                <label class="form-check-label" for="roleUser">
+                                    Pracownik
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+            
+                    <div class="col-lg-12">
+                        <button type="submit" class="btn btn-primary">Zarejestruj</button>
                     </div>
                 </div>
-            
-                <!-- Sekcja uprawnień -->
-                <div class="form-group">
-                    <label>Uprawnienia</label>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="administrator" id="roleAdministrator" name="roles[]">
-                        <label class="form-check-label" for="roleAdministrator">
-                            Administrator
-                        </label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="super_user" id="roleSuperUser" name="roles[]">
-                        <label class="form-check-label" for="roleSuperUser">
-                            Super User
-                        </label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="user" id="roleUser" name="roles[]">
-                        <label class="form-check-label" for="roleUser">
-                            Pracownik
-                        </label>
-                    </div>
-                </div>
-            
-                <button type="submit" class="btn btn-primary">Zarejestruj</button>
             </form>
+            
             
         </div>
     </div>
