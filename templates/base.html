@@ -98,6 +98,9 @@
                                 <i class="bx bxl-instagram"></i>
                             </a>
                         </li>
+                        {% if userName!='NotLogin' %}
+                        <li>Zalogowany użytkownik: {{ userName }}</li>
+                        {% endif %}
                         <!-- <li class="languages-list">
                             <select>
                                 <option value="1">English</option>
