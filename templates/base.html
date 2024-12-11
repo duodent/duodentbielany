@@ -99,12 +99,11 @@
                             </a>
                         </li>
                         {% if userName!='NotLogin' %}
-                            <li>
-                                <a href="/admin/logout">
-                                    <i class="fas fa-user"></i> 
-                                    {{ userName }}
-                                </a>
-                            </li>
+                        <li>
+                            <a href="/admin/logout" class="btn btn-secondary" data-bs-toggle="tooltip" data-bs-placement="left" title="{{ userName }}">
+                                <i class="fas fa-user"></i> Wyloguj
+                            </a>
+                        </li>
                         {% endif %}
                         <!-- <li class="languages-list">
                             <select>
@@ -545,6 +544,14 @@
     
     <!-- custom js -->
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+            var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+                return new bootstrap.Tooltip(tooltipTriggerEl);
+            });
+        });
+    </script>
     {% endblock %}
     {% block bottom_scripts %}{% endblock %}
 </body>
