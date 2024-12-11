@@ -3,6 +3,7 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField
 from wtforms.validators import DataRequired
 import redis
+from bin.config_utils import SESSION_FLASK_KEY
 import app.utils.passwordSalt as hash
 from flask_paginate import Pagination, get_page_args
 import mysqlDB as msq
@@ -17,7 +18,8 @@ from flask_session import Session
 app = Flask(__name__)
 
 # Klucz tajny do szyfrowania sesji
-app.config['SECRET_KEY'] = secrets.token_hex(16)
+# app.config['SECRET_KEY'] = secrets.token_hex(16)
+app.config['SECRET_KEY'] = SESSION_FLASK_KEY
 
 # Ustawienia dla Flask-Session
 # app.config['SESSION_TYPE'] = 'filesystem'  # Można użyć np. 'redis', 'sqlalchemy'
