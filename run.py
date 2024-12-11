@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect, url_for, jsonify, session, request, send_from_directory, Response, abort, flash
+from flask import Flask, render_template, redirect, url_for, jsonify, session, request, send_from_directory, Response, abort, flash, redis
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField
 from wtforms.validators import DataRequired
@@ -19,9 +19,16 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = secrets.token_hex(16)
 
 # Ustawienia dla Flask-Session
-app.config['SESSION_TYPE'] = 'filesystem'  # Można użyć np. 'redis', 'sqlalchemy'
-app.config['SESSION_PERMANENT'] = True  # Sesja ma być permanentna
-app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=10)  # Czas wygaśnięcia sesji (10 minut)
+# app.config['SESSION_TYPE'] = 'filesystem'  # Można użyć np. 'redis', 'sqlalchemy'
+# app.config['SESSION_PERMANENT'] = True  # Sesja ma być permanentna
+# app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=10)  # Czas wygaśnięcia sesji (10 minut)
+
+# Ustawienia dla Flask-Session
+app.config['SESSION_TYPE'] = 'redis'  # Redis jako magazyn sesji
+app.config['SESSION_PERMANENT'] = True
+app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=10)
+app.config['SESSION_KEY_PREFIX'] = 'session:'  # Prefiks dla kluczy w Redis
+app.config['SESSION_REDIS'] = redis.StrictRedis(host='localhost', port=6379, db=0)
 
 # Ścieżka do katalogu z plikami
 UPLOAD_FOLDER = 'dokumenty'
