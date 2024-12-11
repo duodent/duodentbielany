@@ -204,7 +204,7 @@ def login():
 
         # Pobierz dane użytkowników z bazy
         userDataDB = generator_userDataDB()
-
+        print(userDataDB)
         # Przygotowanie struktur do weryfikacji
         usersTempDict = {}
         users_data = {}
