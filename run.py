@@ -27,18 +27,18 @@ app.config['SECRET_KEY'] = SESSION_FLASK_KEY
 # app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=10)  # Czas wygaśnięcia sesji (10 minut)
 
 # Ustawienia dla Flask-Session
-# app.config['SESSION_TYPE'] = 'redis'  # Redis jako magazyn sesji
-# app.config['SESSION_PERMANENT'] = True
-# app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=10)
-# app.config['SESSION_KEY_PREFIX'] = 'session:'  # Prefiks dla kluczy w Redis
-# app.config['SESSION_REDIS'] = redis.StrictRedis(host='localhost', port=6379, db=0)
+app.config['SESSION_TYPE'] = 'redis'  # Redis jako magazyn sesji
+app.config['SESSION_PERMANENT'] = True
+app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=10)
+app.config['SESSION_KEY_PREFIX'] = 'session:'  # Prefiks dla kluczy w Redis
+app.config['SESSION_REDIS'] = redis.StrictRedis(host='localhost', port=6379, db=0)
 
 # Konfiguracja Flask-Session
-app.config['SESSION_TYPE'] = 'redis'
-app.config['SESSION_PERMANENT'] = False
-app.config['SESSION_USE_SIGNER'] = True
-app.config['SESSION_KEY_PREFIX'] = 'session:'
-app.config['SESSION_REDIS'] = redis.StrictRedis(host='localhost', port=6379, db=0)
+# app.config['SESSION_TYPE'] = 'redis'
+# app.config['SESSION_PERMANENT'] = False
+# app.config['SESSION_USE_SIGNER'] = True
+# app.config['SESSION_KEY_PREFIX'] = 'session:'
+# app.config['SESSION_REDIS'] = redis.StrictRedis(host='localhost', port=6379, db=0)
 
 # Ścieżka do katalogu z plikami
 UPLOAD_FOLDER = 'dokumenty'
