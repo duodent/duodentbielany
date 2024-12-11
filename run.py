@@ -84,7 +84,38 @@ def take_data_table(key, table):
     return dump_key
 
 def generator_userDataDB():
-    return []
+    took_usrD = take_data_table('*', 'admins')
+    userData = []
+
+    # Klucze dla uprawnień i kontaktów
+    permissions_keys = ['administrator', 'super_user', 'user']
+    contact_keys = ['phone', 'facebook', 'instagram', 'twitter', 'linkedin']
+
+    for data in took_usrD:
+        theme = {
+            'id': data[0],  # ID użytkownika
+            'login': data[1],  # Login użytkownika
+            'name': data[2],  # Imię i nazwisko
+            'stanowisko': data[3],  # Stanowisko
+            'kwalifikacje': data[4],  # Kwalifikacje
+            'doswiadczenie': data[5],  # Doświadczenie zawodowe
+            'wyksztalcenie': data[6],  # Wykształcenie
+            'opis': data[7],  # Opis pracownika
+            'email': data[8],  # Adres email
+            'password': data[9],  # Hasło
+            'salt': data[10],  # Sól dla hasła
+            'avatar': data[11] if data[11] else '',  # Ścieżka do zdjęcia (jeśli istnieje)
+            'uprawnienia': {
+                key: data[12 + i] for i, key in enumerate(permissions_keys)
+            },
+            'contact': {
+                key: data[15 + i] if data[15 + i] else '' for i, key in enumerate(contact_keys)
+            },
+            'status_usera': data[20]
+        }
+        userData.append(theme)
+
+    return userData
 
 ############################
 ##      ######           ###
@@ -171,33 +202,31 @@ def login():
         username = form.username.data
         password = form.password.data
 
-        usersTempDict = {}
-        permTempDict = {}
-        users_data = {}
-        brands_data = {}
+        # Pobierz dane użytkowników z bazy
         userDataDB = generator_userDataDB()
-        for un in userDataDB: 
-            usersTempDict[un['username']] = {
+
+        # Przygotowanie struktur do weryfikacji
+        usersTempDict = {}
+        users_data = {}
+        permTempDict = {}
+
+        for un in userDataDB:
+            usersTempDict[un['login']] = {
                 'hashed_password': un['password'],
                 'salt': un['salt']
             }
-            permTempDict[un['username']] = un['uprawnienia']
-            users_data[un['username']] = {
-                'id': un['id'], 
-                'username': un['username'],  
-                'email': un['email'],
-                'phone': un['phone'],
-                'facebook': un['facebook'],
-                'linkedin': un['linkedin'],
-                'instagram': un['instagram'],
-                'twiter': un['twiter'],
-                'name': un['name'], 
+            permTempDict[un['login']] = un['uprawnienia']
+            users_data[un['login']] = {
+                'id': un['id'],
+                'name': un['name'],
                 'stanowisko': un['stanowisko'],
                 'opis': un['opis'],
-                'status': un['status'],
-                'avatar': un['avatar']
+                'email': un['email'],
+                'avatar': un['avatar'],
+                'contact': un['contact'],
+                'status': un['status_usera']  # Zakładam, że aktywność konta jest ustawiana tutaj status_usera
             }
-            brands_data[un['username']] = un['brands']
+
 
         # weryfikacja danych użytkownika
         if username in usersTempDict and \
@@ -209,7 +238,7 @@ def login():
             session['username'] = username
             session['userperm'] = permTempDict[username]
             session['user_data'] = users_data[username]
-            session['brands'] = brands_data[username]
+
             return redirect(url_for('index'))
         elif username in users_data and users_data.get(username, {}).get('status') == '0':
             flash('Konto nie aktywne!', 'danger')
