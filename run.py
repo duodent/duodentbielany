@@ -1,7 +1,8 @@
-from flask import Flask, render_template, redirect, url_for, jsonify, session, request, send_from_directory, Response, abort, flash, redis
+from flask import Flask, render_template, redirect, url_for, jsonify, session, request, send_from_directory, Response, abort, flash
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField
 from wtforms.validators import DataRequired
+import redis
 import app.utils.passwordSalt as hash
 from flask_paginate import Pagination, get_page_args
 import mysqlDB as msq
