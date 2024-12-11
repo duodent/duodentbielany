@@ -99,7 +99,12 @@
                             </a>
                         </li>
                         {% if userName!='NotLogin' %}
-                            <li><i class="fas fa-user-circle"></i> {{ userName }}</li>
+                            <li>
+                                <a href="/admin/logout">
+                                    <i class="fas fa-user-circle"></i> 
+                                    {{ userName }}
+                                </a>
+                            </li>
                         {% endif %}
                         <!-- <li class="languages-list">
                             <select>
