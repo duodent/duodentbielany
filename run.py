@@ -204,7 +204,7 @@ def login():
 
         # Pobierz dane użytkowników z bazy
         userDataDB = generator_userDataDB()
-        
+
         # Przygotowanie struktur do weryfikacji
         usersTempDict = {}
         users_data = {}
@@ -234,7 +234,7 @@ def login():
                 password, usersTempDict[username]['salt']
                 ) == usersTempDict[username]['hashed_password'] and \
                     int(users_data[username]['status']) == 1:
-            print('tutaj jestem')
+
             session['username'] = username
             session['userperm'] = permTempDict[username]
             session['user_data'] = users_data[username]
@@ -263,6 +263,10 @@ def rejestracja():
         'register.html',
         pageTitle=pageTitle
     )
+
+@app.context_processor
+def inject_shared_variable():
+    return {'userName': session.get("username", 'NotLogin')}
 
 # Strona główna
 @app.route('/')
