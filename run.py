@@ -48,6 +48,26 @@ app.config['PER_PAGE'] = 6
 # Inicjalizacja obsługi sesji
 Session(app)
 
+
+## ## ## ## ## ## ## ## ## ## ## ## ## ## 
+## ## ##  T E  S T    S E  S J I ## ## ## 
+## ## ## ## ## ## 0  ## ## ## ## ## ## ## 
+## ## ## ## ## ## ## ## ## ## ## ## ## ## 
+@app.route('/set-session/<name>')
+def set_session(name):
+    session['user'] = name
+    return f"Sesja ustawiona dla użytkownika {name}."
+
+@app.route('/get-session')
+def get_session():
+    user = session.get('user', 'Brak sesji')
+    return f"Zalogowany użytkownik: {user}"
+
+## ## ## ## ## ## ## ## ## ## ## ## ## ## 
+## ## ##  T E  S T    S E  S J I ## ## ## 
+## ## ## ## ## ## 1  ## ## ## ## ## ## ## 
+## ## ## ## ## ## ## ## ## ## ## ## ## ##
+
 class LoginForm(FlaskForm):
     username = StringField('Nazwa użytkownika', validators=[DataRequired()])
     password = PasswordField('Hasło', validators=[DataRequired()])
