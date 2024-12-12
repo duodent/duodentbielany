@@ -169,3 +169,12 @@
     border: 1px solid #0f0c32;
 }
 
+
+.has-error .form-control {
+    border-color: red;
+}
+
+.error-message {
+    font-size: 0.85rem;
+    margin-top: 0.25rem;
+}

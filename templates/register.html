@@ -179,41 +179,86 @@
     });
 
     function validateForm() {
-        const login = $('#login').val().trim();
-        const fullName = $('#fullName').val().trim();
-        const email = $('#email').val().trim();
-        const phone = $('#phone').val().trim();
-        const password = $('#password').val().trim();
-        const confirmPassword = $('#confirmPassword').val().trim();
-        const roles = $('input[name="roles[]"]:checked').val();
+        let isValid = true; // Flaga walidacji
+
+        // Funkcja pomocnicza do podświetlania pól
+        function highlightField(field, message) {
+            const formGroup = field.closest('.form-group');
+            formGroup.classList.add('has-error'); // Dodaj klasę dla błędu
+            formGroup.querySelector('.error-message')?.remove(); // Usuń istniejący komunikat błędu
+            
+            // Dodaj komunikat błędu
+            const error = document.createElement('small');
+            error.className = 'error-message text-danger';
+            error.textContent = message;
+            formGroup.appendChild(error);
+        }
+
+        // Funkcja do resetowania stylów
+        function resetField(field) {
+            const formGroup = field.closest('.form-group');
+            formGroup.classList.remove('has-error'); // Usuń klasę błędu
+            formGroup.querySelector('.error-message')?.remove(); // Usuń komunikat błędu
+        }
+
+        // Pobieranie wartości pól
+        const login = document.getElementById('login');
+        const fullName = document.getElementById('fullName');
+        const email = document.getElementById('email');
+        const password = document.getElementById('password');
+        const confirmPassword = document.getElementById('confirmPassword');
+        const roles = document.querySelector('input[name="roles[]"]:checked');
+        const fieldsToValidate = [login, fullName, email, password, confirmPassword];
+
+        // Resetuj style przed walidacją
+        fieldsToValidate.forEach(resetField);
 
         // Pola wymagane
-        if (!login || !fullName || !email || !password || !confirmPassword) {
-            alert('Wszystkie pola obowiązkowe muszą być wypełnione!');
-            return false;
+        if (!login.value.trim()) {
+            highlightField(login, "Pole 'Login' jest wymagane.");
+            isValid = false;
+        }
+        if (!fullName.value.trim()) {
+            highlightField(fullName, "Pole 'Imię i nazwisko' jest wymagane.");
+            isValid = false;
+        }
+        if (!email.value.trim()) {
+            highlightField(email, "Pole 'Email' jest wymagane.");
+            isValid = false;
+        }
+        if (!password.value.trim()) {
+            highlightField(password, "Pole 'Hasło' jest wymagane.");
+            isValid = false;
+        }
+        if (!confirmPassword.value.trim()) {
+            highlightField(confirmPassword, "Pole 'Potwierdź hasło' jest wymagane.");
+            isValid = false;
+        }
+        if (password.value !== confirmPassword.value) {
+            highlightField(confirmPassword, "Hasła muszą się zgadzać.");
+            isValid = false;
         }
 
-        // Hasła muszą się zgadzać
-        if (password !== confirmPassword) {
-            alert('Hasła muszą się zgadzać!');
-            return false;
+        // Dodatkowa walidacja dla roli pracownika
+        if (roles && roles.value === 'user') {
+            const position = document.getElementById('position');
+            const qualifications = document.getElementById('qualifications');
+            const experience = document.getElementById('experience');
+            const education = document.getElementById('education');
+            const description = document.getElementById('description');
+
+            const workerFields = [position, qualifications, experience, education, description];
+            workerFields.forEach(resetField);
+
+            workerFields.forEach(field => {
+                if (!field.value.trim()) {
+                    highlightField(field, `Pole '${field.previousElementSibling.textContent}' jest wymagane.`);
+                    isValid = false;
+                }
+            });
         }
 
-        // Walidacja dla roli pracownika
-        if (roles === 'user') {
-            const position = $('#position').val().trim();
-            const qualifications = $('#qualifications').val().trim();
-            const experience = $('#experience').val().trim();
-            const education = $('#education').val().trim();
-            const description = $('#description').val().trim();
-
-            if (!position || !qualifications || !experience || !education || !description) {
-                alert('Wszystkie pola dotyczące pracownika muszą być wypełnione!');
-                return false;
-            }
-        }
-
-        return true; // Walidacja przeszła pomyślnie
+        return isValid; // Zwróć flagę walidacji
     }
 
     // Podłącz walidację do formularza
