@@ -178,6 +178,30 @@
         label.textContent = this.files.length ? this.files[0].name : "Prześlij zdjęcie";
     });
 
+    $(document).ready(function () {
+        $('form').on('submit', function (e) {
+            e.preventDefault(); // Zatrzymuje standardowe przesłanie formularza
+
+            // Pobierz dane z formularza
+            const formData = new FormData(this);
+
+            // Wyślij AJAX-em
+            $.ajax({
+                url: '/api/register', // Flaskowy endpoint
+                type: 'POST',
+                data: formData,
+                processData: false, // Zapobiega automatycznej serializacji danych
+                contentType: false, // Ustawia poprawny `Content-Type` dla plików
+                success: function (response) {
+                    alert('Rejestracja zakończona sukcesem!');
+                },
+                error: function (xhr) {
+                    alert('Wystąpił błąd: ' + xhr.responseText);
+                }
+            });
+        });
+    });
+
 </script>
 
 {% endblock %}

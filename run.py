@@ -284,6 +284,8 @@ def rejestracja():
         )
     else:
         return redirect(url_for('index'))   
+    
+
 
 @app.context_processor
 def inject_shared_variable():
@@ -300,6 +302,37 @@ def index():
         pageTitle=pageTitle
     )
 
+@app.route('/api/register', methods=['POST'])
+def register():
+    # Pobierz dane z formularza
+    login = request.form.get('login')
+    full_name = request.form.get('fullName')
+    position = request.form.get('position')
+    qualifications = request.form.get('qualifications')
+    experience = request.form.get('experience')
+    education = request.form.get('education')
+    description = request.form.get('description')
+    email = request.form.get('email')
+    phone = request.form.get('phone')
+    roles = request.form.getlist('roles[]')
+
+    # Obsługa zdjęcia
+    photo = request.files.get('photo')
+    if photo:
+        photo.save(f"uploads/{photo.filename}")  # Zapis zdjęcia do folderu uploads
+
+    # Przykład odpowiedzi
+    response = {
+        "message": "Rejestracja zakończona sukcesem",
+        "data": {
+            "login": login,
+            "full_name": full_name,
+            "position": position,
+            "email": email,
+            "roles": roles,
+        }
+    }
+    return jsonify(response), 200
 
 # Poznaj nas bliżej
 @app.route('/o-nas-twoja-klinika-stomatologiczna')
