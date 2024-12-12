@@ -135,7 +135,17 @@ def generator_userDataDB():
 
     return userData
 
-def validate_register_data(data):
+def validate_register_data(data, existing_users):
+    """
+    Waliduje dane przesłane podczas rejestracji, w tym unikalność loginu i emaila.
+    
+    Args:
+        data (dict): Dane przesłane z formularza.
+        existing_users (list): Lista istniejących użytkowników z bazy danych.
+
+    Returns:
+        list: Lista błędów (jeśli występują).
+    """
     errors = []
 
     # Wymagane pola
@@ -149,6 +159,15 @@ def validate_register_data(data):
         errors.append("Hasło i potwierdzenie hasła są wymagane.")
     if data.get('password') != data.get('confirmPassword'):
         errors.append("Hasła muszą się zgadzać.")
+
+    # Walidacja unikalności loginu i emaila
+    login = data.get('login')
+    email = data.get('email')
+
+    if any(user['login'] == login for user in existing_users):
+        errors.append(f"Użytkownik z loginem '{login}' już istnieje.")
+    if any(user['email'] == email for user in existing_users):
+        errors.append(f"Użytkownik z emailem '{email}' już istnieje.")
 
     # Walidacja dla roli pracownika
     if 'user' in data.getlist('roles[]', []):
@@ -353,7 +372,7 @@ def register():
     print(request.form)
 
     # Walidacja danych
-    errors = validate_register_data(data = request.form)
+    errors = validate_register_data(data = request.form, existing_users=generator_userDataDB())
     if errors:
         return jsonify({"errors": errors}), 400
     
