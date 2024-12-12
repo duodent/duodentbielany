@@ -318,9 +318,9 @@ def register():
 
     # Obsługa zdjęcia
     photo = request.files.get('photo')
-    if photo:
-        photo.save(f"uploads/{photo.filename}")  # Zapis zdjęcia do folderu uploads
-
+    # if photo:
+    #     photo.save(f"uploads/{photo.filename}")  # Zapis zdjęcia do folderu uploads
+    print(request.form)
     # Przykład odpowiedzi
     response = {
         "message": "Rejestracja zakończona sukcesem",
