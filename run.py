@@ -277,10 +277,13 @@ def logout():
 def rejestracja():
     session['page'] = 'rejestracja'
     pageTitle = 'Rejestracja użytkownika'
-    return render_template(
-        'register.html',
-        pageTitle=pageTitle
-    )
+    if "username" in session:
+        return render_template(
+            'register.html',
+            pageTitle=pageTitle
+        )
+    else:
+        return redirect(url_for('index'))   
 
 @app.context_processor
 def inject_shared_variable():
