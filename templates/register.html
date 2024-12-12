@@ -293,7 +293,19 @@
                     }, 3000); // 3 sekundy na przeczytanie
                 },
                 error: function (xhr) {
-                    feedbackContainer.textContent = 'Wystąpił błąd: ' + xhr.responseText;
+                    try {
+                        // Parsowanie odpowiedzi JSON
+                        const response = JSON.parse(xhr.responseText);
+                        if (response.errors && Array.isArray(response.errors)) {
+                            // Wyświetlanie listy błędów
+                            feedbackContainer.textContent = response.errors.join(' ');
+                        } else {
+                            feedbackContainer.textContent = 'Wystąpił błąd: Nieznany format odpowiedzi.';
+                        }
+                    } catch (e) {
+                        // W przypadku błędu parsowania JSON
+                        feedbackContainer.textContent = 'Wystąpił błąd: ' + xhr.responseText;
+                    }
                     feedbackContainer.className = 'text-danger mt-3';
                 }
             });
