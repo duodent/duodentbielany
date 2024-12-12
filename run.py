@@ -135,6 +135,36 @@ def generator_userDataDB():
 
     return userData
 
+def validate_register_data(data):
+    errors = []
+
+    # Wymagane pola
+    if not data.get('login'):
+        errors.append("Pole 'login' jest wymagane.")
+    if not data.get('fullName'):
+        errors.append("Pole 'Imię i nazwisko' jest wymagane.")
+    if not data.get('email'):
+        errors.append("Pole 'email' jest wymagane.")
+    if not data.get('password') or not data.get('confirmPassword'):
+        errors.append("Hasło i potwierdzenie hasła są wymagane.")
+    if data.get('password') != data.get('confirmPassword'):
+        errors.append("Hasła muszą się zgadzać.")
+
+    # Walidacja dla roli pracownika
+    if 'user' in data.getlist('roles[]', []):
+        if not data.get('position'):
+            errors.append("Pole 'Stanowisko' jest wymagane dla pracownika.")
+        if not data.get('qualifications'):
+            errors.append("Pole 'Kwalifikacje' jest wymagane dla pracownika.")
+        if not data.get('experience'):
+            errors.append("Pole 'Doświadczenie zawodowe' jest wymagane dla pracownika.")
+        if not data.get('education'):
+            errors.append("Pole 'Wykształcenie' jest wymagane dla pracownika.")
+        if not data.get('description'):
+            errors.append("Pole 'Opis pracownika' jest wymagane dla pracownika.")
+
+    return errors
+
 ############################
 ##      ######           ###
 ##      ######           ###
@@ -321,6 +351,13 @@ def register():
     # if photo:
     #     photo.save(f"uploads/{photo.filename}")  # Zapis zdjęcia do folderu uploads
     print(request.form)
+
+    # Walidacja danych
+    errors = validate_register_data(data = request.form)
+    if errors:
+        return jsonify({"errors": errors}), 400
+    
+
     # Przykład odpowiedzi
     response = {
         "message": "Rejestracja zakończona sukcesem",

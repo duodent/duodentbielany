@@ -178,20 +178,55 @@
         label.textContent = this.files.length ? this.files[0].name : "Prześlij zdjęcie";
     });
 
-    $(document).ready(function () {
-        $('form').on('submit', function (e) {
-            e.preventDefault(); // Zatrzymuje standardowe przesłanie formularza
+    function validateForm() {
+        const login = $('#login').val().trim();
+        const fullName = $('#fullName').val().trim();
+        const email = $('#email').val().trim();
+        const phone = $('#phone').val().trim();
+        const password = $('#password').val().trim();
+        const confirmPassword = $('#confirmPassword').val().trim();
+        const roles = $('input[name="roles[]"]:checked').val();
 
-            // Pobierz dane z formularza
+        // Pola wymagane
+        if (!login || !fullName || !email || !password || !confirmPassword) {
+            alert('Wszystkie pola obowiązkowe muszą być wypełnione!');
+            return false;
+        }
+
+        // Hasła muszą się zgadzać
+        if (password !== confirmPassword) {
+            alert('Hasła muszą się zgadzać!');
+            return false;
+        }
+
+        // Walidacja dla roli pracownika
+        if (roles === 'user') {
+            const position = $('#position').val().trim();
+            const qualifications = $('#qualifications').val().trim();
+            const experience = $('#experience').val().trim();
+            const education = $('#education').val().trim();
+            const description = $('#description').val().trim();
+
+            if (!position || !qualifications || !experience || !education || !description) {
+                alert('Wszystkie pola dotyczące pracownika muszą być wypełnione!');
+                return false;
+            }
+        }
+
+        return true; // Walidacja przeszła pomyślnie
+    }
+
+    // Podłącz walidację do formularza
+    $('form').on('submit', function (e) {
+        e.preventDefault();
+        if (validateForm()) {
             const formData = new FormData(this);
-
-            // Wyślij AJAX-em
             $.ajax({
-                url: '/api/register', // Flaskowy endpoint
+                url: '/api/register',
                 type: 'POST',
                 data: formData,
-                processData: false, // Zapobiega automatycznej serializacji danych
-                contentType: false, // Ustawia poprawny `Content-Type` dla plików
+                processData: false,
+                contentType: false,
                 success: function (response) {
                     alert('Rejestracja zakończona sukcesem!');
                 },
@@ -199,7 +234,7 @@
                     alert('Wystąpił błąd: ' + xhr.responseText);
                 }
             });
-        });
+        }
     });
 
 </script>
