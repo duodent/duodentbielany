@@ -178,3 +178,7 @@
     font-size: 0.85rem;
     margin-top: 0.25rem;
 }
+
+#form-feedback {
+    transition: opacity 1s ease-in-out;
+}
