@@ -2808,7 +2808,8 @@ img {
 }
 
 .page-banner-area {
-    background-position: center center;
+    /* background-position: center center; */
+    background-position: top center;
     background-size: cover;
     background-repeat: no-repeat;
     position: relative;
