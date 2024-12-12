@@ -22,7 +22,7 @@
                 <h2>Rejestracja</h2>
                 <p>Tworzenie konta pracownika w systemie Duodent Bielany</p>
             </div>
-            <form>
+            <form id="form-register-worker">
                 <div class="row">
                     <div class="col-lg-6 col-sm-12">
                         <div class="form-group">
@@ -285,7 +285,7 @@
                     setTimeout(function () {
                         feedbackContainer.style.opacity = '0'; // Animacja zanikania
                         setTimeout(function () {
-                            document.querySelector('form').reset(); // Czyść formularz
+                            document.getElementById('form-register-worker').reset(); // Czyść formularz
                             feedbackContainer.textContent = ''; // Usuwanie komunikatu
                             feedbackContainer.className = '';
                             feedbackContainer.style.opacity = '1'; // Resetowanie stylu
