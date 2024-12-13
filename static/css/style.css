@@ -2845,6 +2845,13 @@ img {
     font-weight: 600;
 }
 
+.page-banner-content h1 span {
+    color: #06a3da;
+}
+
+.page-banner-content h1 {
+    color: #222;
+}
 .page-banner-content .pages-list {
     text-align: center;
     padding-left: 0;
