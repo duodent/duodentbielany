@@ -67,7 +67,14 @@
 <script>
     $(document).ready(function () {
         setTimeout(function () {
-            $("#pageBanner").animate({ height: "100px" }, 1000); // Zmniejsz wysokość do 200px w 1 sekundę
+            $("#pageBanner").animate(
+                { 
+                    height: "200px", // Zmień wysokość
+                    paddingTop: "0px", // Usuń górny padding
+                    paddingBottom: "0px" // Usuń dolny padding
+                }, 
+                1000 // Czas animacji w milisekundach
+            );
         }, 5000); // Poczekaj 5 sekund przed uruchomieniem animacji
     });
 </script>
