@@ -1,12 +1,23 @@
 {% extends 'base.html' %}
 {% block content %}
 <!-- page banner -->
-{% set bg_image_kontakt = url_for('static', filename='img/banners/kontakt-4-banner.jpg') %}
-<div class="page-banner-area mb-5" id="pageBanner" style="background-image: url('{{ bg_image_kontakt }}');">
+{% set bg_image_contact = url_for('static', filename='img/banners/kontakt-4-banner.jpg') %}
+<div class="page-banner-area mb-5" id="pageBanner" style="background-image: url('{{ bg_image_contact }}');">
     <div class="container">
         <div class="page-banner-content">
-            <h2>{{pageTitle}}</h2>
-            <ul class="pages-list">
+            <div class="page-banner-content">
+                <h1 class="line">
+                    Skontaktuj się <span>z nami</span>
+                </h1>
+                <h1 class="line">
+                    Jesteśmy <span>do Twojej</span> dyspozycji
+                </h1>
+                <h1 class="line">
+                    Zadzwoń lub <span>napisz</span> już dziś
+                </h1>
+            </div>
+            <h2 class="line">{{pageTitle}}</h2>
+            <ul class="pages-list line">
                 <li><a href="/">Duodent Bielany</a></li>
                 <li>{{pageTitle}}</li>
             </ul>
@@ -252,6 +263,18 @@
                 1000 // Czas animacji w milisekundach
             );
         }, 5000); // Poczekaj 5 sekund przed uruchomieniem animacji
+    });
+
+    $(window).on('load', function () {
+        let delay = 0;
+
+        $('.line').each(function (index, element) {
+            setTimeout(function () {
+                $(element).addClass('animate');
+            }, delay);
+
+            delay += 500; // Opóźnienie dla kolejnej linii
+        });
     });
 </script>
 {% endblock %}

@@ -1,12 +1,23 @@
 {% extends 'base.html' %}
 {% block content %}
 <!-- page banner -->
-{% set bg_image_wizytaonline = url_for('static', filename='img/banners/wizytaonline-4-banner.jpg') %}
-<div class="page-banner-area mb-5" id="pageBanner" style="background-image: url('{{ bg_image_wizytaonline }}');">
+{% set bg_image_online_visit = url_for('static', filename='img/banners/wizytaonline-4-banner.jpg') %}
+<div class="page-banner-area mb-5" id="pageBanner" style="background-image: url('{{ bg_image_online_visit }}');">
     <div class="container">
         <div class="page-banner-content">
-            <h2>{{pageTitle}}</h2>
-            <ul class="pages-list">
+            <div class="page-banner-content">
+                <h1 class="line">
+                    Umów <span>wizytę</span> online
+                </h1>
+                <h1 class="line">
+                    <span>Bez wychodzenia</span> z domu
+                </h1>
+                <h1 class="line">
+                    Komfortowa <span>rezerwacja</span> w kilka chwil
+                </h1>
+            </div>
+            <h2 class="line">{{pageTitle}}</h2>
+            <ul class="pages-list line">
                 <li><a href="/">Duodent Bielany</a></li>
                 <li>{{pageTitle}}</li>
             </ul>
@@ -14,6 +25,7 @@
     </div>
 </div>
 <!-- page banner end -->
+
  <!-- emergency call -->
  <section class="overview-area">
     <div class="container">
@@ -158,16 +170,28 @@
         });
 
         $(document).ready(function () {
-        setTimeout(function () {
-            $("#pageBanner").animate(
-                { 
-                    height: "0px", // Zmień wysokość
-                    paddingTop: "0px", // Usuń górny padding
-                    paddingBottom: "0px" // Usuń dolny padding
-                }, 
-                1000 // Czas animacji w milisekundach
-            );
-        }, 5000); // Poczekaj 5 sekund przed uruchomieniem animacji
-    });
+            setTimeout(function () {
+                $("#pageBanner").animate(
+                    { 
+                        height: "0px", // Zmień wysokość
+                        paddingTop: "0px", // Usuń górny padding
+                        paddingBottom: "0px" // Usuń dolny padding
+                    }, 
+                    1000 // Czas animacji w milisekundach
+                );
+            }, 5000); // Poczekaj 5 sekund przed uruchomieniem animacji
+        });
+
+        $(window).on('load', function () {
+            let delay = 0;
+
+            $('.line').each(function (index, element) {
+                setTimeout(function () {
+                    $(element).addClass('animate');
+                }, delay);
+
+                delay += 500; // Opóźnienie dla kolejnej linii
+            });
+        });
     </script>
 {% endblock %}

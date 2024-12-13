@@ -5,8 +5,19 @@
 <div class="page-banner-area mb-5" id="pageBanner" style="background-image: url('{{ bg_image_download }}');">
     <div class="container">
         <div class="page-banner-content">
-            <h2>{{pageTitle}}</h2>
-            <ul class="pages-list">
+            <div class="page-banner-content">
+                <h1 class="line">
+                    Dokumenty <span>do pobrania</span>
+                </h1>
+                <h1 class="line">
+                    Wszystkie <span>informacje</span> w jednym miejscu
+                </h1>
+                <h1 class="line">
+                    Pobierz <span>potrzebne</span> pliki
+                </h1>
+            </div>
+            <h2 class="line">{{pageTitle}}</h2>
+            <ul class="pages-list line">
                 <li><a href="/">Duodent Bielany</a></li>
                 <li>{{pageTitle}}</li>
             </ul>
@@ -14,6 +25,7 @@
     </div>
 </div>
 <!-- page banner end -->
+
 <section class="blog-area pb-70">
     <div class="container">
         <div class="row align-items-center">
@@ -572,6 +584,18 @@
                 1000 // Czas animacji w milisekundach
             );
         }, 5000); // Poczekaj 5 sekund przed uruchomieniem animacji
+    });
+
+    $(window).on('load', function () {
+        let delay = 0;
+
+        $('.line').each(function (index, element) {
+            setTimeout(function () {
+                $(element).addClass('animate');
+            }, delay);
+
+            delay += 500; // Opóźnienie dla kolejnej linii
+        });
     });
 </script>
 {% endblock %}
