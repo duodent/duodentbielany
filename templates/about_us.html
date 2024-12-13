@@ -6,7 +6,17 @@
     <div class="container">
         <div class="page-banner-content">
             <div class="page-banner-content">
-                <h1>Od 30 lat dbamy o Twój <span>uśmiech</span></h1>
+                <h1>
+                    <spam class="line">
+                        Poznaj nas bliżej
+                    </spam>
+                    <spam class="line">
+                        <span> czyli</span> jak to się zaczęło 
+                    </spam>
+                    <spam class="line">
+                        <span>i kim</span> jesteśmy
+                    </spam>
+                </h1>
             </div>
             <h2>{{pageTitle}}</h2>
             <ul class="pages-list">
@@ -452,6 +462,18 @@
                 1000 // Czas animacji w milisekundach
             );
         }, 5000); // Poczekaj 5 sekund przed uruchomieniem animacji
+    });
+
+    $(document).ready(function () {
+        let delay = 0; // Początkowe opóźnienie
+
+        $('.line').each(function (index, element) {
+            setTimeout(function () {
+                $(element).addClass('show'); // Dodanie klasy, która wyzwala animację
+            }, delay);
+
+            delay += 500; // Opóźnienie kolejnej linii (500 ms)
+        });
     });
 </script>
 {% endblock %}

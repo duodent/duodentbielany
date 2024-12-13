@@ -182,3 +182,14 @@
 #form-feedback {
     transition: opacity 1s ease-in-out;
 }
+
+.line {
+    opacity: 0; /* Ukrycie na start */
+    transform: translateY(20px); /* Przesunięcie w dół */
+    transition: opacity 0.5s ease, transform 0.5s ease; /* Animacja */
+}
+
+.line.show {
+    opacity: 1; /* Widoczność */
+    transform: translateY(0); /* Powrót do pierwotnej pozycji */
+}
