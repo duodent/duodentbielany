@@ -183,18 +183,26 @@
     transition: opacity 1s ease-in-out;
 }
 
-.line {
-    opacity: 0;
-    transform: translateY(100%);
-    filter: blur(5px); /* Rozmycie na starcie */
-    transition: 
-        opacity 0.8s cubic-bezier(0.25, 1, 0.5, 1), 
-        transform 0.8s cubic-bezier(0.25, 1, 0.5, 1),
-        filter 0.8s cubic-bezier(0.25, 1, 0.5, 1); /* Animacja rozmycia */
+@keyframes fadeUp {
+    0% {
+        opacity: 0; /* Początkowo niewidoczny */
+        transform: translateY(110px); /* Przesunięcie w dół */
+    }
+    80% {
+        opacity: 1; /* Widoczność prawie osiągnięta */
+        transform: translateY(0); /* Powrót do pierwotnej pozycji */
+    }
+    100% {
+        opacity: 1; /* Ostateczna widoczność */
+        transform: translateY(0); /* Stabilna pozycja */
+    }
 }
 
-.line.show {
-    opacity: 1;
-    transform: translateY(0);
-    filter: blur(0); /* Usunięcie rozmycia */
+.line {
+    opacity: 0; /* Ukryte na początku */
+}
+
+.line.animate {
+    animation: fadeUp 1s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+    /* forwards: Utrzymuje końcowy stan animacji */
 }
