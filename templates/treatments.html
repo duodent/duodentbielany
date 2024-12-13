@@ -1,12 +1,23 @@
 {% extends 'base.html' %}
 {% block content %}
 <!-- page banner -->
-{% set bg_image_zabiegi = url_for('static', filename='img/banners/zabiegi-4-banner.jpg') %}
-<div class="page-banner-area mb-5" id="pageBanner" style="background-image: url('{{ bg_image_zabiegi }}');">
+{% set bg_image_treatments = url_for('static', filename='img/banners/zabiegi-4-banner.jpg') %}
+<div class="page-banner-area mb-5" id="pageBanner" style="background-image: url('{{ bg_image_treatments }}');">
     <div class="container">
         <div class="page-banner-content">
-            <h2>{{pageTitle}}</h2>
-            <ul class="pages-list">
+            <div class="page-banner-content">
+                <h1 class="line">
+                    Odkryj <span>nasze</span> zabiegi
+                </h1>
+                <h1 class="line">
+                    <span>Specjalistyczna</span> opieka na wyciągnięcie ręki
+                </h1>
+                <h1 class="line">
+                    Dbamy o Twój <span>uśmiech</span> każdego dnia
+                </h1>
+            </div>
+            <h2 class="line">{{pageTitle}}</h2>
+            <ul class="pages-list line">
                 <li><a href="/">Duodent Bielany</a></li>
                 <li>{{pageTitle}}</li>
             </ul>
@@ -215,6 +226,18 @@
                 1000 // Czas animacji w milisekundach
             );
         }, 5000); // Poczekaj 5 sekund przed uruchomieniem animacji
+    });
+
+    $(window).on('load', function () {
+        let delay = 0;
+
+        $('.line').each(function (index, element) {
+            setTimeout(function () {
+                $(element).addClass('animate');
+            }, delay);
+
+            delay += 500; // Opóźnienie dla kolejnej linii
+        });
     });
 </script>
 {% endblock %}
