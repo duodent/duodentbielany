@@ -184,12 +184,17 @@
 }
 
 .line {
-    opacity: 0; /* Ukrycie na start */
-    transform: translateY(100%); /* Przesunięcie w dół o wysokość linii */
-    transition: opacity 0.5s ease, transform 0.5s ease; /* Animacja */
+    opacity: 0;
+    transform: translateY(100%);
+    filter: blur(5px); /* Rozmycie na starcie */
+    transition: 
+        opacity 0.8s cubic-bezier(0.25, 1, 0.5, 1), 
+        transform 0.8s cubic-bezier(0.25, 1, 0.5, 1),
+        filter 0.8s cubic-bezier(0.25, 1, 0.5, 1); /* Animacja rozmycia */
 }
 
 .line.show {
-    opacity: 1; /* Widoczność */
-    transform: translateY(0); /* Powrót do pierwotnej pozycji */
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0); /* Usunięcie rozmycia */
 }
