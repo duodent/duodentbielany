@@ -468,11 +468,17 @@
         let delay = 0; // Początkowe opóźnienie
 
         $('.line').each(function (index, element) {
+            let $line = $(element); // Pobierz linię
+            let lineHeight = $line.outerHeight(); // Pobierz wysokość linii
+
+            // Na start przesunięcie o wysokość linii (jeśli potrzebujesz dynamicznie)
+            $line.css('transform', `translateY(${lineHeight}px)`);
+
             setTimeout(function () {
-                $(element).addClass('show'); // Dodanie klasy, która wyzwala animację
+                $line.addClass('show'); // Dodaj klasę animacji
             }, delay);
 
-            delay += 1000; // Opóźnienie kolejnej linii (500 ms)
+            delay += 500; // Opóźnienie kolejnej linii (500 ms)
         });
     });
 </script>

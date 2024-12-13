@@ -185,7 +185,7 @@
 
 .line {
     opacity: 0; /* Ukrycie na start */
-    transform: translateY(20px); /* Przesunięcie w dół */
+    transform: translateY(100%); /* Przesunięcie w dół o wysokość linii */
     transition: opacity 0.5s ease, transform 0.5s ease; /* Animacja */
 }
 
