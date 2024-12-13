@@ -2818,6 +2818,7 @@ img {
     padding-top: 150px;
     padding-bottom: 200px;
     overflow: hidden;
+    max-height: 500px;
 }
 
 .page-banner-area::before {
