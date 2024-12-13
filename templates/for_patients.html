@@ -1,7 +1,8 @@
 {% extends 'base.html' %}
 {% block content %}
 <!-- page banner -->
-<div class="page-banner-area mb-5" style="background-image: url(static/img/banners/download-4-banner.jpg);">
+{% set bg_image_download = url_for('static', filename='img/banners/download-4-banner.jpg') %}
+<div class="page-banner-area mb-5" id="pageBanner" style="background-image: url('{{ bg_image_download }}');">
     <div class="container">
         <div class="page-banner-content">
             <h2>{{pageTitle}}</h2>
@@ -558,4 +559,19 @@
     </div>
 </section>
 {% endblock %}
-{% block bottom_scripts %}{% endblock %}
+{% block bottom_scripts %}
+<script>
+    $(document).ready(function () {
+        setTimeout(function () {
+            $("#pageBanner").animate(
+                { 
+                    height: "0px", // Zmień wysokość
+                    paddingTop: "0px", // Usuń górny padding
+                    paddingBottom: "0px" // Usuń dolny padding
+                }, 
+                1000 // Czas animacji w milisekundach
+            );
+        }, 5000); // Poczekaj 5 sekund przed uruchomieniem animacji
+    });
+</script>
+{% endblock %}
