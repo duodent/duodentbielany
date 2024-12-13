@@ -185,24 +185,20 @@
 
 @keyframes fadeUp {
     0% {
-        opacity: 0; /* Początkowo niewidoczny */
-        transform: translateY(110px); /* Przesunięcie w dół */
-    }
-    80% {
-        opacity: 1; /* Widoczność prawie osiągnięta */
-        transform: translateY(0); /* Powrót do pierwotnej pozycji */
+        opacity: 0;
+        transform: translateY(30px); /* Przesunięcie w dół */
     }
     100% {
-        opacity: 1; /* Ostateczna widoczność */
-        transform: translateY(0); /* Stabilna pozycja */
+        opacity: 1;
+        transform: translateY(0); /* Powrót do pierwotnej pozycji */
     }
 }
 
 .line {
-    opacity: 0; /* Ukryte na początku */
+    opacity: 0; /* Początkowe ukrycie */
+    transform: translateY(30px); /* Początkowe przesunięcie */
 }
 
 .line.animate {
-    animation: fadeUp 1s cubic-bezier(0.25, 1, 0.5, 1) forwards;
-    /* forwards: Utrzymuje końcowy stan animacji */
+    animation: fadeUp 1s ease forwards; /* Efekt fade-up */
 }

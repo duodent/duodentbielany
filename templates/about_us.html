@@ -462,15 +462,15 @@
         }, 5000); // Poczekaj 5 sekund przed uruchomieniem animacji
     });
 
-    $(document).ready(function () {
-        let delay = 0; // Początkowe opóźnienie
+    $(window).on('load', function () {
+        let delay = 0;
 
         $('.line').each(function (index, element) {
             setTimeout(function () {
-                $(element).addClass('animate'); // Dodajemy klasę do wyzwolenia animacji
+                $(element).addClass('animate');
             }, delay);
 
-            delay += 500; // Opóźnienie między liniami (500 ms)
+            delay += 500; // Opóźnienie dla kolejnej linii
         });
     });
 </script>
