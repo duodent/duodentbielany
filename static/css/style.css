@@ -2852,7 +2852,7 @@ img {
 
 .page-banner-content h1 {
     color: #fff;
-    font-size: clamp(30px, 6vw, 60px);
+    font-size: clamp(30px, 6vw, 52px);
     font-weight: 750;
 }
 .page-banner-content .pages-list {
