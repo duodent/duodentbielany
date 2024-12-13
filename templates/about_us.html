@@ -2,7 +2,7 @@
 {% block content %}
 <!-- page banner -->
 {% set bg_image_about = url_for('static', filename='img/banners/about-4-banner.jpg') %}
-<div class="page-banner-area mb-5" id="pageBanner" style="background-image: url('{{ bg_image_about }}');">
+<!-- <div class="page-banner-area mb-5" id="pageBanner" style="background-image: url('{{ bg_image_about }}');">
     <div class="container">
         <div class="page-banner-content">
             <h2>{{pageTitle}}</h2>
@@ -12,8 +12,26 @@
             </ul>
         </div>
     </div>
-</div>
+</div> -->
 <!-- page banner end -->
+ <!-- home sliders -->
+ <div class="home-slides owl-carousel owl-theme" id="pageBanner">
+    {% set bg_image_about = url_for('static', filename='img/banners/about-4-banner.jpg') %}
+    <div class="main-slides-item slider-height-controller" style="background-image: url('{{ bg_image_about }}');">
+        <div class="container">
+            <div class="main-slides-content">
+                <span class="sub-title">
+                    <i class="flaticon-hashtag-symbol"></i>
+                    Doświadczeni stomatolodzy
+                </span>
+                <h1>Od 30 lat dbamy o Twój <span>uśmiech</span></h1>
+            </div>
+        </div>
+    </div>
+    
+    
+</div>
+<!-- home sliders end-->
 
  <!-- about-area -->
 <section class="about-area mb-5">
