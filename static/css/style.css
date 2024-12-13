@@ -2850,7 +2850,8 @@ img {
 }
 
 .page-banner-content h1 {
-    color: #222;
+    color: #fff;
+    font-weight: 750;
 }
 .page-banner-content .pages-list {
     text-align: center;
