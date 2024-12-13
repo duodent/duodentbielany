@@ -2,7 +2,7 @@
 {% block content %}
 <!-- page banner -->
 {% set bg_image_login =url_for('static', filename='img/banners/login-1-banner.jpg') %}
-<div class="page-banner-area mb-5" style="background-image: url('{{ bg_image_login }}');">
+<div class="page-banner-area mb-5" id="pageBanner" style="background-image: url('{{ bg_image_login }}');">
     <div class="container">
         <div class="page-banner-content">
             <h2>Zarządzanie witryną - Logowanie</h2>
@@ -62,4 +62,13 @@
     </div>
 </section>
 <!-- login-area end -->
+{% endblock %}
+{% block bottom_scripts %}
+<script>
+    $(document).ready(function () {
+        setTimeout(function () {
+            $("#pageBanner").animate({ height: "200px" }, 1000); // Zmniejsz wysokość do 200px w 1 sekundę
+        }, 5000); // Poczekaj 5 sekund przed uruchomieniem animacji
+    });
+</script>
 {% endblock %}
