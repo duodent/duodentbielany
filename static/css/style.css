@@ -1226,6 +1226,7 @@ img {
     opacity: 0;
     visibility: hidden;
     line-height: 0.01;
+    overflow: hidden;
 }
 
 .home-slides.owl-theme .owl-nav [class*="owl-"] {
