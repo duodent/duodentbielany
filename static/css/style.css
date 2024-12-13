@@ -2814,8 +2814,8 @@ img {
     background-repeat: no-repeat;
     position: relative;
     z-index: 1;
-    padding-top: 100px;
-    padding-bottom: 100px;
+    padding-top: 250px;
+    padding-bottom: 250px;
     overflow: hidden;
 }
 
