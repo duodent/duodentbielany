@@ -2815,8 +2815,8 @@ img {
     background-repeat: no-repeat;
     position: relative;
     z-index: 1;
-    padding-top: 150px;
-    padding-bottom: 200px;
+    padding-top: 50px;
+    padding-bottom: 100px;
     overflow: hidden;
     max-height: 500px;
 }
@@ -2854,7 +2854,6 @@ img {
     color: #fff;
     font-size: clamp(30px, 6vw, 60px);
     font-weight: 750;
-    margin-bottom: 100px;
 }
 .page-banner-content .pages-list {
     text-align: center;
