@@ -468,8 +468,8 @@
                 1000, // Czas animacji
                 function () {
                     // Usunięcie wszystkich klas z #pageBanner po zakończeniu animacji
-                    $(this).removeClass();
-                    
+                    $("#pageBanner").empty().removeClass();
+
                     // Po zakończeniu animacji pokaż #breadcrumb-small
                     $("#breadcrumb-small")
                         .css("display", "block") // Ustaw widoczność
