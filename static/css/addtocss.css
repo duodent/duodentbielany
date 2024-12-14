@@ -204,10 +204,10 @@
 }
 
 #breadcrumb-small {
-    background-color: #f9f9f9; /* Kolor tła breadcrumb */
-    padding: 10px 15px; /* Wewnętrzne marginesy dla breadcrumb */
-    height: 80px; /* Stała wysokość breadcrumb */
-    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1); /* Delikatny cień */
+    background-color: #0073aa; /* Kolor tła breadcrumb */
+    padding: 0; /* Usuń padding */
+    height: 0px; /* Stała wysokość breadcrumb */
+    /* box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);  */
     display: flex; /* Użycie flexboxa dla łatwiejszego wyrównania */
     align-items: center; /* Wyrównanie elementów w pionie */
 }
@@ -231,7 +231,7 @@
 .breadcrumb-pages-list li::after {
     content: ">"; /* Separator pomiędzy elementami listy */
     margin-left: 10px; /* Odstęp między tekstem a strzałką */
-    color: #999; /* Kolor separatora */
+    color: #dfe3f3; /* Kolor separatora */
     font-size: 12px; /* Dopasowana wielkość separatora */
 }
 
