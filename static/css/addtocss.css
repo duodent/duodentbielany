@@ -208,7 +208,7 @@
     padding: 0; /* Usuń padding */
     height: 0px; /* Stała wysokość breadcrumb */
     /* box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);  */
-    display: flex; /* Użycie flexboxa dla łatwiejszego wyrównania */
+    /* display: flex;  */
     align-items: center; /* Wyrównanie elementów w pionie */
 }
 
