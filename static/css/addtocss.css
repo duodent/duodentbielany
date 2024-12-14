@@ -213,16 +213,22 @@
     justify-content: center; /* Wyśrodkowanie w poziomie */
 }
 
+#breadcrumb-small .container {
+    text-align: center; /* Wyśrodkowanie zawartości w kontenerze */
+}
+
+
 .breadcrumb-pages-list {
-    list-style: none; /* Usuń domyślne style listy */
-    margin: 0; /* Usuń margines */
-    padding: 0; /* Usuń padding */
-    display: flex; /* Wyświetlenie elementów w linii */
+    display: inline-flex; /* Lista w linii, ale traktowana jak element inline */
     align-items: center; /* Wyrównanie w pionie */
+    justify-content: center; /* Wyrównanie poziome wewnątrz listy */
+    list-style: none; /* Usuń domyślne style listy */
+    margin: 0 auto; /* Wyśrodkowanie listy */
+    padding: 0; /* Usuń padding */
     font-size: 13px; /* Dopasowana wielkość czcionki */
     color: #ffffff; /* Kolor tekstu */
-    margin-left: 10px;
 }
+
 
 .breadcrumb-pages-list li {
     margin-right: 10px; /* Odstępy między elementami listy */
