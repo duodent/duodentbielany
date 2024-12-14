@@ -213,6 +213,13 @@
     justify-content: center; /* Wyśrodkowanie w poziomie */
 }
 
+/* Zmiana koloru tła dla dużych ekranów */
+@media (min-width: 992px) {
+    #breadcrumb-small {
+        background-color: #005c87; /* Kolor tła breadcrumb dla dużych ekranów */
+    }
+}
+
 #breadcrumb-small .container {
     text-align: center; /* Wyśrodkowanie zawartości w kontenerze */
 }
@@ -249,7 +256,7 @@
 
 .breadcrumb-pages-list li a {
     text-decoration: none; /* Usuń podkreślenie */
-    color: #00aeff; /* Kolor linków */
+    color: #3cc1ff; /* Kolor linków */
     font-weight: 500; /* Pogrubienie linków */
 }
 
