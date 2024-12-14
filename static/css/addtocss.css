@@ -202,3 +202,50 @@
 .line.animate {
     animation: fadeUp 1s ease forwards; /* Efekt fade-up */
 }
+
+#breadcrumb-small {
+    background-color: #f9f9f9; /* Kolor tła breadcrumb */
+    padding: 10px 15px; /* Wewnętrzne marginesy dla breadcrumb */
+    height: 80px; /* Stała wysokość breadcrumb */
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1); /* Delikatny cień */
+    display: flex; /* Użycie flexboxa dla łatwiejszego wyrównania */
+    align-items: center; /* Wyrównanie elementów w pionie */
+}
+
+.breadcrumb-pages-list {
+    list-style: none; /* Usuń domyślne style listy */
+    margin: 0; /* Usuń margines */
+    padding: 0; /* Usuń padding */
+    display: flex; /* Wyświetlenie elementów w linii */
+    align-items: center; /* Wyrównanie w pionie */
+    font-size: 14px; /* Dopasowana wielkość czcionki */
+    color: #333; /* Kolor tekstu */
+}
+
+.breadcrumb-pages-list li {
+    margin-right: 10px; /* Odstępy między elementami listy */
+    position: relative;
+    font-weight: 400; /* Lżejsza czcionka */
+}
+
+.breadcrumb-pages-list li::after {
+    content: ">"; /* Separator pomiędzy elementami listy */
+    margin-left: 10px; /* Odstęp między tekstem a strzałką */
+    color: #999; /* Kolor separatora */
+    font-size: 12px; /* Dopasowana wielkość separatora */
+}
+
+.breadcrumb-pages-list li:last-child::after {
+    content: ""; /* Usuń separator dla ostatniego elementu */
+}
+
+.breadcrumb-pages-list li a {
+    text-decoration: none; /* Usuń podkreślenie */
+    color: #0073aa; /* Kolor linków */
+    font-weight: 500; /* Pogrubienie linków */
+}
+
+.breadcrumb-pages-list li a:hover {
+    color: #005b8a; /* Kolor po najechaniu */
+    text-decoration: underline; /* Podkreślenie po najechaniu */
+}

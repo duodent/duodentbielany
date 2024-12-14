@@ -22,7 +22,15 @@
     </div>
 </div>
 <!-- page banner end -->
- <!-- about-area -->
+<!-- breadcrumb start -->
+<div id="breadcrumb-small" class="breadcrumb-small page-banner-content" style="display: none;">
+    <ul class="breadcrumb-pages-list">
+        <li><a href="/">Duodent Bielany</a></li>
+        <li>{{pageTitle}}</li>
+    </ul>
+</div>
+<!-- breadcrumb end -->
+<!-- about-area -->
 <section class="about-area mb-5">
     <div class="container">
         <div class="row align-items-center">
@@ -447,17 +455,33 @@
 {% block bottom_scripts %}
 <script>
     $(document).ready(function () {
+        // Po 5 sekundach uruchom animację
         setTimeout(function () {
+            // Animacja chowania #pageBanner
             $("#pageBanner").animate(
-                { 
+                {
                     height: "0px", // Zmień wysokość
                     paddingTop: "0px", // Usuń górny padding
                     paddingBottom: "0px" // Usuń dolny padding
-                }, 
-                1000 // Czas animacji w milisekundach
+                },
+                1000, // Czas animacji
+                function () {
+                    // Po zakończeniu animacji pokaż #breadcrumb-small
+                    $("#breadcrumb-small")
+                        .css("display", "block") // Ustaw widoczność
+                        .animate(
+                            {
+                                height: "80px", // Rozsuń do 80px
+                                paddingTop: "10px", // Dodaj górny padding
+                                paddingBottom: "10px" // Dodaj dolny padding
+                            },
+                            1000 // Czas animacji
+                        );
+                }
             );
         }, 5000); // Poczekaj 5 sekund przed uruchomieniem animacji
     });
+
 
     $(window).on('load', function () {
         let delay = 0;
