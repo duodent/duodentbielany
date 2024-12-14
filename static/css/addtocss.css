@@ -217,6 +217,7 @@
 @media (min-width: 992px) {
     #breadcrumb-small {
         background-color: #4a6577; /* Kolor tła breadcrumb dla dużych ekranów */
+        
     }
 }
 
