@@ -204,11 +204,11 @@
 }
 
 #breadcrumb-small {
-    background-color: #0073aa; /* Kolor tła breadcrumb */
+    background-color: #222; /* Kolor tła breadcrumb */
     padding: 0; /* Usuń padding */
     height: 0px; /* Stała wysokość breadcrumb */
-    /* box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);  */
-    /* display: flex;  */
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1); 
+    display: flex; 
     align-items: center; /* Wyrównanie elementów w pionie */
 }
 
@@ -218,8 +218,8 @@
     padding: 0; /* Usuń padding */
     display: flex; /* Wyświetlenie elementów w linii */
     align-items: center; /* Wyrównanie w pionie */
-    font-size: 14px; /* Dopasowana wielkość czcionki */
-    color: #333; /* Kolor tekstu */
+    font-size: 15px; /* Dopasowana wielkość czcionki */
+    color: #ffffff; /* Kolor tekstu */
 }
 
 .breadcrumb-pages-list li {
