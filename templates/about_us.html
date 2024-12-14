@@ -465,7 +465,7 @@
             $("#pageBanner").animate(
                 {
                     height: "0px", // Zmień wysokość
-                    marginBottom: "0px", 
+                    marginBottom: "0px",
                     paddingTop: "0px", // Usuń górny padding
                     paddingBottom: "0px" // Usuń dolny padding
                 },
@@ -476,10 +476,14 @@
 
                     // Po zakończeniu animacji pokaż #breadcrumb-small
                     $("#breadcrumb-small")
-                        .css("display", "block") // Ustaw widoczność
+                        .css({
+                            display: "block", // Ustaw widoczność
+                            textAlign: "center", // Wyrównanie tekstu do środka
+                            width: "100%", // Rozciągnij na całą szerokość
+                        })
                         .animate(
                             {
-                                height: "30px", // Rozsuń do 80px
+                                height: "30px", // Rozsuń do 30px
                                 paddingTop: "5px", // Dodaj górny padding
                                 paddingBottom: "5px" // Dodaj dolny padding
                             },
