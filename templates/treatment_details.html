@@ -1,11 +1,20 @@
 {% extends 'base.html' %}
-
 {% block content %}
+
 <!-- page banner -->
-<div class="page-banner-area mb-5" style="background-image: url(../static/img/banners/zespol-1-banner.jpg);">
+{% set bg_image_treatments_details = url_for('static', filename='img/banners/about-1-banner.jpg') %}
+<div class="page-banner-area mb-5" id="pageBanner" style="background-image: url('{{ bg_image_treatments_details }}');">
     <div class="container">
         <div class="page-banner-content">
-            <h2>{{pageTitle}}</h2>
+            <div class="page-banner-content">
+                <h1 class="line">
+                    Odkryj <span>nasze</span> zabiegi
+                </h1>
+                <h1 class="line">
+                    Dbamy o Twój <span>uśmiech</span> każdego dnia
+                </h1>
+            </div>
+            <h2 class="line">{{pageTitle}}</h2>
             <ul class="pages-list">
                 <li><a href="/">Duodent Bielany</a></li>
                 <li><a href="/zabiegi-stomatologiczne-kompleksowa-oferta">Zabiegi</a></li>
@@ -15,6 +24,19 @@
     </div>
 </div>
 <!-- page banner end -->
+<!-- breadcrumb start -->
+<div id="breadcrumb-small" class="breadcrumb-small mb-5" style="display: none;">
+    <div class="container justify-content-center">
+        <div class="justify-content-center">
+            <ul class="breadcrumb-pages-list">
+                <li><a href="/"><i class="bi bi-houses-fill" style="font-size: 1rem;"></i></a></li>
+                <li><a href="/zabiegi-stomatologiczne-kompleksowa-oferta">Zabiegi</a></li>
+                <li>{{pageTitle}}</li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!-- breadcrumb end -->
 
 
     <!-- services-details-area -->
@@ -269,4 +291,54 @@
     </section>
     <!-- services-details-area end -->
 
+{% endblock %}
+{% block bottom_scripts %}
+<script>
+    $(document).ready(function () {
+        // Po 5 sekundach uruchom animację
+        setTimeout(function () {
+            // Animacja chowania #pageBanner
+            $("#pageBanner").animate(
+                {
+                    height: "0px", // Zmień wysokość
+                    marginBottom: "0px",
+                    paddingTop: "0px", // Usuń górny padding
+                    paddingBottom: "0px" // Usuń dolny padding
+                },
+                1000, // Czas animacji
+                function () {
+                    // Usunięcie wszystkich klas z #pageBanner po zakończeniu animacji
+                    $("#pageBanner").empty().removeClass();
+
+                    // Po zakończeniu animacji pokaż #breadcrumb-small
+                    $("#breadcrumb-small")
+                        .css({
+                            display: "block", // Ustaw widoczność
+                            textAlign: "center", // Wyrównanie tekstu do środka
+                            width: "100%", // Rozciągnij na całą szerokość
+                        })
+                        .animate(
+                            {
+                                height: "50px",
+                                paddingTop: "10px"
+                            },
+                            1200 // Czas animacji
+                        );
+                }
+            );
+        }, 5000); // Poczekaj 5 sekund przed uruchomieniem animacji
+    });
+
+    $(window).on('load', function () {
+        let delay = 0;
+
+        $('.line').each(function (index, element) {
+            setTimeout(function () {
+                $(element).addClass('animate');
+            }, delay);
+
+            delay += 500; // Opóźnienie dla kolejnej linii
+        });
+    });
+</script>
 {% endblock %}
