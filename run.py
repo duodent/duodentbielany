@@ -10,7 +10,7 @@ from bin.config_utils import SESSION_FLASK_KEY
 import app.utils.passwordSalt as hash
 from flask_paginate import Pagination, get_page_args
 import mysqlDB as msq
-import secrets
+import unicodedata
 from datetime import datetime, timedelta
 # from googletrans import Translator
 import time
@@ -138,7 +138,12 @@ def generator_teamDB():
         employee_login = data[2]  # Przyjmujemy, że login jest przechowywany w EMPLOYEE_NAME
         
         # Filtracja tylko użytkowników, którzy mają user = 1
+        memeber_route = None
         if employee_login in allowed_users:
+            for route, login in team_memeber_router().get('by_login', {}).items():
+                if login == employee_login:
+                    memeber_route = route
+                    break
             theme = {
                 'ID': int(data[0]),
                 'EMPLOYEE_PHOTO': data[1],
@@ -150,7 +155,8 @@ def generator_teamDB():
                 'EMAIL': '' if data[6] is None else data[7],
                 'FACEBOOK': '' if data[7] is None else data[8],
                 'LINKEDIN': '' if data[8] is None else data[9],
-                'STATUS': int(data[10])  # Status (1 = aktywny, 0 = nieaktywny)
+                'STATUS': int(data[10]),  # Status (1 = aktywny, 0 = nieaktywny)
+                'ROUTE': memeber_route if memeber_route is not None else ''
             }
             teamData.append(theme)
 
@@ -743,24 +749,52 @@ def team():
     )
 
 # Szczegóły członka zespołu
-team_memeber_dict = {
-    'doktor-nauk-medycznych-elzbieta-fedorowicz': 1,
-    'lekarz-dentysta-arkadiusz-zmuda': 2,
-    'lekarz-dentysta-przemyslaw-zmuda': 3,
-    'lekarz-dentysta-sylwia-zmuda': 4
-}
+def team_memeber_router():
+    def bez_polskich_znakow(text):
+        """Zamienia polskie znaki na zwykłe litery."""
+        return ''.join(
+            c for c in unicodedata.normalize('NFD', text)
+            if unicodedata.category(c) != 'Mn'
+        )
+    generator_teamDB_v = generator_teamDB()
+    generator_userDataDB_v = generator_userDataDB()
+    theme_id = {}
+    theme_name = {}
+    theme_login = {}
+    for memeber in generator_teamDB_v:
+        user_name=memeber.get('EMPLOYEE_NAME', None)
+        user_role=memeber.get('EMPLOYEE_ROLE', None)
+        user_login=memeber.get('EMPLOYEE_LOGIN', None)
+        if user_name and user_role and user_login:
+            # Zamiana polskich znaków na zwykłe litery
+            pre_name = bez_polskich_znakow(str(user_name).replace(' ', '-').lower())
+            pre_role = bez_polskich_znakow(str(user_role).replace(' ', '-').lower())
 
+            create_route = f'{pre_role}-{pre_name}'
+            for admin in generator_userDataDB_v:
+                if admin.get('login') == user_login:
+                    theme_id[create_route] = admin.get('id')
+                    theme_name[create_route] = admin.get('name')
+                    theme_login[create_route] = admin.get('login')
+                    break
+
+    return {
+        "by_id": theme_id,
+        "by_name": theme_name,
+        "by_login": theme_login
+        }
+DYNAMIC_team_memeber_dict = team_memeber_router().get('by_id', {})
 @app.route('/zespol/<string:name_pracownika>')
 def team_mambers(name_pracownika):
-    if name_pracownika in team_memeber_dict:
-        idPracownika = team_memeber_dict[name_pracownika]
+    if name_pracownika in DYNAMIC_team_memeber_dict:
+        idPracownika = DYNAMIC_team_memeber_dict[name_pracownika]
         ready_name = name_pracownika.replace('-', ' ').capitalize()
         pageTitle = ready_name
         session['page'] = ready_name
         return render_template(
             'team_member.html',
             pageTitle=pageTitle,
-            dane_pracownika=team_memeber_dict[name_pracownika]
+            dane_pracownika=DYNAMIC_team_memeber_dict[name_pracownika]
         )
     else:
         abort(404)
