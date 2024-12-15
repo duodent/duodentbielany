@@ -10,6 +10,7 @@ import mysqlDB as msq
 import secrets
 from datetime import datetime, timedelta
 # from googletrans import Translator
+import time
 import random
 import re
 import os
@@ -362,19 +363,34 @@ def register():
     email = request.form.get('email')
     phone = request.form.get('phone')
     roles = request.form.getlist('roles[]')
-
-    # Obsługa zdjęcia
-    photo = request.files.get('photo')
-    if photo:
-        photo.save(f"static/img/doctor/{photo.filename}")  # Zapis zdjęcia do folderu uploads
+    
     print(request.form)
 
     # Walidacja danych
-    errors = validate_register_data(data = request.form, existing_users=generator_userDataDB())
+    errors = validate_register_data(data=request.form, existing_users=generator_userDataDB())
     if errors:
         return jsonify({"errors": errors}), 400
     
+    # Obsługa zdjęcia
+    photo = request.files.get('photo')
+    if photo:
+        # Generowanie unikalnego prefixu (5 ostatnich cyfr czasu UNIX)
+        unix_prefix = str(int(time.time()))[-5:]
 
+        # Pobierz nazwę pliku
+        original_filename = photo.filename
+        extension = os.path.splitext(original_filename)[1]  # Pobierz rozszerzenie (.jpg, .png itp.)
+        base_filename = os.path.splitext(original_filename)[0]  # Pobierz nazwę bez rozszerzenia
+
+        # Połącz prefix z oryginalną nazwą
+        unique_filename = f"{unix_prefix}_{base_filename}{extension}"
+
+        # Ścieżka docelowa
+        save_path = os.path.join("static", "img", "doctor", unique_filename)
+
+        # Zapisz zdjęcie
+        photo.save(save_path)
+    
     # Przykład odpowiedzi
     response = {
         "message": "Rejestracja zakończona sukcesem",

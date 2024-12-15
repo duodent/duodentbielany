@@ -289,7 +289,7 @@
 
                             // Resetowanie pola zdjęcia
                             document.getElementById('photo').value = '';
-                            document.querySelector('#photo').nextElementSibling.textContent = 'Prześlij zdjęcie'; 
+                            document.querySelector('#photo').nextElementSibling.innerHTML = '<i class="fas fa-upload upload-icon me-3"></i> Prześlij zdjęcie';
                             
                             feedbackContainer.textContent = ''; // Usuwanie komunikatu
                             feedbackContainer.className = '';
