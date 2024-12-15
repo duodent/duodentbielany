@@ -799,9 +799,9 @@ def team_memeber_router():
             "by_name": theme_name,
             "by_login": theme_login
         }
-DYNAMIC_team_memeber_dict = team_memeber_router().get('by_id', {})
 @app.route('/zespol/<string:name_pracownika>')
 def team_mambers(name_pracownika):
+    DYNAMIC_team_memeber_dict = team_memeber_router().get('by_id', {})
     if name_pracownika in DYNAMIC_team_memeber_dict:
         idPracownika = DYNAMIC_team_memeber_dict[name_pracownika]
         ready_name = name_pracownika.replace('-', ' ').capitalize()
