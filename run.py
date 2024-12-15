@@ -2,6 +2,8 @@ from flask import Flask, render_template, redirect, url_for, jsonify, session, r
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField
 from wtforms.validators import DataRequired
+import imghdr
+from werkzeug.utils import secure_filename
 import redis
 from bin.config_utils import SESSION_FLASK_KEY
 import app.utils.passwordSalt as hash
@@ -352,7 +354,7 @@ def index():
 
 @app.route('/api/register', methods=['POST'])
 def register():
-    # Pobierz dane z formularza
+    # Pobranie danych z ImmutableMultiDict
     login = request.form.get('login')
     full_name = request.form.get('fullName')
     position = request.form.get('position')
@@ -362,7 +364,17 @@ def register():
     description = request.form.get('description')
     email = request.form.get('email')
     phone = request.form.get('phone')
-    roles = request.form.getlist('roles[]')
+    facebook = request.form.get('facebook')
+    instagram = request.form.get('instagram')
+    twitter = request.form.get('twitter')
+    linkedin = request.form.get('linkedin')
+    plain_password = request.form.get('password')
+
+    # Role użytkownika
+    roles = request.form.getlist('roles[]')  # Pobieranie listy ról
+    is_admin = 1 if 'administrator' in roles else 0
+    is_super_user = 1 if 'super_user' in roles else 0
+    is_user = 1 if 'user' in roles else 0
 
     print(request.form)
 
@@ -371,15 +383,20 @@ def register():
     if errors:
         return jsonify({"errors": errors}), 400
     
+    
     # Obsługa zdjęcia
     photo = request.files.get('photo')
+    if photo and imghdr.what(photo) not in ['jpeg', 'png', 'gif']:
+        return jsonify({"errors": ["Przesłany plik nie jest poprawnym obrazem."]}), 400
+    
     photo_link = None
     if photo:
         # Generowanie unikalnego prefixu (5 ostatnich cyfr czasu UNIX)
         unix_prefix = str(int(time.time()))[-5:]
 
         # Pobierz nazwę pliku
-        original_filename = photo.filename
+        # original_filename = photo.filename
+        original_filename = secure_filename(photo.filename)
         extension = os.path.splitext(original_filename)[1]  # Pobierz rozszerzenie (.jpg, .png itp.)
         base_filename = os.path.splitext(original_filename)[0]  # Pobierz nazwę bez rozszerzenia
 
@@ -390,25 +407,50 @@ def register():
         save_path = os.path.join("static", "img", "doctor", unique_filename)
 
         # Zapisz zdjęcie
-        photo.save(save_path)
+        # photo.save(save_path)
+        try:
+            photo.save(save_path)
+        except Exception as e:
+            return jsonify({"errors": ["Nie udało się zapisać przesłanego pliku."]}), 500
 
         domena_strony_www = 'https://www.duodentbielany.pl/'
         katalog_zdjecia = 'static/img/doctor/'
         photo_link = f'{domena_strony_www}{katalog_zdjecia}{unique_filename}'
     
-    print(photo_link)
-    # Przykład odpowiedzi
-    response = {
-        "message": "Rejestracja zakończona sukcesem",
-        "data": {
-            "login": login,
-            "full_name": full_name,
-            "position": position,
-            "email": email,
-            "roles": roles,
-        }
-    }
-    return jsonify(response), 200
+    # Generowanie soli i haszowanie hasła
+    salt = hash.generate_salt()
+    hashed_password = hash.hash_password(plain_password, salt)
+
+    # Ustawienie linku do avatara
+    avatar = photo_link if photo_link else 'https://www.duodentbielany.pl/static/img/doctor/with-out-face-avatar.jpg'
+
+    # Status użytkownika - domyślnie aktywny
+    user_status = 1
+
+    # Przygotowanie zapytania SQL
+    zapytanie_sql = """
+        INSERT INTO admins (
+            login, name, stanowisko, kwalifikacje, doswiadczenie, wyksztalcenie, opis,
+            email, password, salt, avatar, administrator, super_user, user,
+            phone, facebook, instagram, twitter, linkedin, status_usera
+        ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+    """
+
+    # Dane do zapytania
+    dane = (
+        login, full_name, position, qualifications, experience, education, description,
+        email, hashed_password, salt, avatar, is_admin, is_super_user, is_user,
+        phone, facebook, instagram, twitter, linkedin, user_status
+    )
+
+    # Wstawianie danych do bazy
+    if msq.insert_to_database(zapytanie_sql, dane):
+        response = {"status": "success", "message": "Administrator został zapisany do bazy."}
+        return jsonify(response), 200
+    else:
+        response ={"status": "error", "message": "Wystąpił błąd podczas zapisywania danych."}
+        return jsonify(response), 400
+
 
 # Poznaj nas bliżej
 @app.route('/o-nas-twoja-klinika-stomatologiczna')
