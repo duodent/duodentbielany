@@ -580,6 +580,8 @@ def index():
     pageTitle = 'Strona Główna'
 
     generator_teamDB_v = generator_teamDB()
+    if len(generator_teamDB_v) > 3:
+        generator_teamDB_v = generator_teamDB_v[:4]
 
     return render_template(
         'index.html',
@@ -699,9 +701,15 @@ def register():
 def about_us():
     session['page'] = 'about_us'
     pageTitle = 'Poznaj nas bliżej'
+
+    generator_teamDB_v = generator_teamDB()
+    if len(generator_teamDB_v) > 3:
+        generator_teamDB_v = generator_teamDB_v[:4]
+
     return render_template(
         'about_us.html',
-        pageTitle=pageTitle
+        pageTitle=pageTitle,
+        members=generator_teamDB_v
     )
 
 # Zabiegi - lista
@@ -743,9 +751,13 @@ def treatment_dynamic(treatment_slug):
 def team():
     session['page'] = 'team'
     pageTitle = 'Zespół'
+
+    generator_teamDB_v = generator_teamDB()
+
     return render_template(
         'team.html',
-        pageTitle=pageTitle
+        pageTitle=pageTitle,
+        members=generator_teamDB_v
     )
 
 # Szczegóły członka zespołu

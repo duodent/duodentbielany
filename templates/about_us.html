@@ -246,74 +246,28 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-lg-3 col-md-6">
-                <div class="single-doctor">
-                    <a href="#"><img src="static/img/doctor/1.jpg" alt="image"></a>
-                    <div class="doctor-content">
-                        <h3>
-                            <a href="#">Elżbieta Fedorowicz</a>
-                        </h3>
-                        <span>Doktor nauk medycznych</span>
-                        <div class="share-link">
-                            <!-- <a href="#"><i class="bx bxl-facebook"></i></a>
-                            <a href="#"><i class="bx bxl-twitter"></i></a>
-                            <a href="#"><i class="bx bxl-instagram"></i></a>
-                            <a href="#"><i class="bx bxl-linkedin"></i></a> -->
+            {% for memeber in members %}
+                <div class="col-lg-3 col-md-6">
+                    <div class="single-doctor">
+                        <a href="/zespol/{{memeber['ROUTE']}}"><img src="{{memeber['EMPLOYEE_PHOTO']}}" alt="image"></a>
+                        <div class="doctor-content">
+                            <h3>
+                                <a href="/zespol/{{memeber['ROUTE']}}">{{memeber['EMPLOYEE_NAME']}}</a>
+                            </h3>
+                            <span>{{memeber['EMPLOYEE_ROLE']}}</span>
+                            <div class="share-link">
+                                {% if memeber['FACEBOOK'] %}
+                                    <a href="#"><i class="bx bxl-facebook"></i></a>
+                                {% endif %}
+                                {% if memeber['LINKEDIN'] %}
+                                    <a href="#"><i class="bx bxl-linkedin"></i></a>
+                                {% endif %}
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-lg-3 col-md-6">
-                <div class="single-doctor">
-                    <a href="#"><img src="static/img/doctor/2.jpg" alt="image"></a>
-                    <div class="doctor-content">
-                        <h3>
-                            <a href="#">Arkadiusz Żmuda</a>
-                        </h3>
-                        <span>Lekarz dentysta</span>
-                        <div class="share-link">
-                            <!-- <a href="#"><i class="bx bxl-facebook"></i></a>
-                            <a href="#"><i class="bx bxl-twitter"></i></a>
-                            <a href="#"><i class="bx bxl-instagram"></i></a>
-                            <a href="#"><i class="bx bxl-linkedin"></i></a> -->
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-3 col-md-6">
-                <div class="single-doctor">
-                    <a href="#"><img src="static/img/doctor/3.jpg" alt="image"></a>
-                    <div class="doctor-content">
-                        <h3>
-                            <a href="#">Przemysław Żmuda</a>
-                        </h3>
-                        <span>Lekarz dentysta</span>
-                        <div class="share-link">
-                            <!-- <a href="#"><i class="bx bxl-facebook"></i></a>
-                            <a href="#"><i class="bx bxl-twitter"></i></a>
-                            <a href="#"><i class="bx bxl-instagram"></i></a>
-                            <a href="#"><i class="bx bxl-linkedin"></i></a> -->
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-3 col-md-6">
-                <div class="single-doctor">
-                    <a href="#"><img src="static/img/doctor/4.jpg" alt="image"></a>
-                    <div class="doctor-content">
-                        <h3>
-                            <a href="#">Sylwia Żmuda</a>
-                        </h3>
-                        <span>Lekarz dentysta</span>
-                        <div class="share-link">
-                            <!-- <a href="#"><i class="bx bxl-facebook"></i></a>
-                            <a href="#"><i class="bx bxl-twitter"></i></a>
-                            <a href="#"><i class="bx bxl-instagram"></i></a>
-                            <a href="#"><i class="bx bxl-linkedin"></i></a> -->
-                        </div>
-                    </div>
-                </div>
-            </div>
+            {% endfor %}
+            
         </div>
     </div>
 </section>
