@@ -411,11 +411,11 @@ def preparoator_team(deaprtment_team='user', highlight=4):
         
         # Sprawdzenie uprawnień użytkownika do danego działu
         if usr_d['uprawnienia'].get(f'{deaprtment_team}', 0) == 1:
-            assigned_duodent.append(u_name)
+            assigned_duodent.append(u_login)
 
 
     print('assigned_duodent', assigned_duodent)
-
+    
     # Struktura kolekcji
     collections = {
         f'{deaprtment_team}': {
@@ -521,7 +521,7 @@ def ustawieni_pracownicy():
     for u_login in sequence:
         set_row = {
             'EMPLOYEE_PHOTO': users_atributesByLogin[u_login]['avatar'],
-            'EMPLOYEE_NAME': users_atributesByLogin[u_login]['name'],
+            'EMPLOYEE_NAME': users_atributesByLogin[u_login]['login'],
             'EMPLOYEE_ROLE': users_atributesByLogin[u_login]['stanowisko'],
             'EMPLOYEE_DEPARTMENT': f'{department}',
             'PHONE': users_atributesByLogin[u_login]['contact']['phone'],
