@@ -806,6 +806,10 @@ def team_mambers(name_pracownika):
     if name_pracownika in DYNAMIC_team_memeber_dict_id:
         idPracownika = DYNAMIC_team_memeber_dict_id[name_pracownika]
         member_data_prepared = [member_data for member_data in generator_userDataDB() if member_data['id'] == idPracownika]
+        if member_data_prepared:
+            member_data_prepared = member_data_prepared[0]
+        else:
+            member_data_prepared = {}
         ready_name = name_pracownika.replace('-', ' ').capitalize()
         pageTitle = ready_name
         session['page'] = ready_name
