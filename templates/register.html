@@ -286,6 +286,11 @@
                         feedbackContainer.style.opacity = '0'; // Animacja zanikania
                         setTimeout(function () {
                             document.getElementById('form-register-worker').reset(); // Czyść formularz
+
+                            // Resetowanie pola zdjęcia
+                            document.getElementById('photo').value = '';
+                            document.querySelector('#photo').nextElementSibling.textContent = 'Prześlij zdjęcie'; 
+                            
                             feedbackContainer.textContent = ''; // Usuwanie komunikatu
                             feedbackContainer.className = '';
                             feedbackContainer.style.opacity = '1'; // Resetowanie stylu
