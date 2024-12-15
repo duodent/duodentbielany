@@ -406,7 +406,7 @@ def preparoator_team(deaprtment_team='user', highlight=4):
     for usr_d in generator_userDataDB():  # [Dostosowane do aktualnej struktury]
         u_name = usr_d['name']
         u_login = usr_d['login']  # Zmiana na 'login' zgodnie z nową strukturą
-        users_atributes[u_name] = usr_d
+        users_atributes[u_login] = usr_d
         
         # Sprawdzenie uprawnień użytkownika do danego działu
         if usr_d['uprawnienia'].get(f'{deaprtment_team}', 0) == 1:
