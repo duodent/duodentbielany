@@ -38,42 +38,34 @@
     </div>
 </div>
 <!-- breadcrumb end -->
-{{dane_pracownika}}
+
 <!-- dentist-details-area -->
 <section class="dentist-details-area pb-100">
     <div class="container">
         <div class="row">
             <div class="col-lg-4 col-md-6">
                 <div class="dentist-details-image">
-                    <img src="../static/img/doctor/1.jpg" alt="image">
+                    <img src="{{dane_pracownika['avatar']}}" alt="image">
                 </div>
             </div>
             <div class="col-lg-7 col-md-6">
                 <div class="dentist-details-content">
                     <h3>
-                        <a href="dentist-details.html">Dr. Lovelace Dito</a>
+                        <a href="javascript:void(0)">{{dane_pracownika['avatar']}}</a>
                     </h3>
-                    <span>Senior Dentist</span>
-                    <!-- <div class="share-link">
-                        <a href="#"><i class="bx bxl-facebook"></i></a>
-                        <a href="#"><i class="bx bxl-twitter"></i></a>
-                        <a href="#"><i class="bx bxl-linkedin"></i></a>
-                        <a href="#"><i class="bx bxl-instagram"></i></a>
-                    </div> -->
+                    <span>{{dane_pracownika['stanowisko']}}</span>
+                    
                     <div class="content-overview">
-                        <p><span>Qualification:</span> DDS, DMD, BDS - 5 Years
-                            Experience</p>
-                        <p><span>Certification:</span> Fusce maximus ex non orci mattis lobortis. Phasellus ex dolor, cursus at iaculis non, ullamcorper sit amet nunc.</p>
-                        <p><span>Professional Skills:</span> Nulla turpis sapien, volutpat in venenatis at, condimentum id felis. Nullam efficitur leo id mauris sollicitudin, et accumsan leo consequat.</p>
-                        <p><span>Education:</span> Morbi ante metus, sagittis eget convallis et, iaculis vel orci. Etiam varius neque a tortor posuere, et pellentesque arcu suscipit.</p>
-                        <p><span>Awards:</span> Donec non quam ut felis dignissim blandit eget eget ipsum. Donec tortor mauris</p>
+                        <p><span>Kwalifikacje:</span> {{dane_pracownika['kwalifikacje']}}</p>
+                        <p><span>Doświadczenie zawodowe:</span> {{dane_pracownika['doswiadczenie']}}</p>
+                        <p><span>Wykształcenie:</span> {{dane_pracownika['wyksztalcenie']}}</p>
                     </div>
                 </div>
             </div>
         </div>
         <div class="dentist-details-overview-content">
             <p>
-                Vestibulum venenatis iaculis ipsum non venenatis. Phasellus neque lacus, eleifend a consequat vel, fringilla tristique neque. Duis non scelerisque dui. Proin at nibh mollis, maximus nunc ac, rutrum diam. Suspendisse a aliquam leo, sed sollicitudin libero. Vestibulum nec nunc odio. Donec cursus a quam at gravida. Sed egestas eget lectus quis condimentum. Aenean convallis lobortis ligula, ut eleifend leo. Aliquam placerat egestas blandit. Curabitur ut sapien arcu. Nulla bibendum arcu ornare, tempus ipsum sit amet, dignissim mauris. Donec efficitur ut risus nec bibendum. Aenean nec mauris faucibus, convallis est quis, volutpat quam. Fusce eu rhoncus ligula. Quisque vitae posuere magna, a convallis diam.
+                {{dane_pracownika['opis']}}
             </p>
         </div>
     </div>
