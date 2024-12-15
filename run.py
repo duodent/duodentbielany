@@ -142,14 +142,15 @@ def generator_teamDB():
             theme = {
                 'ID': int(data[0]),
                 'EMPLOYEE_PHOTO': data[1],
-                'EMPLOYEE_NAME': data[2],
-                'EMPLOYEE_ROLE': data[3],
-                'EMPLOYEE_DEPARTMENT': data[4],
-                'PHONE': '' if data[5] is None else data[5],
-                'EMAIL': '' if data[6] is None else data[6],
-                'FACEBOOK': '' if data[7] is None else data[7],
-                'LINKEDIN': '' if data[8] is None else data[8],
-                'STATUS': int(data[9])  # Status (1 = aktywny, 0 = nieaktywny)
+                'EMPLOYEE_LOGIN': data[2],
+                'EMPLOYEE_NAME': data[3],
+                'EMPLOYEE_ROLE': data[4],
+                'EMPLOYEE_DEPARTMENT': data[5],
+                'PHONE': '' if data[5] is None else data[6],
+                'EMAIL': '' if data[6] is None else data[7],
+                'FACEBOOK': '' if data[7] is None else data[8],
+                'LINKEDIN': '' if data[8] is None else data[9],
+                'STATUS': int(data[10])  # Status (1 = aktywny, 0 = nieaktywny)
             }
             teamData.append(theme)
 
@@ -433,7 +434,7 @@ def preparoator_team(deaprtment_team='user', highlight=4):
     for employees in generator_teamDB_v:  # [Dostosowane do aktualnej struktury]
         group = employees['EMPLOYEE_DEPARTMENT']
         department = str(group)
-        employee = employees['EMPLOYEE_NAME']
+        employee = employees['EMPLOYEE_LOGIN']
 
         print('employees', employees)
         print('if employee not in users_atributes:', users_atributes)
@@ -523,7 +524,8 @@ def ustawieni_pracownicy():
     for u_login in sequence:
         set_row = {
             'EMPLOYEE_PHOTO': users_atributesByLogin[u_login]['avatar'],
-            'EMPLOYEE_NAME': users_atributesByLogin[u_login]['login'],
+            'EMPLOYEE_LOGIN': users_atributesByLogin[u_login]['login'],
+            'EMPLOYEE_NAME': users_atributesByLogin[u_login]['name'],
             'EMPLOYEE_ROLE': users_atributesByLogin[u_login]['stanowisko'],
             'EMPLOYEE_DEPARTMENT': f'{department}',
             'PHONE': users_atributesByLogin[u_login]['contact']['phone'],
@@ -544,11 +546,12 @@ def ustawieni_pracownicy():
 
         for i, row in enumerate(ready_exportDB):
             zapytanie_sql = '''
-                    INSERT INTO workers_team (EMPLOYEE_PHOTO, EMPLOYEE_NAME, EMPLOYEE_ROLE, EMPLOYEE_DEPARTMENT, PHONE, EMAIL, FACEBOOK, LINKEDIN, STATUS)
-                    VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s);
+                    INSERT INTO workers_team (EMPLOYEE_PHOTO, EMPLOYEE_LOGIN, EMPLOYEE_NAME, EMPLOYEE_ROLE, EMPLOYEE_DEPARTMENT, PHONE, EMAIL, FACEBOOK, LINKEDIN, STATUS)
+                    VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s);
                 '''
             dane = (
                     row['EMPLOYEE_PHOTO'], 
+                    row['EMPLOYEE_LOGIN'], 
                     row['EMPLOYEE_NAME'], 
                     row['EMPLOYEE_ROLE'], 
                     row['EMPLOYEE_DEPARTMENT'], 
