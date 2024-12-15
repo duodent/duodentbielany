@@ -801,16 +801,18 @@ def team_memeber_router():
         }
 @app.route('/zespol/<string:name_pracownika>')
 def team_mambers(name_pracownika):
-    DYNAMIC_team_memeber_dict = team_memeber_router().get('by_id', {})
-    if name_pracownika in DYNAMIC_team_memeber_dict:
-        idPracownika = DYNAMIC_team_memeber_dict[name_pracownika]
+    DYNAMIC_team_memeber_dict = team_memeber_router()
+    DYNAMIC_team_memeber_dict_id = DYNAMIC_team_memeber_dict.get('by_id', {})
+    if name_pracownika in DYNAMIC_team_memeber_dict_id:
+        idPracownika = DYNAMIC_team_memeber_dict_id[name_pracownika]
+        member_data_prepared = [member_data for member_data in generator_userDataDB() if member_data['id'] == idPracownika]
         ready_name = name_pracownika.replace('-', ' ').capitalize()
         pageTitle = ready_name
         session['page'] = ready_name
         return render_template(
             'team_member.html',
             pageTitle=pageTitle,
-            dane_pracownika=DYNAMIC_team_memeber_dict[name_pracownika]
+            dane_pracownika=member_data_prepared
         )
     else:
         abort(404)
