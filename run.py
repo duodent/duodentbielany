@@ -149,8 +149,7 @@ def generator_teamDB():
                 'EMAIL': '' if data[6] is None else data[6],
                 'FACEBOOK': '' if data[7] is None else data[7],
                 'LINKEDIN': '' if data[8] is None else data[8],
-                'DATE_TIME': data[9],  # Data wstawienia lub aktualizacji
-                'STATUS': int(data[10])  # Status (1 = aktywny, 0 = nieaktywny)
+                'STATUS': int(data[9])  # Status (1 = aktywny, 0 = nieaktywny)
             }
             teamData.append(theme)
 
