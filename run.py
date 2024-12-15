@@ -808,9 +808,16 @@ def team_mambers(name_pracownika):
         member_data_prepared = [member_data for member_data in generator_userDataDB() if member_data['id'] == idPracownika]
         if member_data_prepared:
             member_data_prepared = member_data_prepared[0]
+            del member_data_prepared['password']
+            del member_data_prepared['salt']
+            del member_data_prepared['contact']
+            del member_data_prepared['uprawnienia']
+            del member_data_prepared['email']
+            del member_data_prepared['login']
+            del member_data_prepared['id']
         else:
             member_data_prepared = {}
-        ready_name = name_pracownika.replace('-', ' ').capitalize()
+        ready_name = member_data_prepared['name']
         pageTitle = ready_name
         session['page'] = ready_name
         return render_template(
