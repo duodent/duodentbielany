@@ -204,7 +204,7 @@ def process_photo(photo, save_path):
         base_width = 350
         ratio = base_width / width
         new_height = int(height * ratio)
-        img = img.resize((base_width, new_height), Image.ANTIALIAS)
+        img = img.resize((base_width, new_height))
 
         # Przycinanie do wymiarów 350x380px
         target_height = 380
