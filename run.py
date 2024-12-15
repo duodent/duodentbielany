@@ -428,7 +428,7 @@ def preparoator_team(deaprtment_team='user', highlight=4):
     # Iteracja przez pracowników z generator_teamDB
     for employees in generator_teamDB():  # [Dostosowane do aktualnej struktury]
         group = employees['EMPLOYEE_DEPARTMENT']
-        department = str(group) # Usuwanie prefiksu "duodent"
+        department = str(group)
         employee = employees['EMPLOYEE_NAME']
 
         if employee not in users_atributes:
