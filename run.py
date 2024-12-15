@@ -22,13 +22,7 @@ from flask_session import Session
 app = Flask(__name__)
 
 # Klucz tajny do szyfrowania sesji
-# app.config['SECRET_KEY'] = secrets.token_hex(16)
 app.config['SECRET_KEY'] = SESSION_FLASK_KEY
-
-# Ustawienia dla Flask-Session
-# app.config['SESSION_TYPE'] = 'filesystem'  # Można użyć np. 'redis', 'sqlalchemy'
-# app.config['SESSION_PERMANENT'] = True  # Sesja ma być permanentna
-# app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=10)  # Czas wygaśnięcia sesji (10 minut)
 
 # Ustawienia dla Flask-Session
 app.config['SESSION_TYPE'] = 'redis'  # Redis jako magazyn sesji
@@ -36,13 +30,6 @@ app.config['SESSION_PERMANENT'] = True
 app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=10)
 app.config['SESSION_KEY_PREFIX'] = 'session:'  # Prefiks dla kluczy w Redis
 app.config['SESSION_REDIS'] = redis.StrictRedis(host='localhost', port=6379, db=0)
-
-# Konfiguracja Flask-Session
-# app.config['SESSION_TYPE'] = 'redis'
-# app.config['SESSION_PERMANENT'] = False
-# app.config['SESSION_USE_SIGNER'] = True
-# app.config['SESSION_KEY_PREFIX'] = 'session:'
-# app.config['SESSION_REDIS'] = redis.StrictRedis(host='localhost', port=6379, db=0)
 
 # Ścieżka do katalogu z plikami
 UPLOAD_FOLDER = 'dokumenty'
@@ -53,7 +40,6 @@ app.config['PER_PAGE'] = 6
 
 # Inicjalizacja obsługi sesji
 Session(app)
-
 
 class LoginForm(FlaskForm):
     username = StringField('Nazwa użytkownika', validators=[DataRequired()])
@@ -139,6 +125,36 @@ def generator_userDataDB():
 
     return userData
 
+def generator_teamDB():
+    # Pobranie danych z tabeli workers_team
+    took_teamD = take_data_table('*', 'workers_team')
+
+    # Pobranie danych użytkowników z generator_userDataDB()
+    user_data = generator_userDataDB()  # Dostosowane do aktualnej struktury
+    allowed_users = {user['login'] for user in user_data if user['uprawnienia']['user'] == 1}
+
+    teamData = []
+    for data in took_teamD:
+        employee_login = data[2]  # Przyjmujemy, że login jest przechowywany w EMPLOYEE_NAME
+        
+        # Filtracja tylko użytkowników, którzy mają user = 1
+        if employee_login in allowed_users:
+            theme = {
+                'ID': int(data[0]),
+                'EMPLOYEE_PHOTO': data[1],
+                'EMPLOYEE_NAME': data[2],
+                'EMPLOYEE_ROLE': data[3],
+                'EMPLOYEE_DEPARTMENT': data[4],
+                'PHONE': '' if data[5] is None else data[5],
+                'EMAIL': '' if data[6] is None else data[6],
+                'FACEBOOK': '' if data[7] is None else data[7],
+                'LINKEDIN': '' if data[8] is None else data[8],
+                'DATE_TIME': data[9],  # Data wstawienia lub aktualizacji
+                'STATUS': int(data[10])  # Status (1 = aktywny, 0 = nieaktywny)
+            }
+            teamData.append(theme)
+
+    return teamData
 def validate_register_data(data, existing_users):
     """
     Waliduje dane przesłane podczas rejestracji, w tym unikalność loginu i emaila.
@@ -223,7 +239,7 @@ def process_photo(photo, save_path):
         # Zapisz przetworzony obraz
         img.save(save_path)
     except Exception as e:
-        print(f"Error processing photo: {e}")
+        # print(f"Error processing photo: {e}")
         raise ValueError(f"Nie udało się przetworzyć obrazu: {e}")
     
 
@@ -365,6 +381,13 @@ def logout():
 
 @app.route('/admin/rejestracja')
 def rejestracja():
+    if 'username' not in session:
+        return redirect(url_for('index'))
+    
+    if not (session['userperm']['administrator'] == 1 or session['userperm']['super_user'] == 1):
+        flash('Nie masz uprawnień do zarządzania tymi zasobami. Skontaktuj się z administratorem!', 'danger')
+        return redirect(url_for('index'))
+        
     session['page'] = 'rejestracja'
     pageTitle = 'Rejestracja użytkownika'
     if "username" in session:
@@ -374,8 +397,165 @@ def rejestracja():
         )
     else:
         return redirect(url_for('index'))   
-    
 
+def preparoator_team(deaprtment_team='user', highlight=4):
+    highlight += 1
+    users_atributes = {}
+    assigned_duodent = []
+
+    # Mapowanie użytkowników
+    for usr_d in generator_userDataDB():  # [Dostosowane do aktualnej struktury]
+        u_name = usr_d['name']
+        u_login = usr_d['login']  # Zmiana na 'login' zgodnie z nową strukturą
+        users_atributes[u_name] = usr_d
+        
+        # Sprawdzenie uprawnień użytkownika do danego działu
+        if usr_d['uprawnienia'].get(f'{deaprtment_team}', 0) == 1:
+            assigned_duodent.append(u_login)
+
+    # Struktura kolekcji
+    collections = {
+        f'{deaprtment_team}': {
+            'home': [],
+            'team': [],
+            'available': []
+        }
+    }
+
+    employee_photo_dict = {}
+
+    i_duodent = 1
+    # Iteracja przez pracowników z generator_teamDB
+    for employees in generator_teamDB():  # [Dostosowane do aktualnej struktury]
+        group = employees['EMPLOYEE_DEPARTMENT']
+        department = str(group) # Usuwanie prefiksu "duodent"
+        employee = employees['EMPLOYEE_NAME']
+
+        if employee not in users_atributes:
+            continue  # Jeśli pracownik nie jest w słowniku użytkowników, pomijamy
+        
+        employee_login = users_atributes[employee]['login']  # Zmiana na 'login'
+
+        employee_photo = users_atributes[employee]['avatar']
+        try:
+            employee_photo_dict[employee_login]
+        except KeyError:
+            employee_photo_dict[employee_login] = employee_photo
+        
+        if i_duodent < highlight and department == f'{deaprtment_team}':
+            collections[department]['home'].append(employee_login)
+        elif i_duodent >= highlight and department == f'{deaprtment_team}':
+            collections[department]['team'].append(employee_login)
+        if department == f'{deaprtment_team}':
+            i_duodent += 1
+
+    # Dodawanie dostępnych użytkowników
+    for assign in assigned_duodent:
+        if assign not in collections[f'{deaprtment_team}']['home'] + collections[f'{deaprtment_team}']['team']:
+            collections[f'{deaprtment_team}']['available'].append(assign)
+
+            for row in generator_userDataDB():  # [Dostosowane do aktualnej struktury]
+                if row['login'] == assign:
+                    employee_photo = row['avatar']
+                    try:
+                        employee_photo_dict[assign]
+                    except KeyError:
+                        employee_photo_dict[assign] = employee_photo
+
+    return {
+        "collections": collections[f'{deaprtment_team}'],
+        "employee_photo_dict": employee_photo_dict
+    }
+
+@app.route('/admin/team-stomatologia')
+def team_stomatologia():
+    """Strona zespołu stomatologia."""
+    if 'username' not in session:
+        return redirect(url_for('index'))
+    
+    if not (session['userperm']['administrator'] == 1 or session['userperm']['super_user'] == 1):
+        flash('Nie masz uprawnień do zarządzania tymi zasobami. Skontaktuj się z administratorem!', 'danger')
+        return redirect(url_for('index'))
+
+    preparoator_team_dict = preparoator_team('user', 4)
+
+    return render_template(
+            "team_management_stomatologia.html", 
+            members=preparoator_team_dict['collections'], 
+            photos_dict=preparoator_team_dict['employee_photo_dict']
+            )
+
+@app.route('/admin/ustawieni_pracownicy', methods=['POST'])
+def ustawieni_pracownicy():
+    if 'username' not in session:
+        return redirect(url_for('index'))
+    
+    if not (session['userperm']['administrator'] == 1 or session['userperm']['super_user'] == 1):
+        flash('Nie masz uprawnień do zarządzania tymi zasobami. Skontaktuj się z administratorem!', 'danger')
+        return redirect(url_for('index'))
+
+    data = request.get_json()
+    if not data or 'pracownicy' not in data:
+        return jsonify({"error": "Nieprawidłowy format danych, oczekiwano klucza 'pracownicy'."}), 400
+    
+    sequence_data = data['pracownicy']
+    department = str(data['grupa']).strip()
+    
+    sequence = []
+    for s in sequence_data:
+        clear_data = s.strip()
+        sequence.append(clear_data)
+
+    users_atributesByLogin = {}
+    for usr_d in generator_userDataDB():  # [Dostosowane do nowego szablonu]
+        u_login = usr_d['login']
+        users_atributesByLogin[u_login] = usr_d
+
+    ready_exportDB = []
+    for u_login in sequence:
+        set_row = {
+            'EMPLOYEE_PHOTO': users_atributesByLogin[u_login]['avatar'],
+            'EMPLOYEE_NAME': users_atributesByLogin[u_login]['name'],
+            'EMPLOYEE_ROLE': users_atributesByLogin[u_login]['stanowisko'],
+            'EMPLOYEE_DEPARTMENT': f'{department}',
+            'PHONE': users_atributesByLogin[u_login]['contact']['phone'],
+            'EMAIL': users_atributesByLogin[u_login]['email'],
+            'FACEBOOK': users_atributesByLogin[u_login]['contact']['facebook'],
+            'LINKEDIN': users_atributesByLogin[u_login]['contact']['linkedin'],
+            'STATUS': 1
+        }
+        ready_exportDB.append(set_row)
+
+    if len(ready_exportDB):
+        msq.delete_row_from_database(
+            """
+                DELETE FROM workers_team WHERE EMPLOYEE_DEPARTMENT = %s;
+            """,
+            (f'{department}', )
+        )
+
+        for i, row in enumerate(ready_exportDB):
+            zapytanie_sql = '''
+                    INSERT INTO workers_team (EMPLOYEE_PHOTO, EMPLOYEE_NAME, EMPLOYEE_ROLE, EMPLOYEE_DEPARTMENT, PHONE, EMAIL, FACEBOOK, LINKEDIN, STATUS)
+                    VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s);
+                '''
+            dane = (
+                    row['EMPLOYEE_PHOTO'], 
+                    row['EMPLOYEE_NAME'], 
+                    row['EMPLOYEE_ROLE'], 
+                    row['EMPLOYEE_DEPARTMENT'], 
+                    row['PHONE'], 
+                    row['EMAIL'], 
+                    row['FACEBOOK'], 
+                    row['LINKEDIN'], 
+                    row['STATUS'], 
+                )
+            if msq.insert_to_database(zapytanie_sql, dane):  # [Działająca funkcja]
+                print(f'Ustawiono {row["EMPLOYEE_NAME"]} przez {session["username"]}!')
+    else:
+        return jsonify({"status": "Sukces", "pracownicy": sequence_data}), 200
+    
+    return jsonify({"status": "Sukces", "pracownicy": sequence_data}), 200
 
 @app.context_processor
 def inject_shared_variable():

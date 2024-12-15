@@ -1,0 +1,168 @@
+{% extends 'base.html' %}
+{% block scripts%}
+<script src="https://cdn.jsdelivr.net/npm/sortablejs@1.14.0/Sortable.min.js"></script>
+<script>
+  // Funkcja przypisująca obrazy do elementów
+  function assignImagesToElements() {
+      document.querySelectorAll('.dostepnyPracownikSelector').forEach(pracownik => {
+          const imageUrl = pracownik.getAttribute("data-image-url");
+          if (imageUrl) {
+              pracownik.querySelector('.team-avatar').style.backgroundImage = `url('${imageUrl}')`;
+          }
+      });
+  }
+  
+  // Aktualizacja podświetlenia i przypisywanie awatarów
+  function updateHighlight() {
+    const highlightLimit = 4;
+    Array.from(document.getElementById('onPage').children).forEach((item, index) => {
+      item.classList.toggle('worker-on-home', index < highlightLimit);
+    });
+  }
+
+  function saveEmployees(department) {
+    const employeesOnPage = Array.from(document.getElementById('onPage').children).map(item => item.innerText.trim());
+    fetch('/admin/ustawieni_pracownicy', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ 
+        pracownicy: employeesOnPage,
+        grupa: department })
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log("Odpowiedź z serwera:", data);
+        const responseDiv = document.getElementById("responseMessage");
+
+        // Sprawdzenie odpowiedzi i ustawienie wiadomości w divie
+        if (data.status === "Sukces") {
+            responseDiv.textContent = "Lista została zapisana!";
+            responseDiv.style.color = "#3cff00"; // Kolor dla sukcesu
+        } else {
+            responseDiv.textContent = "Wystąpił błąd przy zapisywaniu listy.";
+            responseDiv.style.color = "#ff0033"; // Kolor dla błędu
+        }
+
+        // Timer do ukrycia wiadomości po 3 sekundach
+        setTimeout(() => {
+            responseDiv.textContent = "";
+        }, 3000);
+    })
+    .catch(error => {
+        console.error("Błąd:", error);
+        const responseDiv = document.getElementById("responseMessage");
+        responseDiv.textContent = "Wystąpił błąd przy zapisywaniu listy.";
+        responseDiv.style.color = "#ff0033"; // Kolor dla błędu
+    });
+    }
+  
+  document.addEventListener('DOMContentLoaded', assignImagesToElements);
+</script>
+{% endblock %}
+{% block content %}
+<!-- breadcrumb start -->
+<div id="breadcrumb-small" class="breadcrumb-small mb-5">
+    <div class="container justify-content-center">
+        <div class="justify-content-center">
+            <ul class="breadcrumb-pages-list">
+                <li><a href="/"><i class="bi bi-houses-fill" style="font-size: 1rem;"></i></a></li>
+                <li><a href="/poznaj-nasz-zespol-specjalistow-stomatologii">Zespół</a></li>
+                <li>Kolejność</li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!-- breadcrumb end -->
+
+<div class="row me-5 me-sm-0">
+    <div class="col-lg-6 col-md-12">
+      <!-- d-block d-sm-none tylko na średnim sm+ -->
+      <div class="d-block d-sm-none mt-2"><h7>Dostępni pracownicy</h7></div>
+      <!-- d-none d-sm-block d-lg-none tylko na średnim lg+ -->
+      <div class="d-none d-sm-block d-lg-none mt-2"><h5>Dostępni pracownicy</h5></div>
+      <!-- d-none d-xl-block tylko na pełnym xl+ -->
+      <div class="d-none d-lg-block mt-2"><h3>Dostępni pracownicy</h3></div>   
+      <div id="available" class="list-team border">
+        {% for member in members['available'] %}
+        {% set member_photo = photos_dict[member] %}
+        <div class="dostepnyPracownikSelector dostepnyPracownik" data-image-url="{{member_photo}}">
+          <div class="team-avatar"></div>
+          <span>{{member}}</span>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+
+    <div class="col-lg-6 col-md-12">
+      <!-- d-block d-sm-none tylko na średnim sm+ -->
+      <div class="d-block d-sm-none mt-2"><h7>Pracownicy na stronie</h7></div>
+      <!-- d-none d-sm-block d-lg-none tylko na średnim lg+ -->
+      <div class="d-none d-sm-block d-lg-none mt-2"><h5>Pracownicy na stronie</h5></div>
+      <!-- d-none d-xl-block tylko na pełnym xl+ -->
+      <div class="d-none d-lg-block mt-2"><h3>Pracownicy na stronie</h3></div>  
+      <div id="onPage" class="list-team border">
+          {% for member in members['home'] %}
+          {% set member_photo = photos_dict[member] %}
+          <div class="dostepnyPracownikSelector dostepnyPracownik worker-on-home" data-image-url="{{member_photo}}">
+            <div class="team-avatar"></div>
+            <span>{{member}}</span>
+          </div>
+          {% endfor %}
+          {% for member in members['team'] %}
+          {% set member_photo = photos_dict[member] %}
+          <div class="dostepnyPracownikSelector dostepnyPracownik" data-image-url="{{member_photo}}">
+            <div class="team-avatar"></div>
+            <span>{{member}}</span>
+          </div>
+          {% endfor %}
+        </div>
+      <!-- d-block d-sm-none tylko na średnim sm+ -->
+      <div class="d-block d-sm-none mt-2">
+          <p class="p-3 text-secondary" style="font-size: 12px; font-weight: 100;">
+              Moduł "Team" umożliwia łatwe dostosowywanie kolejności wyświetlania pracowników na stronie firmowej. 
+              Po dokonaniu zmian, zapisz nowe ustawienia kolejności, zapewniając szybkie i intuicyjne zarządzanie 
+              prezentacją zespołu na stronie.
+          </p> 
+      </div>
+      <!-- d-none d-sm-block d-lg-none tylko na średnim lg+ -->
+      <div class="d-none d-sm-block d-lg-none mt-2">
+          <p class="p-3 text-secondary" style="font-size: 15px; font-weight: 200;">
+              Moduł "Team" umożliwia łatwe dostosowywanie kolejności wyświetlania pracowników na stronie firmowej. 
+              Po dokonaniu zmian, zapisz nowe ustawienia kolejności, zapewniając szybkie i intuicyjne zarządzanie 
+              prezentacją zespołu na stronie.
+          </p> 
+      </div>
+      <!-- d-none d-xl-block tylko na pełnym xl+ -->
+      <div class="d-none d-lg-block mt-2">
+          <p class="p-3 text-secondary" style="font-size: 18px;">
+              Moduł "Team" umożliwia łatwe dostosowywanie kolejności wyświetlania pracowników na stronie firmowej. 
+              Po dokonaniu zmian, zapisz nowe ustawienia kolejności, zapewniając szybkie i intuicyjne zarządzanie 
+              prezentacją zespołu na stronie.
+          </p> 
+      </div> 
+      <button class="btn btn-primary mt-3" onclick="saveEmployees('user')">Zapisz</button>
+      <div id="responseMessage" class="mt-3"></div>
+    </div>
+  </div>
+
+{% endblock %}
+{% block bottom_scripts %}
+  <script>
+    const availableList = document.getElementById('available');
+    const onPageList = document.getElementById('onPage');
+
+    new Sortable(availableList, { 
+      group: 'employees', 
+      animation: 150,
+      onAdd: (evt) => evt.item.classList.remove('worker-on-home')
+    });
+
+    new Sortable(onPageList, { 
+      group: 'employees', 
+      animation: 150,
+      onSort: updateHighlight
+    });
+  </script>
+{% endblock %}

@@ -265,3 +265,41 @@
     color: #78e6ff; /* Kolor po najechaniu */
     text-decoration: none; /* Podkreślenie po najechaniu */
 }
+
+
+.list-team {
+    min-height: 100px;
+    padding: 10px;
+    background-color: #2f3235;
+    border: 1px solid #3c4144;
+    border-radius: 5px;
+  }
+
+
+  .worker-on-home {
+    background-color: #3d494d !important;
+  }
+  
+  .dostepnyPracownik {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #4f5051;
+    background-color: #2f3234;
+    color: #e0e0e0;
+  }
+  
+  .dostepnyPracownik:hover {
+    background-color: #47494a;
+  }
+  
+  .team-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+    background-size: cover;
+    background-position: center;
+  }
