@@ -363,7 +363,7 @@ def register():
     email = request.form.get('email')
     phone = request.form.get('phone')
     roles = request.form.getlist('roles[]')
-    
+
     print(request.form)
 
     # Walidacja danych
@@ -373,6 +373,7 @@ def register():
     
     # Obsługa zdjęcia
     photo = request.files.get('photo')
+    photo_link = None
     if photo:
         # Generowanie unikalnego prefixu (5 ostatnich cyfr czasu UNIX)
         unix_prefix = str(int(time.time()))[-5:]
@@ -390,7 +391,12 @@ def register():
 
         # Zapisz zdjęcie
         photo.save(save_path)
+
+        domena_strony_www = 'https://www.duodentbielany.pl/'
+        katalog_zdjecia = 'static/img/doctor/'
+        photo_link = f'{domena_strony_www}{katalog_zdjecia}{unique_filename}'
     
+    print(photo_link)
     # Przykład odpowiedzi
     response = {
         "message": "Rejestracja zakończona sukcesem",
