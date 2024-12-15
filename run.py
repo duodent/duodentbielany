@@ -435,7 +435,8 @@ def preparoator_team(deaprtment_team='user', highlight=4):
         department = str(group)
         employee = employees['EMPLOYEE_NAME']
 
-        print(employees)
+        print('employees', employees)
+        print('if employee not in users_atributes:', users_atributes)
 
         if employee not in users_atributes:
             continue  # Jeśli pracownik nie jest w słowniku użytkowników, pomijamy
