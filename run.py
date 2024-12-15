@@ -411,11 +411,11 @@ def preparoator_team(deaprtment_team='user', highlight=4):
         
         # Sprawdzenie uprawnień użytkownika do danego działu
         if usr_d['uprawnienia'].get(f'{deaprtment_team}', 0) == 1:
-            assigned_duodent.append(u_login)
+            assigned_duodent.append(u_name)
 
 
     print('assigned_duodent', assigned_duodent)
-    
+
     # Struktura kolekcji
     collections = {
         f'{deaprtment_team}': {
