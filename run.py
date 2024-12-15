@@ -417,6 +417,15 @@ def register():
         katalog_zdjecia = 'static/img/doctor/'
         photo_link = f'{domena_strony_www}{katalog_zdjecia}{unique_filename}'
     
+    if phone:
+        # Usuwamy wszystkie spacje i niepotrzebne znaki (opcjonalnie, np. "-", "(" lub ")")
+        phone = ''.join(filter(str.isdigit, phone))  # Zostawiamy tylko cyfry
+
+        # Dodajemy prefiks +48, jeśli go brakuje
+        if not phone.startswith('48'):
+            phone = f'48{phone}'
+        phone = f'+{phone}'  # Dodajemy "+" przed numerem
+        
     # Generowanie soli i haszowanie hasła
     salt = hash.generate_salt()
     hashed_password = hash.hash_password(plain_password, salt)
