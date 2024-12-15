@@ -223,6 +223,7 @@ def process_photo(photo, save_path):
         # Zapisz przetworzony obraz
         img.save(save_path)
     except Exception as e:
+        print(f"Error processing photo: {e}")
         raise ValueError(f"Nie udało się przetworzyć obrazu: {e}")
     
 
