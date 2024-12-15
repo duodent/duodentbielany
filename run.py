@@ -429,20 +429,15 @@ def preparoator_team(deaprtment_team='user', highlight=4):
     i_duodent = 1
     # Iteracja przez pracowników z generator_teamDB
     generator_teamDB_v = generator_teamDB()
-    print('generator_teamDB_v', generator_teamDB_v)
-    print('assigned_duodent', assigned_duodent)
     for employees in generator_teamDB_v:  # [Dostosowane do aktualnej struktury]
         group = employees['EMPLOYEE_DEPARTMENT']
         department = str(group)
         employee = employees['EMPLOYEE_LOGIN']
 
-        print('employees', employees)
-        print('if employee not in users_atributes:', users_atributes)
-
         if employee not in users_atributes:
             continue  # Jeśli pracownik nie jest w słowniku użytkowników, pomijamy
         
-        employee_login = users_atributes[employee]['login']  # Zmiana na 'login'
+        employee_login = users_atributes[employee]['login']  
 
         employee_photo = users_atributes[employee]['avatar']
         try:
@@ -462,7 +457,7 @@ def preparoator_team(deaprtment_team='user', highlight=4):
         if assign not in collections[f'{deaprtment_team}']['home'] + collections[f'{deaprtment_team}']['team']:
             collections[f'{deaprtment_team}']['available'].append(assign)
 
-            for row in generator_userDataDB():  # [Dostosowane do aktualnej struktury]
+            for row in generator_userDataDB():  
                 if row['login'] == assign:
                     employee_photo = row['avatar']
                     try:
@@ -578,9 +573,12 @@ def index():
     session['page'] = 'index'
     pageTitle = 'Strona Główna'
 
+    generator_teamDB_v = generator_teamDB()
+
     return render_template(
         'index.html',
-        pageTitle=pageTitle
+        pageTitle=pageTitle,
+        members=generator_teamDB_v
     )
 
 @app.route('/api/register', methods=['POST'])
