@@ -395,7 +395,6 @@ def register():
         unix_prefix = str(int(time.time()))[-5:]
 
         # Pobierz nazwę pliku
-        # original_filename = photo.filename
         original_filename = secure_filename(photo.filename)
         extension = os.path.splitext(original_filename)[1]  # Pobierz rozszerzenie (.jpg, .png itp.)
         base_filename = os.path.splitext(original_filename)[0]  # Pobierz nazwę bez rozszerzenia
@@ -407,7 +406,6 @@ def register():
         save_path = os.path.join("static", "img", "doctor", unique_filename)
 
         # Zapisz zdjęcie
-        # photo.save(save_path)
         try:
             photo.save(save_path)
         except Exception as e:
@@ -425,7 +423,7 @@ def register():
         if not phone.startswith('48'):
             phone = f'48{phone}'
         phone = f'+{phone}'  # Dodajemy "+" przed numerem
-        
+
     # Generowanie soli i haszowanie hasła
     salt = hash.generate_salt()
     hashed_password = hash.hash_password(plain_password, salt)
