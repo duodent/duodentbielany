@@ -413,6 +413,9 @@ def preparoator_team(deaprtment_team='user', highlight=4):
         if usr_d['uprawnienia'].get(f'{deaprtment_team}', 0) == 1:
             assigned_duodent.append(u_login)
 
+
+    print('assigned_duodent', assigned_duodent)
+    
     # Struktura kolekcji
     collections = {
         f'{deaprtment_team}': {
@@ -430,6 +433,8 @@ def preparoator_team(deaprtment_team='user', highlight=4):
         group = employees['EMPLOYEE_DEPARTMENT']
         department = str(group)
         employee = employees['EMPLOYEE_NAME']
+
+        print(employees)
 
         if employee not in users_atributes:
             continue  # Jeśli pracownik nie jest w słowniku użytkowników, pomijamy
@@ -478,6 +483,7 @@ def team_stomatologia():
         return redirect(url_for('index'))
 
     preparoator_team_dict = preparoator_team('user', 4)
+
 
     return render_template(
             "team_management_stomatologia.html", 
