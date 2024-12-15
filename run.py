@@ -124,6 +124,12 @@ def generator_userDataDB():
         userData.append(theme)
 
     return userData
+def bez_polskich_znakow(text):
+    """Zamienia polskie znaki na zwykłe litery."""
+    return ''.join(
+        c for c in unicodedata.normalize('NFD', text)
+        if unicodedata.category(c) != 'Mn'
+    )
 
 def generator_teamDB():
     # Pobranie danych z tabeli workers_team
@@ -140,10 +146,14 @@ def generator_teamDB():
         # Filtracja tylko użytkowników, którzy mają user = 1
         memeber_route = None
         if employee_login in allowed_users:
-            for route, login in team_memeber_router().get('by_login', {}).items():
-                if login == employee_login:
-                    memeber_route = route
-                    break
+            user_name=data[3]
+            user_role=data[4]
+            if user_name and user_role:
+                # Zamiana polskich znaków na zwykłe litery
+                pre_name = bez_polskich_znakow(str(user_name).replace(' ', '-').lower())
+                pre_role = bez_polskich_znakow(str(user_role).replace(' ', '-').lower())
+                memeber_route = f'{pre_role}-{pre_name}'
+
             theme = {
                 'ID': int(data[0]),
                 'EMPLOYEE_PHOTO': data[1],
@@ -762,12 +772,6 @@ def team():
 
 # Szczegóły członka zespołu
 def team_memeber_router():
-    def bez_polskich_znakow(text):
-        """Zamienia polskie znaki na zwykłe litery."""
-        return ''.join(
-            c for c in unicodedata.normalize('NFD', text)
-            if unicodedata.category(c) != 'Mn'
-        )
     generator_teamDB_v = generator_teamDB()
     generator_userDataDB_v = generator_userDataDB()
     theme_id = {}
@@ -791,9 +795,9 @@ def team_memeber_router():
                     break
 
     return {
-        "by_id": theme_id,
-        "by_name": theme_name,
-        "by_login": theme_login
+            "by_id": theme_id,
+            "by_name": theme_name,
+            "by_login": theme_login
         }
 DYNAMIC_team_memeber_dict = team_memeber_router().get('by_id', {})
 @app.route('/zespol/<string:name_pracownika>')
