@@ -4,6 +4,7 @@ from wtforms import StringField, PasswordField, SubmitField
 from wtforms.validators import DataRequired
 import imghdr
 from werkzeug.utils import secure_filename
+from PIL import Image
 import redis
 from bin.config_utils import SESSION_FLASK_KEY
 import app.utils.passwordSalt as hash
@@ -186,6 +187,44 @@ def validate_register_data(data, existing_users):
             errors.append("Pole 'Opis pracownika' jest wymagane dla pracownika.")
 
     return errors
+
+
+
+def process_photo(photo, save_path):
+    try:
+        # Otwórz obraz
+        img = Image.open(photo)
+
+        # Sprawdzenie orientacji obrazu (portretowa)
+        width, height = img.size
+        if width > height:
+            raise ValueError("Zdjęcie nie jest w orientacji portretowej.")
+
+        # Zmniejszenie do podstawy 350px, zachowując proporcje
+        base_width = 350
+        ratio = base_width / width
+        new_height = int(height * ratio)
+        img = img.resize((base_width, new_height), Image.ANTIALIAS)
+
+        # Przycinanie do wymiarów 350x380px
+        target_height = 380
+        if new_height > target_height:
+            # Obcięcie równo na środku
+            top = (new_height - target_height) // 2
+            bottom = top + target_height
+            img = img.crop((0, top, base_width, bottom))
+        elif new_height < target_height:
+            # Dodaj tło, jeśli wysokość jest za mała
+            background = Image.new("RGB", (base_width, target_height), (255, 255, 255))
+            offset = (0, (target_height - new_height) // 2)
+            background.paste(img, offset)
+            img = background
+
+        # Zapisz przetworzony obraz
+        img.save(save_path)
+    except Exception as e:
+        raise ValueError(f"Nie udało się przetworzyć obrazu: {e}")
+    
 
 ############################
 ##      ######           ###
@@ -407,7 +446,7 @@ def register():
 
         # Zapisz zdjęcie
         try:
-            photo.save(save_path)
+            process_photo(photo, save_path)
         except Exception as e:
             return jsonify({"errors": ["Nie udało się zapisać przesłanego pliku."]}), 500
 
