@@ -242,8 +242,6 @@ def favicon():
         mimetype='image/png'
     )
 
-
-
 # ERROR 404
 @app.errorhandler(404)
 def page_not_found(e):
@@ -367,8 +365,8 @@ def register():
 
     # Obsługa zdjęcia
     photo = request.files.get('photo')
-    # if photo:
-    #     photo.save(f"uploads/{photo.filename}")  # Zapis zdjęcia do folderu uploads
+    if photo:
+        photo.save(f"static/img/doctor/{photo.filename}")  # Zapis zdjęcia do folderu uploads
     print(request.form)
 
     # Walidacja danych
