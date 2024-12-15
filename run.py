@@ -413,7 +413,6 @@ def preparoator_team(deaprtment_team='user', highlight=4):
             assigned_duodent.append(u_login)
 
 
-    print('assigned_duodent', assigned_duodent)
     
     # Struktura kolekcji
     collections = {
@@ -428,7 +427,10 @@ def preparoator_team(deaprtment_team='user', highlight=4):
 
     i_duodent = 1
     # Iteracja przez pracowników z generator_teamDB
-    for employees in generator_teamDB():  # [Dostosowane do aktualnej struktury]
+    generator_teamDB_v = generator_teamDB()
+    print('generator_teamDB_v', generator_teamDB_v)
+    print('assigned_duodent', assigned_duodent)
+    for employees in generator_teamDB_v:  # [Dostosowane do aktualnej struktury]
         group = employees['EMPLOYEE_DEPARTMENT']
         department = str(group)
         employee = employees['EMPLOYEE_NAME']
