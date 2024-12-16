@@ -277,7 +277,7 @@
 
 
   .worker-on-home {
-    background-color: #9f9f9f !important;
+    background-color: #bcced3 !important;
   }
   
   .dostepnyPracownik {
@@ -292,7 +292,7 @@
   }
   
   .dostepnyPracownik:hover {
-    background-color: #bdbdbd;
+    background-color: #c6d3d7;
   }
   
   .team-avatar {
