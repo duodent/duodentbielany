@@ -271,13 +271,13 @@
     min-height: 100px;
     padding: 10px;
     background-color: #cbd4db;
-    border: 1px solid #003352;
+    border: 1px solid #246a96;
     border-radius: 5px;
   }
 
 
   .worker-on-home {
-    background-color: #006384 !important;
+    background-color: #829aa1 !important;
   }
   
   .dostepnyPracownik {
@@ -286,13 +286,13 @@
     margin-bottom: 10px;
     padding: 10px;
     border-radius: 5px;
-    border: 1px solid #003352;
+    border: 1px solid #246a96;
     background-color: #cbd4db;
     color: #031430;
   }
   
   .dostepnyPracownik:hover {
-    background-color: #566c77;
+    background-color: #e5e5e5;
   }
   
   .team-avatar {
