@@ -271,13 +271,13 @@
     min-height: 100px;
     padding: 10px;
     background-color: #f0f0f0;
-    border: 1px solid #246a96;
+    border: 1px solid #9aa2a8;
     border-radius: 5px;
   }
 
 
   .worker-on-home {
-    background-color: #bcced3 !important;
+    background-color: #e2ecef !important;
   }
   
   .dostepnyPracownik {
@@ -286,8 +286,8 @@
     margin-bottom: 10px;
     padding: 10px;
     border-radius: 5px;
-    border: 1px solid #246a96;
     background-color: #f0f0f0;
+    border: 1px solid #9aa2a8;
     color: #031430;
   }
   
