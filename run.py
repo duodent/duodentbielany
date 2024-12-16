@@ -707,7 +707,7 @@ def register():
 
 
 # Poznaj nas bliżej
-@app.route('/o-nas-twoja-klinika-stomatologiczna')
+@app.route('/o-nas-twoja-przychodnia-stomatologiczna')
 def about_us():
     session['page'] = 'about_us'
     pageTitle = 'Poznaj nas bliżej'
@@ -883,7 +883,7 @@ def site_rules():
 @app.route('/kontakt-z-przychodnia-stomatologiczna', methods=['GET'])
 def contact_page():
     session['page'] = 'kontakt'
-    pageTitle = 'Kontakt z przychodnia stomatologiczną'
+    pageTitle = 'Kontakt z przychodnią stomatologiczną'
     return render_template('contact.html', pageTitle=pageTitle)
 
 # API do obsługi formularza i danych JSON
