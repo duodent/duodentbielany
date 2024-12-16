@@ -276,9 +276,13 @@
   }
 
 
-  .worker-on-home {
+.worker-on-home {
     background-color: #e1e1e1 !important;
-  }
+}
+
+.worker-on-home:hover {
+    background-color: #a8a8a8 !important;
+}
   
   .dostepnyPracownik {
     display: flex;
