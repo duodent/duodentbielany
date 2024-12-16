@@ -63,18 +63,16 @@
                             <span>{{memeber['EMPLOYEE_ROLE']}}</span>
                             <div class="share-link">
                                 {% if memeber['FACEBOOK'] %}
-                                    <a href="#"><i class="bx bxl-facebook"></i></a>
+                                    <a href="{{memeber['FACEBOOK']}}"><i class="bx bxl-facebook"></i></a>
                                 {% endif %}
                                 {% if memeber['LINKEDIN'] %}
-                                    <a href="#"><i class="bx bxl-linkedin"></i></a>
+                                    <a href="{{memeber['LINKEDIN']}}"><i class="bx bxl-linkedin"></i></a>
                                 {% endif %}
                             </div>
                         </div>
                     </div>
                 </div>
             {% endfor %}
-            
-            
         </div>
     </div>
 </section>
