@@ -880,10 +880,10 @@ def site_rules():
 
 # Kontakt
 # Strona kontaktu
-@app.route('/kontakt-z-klinika-stomatologiczna', methods=['GET'])
+@app.route('/kontakt-z-przychodnia-stomatologiczna', methods=['GET'])
 def contact_page():
     session['page'] = 'kontakt'
-    pageTitle = 'Kontakt z kliniką stomatologiczną'
+    pageTitle = 'Kontakt z przychodnia stomatologiczną'
     return render_template('contact.html', pageTitle=pageTitle)
 
 # API do obsługi formularza i danych JSON
