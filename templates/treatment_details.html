@@ -2,16 +2,16 @@
 {% block content %}
 
 <!-- page banner -->
-{% set bg_image_treatments_details = url_for('static', filename='img/banners/about-1-banner.jpg') %}
+{% set bg_image_treatments_details = url_for('static', filename='img/banners/zabieg-4-banner.jpg') %}
 <div class="page-banner-area mb-5" id="pageBanner" style="background-image: url('{{ bg_image_treatments_details }}');">
     <div class="container">
         <div class="page-banner-content">
             <div class="page-banner-content">
                 <h1 class="line">
-                    Odkryj <span>nasze</span> zabiegi
+                    Poznaj szczegóły zabiegu <span>{{pageTitle}}</span>
                 </h1>
                 <h1 class="line">
-                    Dbamy o Twój <span>uśmiech</span> każdego dnia
+                    Zadbaj o swój <span>uśmiech</span> już dziś
                 </h1>
             </div>
             <h2 class="line">{{pageTitle}}</h2>
