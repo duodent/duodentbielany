@@ -150,8 +150,8 @@ def generator_teamDB():
             user_role=data[4]
             if user_name and user_role:
                 # Zamiana polskich znaków na zwykłe litery
-                pre_name = bez_polskich_znakow(str(user_name).replace(' ', '-').lower())
-                pre_role = bez_polskich_znakow(str(user_role).replace(' ', '-').lower())
+                pre_name = bez_polskich_znakow(str(user_name).strip().replace(' ', '-').lower())
+                pre_role = bez_polskich_znakow(str(user_role).strip().replace(' ', '-').lower())
                 memeber_route = f'{pre_role}-{pre_name}'
 
             theme = {
@@ -692,8 +692,8 @@ def register():
 
     # Dane do zapytania
     dane = (
-        login, full_name, position, qualifications, experience, education, description,
-        email, hashed_password, salt, avatar, is_admin, is_super_user, is_user,
+        login.strip(), full_name.strip(), position.strip(), qualifications.strip(), experience.strip(), education.strip(), description.strip(),
+        email.strip(), hashed_password, salt, avatar.strip(), is_admin, is_super_user, is_user,
         phone, facebook, instagram, twitter, linkedin, user_status
     )
 
@@ -783,8 +783,8 @@ def team_memeber_router():
         user_login=memeber.get('EMPLOYEE_LOGIN', None)
         if user_name and user_role and user_login:
             # Zamiana polskich znaków na zwykłe litery
-            pre_name = bez_polskich_znakow(str(user_name).replace(' ', '-').lower())
-            pre_role = bez_polskich_znakow(str(user_role).replace(' ', '-').lower())
+            pre_name = bez_polskich_znakow(str(user_name).strip().replace(' ', '-').lower())
+            pre_role = bez_polskich_znakow(str(user_role).strip().replace(' ', '-').lower())
 
             create_route = f'{pre_role}-{pre_name}'
             for admin in generator_userDataDB_v:
