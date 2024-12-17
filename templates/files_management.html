@@ -1,5 +1,5 @@
 <h1>Zarządzanie Plikami</h1>
-
+{{categorized_files}}
 {% for item in categorized_files %}
     <h2>Kategoria: {{ item.category }}</h2>
     <ul>
@@ -15,7 +15,7 @@
 {% endfor %}
 
 <h1>Zarządzanie Kategoriami</h1>
-
+{{categories}}
 <!-- Formularz dodawania kategorii -->
 <form id="add-category-form">
     <input type="text" id="category-name" placeholder="Nazwa kategorii" required>
