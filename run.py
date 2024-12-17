@@ -614,7 +614,7 @@ def dokumenty():
     
     categs = get_categories()
     categorized_files = []
-
+    categories_names = []
     if categs:  # Jeśli istnieją kategorie
         for category in categs:
             category_id = category['id']
@@ -625,10 +625,12 @@ def dokumenty():
                 'category': category['name'],
                 'file_list': file_list,
             })
+            categories_names.append(category['name'])
 
     return render_template(
         "files_management.html", 
-        categorized_files=categorized_files  # Lista kategorii z plikami
+        categorized_files=categorized_files,  # Lista kategorii z plikami,
+        categories = categories_names
     )
 
 @app.route('/admin/aktualizuj_kolejnosc', methods=['POST'])
