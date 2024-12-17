@@ -638,7 +638,7 @@ def update_category_order():
     """Aktualizacja kolejności kategorii."""
     data = request.get_json()
     new_order = data.get('order')  # Lista z ID kategorii w nowej kolejności
-
+    print(data, new_order)
     if not new_order or not isinstance(new_order, list):
         return jsonify({"status": "error", "message": "Nieprawidłowe dane"}), 400
 
