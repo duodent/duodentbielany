@@ -31,6 +31,8 @@
 
 <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.14.0/Sortable.min.js"></script>
 <script>
+
+
 document.addEventListener('DOMContentLoaded', function() {
     // Dodawanie nowej kategorii
     document.getElementById('add-category-form').addEventListener('submit', function(e) {
@@ -42,10 +44,19 @@ document.addEventListener('DOMContentLoaded', function() {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ name: categoryName, position: 0 })
         })
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) {
+                return response.text().then(err => { throw new Error(err); });
+            }
+            return response.json(); // Próbujemy sparsować JSON
+        })
         .then(data => {
             alert(data.message);
-            location.reload(); // Odświeżenie listy
+            location.reload();
+        })
+        .catch(error => {
+            console.error('Błąd:', error);
+            alert('Wystąpił błąd: ' + error.message);
         });
     });
 

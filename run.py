@@ -601,6 +601,7 @@ def get_fileBy_categories(category_id, route_name="/dokumenty/", status_aktywnos
     got_data = msq.safe_connect_to_database(query, params)
     ready_list = [{"name":rekord[0], "file_name": f"{route_name}{rekord[1]}"} for rekord in got_data ]
     return ready_list
+
 @app.route('/admin/dokumenty')
 def dokumenty():
     """Strona plików do pobrania."""
@@ -646,6 +647,26 @@ def update_category_order():
         msq.insert_to_database(query, params)
 
     return jsonify({"status": "success", "message": "Kolejność zaktualizowana"})
+
+@app.route('/admin/dodaj_kategorie', methods=['POST'])
+def add_category():
+    """Dodawanie nowej kategorii."""
+    try:
+        data = request.get_json()
+        category_name = data.get('name')
+        position = data.get('position', 0)  # Domyślna pozycja to 0
+
+        if not category_name:
+            return jsonify({"status": "error", "message": "Nazwa kategorii jest wymagana"}), 400
+
+        query = "INSERT INTO file_categories (name, position) VALUES (%s, %s);"
+        params = (category_name, position)
+        msq.insert_to_database(query, params)
+
+        return jsonify({"status": "success", "message": "Kategoria dodana pomyślnie"})
+    except Exception as e:
+        print(e)  # Logowanie błędu w konsoli serwera
+        return jsonify({"status": "error", "message": "Błąd serwera"}), 500
 
 # Strona główna
 @app.route('/')
