@@ -583,6 +583,70 @@ def ustawieni_pracownicy():
 def inject_shared_variable():
     return {'userName': session.get("username", 'NotLogin')}
 
+def get_categories():
+    query = "SELECT id, name, position FROM file_categories ORDER BY position ASC;"
+    params = ()
+    got_data = msq.safe_connect_to_database(query, params)
+    ready_list = [{'id': rekord[0] ,'name':rekord[1], 'position': rekord[1]} for rekord in got_data ]
+    return ready_list
+
+def get_fileBy_categories(category_id, route_name="/dokumenty/", status_aktywnosci=False):
+    if status_aktywnosci:
+        query = f"SELECT name, file_name FROM files WHERE category_id=%s AND status_aktywnosci=%s;"
+        params = (category_id, 1)
+    else:
+        query = f"SELECT name, file_name FROM files WHERE category_id=%s;"
+        params = (category_id, )
+
+    got_data = msq.safe_connect_to_database(query, params)
+    ready_list = [{"name":rekord[0], "file_name": f"{route_name}{rekord[1]}"} for rekord in got_data ]
+    return ready_list
+@app.route('/admin/dokumenty')
+def dokumenty():
+    """Strona plików do pobrania."""
+    if 'username' not in session:
+        return redirect(url_for('index'))
+    
+    if not (session['userperm']['administrator'] == 1 or session['userperm']['super_user'] == 1):
+        flash('Nie masz uprawnień do zarządzania tymi zasobami. Skontaktuj się z administratorem!', 'danger')
+        return redirect(url_for('index'))
+    
+    categs = get_categories()
+    categorized_files = []
+
+    if categs:  # Jeśli istnieją kategorie
+        for category in categs:
+            category_id = category['id']
+            file_list = get_fileBy_categories(category_id, status_aktywnosci=True)
+            
+            # Dodajemy słownik z kategorią i listą plików
+            categorized_files.append({
+                'category': category['name'],
+                'file_list': file_list,
+            })
+
+    return render_template(
+        "files_management.html", 
+        categorized_files=categorized_files  # Lista kategorii z plikami
+    )
+
+@app.route('/admin/aktualizuj_kolejnosc', methods=['POST'])
+def update_category_order():
+    """Aktualizacja kolejności kategorii."""
+    data = request.get_json()
+    new_order = data.get('order')  # Lista z ID kategorii w nowej kolejności
+
+    if not new_order or not isinstance(new_order, list):
+        return jsonify({"status": "error", "message": "Nieprawidłowe dane"}), 400
+
+    # Aktualizacja kolejności w bazie
+    for index, category_id in enumerate(new_order):
+        query = "UPDATE file_categories SET position = %s WHERE id = %s;"
+        params = (index + 1, category_id)
+        msq.insert_to_database(query, params)
+
+    return jsonify({"status": "success", "message": "Kolejność zaktualizowana"})
+
 # Strona główna
 @app.route('/')
 def index():

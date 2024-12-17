@@ -1,0 +1,71 @@
+<h1>Zarządzanie Plikami</h1>
+
+{% for item in categorized_files %}
+    <h2>Kategoria: {{ item.category }}</h2>
+    <ul>
+        {% for file in item.file_list %}
+            <li>
+                {{ file.name }} 
+                - <a href="{{ file.file_name }}" download>Pobierz</a>
+            </li>
+        {% else %}
+            <li>Brak aktywnych plików w tej kategorii.</li>
+        {% endfor %}
+    </ul>
+{% endfor %}
+
+<h1>Zarządzanie Kategoriami</h1>
+
+<!-- Formularz dodawania kategorii -->
+<form id="add-category-form">
+    <input type="text" id="category-name" placeholder="Nazwa kategorii" required>
+    <button type="submit">Dodaj kategorię</button>
+</form>
+
+<!-- Lista kategorii do sortowania -->
+<ul id="category-list">
+    {% for category in categories %}
+        <li data-id="{{ category.id }}">{{ category.name }}</li>
+    {% endfor %}
+</ul>
+
+<script src="https://cdn.jsdelivr.net/npm/sortablejs@1.14.0/Sortable.min.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Dodawanie nowej kategorii
+    document.getElementById('add-category-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const categoryName = document.getElementById('category-name').value;
+
+        fetch('/admin/dodaj_kategorie', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name: categoryName, position: 0 })
+        })
+        .then(response => response.json())
+        .then(data => {
+            alert(data.message);
+            location.reload(); // Odświeżenie listy
+        });
+    });
+
+    // Sortowanie listy kategorii
+    const categoryList = document.getElementById('category-list');
+    new Sortable(categoryList, {
+        animation: 150,
+        onEnd: function() {
+            const newOrder = Array.from(categoryList.children).map(item => item.dataset.id);
+
+            fetch('/admin/aktualizuj_kolejnosc', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ order: newOrder })
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert(data.message);
+            });
+        }
+    });
+});
+</script>
