@@ -629,8 +629,8 @@ def dokumenty():
 
     return render_template(
         "files_management.html", 
-        categorized_files=categorized_files,  # Lista kategorii z plikami,
-        categories = categories_names
+        categorized_files=categorized_files,  # Lista kategorii z plikami
+        categories=categs  # Pełna lista kategorii z ID i name
     )
 
 @app.route('/admin/aktualizuj_kolejnosc', methods=['POST'])
