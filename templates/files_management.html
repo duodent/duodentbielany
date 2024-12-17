@@ -31,8 +31,6 @@
 
 <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.14.0/Sortable.min.js"></script>
 <script>
-
-
 document.addEventListener('DOMContentLoaded', function() {
     // Dodawanie nowej kategorii
     document.getElementById('add-category-form').addEventListener('submit', function(e) {
@@ -48,7 +46,7 @@ document.addEventListener('DOMContentLoaded', function() {
             if (!response.ok) {
                 return response.text().then(err => { throw new Error(err); });
             }
-            return response.json(); // Próbujemy sparsować JSON
+            return response.json();
         })
         .then(data => {
             alert(data.message);
@@ -60,13 +58,15 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Sortowanie listy kategorii
+    // Sortowanie kategorii
     const categoryList = document.getElementById('category-list');
     new Sortable(categoryList, {
         animation: 150,
         onEnd: function() {
+            // Pobieramy listę ID z data-id
             const newOrder = Array.from(categoryList.children).map(item => item.dataset.id);
 
+            // Wysyłamy listę ID do serwera
             fetch('/admin/aktualizuj_kolejnosc', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -75,8 +75,13 @@ document.addEventListener('DOMContentLoaded', function() {
             .then(response => response.json())
             .then(data => {
                 alert(data.message);
+            })
+            .catch(error => {
+                console.error('Błąd:', error);
+                alert('Wystąpił błąd: ' + error.message);
             });
         }
     });
 });
+
 </script>
