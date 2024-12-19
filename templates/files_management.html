@@ -7,6 +7,7 @@
             <li>
                 {{ file.name }} 
                 - <a href="/{{ file.file_name }}" download>Pobierz</a>
+                - <button class="delete-file" data-file-name="{{ file.file_name }}">Usuń</button>
             </li>
         {% else %}
             <li>Brak aktywnych plików w tej kategorii.</li>
@@ -228,6 +229,34 @@ document.addEventListener('DOMContentLoaded', function() {
                 modal.style.display = 'none';
                 currentCategoryId = null;
             });
+    });
+
+    document.querySelectorAll('.delete-file').forEach(button => {
+        button.addEventListener('click', function () {
+            const fileName = this.dataset.fileName;
+
+            if (confirm('Czy na pewno chcesz usunąć ten plik?')) {
+                fetch('/admin/usun_plik', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ file_name: fileName })
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        return response.text().then(err => { throw new Error(err); });
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    alert(data.message);
+                    location.reload();
+                })
+                .catch(error => {
+                    console.error('Błąd:', error);
+                    alert('Wystąpił błąd: ' + error.message);
+                });
+            }
+        });
     });
 });
 

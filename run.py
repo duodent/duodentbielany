@@ -717,41 +717,28 @@ def upload_file():
     else:
         return jsonify({"status": "error", "message": "Nieprawidłowy typ pliku"}), 400
 
+@app.route('/admin/usun_plik', methods=['POST'])
+def delete_file():
+    """Usuwanie pliku."""
+    data = request.get_json()
+    file_name = data.get('file_name')
 
-# def upload_file_old():
-#     """Dodawanie pliku do kategorii."""
-#     if 'file' not in request.files:
-#         return jsonify({"status": "error", "message": "Brak pliku w zapytaniu"}), 400
-    
-#     file = request.files['file']
-#     category_id = request.form.get('category_id')
-#     name = request.form.get('name')
+    if not file_name:
+        return jsonify({"status": "error", "message": "Nazwa pliku jest wymagana"}), 400
 
-#     if not category_id or not name:
-#         return jsonify({"status": "error", "message": "Kategoria i nazwa pliku są wymagane"}), 400
-    
-#     if file and allowed_file(file.filename):
-#         # Ścieżka do zapisu pliku
-#         save_path = os.path.join(app.config['UPLOAD_FOLDER'], new_file_name)
-#         file.save(save_path)
+    # Ścieżka do pliku
+    file_path = os.path.join(app.config['UPLOAD_FOLDER'], os.path.basename(file_name))  # Bezpieczne dołączanie nazwy pliku
+    if os.path.exists(file_path):
+        os.remove(file_path)
+    else:
+        return jsonify({"status": "error", "message": "Plik nie istnieje na serwerze"}), 404
 
+    # Usunięcie rekordu z bazy danych
+    query = "DELETE FROM files WHERE file_name = %s;"
+    params = (os.path.basename(file_name),)  # Użycie tylko nazwy pliku (bez ścieżki)
+    msq.delete_row_from_database(query, params)
 
-#         filename = secure_filename(file.filename)
-#         # Używamy zdefiniowanej ścieżki
-#         save_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-#         file.save(save_path)
-        
-#         # Zapis informacji o pliku w bazie danych
-#         query = """
-#             INSERT INTO files (name, file_name, category_id, status_aktywnosci) 
-#             VALUES (%s, %s, %s, %s);
-#         """
-#         params = (name, filename, category_id, 1)
-#         msq.insert_to_database(query, params)
-
-#         return jsonify({"status": "success", "message": "Plik dodany pomyślnie"})
-#     else:
-#         return jsonify({"status": "error", "message": "Nieprawidłowy typ pliku"}), 400
+    return jsonify({"status": "success", "message": "Plik został usunięty pomyślnie"})
 
 @app.route('/admin/edytuj_kategorie', methods=['POST'])
 def edit_category():
