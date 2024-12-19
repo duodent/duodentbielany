@@ -715,6 +715,7 @@ def delete_category():
     if not category_id:
         return jsonify({"status": "error", "message": "ID kategorii jest wymagane"}), 400
 
+    print(app.config['UPLOAD_FOLDER'])
     # Pobranie listy plików dla danej kategorii z pełną ścieżką systemową
     files = get_fileBy_categories(category_id, route_name=app.config['UPLOAD_FOLDER'])
 
