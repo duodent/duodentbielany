@@ -740,6 +740,23 @@ def delete_file():
 
     return jsonify({"status": "success", "message": "Plik został usunięty pomyślnie"})
 
+@app.route('/admin/edytuj_nazwe_pliku', methods=['POST'])
+def edit_file_name():
+    """Edycja nazwy wyświetlanej pliku."""
+    data = request.get_json()
+    file_id = data.get('file_id')
+    new_name = data.get('new_name')
+
+    if not file_id or not new_name:
+        return jsonify({"status": "error", "message": "ID pliku i nowa nazwa są wymagane"}), 400
+
+    # Aktualizacja nazwy w bazie danych
+    query = "UPDATE files SET name = %s WHERE id = %s;"
+    params = (new_name, file_id)
+    msq.insert_to_database(query, params)
+
+    return jsonify({"status": "success", "message": "Nazwa pliku została zaktualizowana pomyślnie"})
+
 @app.route('/admin/edytuj_kategorie', methods=['POST'])
 def edit_category():
     """Edycja nazwy kategorii."""
