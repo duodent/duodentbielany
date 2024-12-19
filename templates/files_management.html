@@ -6,7 +6,7 @@
         {% for file in item.file_list %}
             <li>
                 {{ file.name }} 
-                - <a href="{{ file.file_name }}" download>Pobierz</a>
+                - <a href="/{{ file.file_name }}" download>Pobierz</a>
             </li>
         {% else %}
             <li>Brak aktywnych plików w tej kategorii.</li>

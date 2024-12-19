@@ -592,7 +592,7 @@ def get_categories():
     ready_list = [{'id': rekord[0] ,'name':rekord[1], 'position': rekord[2]} for rekord in got_data ]
     return ready_list
 
-def get_fileBy_categories(category_id, route_name="/dokumenty/", status_aktywnosci=False):
+def get_fileBy_categories(category_id, route_name="dokumenty/", status_aktywnosci=False):
     if status_aktywnosci:
         query = f"SELECT name, file_name FROM files WHERE category_id=%s AND status_aktywnosci=%s;"
         params = (category_id, 1)
@@ -601,7 +601,12 @@ def get_fileBy_categories(category_id, route_name="/dokumenty/", status_aktywnos
         params = (category_id, )
 
     got_data = msq.safe_connect_to_database(query, params)
-    ready_list = [{"name":rekord[0], "file_name": f"{route_name}{rekord[1]}"} for rekord in got_data ]
+    # ready_list = [{"name":rekord[0], "file_name": f"{route_name}{rekord[1]}"} for rekord in got_data ]
+    # Poprawne łączenie ścieżek
+    ready_list = [{
+        "name": rekord[0],
+        "file_name": os.path.join(route_name, rekord[1])  # Używamy os.path.join dla poprawnego separatora
+    } for rekord in got_data]
     return ready_list
 
 @app.route('/admin/dokumenty')
