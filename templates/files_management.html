@@ -133,6 +133,34 @@ document.addEventListener('DOMContentLoaded', function() {
             alert('Wystąpił błąd: ' + error.message);
         });
     });
+
+    document.querySelectorAll('.delete-category').forEach(button => {
+        button.addEventListener('click', function() {
+            const categoryId = this.dataset.id;
+
+            if (confirm('Czy na pewno chcesz usunąć tę kategorię wraz z powiązanymi plikami?')) {
+                fetch('/admin/usun_kategorie', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ category_id: categoryId })
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        return response.text().then(err => { throw new Error(err); });
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    alert(data.message);
+                    location.reload();
+                })
+                .catch(error => {
+                    console.error('Błąd:', error);
+                    alert('Wystąpił błąd: ' + error.message);
+                });
+            }
+        });
+    });
 });
 
 </script>
