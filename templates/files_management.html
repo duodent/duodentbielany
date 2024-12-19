@@ -14,6 +14,21 @@
     </ul>
 {% endfor %}
 
+<ul id="category-list">
+    {% for category in categories %}
+    <li data-id="{{ category.id }}">
+        <span class="category-name">{{ category.name }}</span>
+        <button class="edit-category" data-id="{{ category.id }}">Edytuj</button>
+    </li>
+    {% endfor %}
+</ul>
+
+<!-- Formularz edycji nazwy kategorii -->
+<div id="edit-category-modal" style="display: none;">
+    <input type="text" id="edit-category-name" placeholder="Nowa nazwa kategorii" required>
+    <button id="save-category-name">Zapisz</button>
+    <button id="cancel-edit">Anuluj</button>
+</div>
 
 <h1>Zarządzanie Kategoriami</h1>
 {{categories}}
@@ -160,6 +175,59 @@ document.addEventListener('DOMContentLoaded', function() {
                 });
             }
         });
+    });
+
+    const modal = document.getElementById('edit-category-modal');
+    const input = document.getElementById('edit-category-name');
+    let currentCategoryId = null;
+
+    // Obsługa kliknięcia w "Edytuj"
+    document.querySelectorAll('.edit-category').forEach(button => {
+        button.addEventListener('click', function () {
+            currentCategoryId = this.dataset.id;
+            const currentName = this.parentElement.querySelector('.category-name').textContent;
+            input.value = currentName;
+            modal.style.display = 'block';
+        });
+    });
+
+    // Anulowanie edycji
+    document.getElementById('cancel-edit').addEventListener('click', function () {
+        modal.style.display = 'none';
+        currentCategoryId = null;
+    });
+
+    // Zapisanie nowej nazwy
+    document.getElementById('save-category-name').addEventListener('click', function () {
+        const newName = input.value.trim();
+        if (!newName) {
+            alert('Nowa nazwa kategorii nie może być pusta.');
+            return;
+        }
+
+        fetch('/admin/edytuj_kategorie', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ category_id: currentCategoryId, new_name: newName })
+        })
+            .then(response => {
+                if (!response.ok) {
+                    return response.text().then(err => { throw new Error(err); });
+                }
+                return response.json();
+            })
+            .then(data => {
+                alert(data.message);
+                location.reload();
+            })
+            .catch(error => {
+                console.error('Błąd:', error);
+                alert('Wystąpił błąd: ' + error.message);
+            })
+            .finally(() => {
+                modal.style.display = 'none';
+                currentCategoryId = null;
+            });
     });
 });
 

@@ -710,7 +710,25 @@ def upload_file():
         return jsonify({"status": "success", "message": "Plik dodany pomyślnie"})
     else:
         return jsonify({"status": "error", "message": "Nieprawidłowy typ pliku"}), 400
-    
+
+@app.route('/admin/edytuj_kategorie', methods=['POST'])
+def edit_category():
+    """Edycja nazwy kategorii."""
+    data = request.get_json()
+    category_id = data.get('category_id')
+    new_name = data.get('new_name')
+
+    if not category_id or not new_name:
+        return jsonify({"status": "error", "message": "ID kategorii i nowa nazwa są wymagane"}), 400
+
+    # Aktualizacja nazwy kategorii w bazie danych
+    query = "UPDATE file_categories SET name = %s WHERE id = %s;"
+    params = (new_name, category_id)
+    msq.insert_to_database(query, params)
+
+    return jsonify({"status": "success", "message": "Nazwa kategorii została zaktualizowana pomyślnie"})
+
+
 @app.route('/admin/usun_kategorie', methods=['POST'])
 def delete_category():
     """Usuwanie kategorii wraz z plikami."""
