@@ -744,6 +744,8 @@ def delete_file():
 def edit_file_name():
     """Edycja nazwy wyświetlanej pliku."""
     data = request.get_json()
+    print("Otrzymane dane:", data)  # Logowanie danych
+
     file_id = data.get('file_id')
     new_name = data.get('new_name')
 

@@ -294,6 +294,8 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
 
+        console.log({ file_id: currentFileId, new_name: newName }); // Logowanie danych przed wysłaniem
+
         fetch('/admin/edytuj_nazwe_pliku', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -301,7 +303,7 @@ document.addEventListener('DOMContentLoaded', function() {
         })
         .then(response => {
             if (!response.ok) {
-                return response.text().then(err => { throw new Error(err); });
+                return response.json().then(err => { throw new Error(err.message); });
             }
             return response.json();
         })
@@ -312,10 +314,6 @@ document.addEventListener('DOMContentLoaded', function() {
         .catch(error => {
             console.error('Błąd:', error);
             alert('Wystąpił błąd: ' + error.message);
-        })
-        .finally(() => {
-            editModal.style.display = 'none';
-            currentFileId = null;
         });
     });
 });
