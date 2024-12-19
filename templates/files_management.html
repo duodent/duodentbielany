@@ -5,15 +5,22 @@
     <ul>
         {% for file in item.file_list %}
             <li>
-                {{ file.name }} 
+                <span class="file-name">{{ file.name }}</span>
                 - <a href="/{{ file.file_name }}" download>Pobierz</a>
-                - <button class="delete-file" data-file-name="{{ file.file_name }}">Usuń</button>
+                - <button class="edit-file-name" data-file-id="{{ file.id }}">Edytuj nazwę</button>
             </li>
         {% else %}
             <li>Brak aktywnych plików w tej kategorii.</li>
         {% endfor %}
     </ul>
 {% endfor %}
+
+<!-- Modal do edycji nazwy wyświetlanej pliku -->
+<div id="edit-file-modal" style="display: none;">
+    <input type="text" id="edit-file-input" placeholder="Nowa nazwa wyświetlana pliku" required>
+    <button id="edit-file-save">Zapisz</button>
+    <button id="edit-file-cancel">Anuluj</button>
+</div>
 
 <ul id="category-list">
     {% for category in categories %}
@@ -256,6 +263,59 @@ document.addEventListener('DOMContentLoaded', function() {
                     alert('Wystąpił błąd: ' + error.message);
                 });
             }
+        });
+    });
+
+    const editModal = document.getElementById('edit-file-modal');
+    const editInput = document.getElementById('edit-file-input');
+    let currentFileId = null;
+
+    // Obsługa kliknięcia w "Edytuj nazwę"
+    document.querySelectorAll('.edit-file-name').forEach(button => {
+        button.addEventListener('click', function () {
+            currentFileId = this.dataset.fileId;
+            const currentName = this.parentElement.querySelector('.file-name').textContent;
+            editInput.value = currentName;
+            editModal.style.display = 'block';
+        });
+    });
+
+    // Anulowanie edycji
+    document.getElementById('edit-file-cancel').addEventListener('click', function () {
+        editModal.style.display = 'none';
+        currentFileId = null;
+    });
+
+    // Zapisanie nowej nazwy
+    document.getElementById('edit-file-save').addEventListener('click', function () {
+        const newName = editInput.value.trim();
+        if (!newName) {
+            alert('Nowa nazwa pliku nie może być pusta.');
+            return;
+        }
+
+        fetch('/admin/edytuj_nazwe_pliku', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ file_id: currentFileId, new_name: newName })
+        })
+        .then(response => {
+            if (!response.ok) {
+                return response.text().then(err => { throw new Error(err); });
+            }
+            return response.json();
+        })
+        .then(data => {
+            alert(data.message);
+            location.reload();
+        })
+        .catch(error => {
+            console.error('Błąd:', error);
+            alert('Wystąpił błąd: ' + error.message);
+        })
+        .finally(() => {
+            editModal.style.display = 'none';
+            currentFileId = null;
         });
     });
 });
