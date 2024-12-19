@@ -715,9 +715,8 @@ def delete_category():
     if not category_id:
         return jsonify({"status": "error", "message": "ID kategorii jest wymagane"}), 400
 
-    print(app.config['UPLOAD_FOLDER'])
     # Pobranie listy plików dla danej kategorii z pełną ścieżką systemową
-    files = get_fileBy_categories(category_id, route_name=app.config['UPLOAD_FOLDER'])
+    files = get_fileBy_categories(category_id)
 
     # Usunięcie plików fizycznie z serwera
     for file in files:
@@ -738,6 +737,27 @@ def delete_category():
     msq.delete_row_from_database(query_delete_category, params_category)
 
     return jsonify({"status": "success", "message": "Kategoria i powiązane pliki zostały usunięte pomyślnie"})
+
+# Dla Pacjenta
+@app.route('/informacje-dla-pacjentow-stomatologicznych')
+def for_patients():
+    session['page'] = 'for_patients'
+    pageTitle = 'Dla Pacjenta'
+    return render_template(
+        'for_patients.html',
+        pageTitle=pageTitle
+    )
+
+@app.route('/dokumenty/<path:filename>')
+def download_file(filename):
+    # Sprawdź, czy plik istnieje w katalogu
+    file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+    if os.path.exists(file_path) and os.path.isfile(file_path):
+        return send_from_directory(app.config['UPLOAD_FOLDER'], filename, as_attachment=True)
+    else:
+        # Zwróć błąd 404, jeśli plik nie istnieje
+        abort(404)
+
 # Strona główna
 @app.route('/')
 def index():
@@ -983,25 +1003,7 @@ def team_mambers(name_pracownika):
     else:
         abort(404)
 
-# Dla Pacjenta
-@app.route('/informacje-dla-pacjentow-stomatologicznych')
-def for_patients():
-    session['page'] = 'for_patients'
-    pageTitle = 'Dla Pacjenta'
-    return render_template(
-        'for_patients.html',
-        pageTitle=pageTitle
-    )
 
-@app.route('/dokumenty/<path:filename>')
-def download_file(filename):
-    # Sprawdź, czy plik istnieje w katalogu
-    file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-    if os.path.exists(file_path) and os.path.isfile(file_path):
-        return send_from_directory(app.config['UPLOAD_FOLDER'], filename, as_attachment=True)
-    else:
-        # Zwróć błąd 404, jeśli plik nie istnieje
-        abort(404)
 
 # Polityka Prywatności
 @app.route('/polityka-prywatnosci')
