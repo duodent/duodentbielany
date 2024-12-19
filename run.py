@@ -587,7 +587,7 @@ def get_categories():
     query = "SELECT id, name, position FROM file_categories ORDER BY position ASC;"
     params = ()
     got_data = msq.safe_connect_to_database(query, params)
-    ready_list = [{'id': rekord[0] ,'name':rekord[1], 'position': rekord[1]} for rekord in got_data ]
+    ready_list = [{'id': rekord[0] ,'name':rekord[1], 'position': rekord[2]} for rekord in got_data ]
     return ready_list
 
 def get_fileBy_categories(category_id, route_name="/dokumenty/", status_aktywnosci=False):
