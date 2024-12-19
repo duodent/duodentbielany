@@ -705,7 +705,7 @@ def upload_file():
         return jsonify({"status": "success", "message": "Plik dodany pomyślnie"})
     else:
         return jsonify({"status": "error", "message": "Nieprawidłowy typ pliku"}), 400
-
+    
 @app.route('/admin/usun_kategorie', methods=['POST'])
 def delete_category():
     """Usuwanie kategorii wraz z plikami."""
@@ -720,7 +720,7 @@ def delete_category():
 
     # Usunięcie plików fizycznie z serwera
     for file in files:
-        file_path = os.path.abspath(file["file_name"])  # Budowanie pełnej ścieżki
+        file_path = file["file_name"]  # Ścieżka systemowa została już zbudowana w get_fileBy_categories
         if os.path.exists(file_path):
             os.remove(file_path)
         else:
@@ -729,15 +729,14 @@ def delete_category():
     # Usunięcie plików z bazy danych
     query_delete_files = "DELETE FROM files WHERE category_id = %s;"
     params_files = (category_id,)
-    msq.insert_to_database(query_delete_files, params_files)
+    msq.delete_row_from_database(query_delete_files, params_files)
 
     # Usunięcie kategorii z bazy danych
     query_delete_category = "DELETE FROM file_categories WHERE id = %s;"
     params_category = (category_id,)
-    msq.insert_to_database(query_delete_category, params_category)
+    msq.delete_row_from_database(query_delete_category, params_category)
 
     return jsonify({"status": "success", "message": "Kategoria i powiązane pliki zostały usunięte pomyślnie"})
-
 # Strona główna
 @app.route('/')
 def index():
