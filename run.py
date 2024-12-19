@@ -594,18 +594,19 @@ def get_categories():
 
 def get_fileBy_categories(category_id, route_name="dokumenty/", status_aktywnosci=False):
     if status_aktywnosci:
-        query = f"SELECT name, file_name FROM files WHERE category_id=%s AND status_aktywnosci=%s;"
+        query = f"SELECT id, name, file_name FROM files WHERE category_id=%s AND status_aktywnosci=%s;"
         params = (category_id, 1)
     else:
-        query = f"SELECT name, file_name FROM files WHERE category_id=%s;"
+        query = f"SELECT id, name, file_name FROM files WHERE category_id=%s;"
         params = (category_id, )
 
     got_data = msq.safe_connect_to_database(query, params)
-    # ready_list = [{"name":rekord[0], "file_name": f"{route_name}{rekord[1]}"} for rekord in got_data ]
+
     # Poprawne łączenie ścieżek
     ready_list = [{
-        "name": rekord[0],
-        "file_name": os.path.join(route_name, rekord[1])  # Używamy os.path.join dla poprawnego separatora
+        "id": rekord[0],  # Dodanie ID pliku
+        "name": rekord[1],
+        "file_name": os.path.join(route_name, rekord[2])  # Używamy os.path.join dla poprawnego separatora
     } for rekord in got_data]
     return ready_list
 
@@ -645,7 +646,7 @@ def update_category_order():
     """Aktualizacja kolejności kategorii."""
     data = request.get_json()
     new_order = data.get('order')  # Lista z ID kategorii w nowej kolejności
-    print(data, new_order)
+    # print(data, new_order)
     if not new_order or not isinstance(new_order, list):
         return jsonify({"status": "error", "message": "Nieprawidłowe dane"}), 400
 
