@@ -22,14 +22,7 @@
     <button id="edit-file-cancel">Anuluj</button>
 </div>
 
-<ul id="category-list">
-    {% for category in categories %}
-    <li data-id="{{ category.id }}">
-        <span class="category-name">{{ category.name }}</span>
-        <button class="edit-category" data-id="{{ category.id }}">Edytuj</button>
-    </li>
-    {% endfor %}
-</ul>
+
 
 <!-- Formularz edycji nazwy kategorii -->
 <div id="edit-category-modal" style="display: none;">
@@ -47,9 +40,18 @@
 </form>
 
 <!-- Lista kategorii do sortowania -->
-<ul id="category-list">
+<ul id="category-list-sort">
     {% for category in categories %}
         <li data-id="{{ category.id }}">{{ category.name }}</li>
+    {% endfor %}
+</ul>
+
+<ul id="category-list">
+    {% for category in categories %}
+    <li data-id="{{ category.id }}">
+        <span class="category-name">{{ category.name }}</span>
+        <button class="edit-category" data-id="{{ category.id }}">Edytuj</button>
+    </li>
     {% endfor %}
 </ul>
 
@@ -105,7 +107,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // Sortowanie kategorii
-    const categoryList = document.getElementById('category-list');
+    const categoryList = document.getElementById('category-list-sort');
     new Sortable(categoryList, {
         animation: 150,
         onEnd: function() {
