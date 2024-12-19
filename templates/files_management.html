@@ -29,6 +29,19 @@
     {% endfor %}
 </ul>
 
+<h1>Dodaj Plik</h1>
+<form id="upload-file-form" enctype="multipart/form-data">
+    <select id="file-category" required>
+        <option value="">Wybierz kategorię</option>
+        {% for category in categories %}
+        <option value="{{ category.id }}">{{ category.name }}</option>
+        {% endfor %}
+    </select>
+    <input type="text" id="file-name" placeholder="Nazwa pliku" required>
+    <input type="file" id="file-input" required>
+    <button type="submit">Dodaj plik</button>
+</form>
+
 <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.14.0/Sortable.min.js"></script>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
@@ -81,6 +94,34 @@ document.addEventListener('DOMContentLoaded', function() {
                 alert('Wystąpił błąd: ' + error.message);
             });
         }
+    });
+
+    document.getElementById('upload-file-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const formData = new FormData();
+        formData.append('file', document.getElementById('file-input').files[0]);
+        formData.append('category_id', document.getElementById('file-category').value);
+        formData.append('name', document.getElementById('file-name').value);
+
+        fetch('/admin/dodaj_plik', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => {
+            if (!response.ok) {
+                return response.text().then(err => { throw new Error(err); });
+            }
+            return response.json();
+        })
+        .then(data => {
+            alert(data.message);
+            location.reload();
+        })
+        .catch(error => {
+            console.error('Błąd:', error);
+            alert('Wystąpił błąd: ' + error.message);
+        });
     });
 });
 

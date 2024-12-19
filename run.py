@@ -34,6 +34,8 @@ app.config['SESSION_REDIS'] = redis.StrictRedis(host='localhost', port=6379, db=
 # Ścieżka do katalogu z plikami
 UPLOAD_FOLDER = 'dokumenty'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}  # Rozszerzenia dozwolone
+
 
 # Ustawienie ilości elementów na stronę (nie dotyczy sesji)
 app.config['PER_PAGE'] = 6
@@ -669,6 +671,40 @@ def add_category():
     except Exception as e:
         print(e)  # Logowanie błędu w konsoli serwera
         return jsonify({"status": "error", "message": "Błąd serwera"}), 500
+
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+@app.route('/admin/dodaj_plik', methods=['POST'])
+def upload_file():
+    """Dodawanie pliku do kategorii."""
+    if 'file' not in request.files:
+        return jsonify({"status": "error", "message": "Brak pliku w zapytaniu"}), 400
+    
+    file = request.files['file']
+    category_id = request.form.get('category_id')
+    name = request.form.get('name')
+
+    if not category_id or not name:
+        return jsonify({"status": "error", "message": "Kategoria i nazwa pliku są wymagane"}), 400
+    
+    if file and allowed_file(file.filename):
+        filename = secure_filename(file.filename)
+        # Używamy zdefiniowanej ścieżki
+        save_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+        file.save(save_path)
+        
+        # Zapis informacji o pliku w bazie danych
+        query = """
+            INSERT INTO files (name, file_name, category_id, status_aktywnosci) 
+            VALUES (%s, %s, %s, %s);
+        """
+        params = (name, filename, category_id, 1)
+        msq.insert_to_database(query, params)
+
+        return jsonify({"status": "success", "message": "Plik dodany pomyślnie"})
+    else:
+        return jsonify({"status": "error", "message": "Nieprawidłowy typ pliku"}), 400
 
 # Strona główna
 @app.route('/')
