@@ -24,12 +24,7 @@
 
 
 
-<!-- Formularz edycji nazwy kategorii -->
-<div id="edit-category-modal" style="display: none;">
-    <input type="text" id="edit-category-name" placeholder="Nowa nazwa kategorii" required>
-    <button id="save-category-name">Zapisz</button>
-    <button id="cancel-edit">Anuluj</button>
-</div>
+
 
 <h1>Zarządzanie Kategoriami</h1>
 {{categories}}
@@ -54,6 +49,15 @@
     </li>
     {% endfor %}
 </ul>
+
+
+<!-- Formularz edycji nazwy kategorii -->
+<div id="edit-category-modal" style="display: none;">
+    <input type="text" id="edit-category-name" placeholder="Nowa nazwa kategorii" required>
+    <button id="save-category-name">Zapisz</button>
+    <button id="cancel-edit">Anuluj</button>
+</div>
+
 
 <ul id="category-list">
     {% for category in categories %}
