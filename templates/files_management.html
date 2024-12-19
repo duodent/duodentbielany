@@ -14,6 +14,7 @@
     </ul>
 {% endfor %}
 
+
 <h1>Zarządzanie Kategoriami</h1>
 {{categories}}
 <!-- Formularz dodawania kategorii -->
@@ -26,6 +27,15 @@
 <ul id="category-list">
     {% for category in categories %}
         <li data-id="{{ category.id }}">{{ category.name }}</li>
+    {% endfor %}
+</ul>
+
+<ul id="category-list">
+    {% for category in categories %}
+    <li data-id="{{ category.id }}">
+        {{ category.name }}
+        <button class="delete-category" data-id="{{ category.id }}">Usuń</button>
+    </li>
     {% endfor %}
 </ul>
 
