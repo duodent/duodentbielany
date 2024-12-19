@@ -37,15 +37,10 @@
 <!-- Lista kategorii do sortowania -->
 <ul id="category-list-sort">
     {% for category in categories %}
-        <li data-id="{{ category.id }}">{{ category.name }}</li>
-    {% endfor %}
-</ul>
-
-<ul id="category-list">
-    {% for category in categories %}
     <li data-id="{{ category.id }}">
         <span class="category-name">{{ category.name }}</span>
         <button class="edit-category" data-id="{{ category.id }}">Edytuj</button>
+        <button class="delete-category" data-id="{{ category.id }}">Usuń</button>
     </li>
     {% endfor %}
 </ul>
@@ -59,14 +54,6 @@
 </div>
 
 
-<ul id="category-list">
-    {% for category in categories %}
-    <li data-id="{{ category.id }}">
-        {{ category.name }}
-        <button class="delete-category" data-id="{{ category.id }}">Usuń</button>
-    </li>
-    {% endfor %}
-</ul>
 
 <h1>Dodaj Plik</h1>
 <form id="upload-file-form" enctype="multipart/form-data">
