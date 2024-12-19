@@ -685,31 +685,73 @@ def upload_file():
     """Dodawanie pliku do kategorii."""
     if 'file' not in request.files:
         return jsonify({"status": "error", "message": "Brak pliku w zapytaniu"}), 400
-    
+
     file = request.files['file']
     category_id = request.form.get('category_id')
-    name = request.form.get('name')
+    original_name = request.form.get('name')
 
-    if not category_id or not name:
+    if not category_id or not original_name:
         return jsonify({"status": "error", "message": "Kategoria i nazwa pliku są wymagane"}), 400
-    
+
     if file and allowed_file(file.filename):
-        filename = secure_filename(file.filename)
-        # Używamy zdefiniowanej ścieżki
-        save_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+        # Tworzenie unikatowej nazwy pliku
+        base_name = secure_filename(original_name.replace(" ", "-").lower())  # Czytelny format nazwy
+        year = time.strftime("%Y")  # Rok
+        unix_suffix = str(int(time.time()))[-6:]  # Ostatnie 6 cyfr czasu Unix
+        extension = file.filename.rsplit('.', 1)[-1].lower()  # Pobranie rozszerzenia pliku
+        new_file_name = f"{base_name}-{year}-{unix_suffix}.{extension}"
+
+        # Ścieżka do zapisu pliku
+        save_path = os.path.join(app.config['UPLOAD_FOLDER'], new_file_name)
         file.save(save_path)
-        
-        # Zapis informacji o pliku w bazie danych
+
+        # Zapis do bazy danych
         query = """
             INSERT INTO files (name, file_name, category_id, status_aktywnosci) 
             VALUES (%s, %s, %s, %s);
         """
-        params = (name, filename, category_id, 1)
+        params = (original_name, new_file_name, category_id, 1)
         msq.insert_to_database(query, params)
 
-        return jsonify({"status": "success", "message": "Plik dodany pomyślnie"})
+        return jsonify({"status": "success", "message": "Plik dodany pomyślnie", "file_name": new_file_name})
     else:
         return jsonify({"status": "error", "message": "Nieprawidłowy typ pliku"}), 400
+
+
+# def upload_file_old():
+#     """Dodawanie pliku do kategorii."""
+#     if 'file' not in request.files:
+#         return jsonify({"status": "error", "message": "Brak pliku w zapytaniu"}), 400
+    
+#     file = request.files['file']
+#     category_id = request.form.get('category_id')
+#     name = request.form.get('name')
+
+#     if not category_id or not name:
+#         return jsonify({"status": "error", "message": "Kategoria i nazwa pliku są wymagane"}), 400
+    
+#     if file and allowed_file(file.filename):
+#         # Ścieżka do zapisu pliku
+#         save_path = os.path.join(app.config['UPLOAD_FOLDER'], new_file_name)
+#         file.save(save_path)
+
+
+#         filename = secure_filename(file.filename)
+#         # Używamy zdefiniowanej ścieżki
+#         save_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+#         file.save(save_path)
+        
+#         # Zapis informacji o pliku w bazie danych
+#         query = """
+#             INSERT INTO files (name, file_name, category_id, status_aktywnosci) 
+#             VALUES (%s, %s, %s, %s);
+#         """
+#         params = (name, filename, category_id, 1)
+#         msq.insert_to_database(query, params)
+
+#         return jsonify({"status": "success", "message": "Plik dodany pomyślnie"})
+#     else:
+#         return jsonify({"status": "error", "message": "Nieprawidłowy typ pliku"}), 400
 
 @app.route('/admin/edytuj_kategorie', methods=['POST'])
 def edit_category():
