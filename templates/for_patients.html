@@ -53,103 +53,47 @@
             </div>
         </div>
         <div class="row">
+
+        {% for item in categorized_files %}
             <div class="col-lg-12 col-md-12 section-title-warp">
                 <span class="sub-title">
                     <i class="flaticon-hashtag-symbol"></i>
-                    Informacje ogólne
+                    {{ item.category }}
                 </span>
             </div>
-            <div class="col-sm-12 col-lg-4 col-md-6">
-                <div class="single-blog">
-                    <div class="blog-content">
-                        <div class="row">
-                            <div class="col-2">
-                                <h1><i class="fas fa-download text-info"></i></h1>
-                            </div>
-                            <div class="col-10">
-                                <h5>
-                                    <a href="/dokumenty/implanty-informacje-dla-pacjenta.pdf">Implanty - informacje dla pacjenta</a>
-                                </h5>
+            {% for file in item.file_list %}
+                <div class="col-sm-12 col-lg-4 col-md-6">
+                    <div class="single-blog">
+                        <div class="blog-content">
+                            <div class="row">
+                                <div class="col-2">
+                                    <h1><i class="fas fa-download text-info"></i></h1>
+                                </div>
+                                <div class="col-10">
+                                    <h5>
+                                        <a href="/{{ file.file_name }}">{{ file.name }}</a>
+                                    </h5>
 
+                                </div>
                             </div>
+                            <ul class="entry-meta">
+                                <li>
+                                    <a href="/{{ file.file_name }}">
+                                        <i class="far fa-file-pdf"></i>
+                                        <span>Pobierz</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <i class="far fa-folder-open"></i>
+                                    {{ item.category }}
+                                </li>
+                            </ul>
                         </div>
-                        <ul class="entry-meta">
-                            <li>
-                                <a href="/dokumenty/implanty-informacje-dla-pacjenta.pdf">
-                                    <i class="far fa-file-pdf"></i>
-                                    <span>Pobierz.pdf</span>
-                                </a>
-                            </li>
-                            <li>
-                                <i class="far fa-folder-open"></i>
-                                Informacje ogólne
-                            </li>
-                        </ul>
                     </div>
                 </div>
-            </div>
-            
-            <div class="col-sm-12 col-lg-4 col-md-6">
-                <div class="single-blog">
-                    <div class="blog-content">
-                        <div class="row">
-                            <div class="col-2">
-                                <h1><i class="fas fa-download text-info"></i></h1>
-                            </div>
-                            <div class="col-10">
-                                <h5>
-                                    <a href="/dokumenty/nowa-karta-z-danymi-2023-ang.pdf">Nowa karta z danymi 2023 - ANG</a>
-                                </h5>
-
-                            </div>
-                        </div>
-                        <ul class="entry-meta">
-                            <li>
-                                <a href="/dokumenty/nowa-karta-z-danymi-2023-ang.pdf">
-                                    <i class="far fa-file-pdf"></i>
-                                    <span>Pobierz.pdf</span>
-                                </a>
-                            </li>
-                            <li>
-                                <i class="far fa-folder-open"></i>
-                                Informacje ogólne
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="col-sm-12 col-lg-4 col-md-6">
-                <div class="single-blog">
-                    <div class="blog-content">
-                        <div class="row">
-                            <div class="col-2">
-                                <h1><i class="fas fa-download text-info"></i></h1>
-                            </div>
-                            <div class="col-10">
-                                <h5>
-                                    <a href="/dokumenty/karta-z-danymi-2024.pdf">Karta z danymi 2024</a>
-                                </h5>
-
-                            </div>
-                        </div>
-                        <ul class="entry-meta">
-                            <li>
-                                <a href="/dokumenty/karta-z-danymi-2024.pdf">
-                                    <i class="far fa-file-pdf"></i>
-                                    <span>Pobierz.pdf</span>
-                                </a>
-                            </li>
-                            <li>
-                                <i class="far fa-folder-open"></i>
-                                Informacje ogólne
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="col-lg-12 col-md-12 section-title-warp">
+            {% endfor %}
+        {% endfor %}
+            <!-- <div class="col-lg-12 col-md-12 section-title-warp">
                 <span class="sub-title">
                     <i class="flaticon-hashtag-symbol"></i>
                     Zgody i upoważnienia
@@ -556,7 +500,7 @@
                         </ul>
                     </div>
                 </div>
-            </div>
+            </div> -->
             
             
             

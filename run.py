@@ -815,8 +815,23 @@ def delete_category():
 def for_patients():
     session['page'] = 'for_patients'
     pageTitle = 'Dla Pacjenta'
+
+    categs = get_categories()
+    categorized_files = []
+    if categs:  # Jeśli istnieją kategorie
+        for category in categs:
+            category_id = category['id']
+            file_list = get_fileBy_categories(category_id, status_aktywnosci=True)
+            
+            # Dodajemy słownik z kategorią i listą plików
+            categorized_files.append({
+                'category': category['name'],
+                'file_list': file_list,
+            })
+
     return render_template(
         'for_patients.html',
+        categorized_files=categorized_files,  # Lista kategorii z plikami
         pageTitle=pageTitle
     )
 
