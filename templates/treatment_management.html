@@ -190,41 +190,37 @@
     });
 
     document.addEventListener("DOMContentLoaded", function () {
-        const selectIcon = document.getElementById("icon"); // Pobranie select
+        const selectIcon = document.getElementById("icon");
         if (!selectIcon) {
             console.error("Nie znaleziono elementu #icon!");
             return;
         }
 
-        const iconPreview = document.createElement("div"); // Tworzenie podglądu ikony
-        
-        // Stylizacja podglądu
+        const iconPreview = document.createElement("div");
         iconPreview.style.fontSize = "48px"; 
         iconPreview.style.marginTop = "20px"; 
         iconPreview.style.textAlign = "center"; 
         iconPreview.id = "iconPreview";
         selectIcon.parentElement.appendChild(iconPreview);
 
-        // Funkcja aktualizująca podgląd ikony
         const updateIconPreview = () => {
             const selectedValue = selectIcon.value;
-            console.log("Wybrana wartość:", selectedValue);
+            console.log("Wybrana wartość z select:", selectedValue);
 
-            // Zmiana podglądu ikony
             if (selectedValue) {
                 iconPreview.innerHTML = `<i class="${selectedValue}"></i>`;
+                console.log(`Zaktualizowano podgląd na: <i class="${selectedValue}"></i>`);
             } else {
-                iconPreview.innerHTML = ""; // Wyczyść podgląd, jeśli brak wyboru
+                iconPreview.innerHTML = "";
+                console.log("Wyczyszczono podgląd.");
             }
         };
 
-        // Nasłuchiwanie zdarzenia zmiany
         selectIcon.addEventListener("change", function () {
-            console.log("Wartość select została zmieniona!");
-            updateIconPreview(); // Wywołanie funkcji aktualizującej
+            console.log("Zdarzenie 'change' wywołane dla select.");
+            updateIconPreview();
         });
 
-        // Pierwsze uruchomienie, aby wyświetlić domyślną wartość
         updateIconPreview();
     });
 
