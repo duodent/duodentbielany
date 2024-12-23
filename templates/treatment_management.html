@@ -196,13 +196,11 @@
     });
 
     document.addEventListener("DOMContentLoaded", function () {
-        const selectIcon = document.getElementById("icon");
-        if (!selectIcon) {
-            console.error("Nie znaleziono elementu #icon!");
-            return;
-        }
+        const selectIcon = document.getElementById("icon"); // Oryginalny select
+        const customSelect = document.querySelector(".nice-select"); // Niestandardowy interfejs
+        const iconPreview = document.createElement("div"); // Tworzenie podglądu ikony
 
-        const iconPreview = document.createElement("div");
+        // Stylizacja podglądu
         iconPreview.style.fontSize = "48px"; 
         iconPreview.style.marginTop = "20px"; 
         iconPreview.style.textAlign = "center"; 
@@ -210,25 +208,29 @@
         selectIcon.parentElement.appendChild(iconPreview);
 
         const updateIconPreview = () => {
-            const selectedValue = selectIcon.value;
-            console.log("Wybrana wartość z select:", selectedValue);
+            const selectedValue = selectIcon.value || customSelect.querySelector(".selected").dataset.value;
+            console.log("Wybrana wartość z nice-select:", selectedValue);
 
             if (selectedValue) {
                 iconPreview.innerHTML = `<i class="${selectedValue}"></i>`;
-                console.log(`Zaktualizowano podgląd na: <i class="${selectedValue}"></i>`);
             } else {
                 iconPreview.innerHTML = "";
-                console.log("Wyczyszczono podgląd.");
             }
         };
 
-        document.addEventListener("change", function (event) {
-            if (event.target && event.target.id === "icon") {
-                console.log("Zdarzenie 'change' dla #icon:", event.target.value);
-                updateIconPreview();
-            }
+        // Nasłuchiwanie na niestandardowym interfejsie
+        customSelect.addEventListener("click", function () {
+            setTimeout(() => {
+                // Synchronizuj wartość z oryginalnym <select>
+                const selectedValue = customSelect.querySelector(".selected").dataset.value;
+                if (selectedValue) {
+                    selectIcon.value = selectedValue; // Ustawienie wartości w oryginalnym <select>
+                    updateIconPreview(); // Aktualizacja podglądu
+                }
+            }, 10); // Krótka zwłoka, aby upewnić się, że wartość została zaktualizowana
         });
 
+        // Inicjalizacja podglądu
         updateIconPreview();
     });
 
