@@ -637,10 +637,9 @@ def add_treatment():
         if file and allowed_img_file(file.filename):
             # Generowanie nowej nazwy pliku
             original_name = file.filename
-            base_name = secure_filename(original_name.replace(" ", "-").lower())  # Czytelny format nazwy
+            base_name, extension = original_name.lower().rsplit('.', 1)
             year = time.strftime("%Y")  # Rok
             unix_suffix = str(int(time.time()))[-6:]  # Ostatnie 6 cyfr czasu Unix
-            extension = original_name.rsplit('.', 1)[-1].lower()  # Pobranie rozszerzenia pliku
             new_file_name = f"{base_name}-{year}-{unix_suffix}.{extension}"  # Nowa nazwa pliku
             
             # Zapis pliku w folderze static/img/_TREATMENTS
