@@ -191,32 +191,39 @@
 
     document.addEventListener("DOMContentLoaded", function () {
         const selectIcon = document.getElementById("icon"); // Pobranie select
+        if (!selectIcon) {
+            console.error("Nie znaleziono elementu #icon!");
+            return;
+        }
+
         const iconPreview = document.createElement("div"); // Tworzenie podglądu ikony
         
-
         // Dodanie stylów do podglądu ikony
         iconPreview.style.fontSize = "48px"; 
         iconPreview.style.marginTop = "20px"; 
-        iconPreview.style.textAlign = "center"; // Wyrównanie ikony do środka
-        iconPreview.id = "iconPreview"; // Dodanie ID dla debugowania
-        selectIcon.parentElement.appendChild(iconPreview); // Dodanie podglądu do DOM
+        iconPreview.style.textAlign = "center"; 
+        iconPreview.id = "iconPreview";
+        selectIcon.parentElement.appendChild(iconPreview);
 
         // Funkcja aktualizująca podgląd ikony
         const updateIconPreview = () => {
-            const selectedValue = selectIcon.value; // Pobranie wartości z select
+            const selectedValue = selectIcon.value; 
             console.log("Wybrana wartość:", selectedValue); // Debugowanie
             if (selectedValue) {
-                iconPreview.innerHTML = `<i class="${selectedValue}"></i>`; // Wyświetlenie ikony
+                iconPreview.innerHTML = `<i class="${selectedValue}"></i>`; 
             } else {
-                iconPreview.innerHTML = ""; // Wyczyść podgląd, jeśli brak wyboru
+                iconPreview.innerHTML = ""; 
             }
         };
 
-        // Inicjalizacja podglądu ikony po załadowaniu
-        updateIconPreview();
-
         // Nasłuchiwanie zmiany wartości select
-        selectIcon.addEventListener("change", updateIconPreview);
+        selectIcon.addEventListener("change", () => {
+            console.log("Wartość select została zmieniona!");
+            updateIconPreview();
+        });
+
+        // Inicjalizacja podglądu ikony
+        updateIconPreview();
     });
 
 </script>
