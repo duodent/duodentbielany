@@ -167,9 +167,19 @@
                 success: function(response) {
                     $("#responseMessage").html(`<p style="color: green;">${response.message}</p>`);
                     document.getElementById('ajaxForm').reset();
+                    // Resetowanie pola zdjęcia
+                    document.getElementById('file').value = '';
+                    document.querySelector('#file').nextElementSibling.innerHTML = '<i class="fas fa-upload upload-icon me-3"></i> Prześlij zdjęcie';
+                    // Usunięcie komunikatu po 2 sekundach
+                    setTimeout(() => {
+                        document.getElementById('responseMessage').innerHTML = '';
+                    }, 2000); // 2000 ms = 2 sekundy
                 },
                 error: function(xhr) {
                     $("#responseMessage").html(`<p style="color: red;">Błąd: ${xhr.responseJSON.message}</p>`);
+                    setTimeout(() => {
+                        document.getElementById('responseMessage').innerHTML = '';
+                    }, 2000); // 2000 ms = 2 sekundy
                 }
             });
         });
