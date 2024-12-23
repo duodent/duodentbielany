@@ -92,6 +92,7 @@
                 
                 <div class="col-lg-6 col-sm-12">
                     <div class="form-group">
+                        
                         <label for="icon">Ikona</label>
                         <select class="form-control" id="icon" name="icon" required>
                             <option value="flaticon-chair">Krzesło stomatologiczne</option>
@@ -192,16 +193,23 @@
         const selectIcon = document.getElementById("icon"); // Pobranie select
         const iconPreview = document.createElement("div"); // Tworzenie podglądu ikony
         
+
         // Dodanie stylów do podglądu ikony
-        iconPreview.style.fontSize = "24px"; 
-        iconPreview.style.marginTop = "10px"; 
-        iconPreview.id = "iconPreview"; // Dodanie ID dla ułatwienia debugowania
+        iconPreview.style.fontSize = "48px"; 
+        iconPreview.style.marginTop = "20px"; 
+        iconPreview.style.textAlign = "center"; // Wyrównanie ikony do środka
+        iconPreview.id = "iconPreview"; // Dodanie ID dla debugowania
         selectIcon.parentElement.appendChild(iconPreview); // Dodanie podglądu do DOM
 
         // Funkcja aktualizująca podgląd ikony
         const updateIconPreview = () => {
             const selectedValue = selectIcon.value; // Pobranie wartości z select
-            iconPreview.innerHTML = `<i class="${selectedValue}"></i>`; // Wyświetlenie ikony
+            console.log("Wybrana wartość:", selectedValue); // Debugowanie
+            if (selectedValue) {
+                iconPreview.innerHTML = `<i class="${selectedValue}"></i>`; // Wyświetlenie ikony
+            } else {
+                iconPreview.innerHTML = ""; // Wyczyść podgląd, jeśli brak wyboru
+            }
         };
 
         // Inicjalizacja podglądu ikony po załadowaniu
