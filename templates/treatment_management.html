@@ -166,6 +166,7 @@
                 data: formData,
                 success: function(response) {
                     $("#responseMessage").html(`<p style="color: green;">${response.message}</p>`);
+                    document.getElementById('ajaxForm').reset();
                 },
                 error: function(xhr) {
                     $("#responseMessage").html(`<p style="color: red;">Błąd: ${xhr.responseJSON.message}</p>`);
