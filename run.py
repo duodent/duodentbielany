@@ -34,7 +34,18 @@ app.config['SESSION_REDIS'] = redis.StrictRedis(host='localhost', port=6379, db=
 # Ścieżka do katalogu z plikami
 UPLOAD_FOLDER = 'dokumenty'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}  # Rozszerzenia dozwolone
+ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'doc', 'docx', 'odt'}  # Rozszerzenia dozwolone
+UPLOAD_FOLDER_TREATMENTS = './static/img/services'
+ALLOWED_EXTENSIONS_IMAGES = {'png', 'jpg', 'jpeg', 'gif'}
+
+# Konfiguracja katalogu dla plików związanych z zabiegami
+app.config['UPLOAD_FOLDER_TREATMENTS'] = UPLOAD_FOLDER_TREATMENTS
+
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+def allowed_img_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS_IMAGES
 
 
 # Ustawienie ilości elementów na stronę (nie dotyczy sesji)
@@ -601,8 +612,64 @@ def treatment_managment():
     return render_template(
         "treatment_management.html", 
         pageTitle=pageTitle
-
     )
+@app.route('/admin/add-treatment', methods=['POST'])
+def add_treatment():
+    """Dodawanie nowego zabiegu."""
+    if 'username' not in session:
+        return redirect(url_for('index'))
+    
+    if not (session['userperm']['administrator'] == 1 or session['userperm']['super_user'] == 1):
+        flash('Nie masz uprawnień do zarządzania tymi zasobami. Skontaktuj się z administratorem!', 'danger')
+        return redirect(url_for('index'))
+
+    try:
+        # Pobieranie danych z formularza
+        name = request.form.get('name')
+        icon = request.form.get('icon')  # Pobieranie wartości ikony
+        descrition = request.form.get('descrition')  # Pobranie opisu
+        file = request.files.get('file')  # Pobranie pliku
+
+        # Walidacja danych
+        if not name or not icon or not descrition or not file:
+            return jsonify({'message': 'Wszystkie pola są wymagane!'}), 400
+
+        if file and allowed_img_file(file.filename):
+            # Generowanie nowej nazwy pliku
+            original_name = file.filename
+            base_name = secure_filename(original_name.replace(" ", "-").lower())  # Czytelny format nazwy
+            year = time.strftime("%Y")  # Rok
+            unix_suffix = str(int(time.time()))[-6:]  # Ostatnie 6 cyfr czasu Unix
+            extension = original_name.rsplit('.', 1)[-1].lower()  # Pobranie rozszerzenia pliku
+            new_file_name = f"{base_name}-{year}-{unix_suffix}.{extension}"  # Nowa nazwa pliku
+            
+            # Zapis pliku w folderze static/img/_TREATMENTS
+            filepath = os.path.join(app.config['UPLOAD_FOLDER_TREATMENTS'], new_file_name)
+            file.save(filepath)
+        else:
+            return jsonify({'message': 'Nieprawidłowy format pliku!'}), 400
+
+        # Zapis do bazy danych
+        query = """
+            INSERT INTO tabela_uslug (tytul_glowny, foto_home, icon, opis_home, pozycja_kolejnosci, treatment_general_status) 
+            VALUES (%s, %s, %s, %s, 0, 1);
+        """
+        # Wstawianie danych do bazy
+        success = msq.insert_to_database(query, (name, new_file_name, icon, descrition))
+
+        if success:
+            return jsonify({
+                'message': 'Zabieg został pomyślnie dodany!',
+                'uploaded_file': new_file_name,
+                'icon': icon  # Wartość wybranej ikony
+            }), 200
+        else:
+            return jsonify({'message': 'Wystąpił błąd zapisu do bazy danych!'}), 500
+
+    except Exception as e:
+        return jsonify({'message': f'Wystąpił błąd: {str(e)}'}), 500
+
+
 
 def get_categories():
     query = "SELECT id, name, position FROM file_categories ORDER BY position ASC;"
@@ -696,9 +763,6 @@ def add_category():
     except Exception as e:
         print(e)  # Logowanie błędu w konsoli serwera
         return jsonify({"status": "error", "message": "Błąd serwera"}), 500
-
-def allowed_file(filename):
-    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 @app.route('/admin/dodaj_plik', methods=['POST'])
 def upload_file():

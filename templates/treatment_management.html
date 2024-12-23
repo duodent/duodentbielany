@@ -33,7 +33,64 @@
         </div>
         <div class="row">
 
+        <!-- 
+            id
+            foto_home
+            icon
+            tytul_glowny
+            opis_home
+            pozycja_kolejnosci
+            baner_h1_splx
+            baner_h2_splx
+            page_hashtag_section
+            foto_page_header
+            page_title_section_1
+            page_content_section_1
+            page_points_splx_section_1
+            page_subcontent_section_1
+            page_photo_content_links_splx_section_2
+            page_subcontent_section_2
+            page_title_section_3
+            page_content_section_3
+            page_title_section_4
+            page_content_section_4
+            page_price_table_title_section_5
+            page_price_table_content_splx_comma_section_5
+            page_attached_worker_id
+            page_attached_worker_descriptions
+            page_attached_worker_status
+            page_attached_files
+            page_attached_treatments
+            page_attached_contact
+            page_attached_status
+            page_attached_gallery_splx
+            treatment_general_status
+            optional_1
+            optional_2
+            optional_3
+            data_utworzenia
+
+        -->
+        <form id="ajaxForm" enctype="multipart/form-data">
+            <label for="name">Nazwa zabiegu</label>
+            <input type="text" id="name" name="name" required><br>
+            
+            <label for="file">Miniaturka</label>
+            <input type="file" id="file" name="file" required><br>
         
+            <label for="icon">Ikona</label>
+            <select id="icon" name="icon" required>
+                <option value="1">Ikona 1</option>
+                <option value="2">Ikona 2</option>
+                <option value="3">Ikona 3</option>
+            </select><br>
+            
+            <label for="descrition">Opis</label>
+            <textarea id="descrition" name="descrition" rows="2" required></textarea><br>
+           
+            <button type="submit" id="submitButton">Dodaj zabieg</button>
+        </form>
+        <div id="responseMessage"></div>
         
         </div>
     </div>
@@ -42,23 +99,51 @@
 {% block bottom_scripts %}
 <script>
     $(document).ready(function () {
-      setTimeout(function () {
-          // Pokaż #breadcrumb-small
-          $("#breadcrumb-small")
-              .css({
-                  display: "block", // Ustaw widoczność
-                  textAlign: "center", // Wyrównanie tekstu do środka
-                  width: "100%", // Rozciągnij na całą szerokość
-              })
-              .animate(
-                  {
-                      height: "50px",
-                      paddingTop: "10px"
-                  },
-                  1200 // Czas animacji
-              );
-      }, 2000); 
-  });
+        setTimeout(function () {
+            // Pokaż #breadcrumb-small
+            $("#breadcrumb-small")
+                .css({
+                    display: "block", // Ustaw widoczność
+                    textAlign: "center", // Wyrównanie tekstu do środka
+                    width: "100%", // Rozciągnij na całą szerokość
+                })
+                .animate(
+                    {
+                        height: "50px",
+                        paddingTop: "10px"
+                    },
+                    1200 // Czas animacji
+                );
+        }, 2000); 
+    });
+
+    $(document).ready(function() {
+        $("#ajaxForm").on("submit", function(event) {
+            event.preventDefault();
+
+            // Tworzenie obiektu FormData
+            let formData = new FormData();
+            formData.append("name", $("#name").val());
+            formData.append("descrition", $("#descrition").val());
+            formData.append("icon", $("#icon").val());
+            formData.append("file", $("#file")[0].files[0]); // Dodanie pliku
+
+            // Wysyłanie danych AJAX
+            $.ajax({
+                url: "/admin/add-treatment",
+                method: "POST",
+                processData: false, // Wyłączamy przetwarzanie danych
+                contentType: false, // Wyłączamy domyślny nagłówek
+                data: formData,
+                success: function(response) {
+                    $("#responseMessage").html(`<p style="color: green;">${response.message}</p>`);
+                },
+                error: function(xhr) {
+                    $("#responseMessage").html(`<p style="color: red;">Błąd: ${xhr.responseJSON.message}</p>`);
+                }
+            });
+        });
+    });
 
 </script>
 {% endblock %}
