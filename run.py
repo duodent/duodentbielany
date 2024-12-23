@@ -585,6 +585,25 @@ def ustawieni_pracownicy():
 def inject_shared_variable():
     return {'userName': session.get("username", 'NotLogin')}
 
+@app.route('/admin/zarzadzanie-zabiegami')
+def treatment_managment():
+    session['page'] = 'for_patients'
+    pageTitle = 'Zarządzanie Zabiegami'
+
+    """Strona plików do pobrania."""
+    if 'username' not in session:
+        return redirect(url_for('index'))
+    
+    if not (session['userperm']['administrator'] == 1 or session['userperm']['super_user'] == 1):
+        flash('Nie masz uprawnień do zarządzania tymi zasobami. Skontaktuj się z administratorem!', 'danger')
+        return redirect(url_for('index'))
+    
+    return render_template(
+        "treatment_management.html", 
+        pageTitle=pageTitle
+
+    )
+
 def get_categories():
     query = "SELECT id, name, position FROM file_categories ORDER BY position ASC;"
     params = ()
