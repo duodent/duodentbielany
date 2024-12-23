@@ -198,7 +198,7 @@
 
         const iconPreview = document.createElement("div"); // Tworzenie podglądu ikony
         
-        // Dodanie stylów do podglądu ikony
+        // Stylizacja podglądu
         iconPreview.style.fontSize = "48px"; 
         iconPreview.style.marginTop = "20px"; 
         iconPreview.style.textAlign = "center"; 
@@ -207,22 +207,24 @@
 
         // Funkcja aktualizująca podgląd ikony
         const updateIconPreview = () => {
-            const selectedValue = selectIcon.value; 
-            console.log("Wybrana wartość:", selectedValue); // Debugowanie
+            const selectedValue = selectIcon.value;
+            console.log("Wybrana wartość:", selectedValue);
+
+            // Zmiana podglądu ikony
             if (selectedValue) {
-                iconPreview.innerHTML = `<i class="${selectedValue}"></i>`; 
+                iconPreview.innerHTML = `<i class="${selectedValue}"></i>`;
             } else {
-                iconPreview.innerHTML = ""; 
+                iconPreview.innerHTML = ""; // Wyczyść podgląd, jeśli brak wyboru
             }
         };
 
-        // Nasłuchiwanie zmiany wartości select
-        selectIcon.addEventListener("change", () => {
+        // Nasłuchiwanie zdarzenia zmiany
+        selectIcon.addEventListener("change", function () {
             console.log("Wartość select została zmieniona!");
-            updateIconPreview();
+            updateIconPreview(); // Wywołanie funkcji aktualizującej
         });
 
-        // Inicjalizacja podglądu ikony
+        // Pierwsze uruchomienie, aby wyświetlić domyślną wartość
         updateIconPreview();
     });
 
