@@ -105,8 +105,8 @@
                             <option value="flaticon-dental-implant">Implant</option>
                             <option value="flaticon-dental-care">Opieka dentystyczna</option>
                             <option value="flaticon-tooth-1">Ząb w gwiazdki</option>
-                            <option value="flaticon-tooth-2">Narzedzia</option>
-                            <option value="flaticon-tooth">Aparta ortodontyczny</option>
+                            <option value="flaticon-tooth-2">Narzędzia</option>
+                            <option value="flaticon-tooth">Aparat ortodontyczny</option>
                         </select>
                     </div>
                 </div>
@@ -193,6 +193,28 @@
                 }
             });
         });
+    });
+
+    document.addEventListener("DOMContentLoaded", function () {
+        const selectIcon = document.getElementById("icon");
+        const iconPreview = document.createElement("div");
+        
+        // Dodaj element do wyświetlania ikony obok select
+        iconPreview.style.fontSize = "24px"; // Ustawienie wielkości ikony
+        iconPreview.style.marginTop = "10px"; // Dodanie odstępu
+        selectIcon.parentElement.appendChild(iconPreview);
+
+        // Funkcja aktualizująca ikonę
+        function updateIconPreview() {
+            const selectedValue = selectIcon.value; // Pobranie wartości select
+            iconPreview.innerHTML = `<i class="${selectedValue}"></i>`; // Ustawienie wybranej ikony
+        }
+
+        // Zainicjalizuj podgląd ikony dla domyślnej wartości
+        updateIconPreview();
+
+        // Dodaj nasłuchiwanie zmiany w select
+        selectIcon.addEventListener("change", updateIconPreview);
     });
 
 </script>
