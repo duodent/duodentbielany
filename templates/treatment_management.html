@@ -72,25 +72,49 @@
 
         -->
         <form id="ajaxForm" enctype="multipart/form-data">
-            <label for="name">Nazwa zabiegu</label>
-            <input type="text" id="name" name="name" required><br>
-            
-            <label for="file">Miniaturka</label>
-            <input type="file" id="file" name="file" required><br>
+            <div class="row">
+                <div class="col-lg-6 col-sm-12">
+                    <div class="form-group">
+                        <label for="name">Nazwa zabiegu</label>
+                        <input type="text" class="form-control" id="name" name="name" placeholder="Wpisz nazwę zabiegu" required>
+                    </div>
+                </div>
+                
+                <div class="col-lg-6 col-sm-12">
+                    <div class="form-group custom-file-upload">
+                        <label for="file">Miniaturka</label>
+                        <div class="file-input-wrapper">
+                            <input type="file" class="form-control" id="file" name="file" accept="image/*" required>
+                            <span class="file-label"><i class="fas fa-upload upload-icon me-3"></i> Prześlij miniaturkę</span>
+                        </div>
+                    </div>
+                </div>
         
-            <label for="icon">Ikona</label>
-            <select id="icon" name="icon" required>
-                <option value="1">Ikona 1</option>
-                <option value="2">Ikona 2</option>
-                <option value="3">Ikona 3</option>
-            </select><br>
-            
-            <label for="descrition">Opis</label>
-            <textarea id="descrition" name="descrition" rows="2" required></textarea><br>
-           
-            <button type="submit" id="submitButton">Dodaj zabieg</button>
+                <div class="col-lg-6 col-sm-12">
+                    <div class="form-group">
+                        <label for="icon">Ikona</label>
+                        <select class="form-control" id="icon" name="icon" required>
+                            <option value="1">Ikona 1</option>
+                            <option value="2">Ikona 2</option>
+                            <option value="3">Ikona 3</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="col-lg-12 col-sm-12">
+                    <div class="form-group">
+                        <label for="descrition">Opis</label>
+                        <textarea class="form-control" id="descrition" name="descrition" rows="4" placeholder="Dodaj opis zabiegu" required></textarea>
+                    </div>
+                </div>
+        
+                <div class="col-lg-12">
+                    <button type="submit" class="btn btn-primary">Dodaj zabieg</button>
+                    <div id="responseMessage" class="mt-3"></div> <!-- Miejsce na komunikaty -->
+                </div>
+            </div>
         </form>
-        <div id="responseMessage"></div>
+        
         
         </div>
     </div>
