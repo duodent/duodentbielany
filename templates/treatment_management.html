@@ -122,6 +122,11 @@
 {% endblock %}
 {% block bottom_scripts %}
 <script>
+    document.querySelector('#file').addEventListener('change', function () {
+        const label = this.nextElementSibling;
+        label.textContent = this.files.length ? this.files[0].name : "Prześlij zdjęcie";
+    });
+
     $(document).ready(function () {
         setTimeout(function () {
             // Pokaż #breadcrumb-small
