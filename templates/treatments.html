@@ -62,7 +62,39 @@
                 flaticon-tooth 
         -->
         {{treatments_items}}
+        {
+            'id': 2, 
+            'foto_home': 'ortodoncja-home-2024-957556.jpg', 
+            'icon': 'flaticon-tooth', 
+            'tytul_glowny': 'Ortodoncja', 
+            'ready_route': 'ortodoncja-aparaty-na-prosty-usmiech', 
+            'opis_home': 'Zadbaj o idealne ustawienie zębów dla zdrowia, komfortu i harmonii całej twarzy! '
+        }
+
         <div class="row">
+            {% for item in treatments_items %}
+                <div class="col-lg-4 col-md-6">
+                    <div class="single-services">
+                        <div class="services-image">
+                            <a href="/zabieg-stomatologiczny/{{item.ready_route}}">
+                                <img src="{{ url_for('static', filename='img/services/' + item.foto_home) }}" alt="{{ item.tytul_glowny }}">
+                            </a>
+                            <div class="icon">
+                                <a href="/zabieg-stomatologiczny/{{item.ready_route}}"><i class="{{item.icon}}"></i></a>
+                            </div>
+                        </div>
+                        <div class="services-content">
+                            <h3>
+                                <a href="/zabieg-stomatologiczny/{{item.ready_route}}">{{item.tytul_glowny}}</a>
+                            </h3>
+                            <p>
+                                {{item.opis_home}}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+
             <div class="col-lg-4 col-md-6">
                 <div class="single-services">
                     <div class="services-image">
