@@ -113,7 +113,7 @@
                     <script>
                         document.addEventListener("change", function (event) {
                             if (event.target.id === "icon") {
-                                console.log("Zdarzenie change na #icon:", event.target.value);
+                                // console.log("Zdarzenie change na #icon:", event.target.value);
                             }
                         });
                     </script>
@@ -182,11 +182,13 @@
                 })
                 .then(response => response.json())
                 .then(data => {
-                    alert(data.message);
+                    // alert(data.message);
+                    $("#responseMessage").html(`<p style="color: green;">${data.message}</p>`);
                 })
                 .catch(error => {
                     console.error('Błąd:', error);
-                    alert('Wystąpił błąd: ' + error.message);
+                    // alert('Wystąpił błąd: ' + error.message);
+                    $("#responseMessage").html(`<p style="color: red;">${error.message}</p>`);
                 });
             }
         });
