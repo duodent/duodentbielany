@@ -633,14 +633,14 @@ def add_treatment():
 
     try:
         # Pobieranie danych z formularza
-        name = request.form.get('name').strip().lower()
+        name = request.form.get('name').strip()
         route = request.form.get('route').strip().lower()
         icon = request.form.get('icon')  # Pobieranie wartości ikony
         descrition = request.form.get('descrition')  # Pobranie opisu
         file = request.files.get('file')  # Pobranie pliku
 
         # Generowanie SEO-friendly wersji name i route
-        name_seoroute = slugify(name)
+        name_seoroute = slugify(name.lower())
         route_seoroute = slugify(route)
 
         # Łączenie w jeden ciąg dla finalnego routa
