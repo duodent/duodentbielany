@@ -184,11 +184,17 @@
                 .then(data => {
                     // alert(data.message);
                     $("#responseMessage").html(`<p style="color: green;">${data.message}</p>`);
+                    setTimeout(() => {
+                        document.getElementById('responseMessage').innerHTML = '';
+                    }, 2000); // 2000 ms = 2 sekundy
                 })
                 .catch(error => {
                     console.error('Błąd:', error);
                     // alert('Wystąpił błąd: ' + error.message);
                     $("#responseMessage").html(`<p style="color: red;">${error.message}</p>`);
+                    setTimeout(() => {
+                        document.getElementById('responseMessage').innerHTML = '';
+                    }, 2000); // 2000 ms = 2 sekundy
                 });
             }
         });
