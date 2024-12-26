@@ -96,8 +96,8 @@
                             </div>
                         </div>
                     </div>
-                    
-                    <div class="col-lg-6 col-sm-12">
+                    <div class="col-lg-2 col-sm-2" id="iconPreviewContainer"></div>
+                    <div class="col-lg-4 col-sm-10">
                         <div class="form-group">
                             <label for="icon">Ikona</label>
                             <select class="form-control mb-3" id="icon" name="icon" required>
@@ -291,14 +291,19 @@
     document.addEventListener("DOMContentLoaded", function () {
         const selectIcon = document.getElementById("icon"); // Oryginalny select
         const customSelect = document.querySelector(".nice-select"); // Niestandardowy interfejs
-        const iconPreview = document.createElement("div"); // Tworzenie podglądu ikony
+        const iconPreviewContainer = document.getElementById("iconPreviewContainer"); // Div na podgląd ikony
+
+        // Tworzenie elementu podglądu ikony
+        const iconPreview = document.createElement("div");
 
         // Stylizacja podglądu
         iconPreview.style.fontSize = "48px"; 
         iconPreview.style.marginTop = "20px"; 
         iconPreview.style.textAlign = "center"; 
         iconPreview.id = "iconPreview";
-        selectIcon.parentElement.appendChild(iconPreview);
+
+        // Dodanie podglądu do określonego kontenera
+        iconPreviewContainer.appendChild(iconPreview);
 
         const updateIconPreview = () => {
             const selectedValue = selectIcon.value || customSelect.querySelector(".selected").dataset.value;
@@ -314,7 +319,6 @@
         // Nasłuchiwanie na niestandardowym interfejsie
         customSelect.addEventListener("click", function () {
             setTimeout(() => {
-                // Synchronizuj wartość z oryginalnym <select>
                 const selectedValue = customSelect.querySelector(".selected").dataset.value;
                 if (selectedValue) {
                     selectIcon.value = selectedValue; // Ustawienie wartości w oryginalnym <select>
@@ -326,6 +330,46 @@
         // Inicjalizacja podglądu
         updateIconPreview();
     });
+
+
+    // document.addEventListener("DOMContentLoaded", function () {
+    //     const selectIcon = document.getElementById("icon"); // Oryginalny select
+    //     const customSelect = document.querySelector(".nice-select"); // Niestandardowy interfejs
+    //     const iconPreview = document.createElement("div"); // Tworzenie podglądu ikony
+
+    //     // Stylizacja podglądu
+    //     iconPreview.style.fontSize = "48px"; 
+    //     iconPreview.style.marginTop = "20px"; 
+    //     iconPreview.style.textAlign = "center"; 
+    //     iconPreview.id = "iconPreview";
+    //     selectIcon.parentElement.appendChild(iconPreview);
+
+    //     const updateIconPreview = () => {
+    //         const selectedValue = selectIcon.value || customSelect.querySelector(".selected").dataset.value;
+    //         console.log("Wybrana wartość z nice-select:", selectedValue);
+
+    //         if (selectedValue) {
+    //             iconPreview.innerHTML = `<i class="${selectedValue}"></i>`;
+    //         } else {
+    //             iconPreview.innerHTML = "";
+    //         }
+    //     };
+
+    //     // Nasłuchiwanie na niestandardowym interfejsie
+    //     customSelect.addEventListener("click", function () {
+    //         setTimeout(() => {
+    //             // Synchronizuj wartość z oryginalnym <select>
+    //             const selectedValue = customSelect.querySelector(".selected").dataset.value;
+    //             if (selectedValue) {
+    //                 selectIcon.value = selectedValue; // Ustawienie wartości w oryginalnym <select>
+    //                 updateIconPreview(); // Aktualizacja podglądu
+    //             }
+    //         }, 10); // Krótka zwłoka, aby upewnić się, że wartość została zaktualizowana
+    //     });
+
+    //     // Inicjalizacja podglądu
+    //     updateIconPreview();
+    // });
 
 </script>
 {% endblock %}
