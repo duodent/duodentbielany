@@ -186,10 +186,28 @@
                     }, 2000); // 2000 ms = 2 sekundy
                 },
                 error: function(xhr) {
-                    $("#responseMessage").html(`<p style="color: red;">Błąd: ${xhr.responseJSON.message}</p>`);
-                    setTimeout(() => {
-                        document.getElementById('responseMessage').innerHTML = '';
-                    }, 2000); // 2000 ms = 2 sekundy
+                    let responseMessage = $("#responseMessage");
+
+                    if (xhr.status === 401) {
+                        // Komunikat o konieczności zalogowania
+                        responseMessage.html(`<p style="color: red;">Musisz być zalogowany!</p>`);
+                        setTimeout(() => {
+                            window.location.href = "/"; // Przekierowanie na stronę logowania
+                        }, 2000); // 2 sekundy na przeczytanie komunikatu przed przekierowaniem
+                    } else if (xhr.status === 403) {
+                        // Komunikat o braku uprawnień
+                        responseMessage.html(`<p style="color: red;">Błąd: ${xhr.responseJSON?.message || "Nie masz odpowiednich uprawnień!"}</p>`);
+                        setTimeout(() => {
+                            responseMessage.html('');
+                        }, 2000); // Wyczyszczenie po 2 sekundach
+                    } else {
+                        // Inne błędy
+                        let message = xhr.responseJSON?.message || xhr.statusText || "Wystąpił nieoczekiwany błąd.";
+                        responseMessage.html(`<p style="color: red;">Błąd: ${message}</p>`);
+                        setTimeout(() => {
+                            responseMessage.html('');
+                        }, 2000); // Wyczyszczenie po 2 sekundach
+                    }
                 }
             });
         });

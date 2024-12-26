@@ -617,11 +617,10 @@ def treatment_managment():
 def add_treatment():
     """Dodawanie nowego zabiegu."""
     if 'username' not in session:
-        return redirect(url_for('index'))
+        return jsonify({'message': 'Musisz być zalogowany!'}), 401
     
     if not (session['userperm']['administrator'] == 1 or session['userperm']['super_user'] == 1):
-        flash('Nie masz uprawnień do zarządzania tymi zasobami. Skontaktuj się z administratorem!', 'danger')
-        return redirect(url_for('index'))
+        return jsonify({'message': 'Nie masz odpowiednich uprawnień!'}), 403
 
     try:
         # Pobieranie danych z formularza
