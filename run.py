@@ -620,7 +620,8 @@ def treatment_managment():
     
     return render_template(
         "treatment_management.html", 
-        pageTitle=pageTitle
+        pageTitle=pageTitle,
+        treatments_items=treatments_db()
     )
 @app.route('/admin/add-treatment', methods=['POST'])
 def add_treatment():
