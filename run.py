@@ -692,6 +692,22 @@ def add_treatment():
         return jsonify({'message': f'Wystąpił błąd: {str(e)}'}), 500
 
 
+@app.route('/admin/aktualizuj_kolejnosc_zabiegow', methods=['POST'])
+def update_category_treatment():
+    """Aktualizacja kolejności zabiegow."""
+    data = request.get_json()
+    new_order = data.get('order')  # Lista z ID kategorii w nowej kolejności
+    # print(data, new_order)
+    if not new_order or not isinstance(new_order, list):
+        return jsonify({"status": "error", "message": "Nieprawidłowe dane"}), 400
+
+    # Aktualizacja kolejności w bazie
+    for index, category_id in enumerate(new_order):
+        query = "UPDATE tabela_uslug SET pozycja_kolejnosci = %s WHERE id = %s;"
+        params = (index + 1, category_id)
+        msq.insert_to_database(query, params)
+
+    return jsonify({"status": "success", "message": "Kolejność zaktualizowana"})
 
 def get_categories():
     query = "SELECT id, name, position FROM file_categories ORDER BY position ASC;"
@@ -765,6 +781,8 @@ def update_category_order():
         msq.insert_to_database(query, params)
 
     return jsonify({"status": "success", "message": "Kolejność zaktualizowana"})
+
+
 
 @app.route('/admin/dodaj_kategorie', methods=['POST'])
 def add_category():

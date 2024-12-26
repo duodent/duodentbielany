@@ -175,7 +175,7 @@
                 const newOrder = Array.from(categoryList.children).map(item => item.dataset.id);
 
                 // Wysyłamy listę ID do serwera
-                fetch('/admin/aktualizuj_kolejnosc', {
+                fetch('/admin/aktualizuj_kolejnosc_zabiegow', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ order: newOrder })
