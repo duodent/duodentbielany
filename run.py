@@ -1088,26 +1088,51 @@ def about_us():
         members=generator_teamDB_v
     )
 
+def treatments_db():
+    zapytanie_sql = """
+        SELECT 
+            id,
+            foto_home,
+            icon,
+            tytul_glowny,
+            ready_route,
+            opis_home,
+            pozycja_kolejnosci
+        FROM tabela_uslug
+        ORDER BY pozycja_kolejnosci ASC
+    """
+    db_dump = msq.connect_to_database(zapytanie_sql)
+    export = []
+
+    for data in db_dump:
+        theme = {
+            "id": data[0],
+            "foto_home": data[1],
+            "icon": data[2],
+            "tytul_glowny": data[3],
+            "ready_route": data[4],
+            "opis_home": data[5],
+        }
+        export.append(theme)
+
+    return export
+
 # Zabiegi - lista
 @app.route('/zabiegi-stomatologiczne-kompleksowa-oferta')
 def treatments():
     session['page'] = 'treatments'
     pageTitle = 'Zabiegi'
+
+    treatments_items = treatments_db()
+
     return render_template(
         'treatments.html',
-        pageTitle=pageTitle
+        pageTitle=pageTitle,
+        treatments_items=treatments_items
     )
 
-treatments_dict = {
-    'ortodoncja-aparaty-na-prosty-usmiech': 'Ortodoncja',
-    'chirurgia-stomatologiczna-implantologia-odbudowa-usmiechu': 'Chirurgia i Implantologia',
-    'protetyka-stomatologiczna-estetyczna-odbudowa': 'Protetyka',
-    'endodoncja-leczenie-kanalowe-precyzyjnie': 'Endodoncja',
-    'periodontologia-choroby-przyzebia-leczenie': 'Periodontologia',
-    'nowoczesna-diagnostyka-rtg-i-scanner-3d': 'Nowoczesna diagnostyka',
-    'profilaktyka-stomatologiczna-higienizacja-i-wybielanie': 'Profilaktyka',
-    'stomatologia-dziecieca-zdrowy-usmiech-dziecka': 'Stomatologia dziecięca'
-}
+# Generate treatments_dict
+treatments_dict = {item["ready_route"]: item["tytul_glowny"] for item in treatments_db()}
 
 @app.route('/zabieg-stomatologiczny/<path:treatment_slug>')
 def treatment_dynamic(treatment_slug):
