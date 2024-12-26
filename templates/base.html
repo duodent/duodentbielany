@@ -234,9 +234,11 @@
                                     <i class="far fa-angle-down"></i>
                                 </a>
                                 <ul class="dropdown-menu">
+                                    {% for link, name in treatmentMenu.itmes() %}
                                     <li class="nav-item">
-                                        <a href="/zabieg-stomatologiczny/ortodoncja-aparaty-na-prosty-usmiech" class="nav-link">Ortodoncja</a>
+                                        <a href="/zabieg-stomatologiczny/{{link}}" class="nav-link">{{name}}</a>
                                     </li>
+                                    {% endfor %}
                                     <li class="nav-item">
                                         <a href="/zabieg-stomatologiczny/chirurgia-stomatologiczna-implantologia-odbudowa-usmiechu" class="nav-link">Chirurgia i Implantologia</a>
                                     </li>

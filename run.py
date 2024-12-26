@@ -603,7 +603,10 @@ def ustawieni_pracownicy():
 
 @app.context_processor
 def inject_shared_variable():
-    return {'userName': session.get("username", 'NotLogin')}
+    return {
+        'userName': session.get("username", 'NotLogin'),
+        'treatmentMenu': {item["ready_route"]: item["tytul_glowny"] for item in treatments_db()}
+    }
 
 @app.route('/admin/zarzadzanie-zabiegami')
 def treatment_managment():
