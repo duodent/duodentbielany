@@ -144,6 +144,15 @@ def bez_polskich_znakow(text):
         if unicodedata.category(c) != 'Mn'
     )
 
+def slugify(text):
+    # Zamiana znaków diakrytycznych na ich odpowiedniki
+    text = unicodedata.normalize('NFKD', text).encode('ascii', 'ignore').decode('ascii')
+    # Usunięcie wszystkich znaków poza literami, cyframi i spacjami
+    text = re.sub(r'[^\w\s-]', '', text)
+    # Zamiana spacji i podwójnych myślników na pojedynczy myślnik
+    text = re.sub(r'[-\s]+', '-', text).strip('-')
+    return text.lower()
+
 def generator_teamDB():
     # Pobranie danych z tabeli workers_team
     took_teamD = take_data_table('*', 'workers_team')
@@ -624,13 +633,27 @@ def add_treatment():
 
     try:
         # Pobieranie danych z formularza
-        name = request.form.get('name')
+        name = request.form.get('name').strip().lower()
+        route = request.form.get('route').strip().lower()
         icon = request.form.get('icon')  # Pobieranie wartości ikony
         descrition = request.form.get('descrition')  # Pobranie opisu
         file = request.files.get('file')  # Pobranie pliku
 
+        # Generowanie SEO-friendly wersji name i route
+        name_seoroute = slugify(name)
+        route_seoroute = slugify(route)
+
+        # Łączenie w jeden ciąg dla finalnego routa
+        ready_route = f"{name_seoroute}-{route_seoroute}".strip('-')  # Usuwa myślniki z początku i końca
+
+        # Alternatywne podejście, aby zabezpieczyć przed przypadkami pustego `route_seoroute`
+        if not route_seoroute:  # Jeśli route_seoroute jest pusty
+            ready_route = name_seoroute  # Ustaw tylko name_seoroute jako ready_route
+        else:
+            ready_route = f"{name_seoroute}-{route_seoroute}".strip('-')  # Łączy, usuwając końcowe myślniki
+
         # Walidacja danych
-        if not name or not icon or not descrition or not file:
+        if not name or not route or not icon or not descrition or not file:
             return jsonify({'message': 'Wszystkie pola są wymagane!'}), 400
 
         if file and allowed_img_file(file.filename):
@@ -649,11 +672,11 @@ def add_treatment():
 
         # Zapis do bazy danych
         query = """
-            INSERT INTO tabela_uslug (tytul_glowny, foto_home, icon, opis_home, pozycja_kolejnosci, treatment_general_status) 
-            VALUES (%s, %s, %s, %s, 0, 1);
+            INSERT INTO tabela_uslug (tytul_glowny, ready_route, foto_home, icon, opis_home, pozycja_kolejnosci, treatment_general_status) 
+            VALUES (%s, %s, %s, %s, %s, 0, 1);
         """
         # Wstawianie danych do bazy
-        success = msq.insert_to_database(query, (name, new_file_name, icon, descrition))
+        success = msq.insert_to_database(query, (name, ready_route, new_file_name, icon, descrition))
 
         if success:
             return jsonify({
