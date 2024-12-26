@@ -134,9 +134,9 @@
         
         
         </div>
-        <div class="row">
+        <div class="row" id="category-list-sort">
             {% for item in treatments_items %}
-                <div class="col-lg-4 col-md-6">
+                <div class="col-lg-4 col-md-6" data-id="{{ item.id }}">
                     <div class="single-services">
                         <div class="services-image">
                             <a href="/zabieg-stomatologiczny/{{item.ready_route}}">
@@ -163,6 +163,36 @@
 </section>
 {% endblock %}
 {% block bottom_scripts %}
+<script src="https://cdn.jsdelivr.net/npm/sortablejs@1.14.0/Sortable.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Sortowanie kategorii
+        const categoryList = document.getElementById('category-list-sort');
+        new Sortable(categoryList, {
+            animation: 150,
+            onEnd: function() {
+                // Pobieramy listę ID z data-id
+                const newOrder = Array.from(categoryList.children).map(item => item.dataset.id);
+
+                // Wysyłamy listę ID do serwera
+                fetch('/admin/aktualizuj_kolejnosc', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ order: newOrder })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    alert(data.message);
+                })
+                .catch(error => {
+                    console.error('Błąd:', error);
+                    alert('Wystąpił błąd: ' + error.message);
+                });
+            }
+        });
+    });
+
+</script>
 <script>
     document.querySelector('#file').addEventListener('change', function () {
         const label = this.nextElementSibling;
