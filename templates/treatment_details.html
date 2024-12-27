@@ -59,7 +59,7 @@
                         <img src="{{url_for('static', filename='img/services/single-dziecieca.jpg')}}" alt="image">
                     </div>
                     <div class="services-details-content">
-                        <h3 contenteditable="true">Dental Implants</h3>
+                        <h3 id="page_title_section_1_id" data-editable data-type="text">Dental Implants</h3>
                         <p>
                             Mauris dapibus arcu vitae dapibus laoreet. Duis vitae vestibulum sapien. Cras sed fermentum dui, a placerat lorem. Mauris quis justo consectetur, ullamcorper ante eget, porttitor arcu. Ut ac tellus id arcu mollis congue nec eget libero. Praesent quis pretium lacus. Sed fermentum ac magna id tempus. Phasellus bibendum commodo metus at suscipit. Sed eget nulla blandit, mattis libero non, tristique risus. Duis condimentum euismod nisi sed luctus. Cras posuere, felis eu euismod luctus, nulla nunc aliquet ante, nec mollis massa dolor a metus. Sed quis nibh eu leo fringilla rhoncus vitae porta mi. Sed eleifend neque vitae tempus placerat. Pellentesque vitae ipsum at orci ultrices tincidunt. Mauris tincidunt dolor et ante tincidunt maximus.
                         </p>
@@ -349,6 +349,57 @@
             }, delay);
 
             delay += 500; // Opóźnienie dla kolejnej linii
+        });
+    });
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const editableElements = document.querySelectorAll('[data-editable]');
+
+        editableElements.forEach((element) => {
+            element.addEventListener('dblclick', () => {
+                const dataType = element.getAttribute('data-type'); // Typ danych (text, int, img, url, splx)
+                element.setAttribute('contenteditable', 'true');
+                element.focus();
+
+                // Podświetlenie aktywnego elementu
+                element.style.border = '2px dashed #007bff';
+            });
+
+            element.addEventListener('blur', () => {
+                const dataType = element.getAttribute('data-type');
+                const elementId = element.getAttribute('id');
+                const updatedValue = element.innerText.trim(); // Obsługa tekstu, inne typy obsłużymy poniżej
+                
+                // Wyłącz contenteditable
+                element.setAttribute('contenteditable', 'false');
+                element.style.border = 'none';
+
+                // Przetwarzanie danych w zależności od typu
+                let processedValue;
+                switch (dataType) {
+                    case 'text':
+                        processedValue = updatedValue; // Zwykły tekst
+                        break;
+                    case 'int':
+                        processedValue = parseInt(updatedValue) || 0; // Parsowanie do liczby całkowitej
+                        break;
+                    case 'img':
+                        processedValue = updatedValue.startsWith('http') ? updatedValue : ''; // Walidacja URL obrazka
+                        break;
+                    case 'url':
+                        processedValue = updatedValue.startsWith('http') ? updatedValue : '#'; // Walidacja URL
+                        break;
+                    case 'splx':
+                        processedValue = updatedValue.split(','); // Rozbicie na tablicę
+                        break;
+                    default:
+                        console.warn(`Nieobsługiwany typ danych: ${dataType}`);
+                        return;
+                }
+
+                // TODO: Wyślij dane do endpointa AJAX (to dodamy później)
+                console.log(`Element ID: ${elementId}, Typ: ${dataType}, Nowa wartość:`, processedValue);
+            });
         });
     });
 </script>

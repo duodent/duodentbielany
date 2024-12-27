@@ -626,6 +626,51 @@ def treatment_managment():
         pageTitle=pageTitle,
         treatments_items=treatments_db()
     )
+
+# Funkcja do aktualizacji danych w bazie
+def update_element_in_db(element_id, data_type, value):
+
+    # Dynamiczne zapytanie SQL w zależności od typu
+    if data_type == 'text':
+        query = "UPDATE elements SET text_value = %s WHERE id = %s"
+        # msq.insert_to_database()
+    elif data_type == 'int':
+        query = "UPDATE elements SET int_value = ? WHERE id = ?"
+    elif data_type == 'img':
+        query = "UPDATE elements SET image_url = ? WHERE id = ?"
+    elif data_type == 'url':
+        query = "UPDATE elements SET url = ? WHERE id = ?"
+    elif data_type == 'splx':
+        query = "UPDATE elements SET splx_value = ? WHERE id = ?"
+    else:
+        raise ValueError(f"Nieobsługiwany typ danych: {data_type}")
+
+
+    return True
+
+
+# Endpoint do aktualizacji danych
+@app.route('/admin/edytuj-wybrany-element', methods=['POST'])
+def edit_element():
+    try:
+        data = request.json
+        element_id = data.get('element_id')
+        data_type = data.get('data_type')
+        value = data.get('value')
+
+        if not element_id or not data_type or value is None:
+            return jsonify({'error': 'Brak wymaganych danych'}), 400
+        
+        # Aktualizacja w bazie danych
+        success = update_element_in_db(element_id, data_type, value)
+
+        if success:
+            return jsonify({'message': 'Aktualizacja zakończona sukcesem!'})
+        else:
+            return jsonify({'error': 'Błąd podczas aktualizacji'}), 500
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
 @app.route('/admin/add-treatment', methods=['POST'])
 def add_treatment():
     """Dodawanie nowego zabiegu."""
