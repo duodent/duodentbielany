@@ -360,57 +360,144 @@
 </script>
 {% if userName!='NotLogin' %}
 <script>
-    // 
+    function makeElementEditable(element) {
+        const dataType = element.getAttribute('data-type');
+        const elementId = element.getAttribute('id');
+
+        // Aktywacja edycji
+        element.setAttribute('contenteditable', 'true');
+        element.focus();
+        element.style.border = '2px dashed #007bff';
+
+        // Obsługa wyjścia z edycji
+        element.addEventListener('blur', () => {
+            element.setAttribute('contenteditable', 'false');
+            element.style.border = 'none';
+
+            // Pobranie i wstępna walidacja wartości
+            const updatedValue = element.innerText.trim();
+            if (!validateInput(updatedValue, dataType)) {
+                alert('Nieprawidłowa wartość!');
+                return;
+            }
+
+            // Przetwarzanie danych w zależności od typu
+            const processedValue = processDataType(dataType, updatedValue);
+
+            // Wysyłanie danych do backendu
+            sendDataToBackend(elementId, dataType, processedValue);
+        }, { once: true });
+    }
+
+    // Funkcja walidacji podstawowej
+    function validateInput(value, dataType) {
+        switch (dataType) {
+            case 'text':
+                return value.length > 0;
+            case 'int':
+                return !isNaN(parseInt(value));
+            case 'img':
+            case 'url':
+                return value.startsWith('http');
+            case 'splx':
+                return value.includes(',');
+            default:
+                return true;
+        }
+    }
+
+    // Funkcja przetwarzania danych
+    function processDataType(dataType, value) {
+        switch (dataType) {
+            case 'text':
+                return value;
+            case 'int':
+                return parseInt(value);
+            case 'img':
+            case 'url':
+                return value;
+            case 'splx':
+                return value.split(',').map(item => item.trim());
+            default:
+                return value;
+        }
+    }
+
+    // Funkcja do wysyłania danych do backendu
+    function sendDataToBackend(id, type, value) {
+        $.ajax({
+            url: '/admin/edytuj-wybrany-element',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({ id, type, value }),
+            success: (response) => {
+                console.log('Zaktualizowano:', response.message);
+            },
+            error: (xhr) => {
+                console.error('Błąd aktualizacji:', xhr.responseJSON.error);
+            }
+        });
+    }
+
     document.addEventListener('DOMContentLoaded', () => {
         const editableElements = document.querySelectorAll('[data-editable]');
-
         editableElements.forEach((element) => {
-            element.addEventListener('dblclick', () => {
-                const dataType = element.getAttribute('data-type'); // Typ danych (text, int, img, url, splx)
-                element.setAttribute('contenteditable', 'true');
-                element.focus();
-
-                // Podświetlenie aktywnego elementu
-                element.style.border = '2px dashed #007bff';
-            });
-
-            element.addEventListener('blur', () => {
-                const dataType = element.getAttribute('data-type');
-                const elementId = element.getAttribute('id');
-                const updatedValue = element.innerText.trim(); // Obsługa tekstu, inne typy obsłużymy poniżej
-                
-                // Wyłącz contenteditable
-                element.setAttribute('contenteditable', 'false');
-                element.style.border = 'none';
-
-                // Przetwarzanie danych w zależności od typu
-                let processedValue;
-                switch (dataType) {
-                    case 'text':
-                        processedValue = updatedValue; // Zwykły tekst
-                        break;
-                    case 'int':
-                        processedValue = parseInt(updatedValue) || 0; // Parsowanie do liczby całkowitej
-                        break;
-                    case 'img':
-                        processedValue = updatedValue.startsWith('http') ? updatedValue : ''; // Walidacja URL obrazka
-                        break;
-                    case 'url':
-                        processedValue = updatedValue.startsWith('http') ? updatedValue : '#'; // Walidacja URL
-                        break;
-                    case 'splx':
-                        processedValue = updatedValue.split(','); // Rozbicie na tablicę
-                        break;
-                    default:
-                        console.warn(`Nieobsługiwany typ danych: ${dataType}`);
-                        return;
-                }
-
-                // TODO: Wyślij dane do endpointa AJAX (to dodamy później)
-                console.log(`Element ID: ${elementId}, Typ: ${dataType}, Nowa wartość:`, processedValue);
-            });
+            element.addEventListener('dblclick', () => makeElementEditable(element));
         });
     });
+
+
+    // 
+    // document.addEventListener('DOMContentLoaded', () => {
+    //     const editableElements = document.querySelectorAll('[data-editable]');
+
+    //     editableElements.forEach((element) => {
+    //         element.addEventListener('dblclick', () => {
+    //             const dataType = element.getAttribute('data-type'); // Typ danych (text, int, img, url, splx)
+    //             element.setAttribute('contenteditable', 'true');
+    //             element.focus();
+
+    //             // Podświetlenie aktywnego elementu
+    //             element.style.border = '2px dashed #007bff';
+    //         });
+
+    //         element.addEventListener('blur', () => {
+    //             const dataType = element.getAttribute('data-type');
+    //             const elementId = element.getAttribute('id');
+    //             const updatedValue = element.innerText.trim(); // Obsługa tekstu, inne typy obsłużymy poniżej
+                
+    //             // Wyłącz contenteditable
+    //             element.setAttribute('contenteditable', 'false');
+    //             element.style.border = 'none';
+
+    //             // Przetwarzanie danych w zależności od typu
+    //             let processedValue;
+    //             switch (dataType) {
+    //                 case 'text':
+    //                     processedValue = updatedValue; // Zwykły tekst
+    //                     break;
+    //                 case 'int':
+    //                     processedValue = parseInt(updatedValue) || 0; // Parsowanie do liczby całkowitej
+    //                     break;
+    //                 case 'img':
+    //                     processedValue = updatedValue.startsWith('http') ? updatedValue : ''; // Walidacja URL obrazka
+    //                     break;
+    //                 case 'url':
+    //                     processedValue = updatedValue.startsWith('http') ? updatedValue : '#'; // Walidacja URL
+    //                     break;
+    //                 case 'splx':
+    //                     processedValue = updatedValue.split(','); // Rozbicie na tablicę
+    //                     break;
+    //                 default:
+    //                     console.warn(`Nieobsługiwany typ danych: ${dataType}`);
+    //                     return;
+    //             }
+
+    //             // TODO: Wyślij dane do endpointa AJAX (to dodamy później)
+    //             console.log(`Element ID: ${elementId}, Typ: ${dataType}, Nowa wartość:`, processedValue);
+    //         });
+    //     });
+    // });
 
     // 
 </script>

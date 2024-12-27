@@ -643,33 +643,41 @@ def update_element_in_db(element_id, data_type, value):
     elif data_type == 'splx':
         query = "UPDATE elements SET splx_value = ? WHERE id = ?"
     else:
-        raise ValueError(f"Nieobsługiwany typ danych: {data_type}")
+        raise print(f"Nieobsługiwany typ danych: {data_type}")
 
 
     return True
 
 
-# Endpoint do aktualizacji danych
 @app.route('/admin/edytuj-wybrany-element', methods=['POST'])
 def edit_element():
-    try:
-        data = request.json
-        element_id = data.get('element_id')
-        data_type = data.get('data_type')
-        value = data.get('value')
+    data = request.json
+    element_id = data.get('id')
+    data_type = data.get('type')
+    value = data.get('value')
 
-        if not element_id or not data_type or value is None:
-            return jsonify({'error': 'Brak wymaganych danych'}), 400
-        
-        # Aktualizacja w bazie danych
-        success = update_element_in_db(element_id, data_type, value)
+    if not element_id or not data_type:
+        return jsonify({'error': 'Brak wymaganych danych'}), 400
 
-        if success:
-            return jsonify({'message': 'Aktualizacja zakończona sukcesem!'})
+    # Obsługa typów danych
+    if data_type == 'splx':
+        # Zapis jako string z separatorami w bazie
+        if isinstance(value, list):
+            value = ','.join(value)
         else:
-            return jsonify({'error': 'Błąd podczas aktualizacji'}), 500
-    except Exception as e:
-        return jsonify({'error': str(e)}), 500
+            return jsonify({'error': 'Nieprawidłowy format dla splx'}), 400
+
+    elif data_type == 'int':
+        # Walidacja i przypisanie ID z selektora
+        if not isinstance(value, int):
+            return jsonify({'error': 'Nieprawidłowy format dla int'}), 400
+
+    # Aktualizacja w bazie (logika zależna od typu danych)
+    success = update_element_in_db(element_id, data_type, value)
+    if success:
+        return jsonify({'message': 'Aktualizacja zakończona sukcesem!'})
+    else:
+        return jsonify({'error': 'Błąd podczas aktualizacji'}), 500
 
 @app.route('/admin/add-treatment', methods=['POST'])
 def add_treatment():
