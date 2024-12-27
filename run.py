@@ -643,9 +643,10 @@ def update_element_in_db(element_id, data_type, value):
     elif data_type == 'splx':
         query = "UPDATE elements SET splx_value = ? WHERE id = ?"
     else:
-        raise print(f"Nieobsługiwany typ danych: {data_type}")
+        print(f"Nieobsługiwany typ danych: {data_type}")
+        return False
 
-
+    print(element_id, data_type, value)
     return True
 
 
