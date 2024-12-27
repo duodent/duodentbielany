@@ -356,7 +356,11 @@
             delay += 500; // Opóźnienie dla kolejnej linii
         });
     });
-
+    
+</script>
+{% if userName!='NotLogin' %}
+<script>
+    // 
     document.addEventListener('DOMContentLoaded', () => {
         const editableElements = document.querySelectorAll('[data-editable]');
 
@@ -407,5 +411,9 @@
             });
         });
     });
+
+    // 
 </script>
+{% endif %}
+    
 {% endblock %}
