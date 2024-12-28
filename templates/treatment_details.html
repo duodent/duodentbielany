@@ -55,6 +55,22 @@
             </div>
             <div class="row">
                 <div class="col-lg-8 col-md-12">
+                    {% if userName!='NotLogin' %}
+                    <div id="baner-slogan-content" class="mb-30">
+                        <div class="item-container d-flex align-items-center mb-2">
+                            <div class="editable-content flex-grow-1 p-2 bg-light text-dark" contenteditable="true"></div>
+                            <div class="editable-content flex-grow-1 p-2 bg-light text-blue" contenteditable="true"></div>
+                            <div class="editable-content flex-grow-1 p-2 bg-light text-dark" contenteditable="true"></div>
+                        </div>
+                        <div class="item-container d-flex align-items-center mb-2">
+                            <div class="editable-content flex-grow-1 p-2 bg-light text-dark" contenteditable="true"></div>
+                            <div class="editable-content flex-grow-1 p-2 bg-light text-blue" contenteditable="true"></div>
+                            <div class="editable-content flex-grow-1 p-2 bg-light text-dark" contenteditable="true"></div>
+                        </div>
+                        <h2 id="baner_h1_splx_1" data-editable data-type="text"></h2>
+                        <h2 id="baner_h1_splx_2" data-editable data-type="text"></h2>
+                    </div>
+                    {% endif %}
                     <div class="services-details-image">
                         <img 
                             src="{{url_for('static', filename='img/services/single-dziecieca.jpg')}}" 
