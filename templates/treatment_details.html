@@ -70,7 +70,7 @@
                         </p>
                     </div>
                     <div class="row">
-                        <div class="col-lg-12" id="page_points_splx_section_1_id" data-editable data-type="splx">
+                        <div class="col-lg-12">
                             <h1 class="text-center">Dynamiczna Lista SPLX</h1>
                             <div class="mb-3">
                                 <label for="list-container_1" class="form-label">Twoja Lista</label>
@@ -84,7 +84,7 @@
                                 </div>
                             </div>
                             <button type="button" class="btn btn-success" onclick="exportList()">Eksportuj Listę</button>
-                            
+
                             {% for inter_pd in page_data_interput.page_points_splx_section %}
                             <div class="row">
                                 <div class="col-1">
@@ -538,91 +538,98 @@
     // // // Funkcje do dodawania, usuwania, sortowania i eksportu danych // // //
 
     // SPLX V 2.0
-    // Funkcja do wczytywania elementów listy na podstawie danych z bazy
-    function addListFields(data, id, sep, template, containerID) {
-        const container = document.getElementById(containerID + id);
-        if (!container) {
-            console.error(`Container with ID ${containerID + id} does not exist.`);
-            return;
+    // Szablon elementu listy
+    const template = `
+            <div class="item-container d-flex align-items-center mb-2">
+                <div class="editable-content flex-grow-1 p-2 bg-light text-dark" contenteditable="true">&^^idemDiv&^^</div>
+                <button type="button" class="remove-btn btn btn-outline-danger ms-2">
+                    <i class="bi bi-trash3-fill"></i>
+                </button>
+            </div>
+        `;
+
+        // Funkcja do wczytywania elementów z danych
+        function addListFields(data, id, sep, template, containerID) {
+            const container = document.getElementById(containerID + id);
+            if (!container) {
+                console.error(`Container with ID ${containerID + id} does not exist.`);
+                return;
+            }
+
+            const html = data.split(sep)
+                .map(value => template.replace("&^^idemDiv&^^", value))
+                .join("");
+
+            container.innerHTML += html;
         }
 
-        const html = data.split(sep)
-            .map(value => template.replace("&^^idemDiv&^^", value))
-            .join(""); // Tworzenie całego fragmentu HTML jako jednego stringa
+        // Funkcja do dodawania nowego elementu
+        function addListItem(id, template, containerID, defaultValue = "") {
+            const container = document.getElementById(containerID + id);
+            if (!container) {
+                console.error(`Container with ID ${containerID + id} does not exist.`);
+                return;
+            }
 
-        container.innerHTML += html; // Wstawienie całego kodu HTML naraz
-    }
-
-    // Funkcja do dodawania nowego elementu listy
-    function addListItem(id, template, containerID, defaultValue = "") {
-        const container = document.getElementById(containerID + id);
-        if (!container) {
-            console.error(`Container with ID ${containerID + id} does not exist.`);
-            return;
+            container.insertAdjacentHTML(
+                'beforeend',
+                template.replace("&^^idemDiv&^^", defaultValue)
+            );
         }
 
-        container.insertAdjacentHTML(
-            'beforeend', 
-            template.replace("&^^idemDiv&^^", defaultValue)
-        ); // Wstawienie nowego elementu bezpośrednio
-    }
+        // Funkcja do eksportu danych
+        function joinListFields(containerID, separator = "#splx#") {
+            const container = document.getElementById(containerID);
+            if (!container) {
+                console.error(`Container with ID ${containerID} does not exist.`);
+                return "";
+            }
 
-    // Funkcja do inicjalizacji sortowania za pomocą SortableJS
-    function initializeSortable(containerID) {
-        const container = document.getElementById(containerID);
-        if (!container) {
-            console.error(`Container with ID ${containerID} does not exist.`);
-            return;
+            const items = Array.from(container.querySelectorAll(".editable-content"));
+
+            const processedItems = items.map((item) => {
+                return item.innerText.replace(/\s+/g, " ").trim();
+            });
+
+            return processedItems.join(separator);
         }
 
-        new Sortable(container, {
-            animation: 150,
-            ghostClass: "sortable-ghost",
-            onEnd: function (evt) {
-                console.log(`Element moved from ${evt.oldIndex} to ${evt.newIndex}`);
-                // Możesz dodać funkcję zapisującą kolejność w bazie danych
+        // Funkcja eksportu wywoływana z przycisku
+        function exportList() {
+            const exportedData = joinListFields("list-container_1", "#splx#");
+            console.log("Eksportowane dane:", exportedData);
+            alert("Eksportowane dane:\n" + exportedData);
+        }
+
+        // Inicjalizacja SortableJS
+        function initializeSortable(containerID) {
+            const container = document.getElementById(containerID);
+            if (!container) {
+                console.error(`Container with ID ${containerID} does not exist.`);
+                return;
+            }
+
+            new Sortable(container, {
+                animation: 150,
+                ghostClass: "sortable-ghost",
+                onEnd: function (evt) {
+                    console.log(`Element przeniesiony z pozycji ${evt.oldIndex} na pozycję ${evt.newIndex}`);
+                }
+            });
+        }
+
+        // Wczytanie danych początkowych
+        const initialData = "Punkt 1#splx#Punkt 2#splx#Punkt 3";
+        addListFields(initialData, "1", "#splx#", template, "list-container_");
+        initializeSortable("list-container_1");
+
+        // Obsługa usuwania elementów
+        document.addEventListener("click", function (e) {
+            if (e.target && e.target.closest(".remove-btn")) {
+                const item = e.target.closest(".item-container");
+                if (item) item.remove();
             }
         });
-    }
-
-    // Funkcja do eksportowania danych z listy jako string
-    function joinListFields(containerID, separator = "#splx#") {
-        const container = document.getElementById(containerID);
-        if (!container) {
-            console.error(`Container with ID ${containerID} does not exist.`);
-            return "";
-        }
-
-        // Pobierz wszystkie elementy z klasą 'editable-content'
-        const items = Array.from(container.querySelectorAll(".editable-content"));
-
-        // Przetwórz zawartość każdego elementu
-        const processedItems = items.map((item) => {
-            // Usuń znaki nowej linii i inne białe znaki
-            return item.innerText.replace(/\s+/g, " ").trim();
-        });
-
-        // Połącz elementy w jeden string za pomocą separatora
-        return processedItems.join(separator);
-    }
-
-    // Szablon HTML dla elementów listy
-    const template = `
-        <div class="item-container">
-            <div class="editable-content" contenteditable="true">&^^idemDiv&^^</div>
-            <button type="button" class="remove-btn btn btn-outline-danger">
-                <i class="bi bi-trash3-fill" style="font-size: 15px !important;"></i>
-            </button>
-        </div>
-    `;
-
-    // Obsługa usuwania elementów listy
-    document.addEventListener("click", function (e) {
-        if (e.target && e.target.closest(".remove-btn")) {
-            const item = e.target.closest(".item-container");
-            if (item) item.remove();
-        }
-    });
     
 </script>
 {% endif %}
