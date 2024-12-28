@@ -682,9 +682,11 @@
                         originalElement.setAttribute('data-current-value', selectedValue); // Aktualizacja wartości
                         selectElement.replaceWith(originalElement);
 
+                        // Bezpośrednie przypisanie zdarzenia dblclick do przywróconego elementu
+                        originalElement.addEventListener('dblclick', () => makeElementEditable(originalElement));
+                        originalElement.setAttribute('data-initialized', 'true'); // Zapobiega wielokrotnej inicjalizacji
+
                         console.log(`Dodano element o ID: ${selectedValue} i przywrócono pierwotny stan.`);
-                        // Ponowna inicjalizacja zdarzenia dla przywróconego elementu
-                        initializeEditableElements();
                     });
                 })
                 .catch((error) => {
