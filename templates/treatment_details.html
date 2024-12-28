@@ -209,62 +209,128 @@
                         <div class="row">
                             <div class="col-lg-6 col-md-6">
                                 <div class="single-gallery">
-                                    <img src="../static/img/services/1.jpg" alt="image">
+                                    <img 
+                                        {% if userName!='NotLogin' %}
+                                        id="page_photo_content_links_splx_section_2_f_1" 
+                                        data-editable 
+                                        data-type="img"
+                                        {% endif %}
+                                        src="../static/img/services/1.jpg" alt="image"
+                                    >
                                 </div>
                             </div>
                             <div class="col-lg-6 col-md-6">
                                 <div class="single-gallery">
-                                    <img src="../static/img/services/2.jpg" alt="image">
+                                    <img 
+                                        {% if userName!='NotLogin' %}
+                                        id="page_photo_content_links_splx_section_2_f_1" 
+                                        data-editable 
+                                        data-type="img"
+                                        {% endif %}
+                                        src="../static/img/services/1.jpg" alt="image"
+                                    >
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <p>
+                    <p {% if userName!='NotLogin' %}id="page_subcontent_section_2_id" data-editable data-type="text"{% endif %}>
                         Pellentesque sit amet consequat ligula. Fusce interdum magna eget arcu hendrerit, non facilisis eros pharetra. Etiam ultricies sit amet nunc suscipit tristique. Proin lectus nisl, bibendum pellentesque arcu vel, faucibus sollicitudin urna. Nullam tempus leo sed magna viverra vehicula. Duis posuere sollicitudin libero eget volutpat. Ut nec interdum velit. Nullam sed nulla ac erat scelerisque semper id nec ante. Integer ac orci et metus sollicitudin varius. Duis imperdiet lectus et mi dictum, sed consequat neque blandit. Proin ac sodales lacus.
                     </p>
                     <div class="services-details-overview-content">
-                        <h4>Praesent rhoncus varius : </h4>
-                        <p>
+                        <h4 {% if userName!='NotLogin' %}id="page_title_section_3_id" data-editable data-type="text"{% endif %}>Praesent rhoncus varius : </h4>
+                        <p {% if userName!='NotLogin' %}id="page_content_section_3_id" data-editable data-type="text"{% endif %}>
                             It is a long established fact that a reader will
                             be distracted by the readable content of a page when looking at its layout. The point of
                             psum is that it has a more or-less normal distribution of letters, as opposed to using.
                         </p>
-                        <h4> Odio rhoncus vulputate : </h4>
-                        <p>
+                        <h4 {% if userName!='NotLogin' %}id="page_title_section_4_id" data-editable data-type="text"{% endif %}>
+                            Odio rhoncus vulputate : 
+                        </h4>
+                        <p {% if userName!='NotLogin' %}id="page_content_section_4_id" data-editable data-type="text"{% endif %}>
                             Mauris eu massa eu odio rhoncus vulputate sed eget nunc. Mauris molestie, nulla quis vulputate sollicitudin, ipsum lacus ullamcorper felis, vitae tincidunt ante ex ac libero. Vivamus tincidunt consectetur ligula vel fermentum. Duis feugiat nisi euismod dui viverra, vel consectetur leo tincidunt. Donec lacinia, mauris sit amet congue vulputate, eros orci porttitor eros, at luctus tortor massa ut mi. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Pellentesque eu est ut mi porta sodales sit amet a risus.
                         </p>
                     </div>
+                    {% if userName!='NotLogin' %}
+                    
+                        <div class="col-lg-6 col-sm-12">
+                            <div class="mb-3">
+                                <label for="list-container_3" class="form-label">Nazwa usługi</label>
+                                <div id="list-container_3" class="no-border">
+                                    <!-- Dynamicznie dodawane elementy -->
+                                </div>
+                                <div class="text-end mt-3">
+                                    <button type="button" class="btn btn-warning btn-sm" onclick="addListItem('3', template, 'list-container_', 'Nowa usługa')">
+                                        <i class="bi bi-plus-square-dotted"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <button type="button" class="btn btn-success" onclick="exportList('3')">Eksportuj Listę</button>
+                        </div>
+                        <script>
+                            // Wczytanie danych początkowych
+                            document.addEventListener('DOMContentLoaded', () => {
+                                const initialData = "Punkt 1#splx#Punkt 2#splx#Punkt 3";
+                                addListFields(initialData, "3", "#splx#", template, "list-container_");
+                                initializeSortable("list-container_3");
+                            });
+                        </script>
+                        <div class="col-lg-6 col-sm-12">
+                            <div class="mb-3">
+                                <label for="list-container_4" class="form-label">Cena</label>
+                                <div id="list-container_4" class="no-border">
+                                    <!-- Dynamicznie dodawane elementy -->
+                                </div>
+                                <div class="text-end mt-3">
+                                    <button type="button" class="btn btn-warning btn-sm" onclick="addListItem('4', template, 'list-container_', 'Nowy element')">
+                                        <i class="bi bi-plus-square-dotted"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <button type="button" class="btn btn-success" onclick="exportList('4')">Eksportuj Listę</button>
+                        </div>
+
+                        <script>
+                            // Wczytanie danych początkowych
+                            document.addEventListener('DOMContentLoaded', () => {
+                                const initialData = "Punkt 4#splx#Punkt 5#splx#Punkt 6";
+                                addListFields(initialData, "4", "#splx#", template, "list-container_");
+                                initializeSortable("list-container_4");
+                            });
+                        </script>
+                    {% else %}
                     <div class="card mt-5" style="width: 100%;">
                         <div class="card-header">
-                          Featured
-                        </div>
-                        <ul class="list-group list-group-flush">
-                            <li class="list-group-item">
-                                <div class="row">
-                                    <div class="col-8">Wkład k/k od</div>
-                                    <div class="col-4 border-start">od 190 zł</div>
-                                </div>
-                            </li>
-                            <li class="list-group-item">
-                                <div class="row">
-                                    <div class="col-8">Wkład k/k od</div>
-                                    <div class="col-4 border-start">od 190 zł</div>
-                                </div>
-                            </li>
-                            <li class="list-group-item">
-                                <div class="row">
-                                    <div class="col-8">Wkład k/k od</div>
-                                    <div class="col-4 border-start">od 190 zł</div>
-                                </div>
-                            </li>
-                            <li class="list-group-item">
-                                <div class="row">
-                                    <div class="col-8">Wkład k/k od</div>
-                                    <div class="col-4 border-start">od 190 zł</div>
-                                </div>
-                            </li>
-                        </ul>
+                            Featured
+                          </div>
+                          <ul class="list-group list-group-flush">
+                              <li class="list-group-item">
+                                  <div class="row">
+                                      <div class="col-8">Wkład k/k od</div>
+                                      <div class="col-4 border-start">od 190 zł</div>
+                                  </div>
+                              </li>
+                              <li class="list-group-item">
+                                  <div class="row">
+                                      <div class="col-8">Wkład k/k od</div>
+                                      <div class="col-4 border-start">od 190 zł</div>
+                                  </div>
+                              </li>
+                              <li class="list-group-item">
+                                  <div class="row">
+                                      <div class="col-8">Wkład k/k od</div>
+                                      <div class="col-4 border-start">od 190 zł</div>
+                                  </div>
+                              </li>
+                              <li class="list-group-item">
+                                  <div class="row">
+                                      <div class="col-8">Wkład k/k od</div>
+                                      <div class="col-4 border-start">od 190 zł</div>
+                                  </div>
+                              </li>
+                          </ul>
                     </div>
+                    {% endif %}
+                        
                 </div>
                 <div class="col-lg-4 col-md-12">
                     <aside class="widget-area">
