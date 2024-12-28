@@ -824,11 +824,11 @@
     document.addEventListener('DOMContentLoaded', initializeEditableElements);
 
 
-    // // //  // //  //  //         //        //
-    //        //     //  //           //   //
-    // // //  //     //  //             //
-          //  // //  //  //           //  //
-    // // //  //         // // //  //       //
+    // // //  // // //  //      //        //
+    //        //    //  //        //   //
+    // // //  // // //  //          //
+          //  //        //        //  //
+    // // //  //        // //  //       //
 
 
     // // // SPLX 
@@ -844,7 +844,7 @@
                 <div class="drag-handle me-2">
                     <i class="bi bi-grip-vertical" style="cursor: grab;"></i>
                 </div>
-                <div class="editable-content flex-grow-1 p-2 bg-light text-dark" contenteditable="true">
+                <div class="editable-content flex-grow-1 p-2 fs-1 bg-light text-dark" contenteditable="true">
                     &^^idemDiv&^^
                 </div>
                 <button type="button" class="remove-btn btn btn-outline-danger ms-2">
@@ -923,9 +923,6 @@
             });
         }
 
-        
-
-
         // Obsługa usuwania elementów
         document.addEventListener("click", function (e) {
             if (e.target && e.target.closest(".remove-btn")) {
@@ -933,9 +930,6 @@
                 if (item) item.remove();
             }
         });
-
-        console.log(typeof Sortable); // Oczekiwany wynik: "function"
-        console.log(document.getElementById("list-container_1"));
     
 </script>
 {% endif %}
