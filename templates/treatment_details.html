@@ -84,6 +84,14 @@
                             </div>
                             <button type="button" class="btn btn-success" onclick="exportList('1')">Eksportuj Listę</button>
                         </div>
+                        <script>
+                            // Wczytanie danych początkowych
+                            document.addEventListener('DOMContentLoaded', () => {
+                                const initialData = "Punkt 1#splx#Punkt 2#splx#Punkt 3";
+                                addListFields(initialData, "1", "#splx#", template, "list-container_");
+                                initializeSortable("list-container_1");
+                            });
+                        </script>
                         <div class="col-lg-6 col-sm-12">
                             <div class="mb-3">
                                 <label for="list-container_2" class="form-label">Twoja Lista</label>
@@ -98,6 +106,14 @@
                             </div>
                             <button type="button" class="btn btn-success" onclick="exportList('2')">Eksportuj Listę</button>
                         </div>
+                        <script>
+                            // Wczytanie danych początkowych
+                            document.addEventListener('DOMContentLoaded', () => {
+                                const initialData = "Punkt 4#splx#Punkt 5#splx#Punkt 6";
+                                addListFields(initialData, "2", "#splx#", template, "list-container_");
+                                initializeSortable("list-container_2");
+                            });
+                        </script>
                     </div>
                     <p id="page_subcontent_section_1_id" data-editable data-type="text">
                         Praesent rhoncus varius pharetra. Ut hendrerit nisi eget urna vehicula rutrum. Nulla molestie bibendum blandit. Pellentesque volutpat lacus metus, ut porta odio volutpat nec. Curabitur ultricies ex odio, vitae facilisis sem volutpat nec. Nunc ultricies ut dui id interdum. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.
@@ -594,12 +610,7 @@
             });
         }
 
-        // Wczytanie danych początkowych
-        document.addEventListener('DOMContentLoaded', () => {
-            const initialData = "Punkt 1#splx#Punkt 2#splx#Punkt 3";
-            addListFields(initialData, "1", "#splx#", template, "list-container_");
-            initializeSortable("list-container_1");
-        });
+        
 
 
         // Obsługa usuwania elementów
