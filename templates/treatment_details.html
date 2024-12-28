@@ -340,7 +340,9 @@
                                 <img src="../static/img/doctor/1.jpg" alt="image">
                             </div>
                             <div class="content">
-                                <h3>Emma Brown</h3>
+                                <h3 
+                                    id="element1" data-editable="true" data-type="picker" data-current-value="2"
+                                    >Emma Brown</h3>
                                 <p>Curabitur placerat mi id convallis dictum uis euismod urna sit amet purus congue</p>
                                 <!-- <div class="share-link">
                                     <a href="#"><i class='bx bxl-facebook'></i></a>
@@ -569,36 +571,75 @@
 {% if userName!='NotLogin' %}
 <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.14.0/Sortable.min.js"></script>
 <script>
+
     function makeElementEditable(element) {
         const dataType = element.getAttribute('data-type');
         const elementId = element.getAttribute('id');
 
         if (dataType === 'img') {
-            // Obsługa obrazka
+            // Obsługa obrazka (bez zmian)
             const fileInput = document.createElement('input');
             fileInput.type = 'file';
-            fileInput.accept = 'image/*'; // Akceptuj tylko obrazy
+            fileInput.accept = 'image/*';
 
             fileInput.addEventListener('change', () => {
                 const file = fileInput.files[0];
                 if (!file) return;
 
-                // Wyświetl potwierdzenie przed wysłaniem
                 const confirmUpload = confirm('Czy na pewno chcesz załadować to zdjęcie?');
                 if (!confirmUpload) return;
 
-                // Przygotowanie danych do wysłania
                 const formData = new FormData();
                 formData.append('id', elementId);
                 formData.append('type', dataType);
                 formData.append('file', file);
 
-                // Wysyłanie danych do backendu
                 sendFileToBackend(formData, element);
             });
 
-            // Kliknięcie w input (otwiera okno wyboru pliku)
             fileInput.click();
+        } else if (dataType === 'picker') {
+            // Obsługa typu picker
+            fetchPickerOptions(elementId)
+                .then((options) => {
+                    const selectElement = document.createElement('select');
+                    selectElement.className = 'form-select'; // Bootstrap style (opcjonalnie)
+
+                    // Dodanie opcji do selecta
+                    options.forEach(({ id, description }) => {
+                        const option = document.createElement('option');
+                        option.value = id;
+                        option.textContent = description;
+                        selectElement.appendChild(option);
+                    });
+
+                    // Ustawienie początkowej wartości
+                    const currentValue = element.getAttribute('data-current-value');
+                    if (currentValue) {
+                        selectElement.value = currentValue;
+                    }
+
+                    // Zamiana elementu na selecta
+                    element.replaceWith(selectElement);
+
+                    // Obsługa wyboru i wysyłki danych
+                    selectElement.addEventListener('change', () => {
+                        const selectedValue = selectElement.value;
+                        sendDataToBackend(elementId, dataType, selectedValue);
+
+                        // Zamiana selecta na oryginalny element z aktualizacją
+                        element.textContent = options.find((opt) => opt.id == selectedValue).description;
+                        element.setAttribute('data-current-value', selectedValue);
+                        selectElement.replaceWith(element);
+                    });
+                })
+                .catch((error) => {
+                    console.error('Błąd wczytywania opcji:', error);
+                });
+        } else if (dataType === 'url') {
+            // Otwartą logikę pozostawiamy na później
+            console.log(`Logic for URL is not yet implemented for element ${elementId}.`);
+            alert('Obsługa URL jest w trakcie wdrażania. Spróbuj później.');
         } else {
             // Obsługa innych typów danych
             element.setAttribute('contenteditable', 'true');
@@ -625,12 +666,88 @@
         }
     }
 
+    // function makeElementEditable(element) {
+    //     const dataType = element.getAttribute('data-type');
+    //     const elementId = element.getAttribute('id');
+
+    //     if (dataType === 'img') {
+    //         // Obsługa obrazka
+    //         const fileInput = document.createElement('input');
+    //         fileInput.type = 'file';
+    //         fileInput.accept = 'image/*'; // Akceptuj tylko obrazy
+
+    //         fileInput.addEventListener('change', () => {
+    //             const file = fileInput.files[0];
+    //             if (!file) return;
+
+    //             // Wyświetl potwierdzenie przed wysłaniem
+    //             const confirmUpload = confirm('Czy na pewno chcesz załadować to zdjęcie?');
+    //             if (!confirmUpload) return;
+
+    //             // Przygotowanie danych do wysłania
+    //             const formData = new FormData();
+    //             formData.append('id', elementId);
+    //             formData.append('type', dataType);
+    //             formData.append('file', file);
+
+    //             // Wysyłanie danych do backendu
+    //             sendFileToBackend(formData, element);
+    //         });
+
+    //         // Kliknięcie w input (otwiera okno wyboru pliku)
+    //         fileInput.click();
+    //     } else {
+    //         // Obsługa innych typów danych
+    //         element.setAttribute('contenteditable', 'true');
+    //         element.focus();
+    //         element.style.border = '2px dashed #007bff';
+
+    //         element.addEventListener(
+    //             'blur',
+    //             () => {
+    //                 element.setAttribute('contenteditable', 'false');
+    //                 element.style.border = 'none';
+
+    //                 const updatedValue = element.innerText.trim();
+    //                 if (!validateInput(updatedValue, dataType)) {
+    //                     alert('Nieprawidłowa wartość!');
+    //                     return;
+    //                 }
+
+    //                 const processedValue = processDataType(dataType, updatedValue);
+    //                 sendDataToBackend(elementId, dataType, processedValue);
+    //             },
+    //             { once: true }
+    //         );
+    //     }
+    // }
+
+    function fetchPickerOptions(elementId) {
+        return new Promise((resolve, reject) => {
+            $.ajax({
+                url: '/admin/get-picker-options',
+                type: 'GET',
+                data: { id: elementId },
+                success: (response) => {
+                    if (response.options) {
+                        resolve(response.options); // Zakładamy, że backend zwraca listę obiektów { id, description }
+                    } else {
+                        reject('Brak opcji w odpowiedzi.');
+                    }
+                },
+                error: (xhr) => {
+                    reject('Błąd wczytywania opcji: ' + xhr.responseJSON.error);
+                }
+            });
+        });
+    }
+
     // Funkcja walidacji podstawowej
     function validateInput(value, dataType) {
         switch (dataType) {
             case 'text':
                 return value.length > 0;
-            case 'int':
+            case 'picker':
                 return !isNaN(parseInt(value));
             case 'img':
             case 'url':
@@ -645,7 +762,7 @@
         switch (dataType) {
             case 'text':
                 return value;
-            case 'int':
+            case 'picker':
                 return parseInt(value);
             case 'img':
             case 'url':

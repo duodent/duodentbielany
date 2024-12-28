@@ -1257,6 +1257,31 @@ def treatment_dynamic(treatment_slug):
     else:
         abort(404)
 
+# Przykładowe dane do wysłania
+OPTIONS_DATA = {
+    "1": [
+        {"id": "1", "description": "Opcja 1 dla elementu 1"},
+        {"id": "2", "description": "Opcja 2 dla elementu 1"},
+        {"id": "3", "description": "Opcja 3 dla elementu 1"}
+    ],
+    "2": [
+        {"id": "10", "description": "Opcja A dla elementu 2"},
+        {"id": "11", "description": "Opcja B dla elementu 2"},
+        {"id": "12", "description": "Opcja C dla elementu 2"}
+    ]
+}
+
+@app.route('/admin/get-picker-options', methods=['GET'])
+def get_picker_options():
+    # Pobierz ID elementu z parametrów zapytania
+    element_id = request.args.get('id')
+
+    # Sprawdź, czy istnieją dane dla danego ID
+    if element_id in OPTIONS_DATA:
+        return jsonify({"options": OPTIONS_DATA[element_id]})
+    else:
+        return jsonify({"error": "Opcje nie znalezione"}), 404
+
 # Zespół
 @app.route('/poznaj-nasz-zespol-specjalistow-stomatologii')
 def team():
