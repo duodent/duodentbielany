@@ -683,6 +683,8 @@
                         selectElement.replaceWith(originalElement);
 
                         console.log(`Dodano element o ID: ${selectedValue} i przywrócono pierwotny stan.`);
+                        // Ponowna inicjalizacja zdarzenia dla przywróconego elementu
+                        initializeEditableElements();
                     });
                 })
                 .catch((error) => {
