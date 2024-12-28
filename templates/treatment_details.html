@@ -722,7 +722,6 @@
 
 
     function fetchPickerOptions(elementId) {
-        console.log("Wysyłanie danych:", { id, type, value });
         return new Promise((resolve, reject) => {
             $.ajax({
                 url: '/admin/get-picker-options',
