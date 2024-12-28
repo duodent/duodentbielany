@@ -641,6 +641,10 @@ def update_element_in_db(element_id, data_type, value):
         # msq.insert_to_database()
     elif data_type == 'picker':
         query = "UPDATE elements SET int_value = ? WHERE id = ?"
+    elif data_type == 'adder':
+        query = "UPDATE elements SET int_value = ? WHERE id = ?"
+    elif data_type == 'remover':
+        query = "UPDATE elements SET int_value = ? WHERE id = ?"
     elif data_type == 'img':
         query = "UPDATE elements SET image_url = ? WHERE id = ?"
     elif data_type == 'url':
@@ -709,6 +713,16 @@ def edit_element():
         # Walidacja i przypisanie ID z selektora
         if not isinstance(value, int):
             return jsonify({'error': 'Nieprawidłowy format dla int'}), 400
+        
+    if data_type == 'adder':
+        # Walidacja i przypisanie ID z selektora
+        if not isinstance(value, int):
+            return jsonify({'error': 'Nieprawidłowy format dla int'}), 400
+    
+    if data_type == 'remover':
+        # Walidacja i przypisanie ID z selektora
+        if not isinstance(value, None) or not isinstance(element_id, str):
+            return jsonify({'error': 'Nieprawidłowy format dla remover'}), 400
         
     if data_type == 'img':
         if 'file' in request.files:
