@@ -499,7 +499,12 @@
     // Szablon elementu listy
     const template = `
             <div class="item-container d-flex align-items-center mb-2">
-                <div class="editable-content flex-grow-1 p-2 bg-light text-dark" contenteditable="true">&^^idemDiv&^^</div>
+                <div class="drag-handle me-2">
+                    <i class="bi bi-grip-vertical" style="cursor: grab;"></i>
+                </div>
+                <div class="editable-content flex-grow-1 p-2 bg-light text-dark" contenteditable="true">
+                    &^^idemDiv&^^
+                </div>
                 <button type="button" class="remove-btn btn btn-outline-danger ms-2">
                     <i class="bi bi-trash3-fill"></i>
                 </button>
