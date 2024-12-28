@@ -686,6 +686,9 @@
                         originalElement.addEventListener('dblclick', () => makeElementEditable(originalElement));
                         originalElement.setAttribute('data-initialized', 'true'); // Zapobiega wielokrotnej inicjalizacji
 
+                        // Wyświetlenie informacji o sukcesie
+                        showSuccessMessage(`Pozycja o ID ${selectedValue} została dodana!`);
+
                         console.log(`Dodano element o ID: ${selectedValue} i przywrócono pierwotny stan.`);
                     });
                 })
@@ -728,6 +731,21 @@
             );
         }
     }
+
+    function showSuccessMessage(message) {
+        // Tworzenie elementu z wiadomością
+        const messageElement = document.createElement('div');
+        messageElement.textContent = message;
+        messageElement.className = 'success-message';
+        document.body.appendChild(messageElement);
+
+        // Usuwanie wiadomości po 5 sekundach
+        setTimeout(() => {
+            messageElement.style.opacity = '0'; // Rozpoczęcie animacji zanikania
+            setTimeout(() => messageElement.remove(), 1000); // Usunięcie po animacji
+        }, 5000);
+    }
+
 
 
     function fetchPickerOptions(elementId) {
