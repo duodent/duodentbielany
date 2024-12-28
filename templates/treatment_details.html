@@ -71,21 +71,29 @@
                         <h2 id="baner_h1_splx_2" data-editable data-type="text"></h2>
                     </div>
                     {% endif %}
+                    
                     <div class="services-details-image">
                         <img 
-                            src="{{url_for('static', filename='img/services/single-dziecieca.jpg')}}" 
-                            alt="image"
-                            id="foto_page_header_id" 
-                            data-editable 
-                            data-type="img">
+                        src="{{url_for('static', filename='img/services/single-dziecieca.jpg')}}" 
+                        alt="image"
+                        {% if userName!='NotLogin' %}
+                        id="foto_page_header_id" 
+                        data-editable 
+                        data-type="img"
+                        {% endif %}
+                        >
                     </div>
                     <div class="services-details-content">
-                        <h3 id="page_title_section_1_id" data-editable data-type="text">Dental Implants</h3>
-                        <p id="page_content_section_1_id" data-editable data-type="text">
-                            Mauris dapibus arcu vitae dapibus laoreet. Duis vitae vestibulum sapien. Cras sed fermentum dui, a placerat lorem. Mauris quis justo consectetur, ullamcorper ante eget, porttitor arcu. Ut ac tellus id arcu mollis congue nec eget libero. Praesent quis pretium lacus. Sed fermentum ac magna id tempus. Phasellus bibendum commodo metus at suscipit. Sed eget nulla blandit, mattis libero non, tristique risus. Duis condimentum euismod nisi sed luctus. Cras posuere, felis eu euismod luctus, nulla nunc aliquet ante, nec mollis massa dolor a metus. Sed quis nibh eu leo fringilla rhoncus vitae porta mi. Sed eleifend neque vitae tempus placerat. Pellentesque vitae ipsum at orci ultrices tincidunt. Mauris tincidunt dolor et ante tincidunt maximus.
+                        <h3 
+                            {% if userName!='NotLogin' %}id="page_title_section_1_id" data-editable data-type="text"{% endif %}
+                            >Dental Implants</h3>
+                        <p 
+                            {% if userName!='NotLogin' %}id="page_content_section_1_id" data-editable data-type="text"{% endif %}
+                            >Mauris dapibus arcu vitae dapibus laoreet. Duis vitae vestibulum sapien. Cras sed fermentum dui, a placerat lorem. Mauris quis justo consectetur, ullamcorper ante eget, porttitor arcu. Ut ac tellus id arcu mollis congue nec eget libero. Praesent quis pretium lacus. Sed fermentum ac magna id tempus. Phasellus bibendum commodo metus at suscipit. Sed eget nulla blandit, mattis libero non, tristique risus. Duis condimentum euismod nisi sed luctus. Cras posuere, felis eu euismod luctus, nulla nunc aliquet ante, nec mollis massa dolor a metus. Sed quis nibh eu leo fringilla rhoncus vitae porta mi. Sed eleifend neque vitae tempus placerat. Pellentesque vitae ipsum at orci ultrices tincidunt. Mauris tincidunt dolor et ante tincidunt maximus.
                         </p>
                     </div>
                     <div class="row">
+                        {% if userName!='NotLogin' %}
                         <div class="col-lg-6 col-sm-12">
                             <div class="mb-3">
                                 <label for="list-container_1" class="form-label">Twoja Lista</label>
@@ -122,6 +130,7 @@
                             </div>
                             <button type="button" class="btn btn-success" onclick="exportList('2')">Eksportuj Listę</button>
                         </div>
+
                         <script>
                             // Wczytanie danych początkowych
                             document.addEventListener('DOMContentLoaded', () => {
@@ -130,6 +139,20 @@
                                 initializeSortable("list-container_2");
                             });
                         </script>
+                        {% else %}
+                            <div class="col-lg-6 col-sm-12">
+                                <div class="row">
+                                    <div class="col-1 services-details-list"><i class="flaticon-check"></i></div>
+                                    <div class="col">punkt 1</div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-sm-12">
+                                <div class="row">
+                                    <div class="col-1 services-details-list"><i class="flaticon-check"></i></div>
+                                    <div class="col">punkt 2</div>
+                                </div>
+                            </div>
+                        {% endif %}
                     </div>
                     <p id="page_subcontent_section_1_id" data-editable data-type="text">
                         Praesent rhoncus varius pharetra. Ut hendrerit nisi eget urna vehicula rutrum. Nulla molestie bibendum blandit. Pellentesque volutpat lacus metus, ut porta odio volutpat nec. Curabitur ultricies ex odio, vitae facilisis sem volutpat nec. Nunc ultricies ut dui id interdum. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.
