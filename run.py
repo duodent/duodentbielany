@@ -632,6 +632,11 @@ def update_element_in_db(element_id, data_type, value):
 
     # Dynamiczne zapytanie SQL w zależności od typu
     if data_type == 'text':
+        if "_" in str(element_id):
+
+            element_id_n = element_id.split("_")
+
+            
         query = "UPDATE elements SET text_value = %s WHERE id = %s"
         # msq.insert_to_database()
     elif data_type == 'int':
@@ -661,6 +666,11 @@ def edit_element():
         return jsonify({'error': 'Brak wymaganych danych'}), 400
 
     # Obsługa typów danych
+    if data_type == 'text':
+        # Walidacja i przypisanie ID z selektora
+        if not isinstance(value, str):
+            return jsonify({'error': 'Nieprawidłowy format dla text'}), 400
+
     if data_type == 'splx':
         # Zapis jako string z separatorami w bazie
         if isinstance(value, list):
@@ -668,10 +678,32 @@ def edit_element():
         else:
             return jsonify({'error': 'Nieprawidłowy format dla splx'}), 400
 
-    elif data_type == 'int':
+    if data_type == 'int':
         # Walidacja i przypisanie ID z selektora
         if not isinstance(value, int):
             return jsonify({'error': 'Nieprawidłowy format dla int'}), 400
+        
+    if data_type == 'img':
+        if 'file' in request.files:
+            file = request.files['file']
+            element_id = request.form.get('id')
+            data_type = request.form.get('type')
+
+            if not file or not element_id or data_type != 'img':
+                return jsonify({'error': 'Nieprawidłowe dane'}), 400
+
+            # Zapis pliku
+            try:
+                filename = f"{element_id}_{file.filename}"
+                filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+                # file.save(filepath)
+
+                # Aktualizacja w bazie (jeśli potrzebna)
+                # update_image_in_db(element_id, filename)
+
+                # return jsonify({'message': 'Zdjęcie zapisane!', 'newImageUrl': f"/{filepath}"})
+            except Exception as e:
+                return jsonify({'error': str(e)}), 500
 
     # Aktualizacja w bazie (logika zależna od typu danych)
     success = update_element_in_db(element_id, data_type, value)
@@ -1215,10 +1247,12 @@ def treatment_dynamic(treatment_slug):
     if treatment_slug in treatments_dict:
         pageTitle = treatments_dict[treatment_slug]
         session['page'] = treatment_slug
+        page_data_interput = {'page_points_splx_section': ['Podpunkt 1', 'Podpunkt 2', 'Podpunkt 3']}
         return render_template(
             'treatment_details.html',
             pageTitle=pageTitle,
-            nazwa_uslugi=treatments_dict[treatment_slug]
+            nazwa_uslugi=treatments_dict[treatment_slug],
+            page_data_interput=page_data_interput
         )
     else:
         abort(404)

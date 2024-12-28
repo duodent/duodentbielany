@@ -70,10 +70,35 @@
                         </p>
                     </div>
                     <div class="row">
-                        <div class="col-lg-6 col-md-6" id="page_points_splx_section_1_id" data-editable data-type="splx">
+                        <div class="col-lg-12" id="page_points_splx_section_1_id" data-editable data-type="splx">
+                            <h1 class="text-center">Dynamiczna Lista SPLX</h1>
+                            <div class="mb-3">
+                                <label for="list-container_1" class="form-label">Twoja Lista</label>
+                                <div id="list-container_1" class="no-border">
+                                    <!-- Dynamicznie dodawane elementy -->
+                                </div>
+                                <div class="text-end mt-3">
+                                    <button type="button" class="btn btn-warning btn-sm" onclick="addListItem('1', template, 'list-container_', 'Nowy element')">
+                                        <i class="bi bi-plus-square-dotted"></i> Dodaj
+                                    </button>
+                                </div>
+                            </div>
+                            <button type="button" class="btn btn-success" onclick="exportList()">Eksportuj Listę</button>
+                            
+                            {% for inter_pd in page_data_interput.page_points_splx_section %}
+                            <div class="row">
+                                <div class="col-1">
+                                    <i class="flaticon-check"></i>
+                                </div>
+                                <div class="col-11" id="{{inter_pd.id}}">
+                                    {{inter_pd.content}}
+                                </div>
+                            </div>
+                            {% endfor %}
+
                             <ul class="services-details-list">
                                 <li>
-                                    <i class="flaticon-check"></i>
+                                    
                                     Praesent rhoncus varius pharetra.
                                 </li>
                                 <li>
@@ -359,34 +384,62 @@
     
 </script>
 {% if userName!='NotLogin' %}
+<script src="https://cdn.jsdelivr.net/npm/sortablejs@1.14.0/Sortable.min.js"></script>
 <script>
     function makeElementEditable(element) {
         const dataType = element.getAttribute('data-type');
         const elementId = element.getAttribute('id');
 
-        // Aktywacja edycji
-        element.setAttribute('contenteditable', 'true');
-        element.focus();
-        element.style.border = '2px dashed #007bff';
+        if (dataType === 'img') {
+            // Obsługa obrazka
+            const fileInput = document.createElement('input');
+            fileInput.type = 'file';
+            fileInput.accept = 'image/*'; // Akceptuj tylko obrazy
 
-        // Obsługa wyjścia z edycji
-        element.addEventListener('blur', () => {
-            element.setAttribute('contenteditable', 'false');
-            element.style.border = 'none';
+            fileInput.addEventListener('change', () => {
+                const file = fileInput.files[0];
+                if (!file) return;
 
-            // Pobranie i wstępna walidacja wartości
-            const updatedValue = element.innerText.trim();
-            if (!validateInput(updatedValue, dataType)) {
-                alert('Nieprawidłowa wartość!');
-                return;
-            }
+                // Wyświetl potwierdzenie przed wysłaniem
+                const confirmUpload = confirm('Czy na pewno chcesz załadować to zdjęcie?');
+                if (!confirmUpload) return;
 
-            // Przetwarzanie danych w zależności od typu
-            const processedValue = processDataType(dataType, updatedValue);
+                // Przygotowanie danych do wysłania
+                const formData = new FormData();
+                formData.append('id', elementId);
+                formData.append('type', dataType);
+                formData.append('file', file);
 
-            // Wysyłanie danych do backendu
-            sendDataToBackend(elementId, dataType, processedValue);
-        }, { once: true });
+                // Wysyłanie danych do backendu
+                sendFileToBackend(formData, element);
+            });
+
+            // Kliknięcie w input (otwiera okno wyboru pliku)
+            fileInput.click();
+        } else {
+            // Obsługa innych typów danych
+            element.setAttribute('contenteditable', 'true');
+            element.focus();
+            element.style.border = '2px dashed #007bff';
+
+            element.addEventListener(
+                'blur',
+                () => {
+                    element.setAttribute('contenteditable', 'false');
+                    element.style.border = 'none';
+
+                    const updatedValue = element.innerText.trim();
+                    if (!validateInput(updatedValue, dataType)) {
+                        alert('Nieprawidłowa wartość!');
+                        return;
+                    }
+
+                    const processedValue = processDataType(dataType, updatedValue);
+                    sendDataToBackend(elementId, dataType, processedValue);
+                },
+                { once: true }
+            );
+        }
     }
 
     // Funkcja walidacji podstawowej
@@ -399,8 +452,6 @@
             case 'img':
             case 'url':
                 return value.startsWith('http');
-            case 'splx':
-                return value.includes(',');
             default:
                 return true;
         }
@@ -416,8 +467,6 @@
             case 'img':
             case 'url':
                 return value;
-            case 'splx':
-                return value.split(',').map(item => item.trim());
             default:
                 return value;
         }
@@ -439,67 +488,142 @@
         });
     }
 
-    document.addEventListener('DOMContentLoaded', () => {
+    // Funkcja do przesyłania plików do backendu
+    function sendFileToBackend(formData, element) {
+        $.ajax({
+            url: '/admin/edytuj-wybrany-element',
+            type: 'POST',
+            processData: false, // Ważne przy używaniu FormData
+            contentType: false,
+            data: formData,
+            success: (response) => {
+                console.log('Zdjęcie zaktualizowano:', response.message);
+
+                // Opcjonalnie: Ustaw nowe zdjęcie w elemencie
+                const newImageUrl = response.newImageUrl; // URL zwracany przez backend
+                if (newImageUrl) {
+                    element.src = newImageUrl;
+                }
+            },
+            error: (xhr) => {
+                console.error('Błąd podczas aktualizacji zdjęcia:', xhr.responseJSON.error);
+            }
+        });
+    }
+
+    function initializeEditableElements() {
         const editableElements = document.querySelectorAll('[data-editable]');
         editableElements.forEach((element) => {
-            element.addEventListener('dblclick', () => makeElementEditable(element));
+            if (!element.hasAttribute('data-initialized')) { // Unikamy dodawania eventów dwa razy
+                element.addEventListener('dblclick', () => makeElementEditable(element));
+                element.setAttribute('data-initialized', 'true');
+            }
         });
+    }
+
+    document.addEventListener('DOMContentLoaded', initializeEditableElements);
+
+
+    // // //  // //  //  //         //        //
+    //        //     //  //           //   //
+    // // //  //     //  //             //
+          //  // //  //  //           //  //
+    // // //  //         // // //  //       //
+
+
+    // // // SPLX 
+    //   
+    // // // Logika dynamicznej listy z edytowalnymi polami // // //
+    //   
+    // // // Funkcje do dodawania, usuwania, sortowania i eksportu danych // // //
+
+    // SPLX V 2.0
+    // Funkcja do wczytywania elementów listy na podstawie danych z bazy
+    function addListFields(data, id, sep, template, containerID) {
+        const container = document.getElementById(containerID + id);
+        if (!container) {
+            console.error(`Container with ID ${containerID + id} does not exist.`);
+            return;
+        }
+
+        const html = data.split(sep)
+            .map(value => template.replace("&^^idemDiv&^^", value))
+            .join(""); // Tworzenie całego fragmentu HTML jako jednego stringa
+
+        container.innerHTML += html; // Wstawienie całego kodu HTML naraz
+    }
+
+    // Funkcja do dodawania nowego elementu listy
+    function addListItem(id, template, containerID, defaultValue = "") {
+        const container = document.getElementById(containerID + id);
+        if (!container) {
+            console.error(`Container with ID ${containerID + id} does not exist.`);
+            return;
+        }
+
+        container.insertAdjacentHTML(
+            'beforeend', 
+            template.replace("&^^idemDiv&^^", defaultValue)
+        ); // Wstawienie nowego elementu bezpośrednio
+    }
+
+    // Funkcja do inicjalizacji sortowania za pomocą SortableJS
+    function initializeSortable(containerID) {
+        const container = document.getElementById(containerID);
+        if (!container) {
+            console.error(`Container with ID ${containerID} does not exist.`);
+            return;
+        }
+
+        new Sortable(container, {
+            animation: 150,
+            ghostClass: "sortable-ghost",
+            onEnd: function (evt) {
+                console.log(`Element moved from ${evt.oldIndex} to ${evt.newIndex}`);
+                // Możesz dodać funkcję zapisującą kolejność w bazie danych
+            }
+        });
+    }
+
+    // Funkcja do eksportowania danych z listy jako string
+    function joinListFields(containerID, separator = "#splx#") {
+        const container = document.getElementById(containerID);
+        if (!container) {
+            console.error(`Container with ID ${containerID} does not exist.`);
+            return "";
+        }
+
+        // Pobierz wszystkie elementy z klasą 'editable-content'
+        const items = Array.from(container.querySelectorAll(".editable-content"));
+
+        // Przetwórz zawartość każdego elementu
+        const processedItems = items.map((item) => {
+            // Usuń znaki nowej linii i inne białe znaki
+            return item.innerText.replace(/\s+/g, " ").trim();
+        });
+
+        // Połącz elementy w jeden string za pomocą separatora
+        return processedItems.join(separator);
+    }
+
+    // Szablon HTML dla elementów listy
+    const template = `
+        <div class="item-container">
+            <div class="editable-content" contenteditable="true">&^^idemDiv&^^</div>
+            <button type="button" class="remove-btn btn btn-outline-danger">
+                <i class="bi bi-trash3-fill" style="font-size: 15px !important;"></i>
+            </button>
+        </div>
+    `;
+
+    // Obsługa usuwania elementów listy
+    document.addEventListener("click", function (e) {
+        if (e.target && e.target.closest(".remove-btn")) {
+            const item = e.target.closest(".item-container");
+            if (item) item.remove();
+        }
     });
-
-
-    // 
-    // document.addEventListener('DOMContentLoaded', () => {
-    //     const editableElements = document.querySelectorAll('[data-editable]');
-
-    //     editableElements.forEach((element) => {
-    //         element.addEventListener('dblclick', () => {
-    //             const dataType = element.getAttribute('data-type'); // Typ danych (text, int, img, url, splx)
-    //             element.setAttribute('contenteditable', 'true');
-    //             element.focus();
-
-    //             // Podświetlenie aktywnego elementu
-    //             element.style.border = '2px dashed #007bff';
-    //         });
-
-    //         element.addEventListener('blur', () => {
-    //             const dataType = element.getAttribute('data-type');
-    //             const elementId = element.getAttribute('id');
-    //             const updatedValue = element.innerText.trim(); // Obsługa tekstu, inne typy obsłużymy poniżej
-                
-    //             // Wyłącz contenteditable
-    //             element.setAttribute('contenteditable', 'false');
-    //             element.style.border = 'none';
-
-    //             // Przetwarzanie danych w zależności od typu
-    //             let processedValue;
-    //             switch (dataType) {
-    //                 case 'text':
-    //                     processedValue = updatedValue; // Zwykły tekst
-    //                     break;
-    //                 case 'int':
-    //                     processedValue = parseInt(updatedValue) || 0; // Parsowanie do liczby całkowitej
-    //                     break;
-    //                 case 'img':
-    //                     processedValue = updatedValue.startsWith('http') ? updatedValue : ''; // Walidacja URL obrazka
-    //                     break;
-    //                 case 'url':
-    //                     processedValue = updatedValue.startsWith('http') ? updatedValue : '#'; // Walidacja URL
-    //                     break;
-    //                 case 'splx':
-    //                     processedValue = updatedValue.split(','); // Rozbicie na tablicę
-    //                     break;
-    //                 default:
-    //                     console.warn(`Nieobsługiwany typ danych: ${dataType}`);
-    //                     return;
-    //             }
-
-    //             // TODO: Wyślij dane do endpointa AJAX (to dodamy później)
-    //             console.log(`Element ID: ${elementId}, Typ: ${dataType}, Nowa wartość:`, processedValue);
-    //         });
-    //     });
-    // });
-
-    // 
+    
 </script>
 {% endif %}
     
