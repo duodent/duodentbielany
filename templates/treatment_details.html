@@ -445,7 +445,15 @@
                                 class="bi bi-plus-square-dotted"></i>
                             <div class="row mb-3">
                                 <div class="col-2">
+                                    {% if userName!='NotLogin' %}
+                                    <h1 
+                                        id="page_attached_files_item_id" 
+                                        data-editable 
+                                        data-type="remover"
+                                    ><i class="bi bi-trash3-fill"></i></h1>
+                                    {% else %}
                                     <h1><i class="fas fa-download text-info"></i></h1>
+                                    {% endif %}
                                 </div>
                                 <div class="col-10">
                                     <p class="fw-bold">
@@ -456,7 +464,15 @@
                             </div>
                             <div class="row mb-3">
                                 <div class="col-2">
+                                    {% if userName!='NotLogin' %}
+                                    <h1 
+                                        id="page_attached_files_item_id" 
+                                        data-editable 
+                                        data-type="remover"
+                                    ><i class="bi bi-trash3-fill"></i></h1>
+                                    {% else %}
                                     <h1><i class="fas fa-download text-info"></i></h1>
+                                    {% endif %}
                                 </div>
                                 <div class="col-10">
                                     <p class="fw-bold">
@@ -467,7 +483,15 @@
                             </div>
                             <div class="row mb-3">
                                 <div class="col-2">
+                                    {% if userName!='NotLogin' %}
+                                    <h1 
+                                        id="page_attached_files_item_id" 
+                                        data-editable 
+                                        data-type="remover"
+                                    ><i class="bi bi-trash3-fill"></i></h1>
+                                    {% else %}
                                     <h1><i class="fas fa-download text-info"></i></h1>
+                                    {% endif %}
                                 </div>
                                 <div class="col-10">
                                     <p class="fw-bold">
@@ -700,7 +724,8 @@
         const confirmRemove = confirm('Czy na pewno chcesz usunąć ten element?');
         if (confirmRemove) {
             sendDataToBackend(elementId, dataType, null);
-            element.remove(); // Usunięcie elementu z DOM
+            // Wyświetlenie informacji o sukcesie
+            showSuccessMessage(`Pozycja o ID ${elementId} została usunieta!`, "");
         }
     } else if (dataType === 'url') {
             // Otwartą logikę pozostawiamy na później
