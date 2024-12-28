@@ -70,8 +70,7 @@
                         </p>
                     </div>
                     <div class="row">
-                        <div class="col-lg-12">
-                            <h1 class="text-center">Dynamiczna Lista SPLX</h1>
+                        <div class="col-lg-6 col-sm-12">
                             <div class="mb-3">
                                 <label for="list-container_1" class="form-label">Twoja Lista</label>
                                 <div id="list-container_1" class="no-border">
@@ -79,6 +78,20 @@
                                 </div>
                                 <div class="text-end mt-3">
                                     <button type="button" class="btn btn-warning btn-sm" onclick="addListItem('1', template, 'list-container_', 'Nowy element')">
+                                        <i class="bi bi-plus-square-dotted"></i> Dodaj
+                                    </button>
+                                </div>
+                            </div>
+                            <button type="button" class="btn btn-success" onclick="exportList()">Eksportuj Listę</button>
+                        </div>
+                        <div class="col-lg-6 col-sm-12">
+                            <div class="mb-3">
+                                <label for="list-container_2" class="form-label">Twoja Lista</label>
+                                <div id="list-container_2" class="no-border">
+                                    <!-- Dynamicznie dodawane elementy -->
+                                </div>
+                                <div class="text-end mt-3">
+                                    <button type="button" class="btn btn-warning btn-sm" onclick="addListItem('2', template, 'list-container_', 'Nowy element')">
                                         <i class="bi bi-plus-square-dotted"></i> Dodaj
                                     </button>
                                 </div>
@@ -558,8 +571,8 @@
         }
 
         // Funkcja eksportu wywoływana z przycisku
-        function exportList() {
-            const exportedData = joinListFields("list-container_1", "#splx#");
+        function exportList(id) {
+            const exportedData = joinListFields(`list-container_${id}`, "#splx#");
             console.log("Eksportowane dane:", exportedData);
             alert("Eksportowane dane:\n" + exportedData);
         }
