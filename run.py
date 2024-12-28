@@ -639,7 +639,7 @@ def update_element_in_db(element_id, data_type, value):
             
         query = "UPDATE elements SET text_value = %s WHERE id = %s"
         # msq.insert_to_database()
-    elif data_type == 'int':
+    elif data_type == 'picker':
         query = "UPDATE elements SET int_value = ? WHERE id = ?"
     elif data_type == 'img':
         query = "UPDATE elements SET image_url = ? WHERE id = ?"
@@ -678,7 +678,7 @@ def edit_element():
         else:
             return jsonify({'error': 'Nieprawidłowy format dla splx'}), 400
 
-    if data_type == 'int':
+    if data_type == 'picker':
         # Walidacja i przypisanie ID z selektora
         if not isinstance(value, int):
             return jsonify({'error': 'Nieprawidłowy format dla int'}), 400
