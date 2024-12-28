@@ -687,7 +687,7 @@
                         originalElement.setAttribute('data-initialized', 'true'); // Zapobiega wielokrotnej inicjalizacji
 
                         // Wyświetlenie informacji o sukcesie
-                        showSuccessMessage(`Pozycja o ID ${selectedValue} została dodana!`);
+                        showSuccessMessage(`Pozycja o ID ${selectedValue} została dodana!`, elementId);
 
                         console.log(`Dodano element o ID: ${selectedValue} i przywrócono pierwotny stan.`);
                     });
@@ -732,7 +732,7 @@
         }
     }
 
-    function showSuccessMessage(message) {
+    function showSuccessMessage(message, elementID) {
         // Tworzenie elementu z wiadomością
         const messageElement = document.createElement('div');
         messageElement.textContent = message;
@@ -742,8 +742,13 @@
         // Usuwanie wiadomości po 5 sekundach
         setTimeout(() => {
             messageElement.style.opacity = '0'; // Rozpoczęcie animacji zanikania
-            setTimeout(() => messageElement.remove(), 1000); // Usunięcie po animacji
-        }, 5000);
+            setTimeout(() => {
+                messageElement.remove(); // Usunięcie elementu
+                // Przeładowanie strony i przewinięcie do wskazanego elementu
+                window.location.href = `${window.location.origin}${window.location.pathname}#${elementID}`;
+                window.location.reload();
+            }, 1000); // Czas trwania animacji
+        }, 5000); // Czas wyświetlania wiadomości
     }
 
 
