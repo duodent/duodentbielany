@@ -67,8 +67,6 @@
                             <div class="editable-content flex-grow-1 p-2 bg-light text-blue" contenteditable="true"></div>
                             <div class="editable-content flex-grow-1 p-2 bg-light text-dark" contenteditable="true"></div>
                         </div>
-                        <h2 id="baner_h1_splx_1" data-editable data-type="text"></h2>
-                        <h2 id="baner_h1_splx_2" data-editable data-type="text"></h2>
                     </div>
                     {% endif %}
                     
@@ -140,22 +138,43 @@
                             });
                         </script>
                         {% else %}
-                            <div class="col-lg-6 col-sm-12">
-                                <div class="row">
-                                    <div class="col-1 services-details-list"><i class="flaticon-check"></i></div>
-                                    <div class="col">punkt 1</div>
-                                </div>
-                            </div>
-                            <div class="col-lg-6 col-sm-12">
-                                <div class="row">
-                                    <div class="col-1 services-details-list"><i class="flaticon-check"></i></div>
-                                    <div class="col">punkt 2</div>
-                                </div>
-                            </div>
+                        <div class="col-lg-6 col-md-6">
+                            <ul class="services-details-list">
+                                <li>
+                                    <i class="flaticon-check"></i>
+                                    Praesent rhoncus varius pharetra.
+                                </li>
+                                <li>
+                                    <i class="flaticon-check"></i>
+                                    Ut hendrerit nisi eget urna vehicula rutrum.
+                                </li>
+                                <li>
+                                    <i class="flaticon-check"></i>
+                                    Nulla molestie bibendum blandit.
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-lg-6 col-md-6">
+                            <ul class="services-details-list">
+                                <li>
+                                    <i class="flaticon-check"></i>
+                                    Pellentesque volutpat lacus metus.
+                                </li>
+                                <li>
+                                    <i class="flaticon-check"></i>
+                                    Ut porta odio volutpat nec
+                                </li>
+                                <li>
+                                    <i class="flaticon-check"></i>
+                                    Curabitur ultricies ex odio vitae facilisis
+                                </li>
+                            </ul>
+                        </div>
                         {% endif %}
                     </div>
-                    <p id="page_subcontent_section_1_id" data-editable data-type="text">
-                        Praesent rhoncus varius pharetra. Ut hendrerit nisi eget urna vehicula rutrum. Nulla molestie bibendum blandit. Pellentesque volutpat lacus metus, ut porta odio volutpat nec. Curabitur ultricies ex odio, vitae facilisis sem volutpat nec. Nunc ultricies ut dui id interdum. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.
+                    <p 
+                        {% if userName!='NotLogin' %}id="page_subcontent_section_1_id" data-editable data-type="text"{% endif %}
+                        >Praesent rhoncus varius pharetra. Ut hendrerit nisi eget urna vehicula rutrum. Nulla molestie bibendum blandit. Pellentesque volutpat lacus metus, ut porta odio volutpat nec. Curabitur ultricies ex odio, vitae facilisis sem volutpat nec. Nunc ultricies ut dui id interdum. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.
                     </p>
                     <div class="services-details-overview">
                         <div class="row">
