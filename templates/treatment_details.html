@@ -436,13 +436,22 @@
                         </div>
                         <div class="widget widget_categories">
                             <h3 class="widget-title">Przydatne pliki do pobrania</h3>
-                            <i  {% if userName!='NotLogin' %}
+                            {% if userName!='NotLogin' %}
+                            <h3 
+                                id="page_attached_files_list" 
+                                data-editable 
+                                data-type="adder"
+                                data-current-value="2"
+                                class="text-success"
+                            ><i class="bi bi-plus-square-dotted"></i></h3>
+                            {% endif %}
+                            <!-- <i {% if userName!='NotLogin' %}
                                 id="page_attached_files_list" 
                                 data-editable 
                                 data-type="adder"
                                 data-current-value="2"
                                 {% endif %}
-                                class="bi bi-plus-square-dotted"></i>
+                                class="bi bi-plus-square-dotted"></i> -->
                             <div class="row mb-3">
                                 <div class="col-2">
                                     {% if userName!='NotLogin' %}
