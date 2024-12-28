@@ -341,9 +341,16 @@
                             </div>
                             <div class="content">
                                 <h3 
-                                    id="element1" data-editable="true" data-type="picker" data-current-value="2"
+                                    {% if userName!='NotLogin' %}
+                                    id="page_attached_worker_descriptions_list" 
+                                    data-editable 
+                                    data-type="picker"
+                                    data-current-value="2"
+                                    {% endif %}
                                     >Emma Brown</h3>
-                                <p>Curabitur placerat mi id convallis dictum uis euismod urna sit amet purus congue</p>
+                                <p {% if userName!='NotLogin' %}id="page_attached_worker_descriptions_id" data-editable data-type="text"{% endif %}>
+                                    Curabitur placerat mi id convallis dictum uis euismod urna sit amet purus congue
+                                </p>
                                 <!-- <div class="share-link">
                                     <a href="#"><i class='bx bxl-facebook'></i></a>
                                     <a href="#"><i class='bx bxl-twitter'></i></a>
@@ -429,6 +436,13 @@
                         </div>
                         <div class="widget widget_categories">
                             <h3 class="widget-title">Przydatne pliki do pobrania</h3>
+                            <i  {% if userName!='NotLogin' %}
+                                id="page_attached_files_list" 
+                                data-editable 
+                                data-type="adder"
+                                data-current-value="2"
+                                {% endif %}
+                                class="bi bi-plus-square-dotted"></i>
                             <div class="row mb-3">
                                 <div class="col-2">
                                     <h1><i class="fas fa-download text-info"></i></h1>
@@ -636,7 +650,47 @@
                 .catch((error) => {
                     console.error('Błąd wczytywania opcji:', error);
                 });
-        } else if (dataType === 'url') {
+        } else if (dataType === 'adder') {
+            // Obsługa typu adder
+            fetchPickerOptions(elementId)
+                .then((options) => {
+                    const selectElement = document.createElement('select');
+                    selectElement.className = 'form-select';
+
+                    options.forEach(({ id, description }) => {
+                        const option = document.createElement('option');
+                        option.value = id;
+                        option.textContent = description;
+                        selectElement.appendChild(option);
+                    });
+
+                    element.replaceWith(selectElement);
+
+                    selectElement.addEventListener('change', () => {
+                        const selectedValue = selectElement.value;
+                        sendDataToBackend(elementId, dataType, selectedValue);
+
+                        // Dodanie nowej wartości do elementu
+                        const addedElement = document.createElement('div');
+                        addedElement.textContent = options.find((opt) => opt.id == selectedValue).description;
+                        addedElement.setAttribute('data-current-value', selectedValue);
+                        addedElement.className = 'added-item';
+                        element.parentElement.appendChild(addedElement);
+
+                        selectElement.replaceWith(element);
+                    });
+                })
+                .catch((error) => {
+                    console.error('Błąd wczytywania opcji:', error);
+                });
+    } else if (dataType === 'remover') {
+        // Obsługa typu remover
+        const confirmRemove = confirm('Czy na pewno chcesz usunąć ten element?');
+        if (confirmRemove) {
+            sendDataToBackend(elementId, dataType, null);
+            element.remove(); // Usunięcie elementu z DOM
+        }
+    } else if (dataType === 'url') {
             // Otwartą logikę pozostawiamy na później
             console.log(`Logic for URL is not yet implemented for element ${elementId}.`);
             alert('Obsługa URL jest w trakcie wdrażania. Spróbuj później.');
@@ -666,63 +720,9 @@
         }
     }
 
-    // function makeElementEditable(element) {
-    //     const dataType = element.getAttribute('data-type');
-    //     const elementId = element.getAttribute('id');
-
-    //     if (dataType === 'img') {
-    //         // Obsługa obrazka
-    //         const fileInput = document.createElement('input');
-    //         fileInput.type = 'file';
-    //         fileInput.accept = 'image/*'; // Akceptuj tylko obrazy
-
-    //         fileInput.addEventListener('change', () => {
-    //             const file = fileInput.files[0];
-    //             if (!file) return;
-
-    //             // Wyświetl potwierdzenie przed wysłaniem
-    //             const confirmUpload = confirm('Czy na pewno chcesz załadować to zdjęcie?');
-    //             if (!confirmUpload) return;
-
-    //             // Przygotowanie danych do wysłania
-    //             const formData = new FormData();
-    //             formData.append('id', elementId);
-    //             formData.append('type', dataType);
-    //             formData.append('file', file);
-
-    //             // Wysyłanie danych do backendu
-    //             sendFileToBackend(formData, element);
-    //         });
-
-    //         // Kliknięcie w input (otwiera okno wyboru pliku)
-    //         fileInput.click();
-    //     } else {
-    //         // Obsługa innych typów danych
-    //         element.setAttribute('contenteditable', 'true');
-    //         element.focus();
-    //         element.style.border = '2px dashed #007bff';
-
-    //         element.addEventListener(
-    //             'blur',
-    //             () => {
-    //                 element.setAttribute('contenteditable', 'false');
-    //                 element.style.border = 'none';
-
-    //                 const updatedValue = element.innerText.trim();
-    //                 if (!validateInput(updatedValue, dataType)) {
-    //                     alert('Nieprawidłowa wartość!');
-    //                     return;
-    //                 }
-
-    //                 const processedValue = processDataType(dataType, updatedValue);
-    //                 sendDataToBackend(elementId, dataType, processedValue);
-    //             },
-    //             { once: true }
-    //         );
-    //     }
-    // }
 
     function fetchPickerOptions(elementId) {
+        console.log("Wysyłanie danych:", { id, type, value });
         return new Promise((resolve, reject) => {
             $.ajax({
                 url: '/admin/get-picker-options',
@@ -748,12 +748,17 @@
             case 'text':
                 return value.length > 0;
             case 'picker':
+            case 'adder': // Walidacja dla picker i adder
                 return !isNaN(parseInt(value));
+            case 'remover': // Walidacja dla remover (zwraca true zawsze)
+                return true;
             case 'img':
             case 'url':
-                return value.startsWith('http');
+                const urlPattern = /^(https?:\/\/)?([a-zA-Z0-9.-]+)\.([a-zA-Z]{2,})(:[0-9]{1,5})?(\/.*)?$/;
+                return urlPattern.test(value);
             default:
-                return true;
+                console.warn(`Nieznany typ danych: ${dataType}`);
+                return false;
         }
     }
 
@@ -761,13 +766,17 @@
     function processDataType(dataType, value) {
         switch (dataType) {
             case 'text':
-                return value;
+                return value.trim(); // Usuwa niepotrzebne spacje
             case 'picker':
+            case 'adder': // Adder przetwarzany podobnie jak picker
                 return parseInt(value);
+            case 'remover': // Remover zwraca zawsze null
+                return null;
             case 'img':
             case 'url':
-                return value;
+                return value.trim(); // Usuwa spacje z początku i końca
             default:
+                console.warn(`Nieznany typ danych: ${dataType}`);
                 return value;
         }
     }
