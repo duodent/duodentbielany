@@ -671,13 +671,13 @@
                         sendDataToBackend(elementId, dataType, selectedValue);
 
                         // Dodanie nowej wartości do elementu
-                        const addedElement = document.createElement('div');
-                        addedElement.textContent = options.find((opt) => opt.id == selectedValue).description;
-                        addedElement.setAttribute('data-current-value', selectedValue);
-                        addedElement.className = 'added-item';
-                        element.parentElement.appendChild(addedElement);
+                        // const addedElement = document.createElement('div');
+                        // addedElement.textContent = options.find((opt) => opt.id == selectedValue).description;
+                        // addedElement.setAttribute('data-current-value', selectedValue);
+                        // addedElement.className = 'added-item';
+                        // element.parentElement.appendChild(addedElement);
 
-                        selectElement.replaceWith(element);
+                        // selectElement.replaceWith(element);
                     });
                 })
                 .catch((error) => {
