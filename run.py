@@ -679,6 +679,8 @@ def edit_element():
             return jsonify({'error': 'Nieprawidłowy format dla splx'}), 400
 
     if data_type == 'picker':
+        try: value=int(value)
+        except: return jsonify({'error': 'Nieprawidłowy format dla int'}), 400
         # Walidacja i przypisanie ID z selektora
         if not isinstance(value, int):
             return jsonify({'error': 'Nieprawidłowy format dla int'}), 400
