@@ -696,8 +696,19 @@ def update_element_in_db(element_id, data_type, value):
                         cunet_list_db[index] = value
                         ready_string_splx = spea_main.join(cunet_list_db)
 
-                print(ready_string_splx, table_db, column_db, id_db, type(id_db))
-                print(ready_string_splx is not None and table_db is not None and column_db is not None and isinstance(id_db, int))
+            # NORMALNY TEXT
+            CLASSIC_TEXT = ['tytul_glowny']
+            if sekcja in CLASSIC_TEXT:
+                exactly_what = None
+                for c in CLASSIC_TEXT: 
+                    if c == sekcja: exactly_what = c
+                if exactly_what is None:
+                    print("Problem Klucza")
+                    return False
+                ready_string_splx = value
+
+
+            # TWORZENIE ZESTAWU ZAPYTANIA MySQL
             if ready_string_splx is not None and table_db is not None and column_db is not None and isinstance(id_db, int):
                 query = f"""
                         UPDATE {table_db}
@@ -706,7 +717,7 @@ def update_element_in_db(element_id, data_type, value):
                 """
                 params = (ready_string_splx, id_db)
 
-                print(query, table_db, params, id_db, type(id_db))
+
     elif data_type == 'picker':
         query = "UPDATE elements SET int_value = ? WHERE id = ?"
     elif data_type == 'adder':

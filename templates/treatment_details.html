@@ -49,7 +49,9 @@
                             <i class="flaticon-hashtag-symbol"></i>
                             Usługi
                         </span>
-                        <h2>{{pageTitle}}</h2>
+                        <h2 {% if userName!='NotLogin' %}id="treatment-tytul_glowny-{{treatmentOne.id}}-1-1" data-editable data-type="text"{% endif %}>
+                            {{pageTitle}}
+                        </h2>
                     </div>
                 </div>
                 {% if userName!='NotLogin' %}
