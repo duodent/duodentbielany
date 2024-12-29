@@ -660,6 +660,8 @@ def update_element_in_db(element_id, data_type, value):
     table_db = None
     column_db = None
     id_db = None
+    query = None
+    params = None
 
     if data_type == 'text':
         ####################################################
@@ -720,7 +722,7 @@ def update_element_in_db(element_id, data_type, value):
         return False
 
     # Wykonanie zapytania SQL
-    if table_db and column_db and id_db:
+    if table_db and column_db and id_db and query and params:
         try:
             print(f"Pomyślnie zaktualizowano {column_db} w {table_db}, id={id_db}")
             return msq.insert_to_database(query, params)
