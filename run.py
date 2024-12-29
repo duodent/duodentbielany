@@ -1280,6 +1280,7 @@ def treatments_db_all_by_route_dict(pick_element=False, route_string=''):
     """
     Pobiera wszystkie usługi z bazy danych i zwraca słownik, w którym kluczami są wartości kolumny `ready_route`,
     a wartościami słowniki reprezentujące wiersze z tabeli `tabela_uslug`.
+    Jeśli pick_element=True, zwraca jedynie element o podanym `route_string`.
     """
     zapytanie_sql = """
         SELECT 
@@ -1287,7 +1288,21 @@ def treatments_db_all_by_route_dict(pick_element=False, route_string=''):
         FROM tabela_uslug
         ORDER BY pozycja_kolejnosci ASC
     """
-    
+
+    def check_separator_take_list(sepa: str, string: str, shout_parts: int):
+        """
+        Funkcja dzieli string na listę na podstawie separatora.
+        Jeśli liczba elementów jest mniejsza niż oczekiwana, uzupełnia brakujące puste elementy.
+        Jeśli jest większa, przycina listę do wymaganej długości.
+        """
+        parts = string.split(sepa)
+        if len(parts) == shout_parts:
+            return parts
+        elif len(parts) < shout_parts:
+            return parts + [""] * (shout_parts - len(parts))
+        else:  # len(parts) > shout_parts
+            return parts[:shout_parts]
+
     try:
         # Połączenie z bazą danych i wykonanie zapytania
         db_dump = msq.connect_to_database(zapytanie_sql)
@@ -1305,7 +1320,10 @@ def treatments_db_all_by_route_dict(pick_element=False, route_string=''):
                 "opis_home": data[5],
                 "pozycja_kolejnosci": data[6],
                 "baner_h1_splx": data[7],
+                # Dzielenie banera na listę
+                "baner_h1_splet": check_separator_take_list('#splx#', data[7], 3),
                 "baner_h2_splx": data[8],
+                "baner_h2_splet": check_separator_take_list('#splx#', data[8], 3),
                 "page_hashtag_section": data[9],
                 "foto_page_header": data[10],
                 "page_title_section_1": data[11],
@@ -1337,18 +1355,20 @@ def treatments_db_all_by_route_dict(pick_element=False, route_string=''):
 
             # Dodanie rekordu do eksportowanego słownika
             export_dict[data[4]] = theme
+
         if not pick_element:
             return export_dict
         else:
-            try: export_dict[route_string]
-            except KeyError: 
-                print(f"Wystąpił błąd! Podany route nie istnieje w dumpie z bazy")
+            if route_string in export_dict:
+                return export_dict[route_string]
+            else:
+                print(f"Wystąpił błąd! Podany route '{route_string}' nie istnieje w dumpie z bazy.")
                 return {}
-            return export_dict[route_string]
 
     except Exception as e:
         print(f"Wystąpił błąd: {e}")
         return {}
+
 
 
 # Zabiegi - lista
@@ -1374,13 +1394,13 @@ def treatment_dynamic(treatment_slug):
         pageTitle = treatments_dict[treatment_slug]
         session['page'] = treatment_slug
         page_data_interput = {'page_points_splx_section': ['Podpunkt 1', 'Podpunkt 2', 'Podpunkt 3']}
-
+        treatmentOne = treatments_db_all_by_route_dict(True, treatment_slug)
         
         return render_template(
             'treatment_details.html',
             pageTitle=pageTitle,
             nazwa_uslugi=treatments_dict[treatment_slug],
-            treatmentOne = treatments_db_all_by_route_dict(True, treatment_slug),
+            treatmentOne=treatmentOne,
             page_data_interput=page_data_interput
         )
     else:
