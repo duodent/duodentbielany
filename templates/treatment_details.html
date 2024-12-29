@@ -8,10 +8,10 @@
         <div class="page-banner-content">
             <div class="page-banner-content">
                 <h1 class="line">
-                    {{treatmentOne.baner_h1_splet[0]}}<span>{{treatmentOne.baner_h1_splet[1]}}</span>{{treatmentOne.baner_h1_splet[2]}}
+                    {{treatmentOne.baner_h1_splet[0]}}<span> {{treatmentOne.baner_h1_splet[1]}} </span>{{treatmentOne.baner_h1_splet[2]}}
                 </h1>
                 <h1 class="line">
-                    {{treatmentOne.baner_h2_splet[0]}}<span>{{treatmentOne.baner_h2_splet[1]}}</span>{{treatmentOne.baner_h2_splet[2]}}
+                    {{treatmentOne.baner_h2_splet[0]}}<span> {{treatmentOne.baner_h2_splet[1]}} </span>{{treatmentOne.baner_h2_splet[2]}}
                 </h1>
             </div>
             <h2 class="line">{{pageTitle}}</h2>
@@ -76,22 +76,22 @@
                         </div>
                         <div class="row">
                             <div
-                                id="treatment-baner_h1_splx-2-1-3" data-editable data-type="text" 
+                                id="treatment-baner_h2_splx-2-1-3" data-editable data-type="text" 
                                 class="col-lg-4 col-sm-12 p-2 fw-bold text-center fs-sm-4 fs-lg-2 text-dark-emphasis"
                                 >
-                                Poznaj naszych
+                                {{treatmentOne.baner_h2_splet[0]}}
                             </div>
                             <div 
-                                id="treatment-baner_h1_splx-2-2-3" data-editable data-type="text" 
+                                id="treatment-baner_h2_splx-2-2-3" data-editable data-type="text" 
                                 class="col-lg-4 col-sm-12 p-2 fw-bold text-center fs-sm-4 fs-lg-2 text-info"
                                 >
-                                wykwalifikowanych
+                                {{treatmentOne.baner_h2_splet[1]}}
                             </div>
                             <div 
-                                id="treatment-baner_h1_splx-2-3-3" data-editable data-type="text" 
+                                id="treatment-baner_h2_splx-2-3-3" data-editable data-type="text" 
                                 class="col-lg-4 col-sm-12 p-2 fw-bold text-center fs-sm-4 fs-lg-2 text-dark-emphasis"
                                 >
-                                specjalistów
+                                {{treatmentOne.baner_h2_splet[2]}}
                             </div>
                         </div>
                     </div>
@@ -101,13 +101,13 @@
                 <div class="col-lg-8 col-md-12">
                     <div class="services-details-image">
                         <img 
-                        src="{{url_for('static', filename='img/services/single-dziecieca.jpg')}}" 
-                        alt="image"
-                        {% if userName!='NotLogin' %}
-                        id="treatment-foto_page_header-1-1-1" 
-                        data-editable 
-                        data-type="img"
-                        {% endif %}
+                            src="{{url_for('static', filename='img/services/single-dziecieca.jpg')}}" 
+                            alt="image"
+                            {% if userName!='NotLogin' %}
+                            id="treatment-foto_page_header-1-1-1" 
+                            data-editable 
+                            data-type="img"
+                            {% endif %}
                         >
                     </div>
                     <div class="services-details-content">
