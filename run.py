@@ -691,12 +691,12 @@ def update_element_in_db(element_id, data_type, value):
                         if data_b['id'] == id_db:
                             cunet_list_db = data_b[splet_key]
                             break
-                print(cunet_list_db)
                 if isinstance(cunet_list_db, list):
                     if len(cunet_list_db) == ofparts:
                         cunet_list_db[index] = value
                         ready_string_splx = spea_main.join(cunet_list_db)
 
+                print(ready_string_splx)
             if ready_string_splx is not None and table_db is not None and column_db is not None and id_db is int:
                 query = f"""
                         UPDATE {table_db}
