@@ -683,7 +683,7 @@ def update_element_in_db(element_id, data_type, value):
                     print("Problem Klucza")
                     return False
                 
-                splet_key = exactly_what.replace('splx', 'slet')
+                splet_key = exactly_what.replace('splx', 'splet')
                 
                 cunet_list_db = None
                 for data_b in treatments_db_all_by_route_dict().values():
