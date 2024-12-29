@@ -114,10 +114,10 @@
                     </div>
                     <div class="services-details-content">
                         <h3 
-                            {% if userName!='NotLogin' %}id="treatment-page_title_section_1-1-1-1" data-editable data-type="text"{% endif %}
+                            {% if userName!='NotLogin' %}id="treatment-page_title_section_1-{{treatmentOne.id}}-1-1" data-editable data-type="text"{% endif %}
                             >Dental Implants</h3>
                         <p 
-                            {% if userName!='NotLogin' %}id="treatment-page_content_section_1-1-1-1" data-editable data-type="text"{% endif %}
+                            {% if userName!='NotLogin' %}id="treatment-page_content_section_1-{{treatmentOne.id}}-1-1" data-editable data-type="text"{% endif %}
                             >Mauris dapibus arcu vitae dapibus laoreet. Duis vitae vestibulum sapien. Cras sed fermentum dui, a placerat lorem. Mauris quis justo consectetur, ullamcorper ante eget, porttitor arcu. Ut ac tellus id arcu mollis congue nec eget libero. Praesent quis pretium lacus. Sed fermentum ac magna id tempus. Phasellus bibendum commodo metus at suscipit. Sed eget nulla blandit, mattis libero non, tristique risus. Duis condimentum euismod nisi sed luctus. Cras posuere, felis eu euismod luctus, nulla nunc aliquet ante, nec mollis massa dolor a metus. Sed quis nibh eu leo fringilla rhoncus vitae porta mi. Sed eleifend neque vitae tempus placerat. Pellentesque vitae ipsum at orci ultrices tincidunt. Mauris tincidunt dolor et ante tincidunt maximus.
                         </p>
                     </div>
@@ -204,7 +204,7 @@
                         {% endif %}
                     </div>
                     <p 
-                        {% if userName!='NotLogin' %}id="page_subcontent_section_1_id" data-editable data-type="text"{% endif %}
+                        {% if userName!='NotLogin' %}id="treatment-page_subcontent_section_1-{{treatmentOne.id}}-1-1" data-editable data-type="text"{% endif %}
                         >Praesent rhoncus varius pharetra. Ut hendrerit nisi eget urna vehicula rutrum. Nulla molestie bibendum blandit. Pellentesque volutpat lacus metus, ut porta odio volutpat nec. Curabitur ultricies ex odio, vitae facilisis sem volutpat nec. Nunc ultricies ut dui id interdum. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.
                     </p>
                     <div class="services-details-overview">
@@ -235,20 +235,20 @@
                             </div>
                         </div>
                     </div>
-                    <p {% if userName!='NotLogin' %}id="page_subcontent_section_2_id" data-editable data-type="text"{% endif %}>
+                    <p {% if userName!='NotLogin' %}id="treatment-page_subcontent_section_2-{{treatmentOne.id}}-1-1" data-editable data-type="text"{% endif %}>
                         Pellentesque sit amet consequat ligula. Fusce interdum magna eget arcu hendrerit, non facilisis eros pharetra. Etiam ultricies sit amet nunc suscipit tristique. Proin lectus nisl, bibendum pellentesque arcu vel, faucibus sollicitudin urna. Nullam tempus leo sed magna viverra vehicula. Duis posuere sollicitudin libero eget volutpat. Ut nec interdum velit. Nullam sed nulla ac erat scelerisque semper id nec ante. Integer ac orci et metus sollicitudin varius. Duis imperdiet lectus et mi dictum, sed consequat neque blandit. Proin ac sodales lacus.
                     </p>
                     <div class="services-details-overview-content">
-                        <h4 {% if userName!='NotLogin' %}id="page_title_section_3_id" data-editable data-type="text"{% endif %}>Praesent rhoncus varius : </h4>
-                        <p {% if userName!='NotLogin' %}id="page_content_section_3_id" data-editable data-type="text"{% endif %}>
+                        <h4 {% if userName!='NotLogin' %}id="treatment-page_title_section_3-{{treatmentOne.id}}-1-1" data-editable data-type="text"{% endif %}>Praesent rhoncus varius : </h4>
+                        <p {% if userName!='NotLogin' %}id="treatment-page_content_section_3-{{treatmentOne.id}}-1-1" data-editable data-type="text"{% endif %}>
                             It is a long established fact that a reader will
                             be distracted by the readable content of a page when looking at its layout. The point of
                             psum is that it has a more or-less normal distribution of letters, as opposed to using.
                         </p>
-                        <h4 {% if userName!='NotLogin' %}id="page_title_section_4_id" data-editable data-type="text"{% endif %}>
+                        <h4 {% if userName!='NotLogin' %}id="treatment-page_title_section_4-{{treatmentOne.id}}-1-1" data-editable data-type="text"{% endif %}>
                             Odio rhoncus vulputate : 
                         </h4>
-                        <p {% if userName!='NotLogin' %}id="page_content_section_4_id" data-editable data-type="text"{% endif %}>
+                        <p {% if userName!='NotLogin' %}id="treatment-page_content_section_4-{{treatmentOne.id}}-1-1" data-editable data-type="text"{% endif %}>
                             Mauris eu massa eu odio rhoncus vulputate sed eget nunc. Mauris molestie, nulla quis vulputate sollicitudin, ipsum lacus ullamcorper felis, vitae tincidunt ante ex ac libero. Vivamus tincidunt consectetur ligula vel fermentum. Duis feugiat nisi euismod dui viverra, vel consectetur leo tincidunt. Donec lacinia, mauris sit amet congue vulputate, eros orci porttitor eros, at luctus tortor massa ut mi. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Pellentesque eu est ut mi porta sodales sit amet a risus.
                         </p>
                     </div>
@@ -350,7 +350,7 @@
                                     data-current-value="2"
                                     {% endif %}
                                     >Emma Brown</h3>
-                                <p {% if userName!='NotLogin' %}id="page_attached_worker_descriptions_id" data-editable data-type="text"{% endif %}>
+                                <p {% if userName!='NotLogin' %}id="treatment-page_attached_worker_descriptions-{{treatmentOne.id}}-1-1" data-editable data-type="text"{% endif %}>
                                     Curabitur placerat mi id convallis dictum uis euismod urna sit amet purus congue
                                 </p>
                                 <!-- <div class="share-link">

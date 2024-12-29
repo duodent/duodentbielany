@@ -697,7 +697,12 @@ def update_element_in_db(element_id, data_type, value):
                         ready_string_splx = spea_main.join(cunet_list_db)
 
             # NORMALNY TEXT
-            CLASSIC_TEXT = ['tytul_glowny']
+            CLASSIC_TEXT = [
+                'tytul_glowny', 'page_title_section_1', 'page_attached_worker_descriptions',
+                'page_content_section_1', 'page_subcontent_section_1', 'page_subcontent_section_2',
+                'page_title_section_3', 'page_content_section_3', 'page_title_section_4',
+                'page_content_section_4', 'page_attached_worker_descriptions'
+                ]
             if sekcja in CLASSIC_TEXT:
                 exactly_what = None
                 for c in CLASSIC_TEXT: 
