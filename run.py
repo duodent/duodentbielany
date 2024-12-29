@@ -696,7 +696,7 @@ def update_element_in_db(element_id, data_type, value):
                         cunet_list_db[index] = value
                         ready_string_splx = spea_main.join(cunet_list_db)
 
-                print(ready_string_splx)
+                print(ready_string_splx, table_db, column_db, id_db)
             if ready_string_splx is not None and table_db is not None and column_db is not None and id_db is int:
                 query = f"""
                         UPDATE {table_db}
@@ -705,6 +705,7 @@ def update_element_in_db(element_id, data_type, value):
                 """
                 params = (ready_string_splx, id_db)
 
+                print(query, table_db, params, id_db, type(id_db))
     elif data_type == 'picker':
         query = "UPDATE elements SET int_value = ? WHERE id = ?"
     elif data_type == 'adder':
