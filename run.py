@@ -697,6 +697,7 @@ def update_element_in_db(element_id, data_type, value):
                         ready_string_splx = spea_main.join(cunet_list_db)
 
                 print(ready_string_splx, table_db, column_db, id_db, type(id_db))
+                print(ready_string_splx is not None and table_db is not None and column_db is not None and id_db is int)
             if ready_string_splx is not None and table_db is not None and column_db is not None and id_db is int:
                 query = f"""
                         UPDATE {table_db}
