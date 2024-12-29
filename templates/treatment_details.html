@@ -37,7 +37,7 @@
     </div>
 </div>
 <!-- breadcrumb end -->
-
+    {{treatmentOne}}
 
     <!-- services-details-area -->
     <section class="services-details-area pb-100">
@@ -55,20 +55,20 @@
                 {% if userName!='NotLogin' %}
                     <div id="baner-slogan-content" class="mb-30">
                         <div class="row">
-                            <div
-                                id="baner_h1_splx_line_1_part_1" data-editable data-type="text" 
+                            <div    
+                                id="treatment-baner_h1_splx-1-1-3" data-editable data-type="text" 
                                 class="col-lg-4 col-sm-12 p-2 fw-bold text-center fs-sm-4 fs-lg-2 text-dark-emphasis"
                                 >
                                 Tak wygląda
                             </div>
                             <div 
-                                id="baner_h1_splx_line_1_part_2" data-editable data-type="text" 
+                                id="treatment-baner_h1_splx-1-2-3" data-editable data-type="text" 
                                 class="col-lg-4 col-sm-12 p-2 fw-bold text-center fs-sm-4 fs-lg-2 text-info"
                                 >
                                 Edycja
                             </div>
                             <div 
-                                id="baner_h1_splx_line_1_part_3" data-editable data-type="text" 
+                                id="treatment-baner_h1_splx-1-3-3" data-editable data-type="text" 
                                 class="col-lg-4 col-sm-12 p-2 fw-bold text-center fs-sm-4 fs-lg-2 text-dark-emphasis"
                                 >
                                 sloganów na banerach
@@ -76,19 +76,19 @@
                         </div>
                         <div class="row">
                             <div
-                                id="baner_h1_splx_line_2_part_1" data-editable data-type="text" 
+                                id="treatment-baner_h1_splx-2-1-3" data-editable data-type="text" 
                                 class="col-lg-4 col-sm-12 p-2 fw-bold text-center fs-sm-4 fs-lg-2 text-dark-emphasis"
                                 >
                                 Poznaj naszych
                             </div>
                             <div 
-                                id="baner_h1_splx_line_2_part_2" data-editable data-type="text" 
+                                id="treatment-baner_h1_splx-2-2-3" data-editable data-type="text" 
                                 class="col-lg-4 col-sm-12 p-2 fw-bold text-center fs-sm-4 fs-lg-2 text-info"
                                 >
                                 wykwalifikowanych
                             </div>
                             <div 
-                                id="baner_h1_splx_line_2_part_3" data-editable data-type="text" 
+                                id="treatment-baner_h1_splx-2-3-3" data-editable data-type="text" 
                                 class="col-lg-4 col-sm-12 p-2 fw-bold text-center fs-sm-4 fs-lg-2 text-dark-emphasis"
                                 >
                                 specjalistów
@@ -104,7 +104,7 @@
                         src="{{url_for('static', filename='img/services/single-dziecieca.jpg')}}" 
                         alt="image"
                         {% if userName!='NotLogin' %}
-                        id="foto_page_header_id" 
+                        id="treatment-foto_page_header-1-1-1" 
                         data-editable 
                         data-type="img"
                         {% endif %}
@@ -112,23 +112,23 @@
                     </div>
                     <div class="services-details-content">
                         <h3 
-                            {% if userName!='NotLogin' %}id="page_title_section_1_id" data-editable data-type="text"{% endif %}
+                            {% if userName!='NotLogin' %}id="treatment-page_title_section_1-1-1-1" data-editable data-type="text"{% endif %}
                             >Dental Implants</h3>
                         <p 
-                            {% if userName!='NotLogin' %}id="page_content_section_1_id" data-editable data-type="text"{% endif %}
+                            {% if userName!='NotLogin' %}id="treatment-page_content_section_1-1-1-1" data-editable data-type="text"{% endif %}
                             >Mauris dapibus arcu vitae dapibus laoreet. Duis vitae vestibulum sapien. Cras sed fermentum dui, a placerat lorem. Mauris quis justo consectetur, ullamcorper ante eget, porttitor arcu. Ut ac tellus id arcu mollis congue nec eget libero. Praesent quis pretium lacus. Sed fermentum ac magna id tempus. Phasellus bibendum commodo metus at suscipit. Sed eget nulla blandit, mattis libero non, tristique risus. Duis condimentum euismod nisi sed luctus. Cras posuere, felis eu euismod luctus, nulla nunc aliquet ante, nec mollis massa dolor a metus. Sed quis nibh eu leo fringilla rhoncus vitae porta mi. Sed eleifend neque vitae tempus placerat. Pellentesque vitae ipsum at orci ultrices tincidunt. Mauris tincidunt dolor et ante tincidunt maximus.
                         </p>
                     </div>
                     <div class="row">
                         {% if userName!='NotLogin' %}
                         <div class="col-lg-6 col-sm-12">
-                            <div class="mb-3">
+                            <div class="mb-3"> 
                                 <label for="list-container_1" class="form-label">Twoja Lista</label>
                                 <div id="list-container_1" class="no-border">
                                     <!-- Dynamicznie dodawane elementy -->
                                 </div>
                                 <div class="text-end mt-3">
-                                    <button type="button" class="btn btn-warning btn-sm" onclick="addListItem('1', template, 'list-container_', 'Nowy element')">
+                                    <button type="button" class="btn btn-warning btn-sm" onclick="addListItem('treatment-page_splx_section_2-1-1-1', template, 'list-container_', 'Nowy element')">
                                         <i class="bi bi-plus-square-dotted"></i> Dodaj
                                     </button>
                                 </div>

@@ -631,6 +631,14 @@ def treatment_managment():
 def update_element_in_db(element_id, data_type, value):
 
     # Dynamiczne zapytanie SQL w zależności od typu
+
+    # {strona=tabela}-{sekcja=kolumna}-{id=numer}-{część=pozycja}-{wszystkich=ilość pozycji}
+    # przykład: treatment-baner_h1_splx-1-1-3
+        # tablea = treatment
+        # kolumna = baner_h1_splx
+        # numer = 1
+        # pozycja 1 z 3
+
     if data_type == 'text':
         if "_" in str(element_id):
 
@@ -1268,6 +1276,81 @@ def treatments_db():
 
     return export
 
+def treatments_db_all_by_route_dict(pick_element=False, route_string=''):
+    """
+    Pobiera wszystkie usługi z bazy danych i zwraca słownik, w którym kluczami są wartości kolumny `ready_route`,
+    a wartościami słowniki reprezentujące wiersze z tabeli `tabela_uslug`.
+    """
+    zapytanie_sql = """
+        SELECT 
+            *
+        FROM tabela_uslug
+        ORDER BY pozycja_kolejnosci ASC
+    """
+    
+    try:
+        # Połączenie z bazą danych i wykonanie zapytania
+        db_dump = msq.connect_to_database(zapytanie_sql)
+        export_dict = {}
+
+        # Iteracja przez wyniki zapytania
+        for data in db_dump:
+            # Tworzenie słownika dla pojedynczego rekordu
+            theme = {
+                "id": data[0],
+                "foto_home": data[1],
+                "icon": data[2],
+                "tytul_glowny": data[3],
+                "ready_route": data[4],
+                "opis_home": data[5],
+                "pozycja_kolejnosci": data[6],
+                "baner_h1_splx": data[7],
+                "baner_h2_splx": data[8],
+                "page_hashtag_section": data[9],
+                "foto_page_header": data[10],
+                "page_title_section_1": data[11],
+                "page_content_section_1": data[12],
+                "page_points_splx_section_1": data[13],
+                "page_subcontent_section_1": data[14],
+                "page_photo_content_links_splx_section_2": data[15],
+                "page_subcontent_section_2": data[16],
+                "page_title_section_3": data[17],
+                "page_content_section_3": data[18],
+                "page_title_section_4": data[19],
+                "page_content_section_4": data[20],
+                "page_price_table_title_section_5": data[21],
+                "page_price_table_content_splx_comma_section_5": data[22],
+                "page_attached_worker_id": data[23],
+                "page_attached_worker_descriptions": data[24],
+                "page_attached_worker_status": data[25],
+                "page_attached_files": data[26],
+                "page_attached_treatments": data[27],
+                "page_attached_contact": data[28],
+                "page_attached_status": data[29],
+                "page_attached_gallery_splx": data[30],
+                "treatment_general_status": data[31],
+                "optional_1": data[32],
+                "optional_2": data[33],
+                "optional_3": data[34],
+                "data_utworzenia": data[35],
+            }
+
+            # Dodanie rekordu do eksportowanego słownika
+            export_dict[data[4]] = theme
+        if not pick_element:
+            return export_dict
+        else:
+            try: export_dict[route_string]
+            except KeyError: 
+                print(f"Wystąpił błąd! Podany route nie istnieje w dumpie z bazy")
+                return {}
+            return export_dict[route_string]
+
+    except Exception as e:
+        print(f"Wystąpił błąd: {e}")
+        return {}
+
+
 # Zabiegi - lista
 @app.route('/zabiegi-stomatologiczne-kompleksowa-oferta')
 def treatments():
@@ -1291,10 +1374,13 @@ def treatment_dynamic(treatment_slug):
         pageTitle = treatments_dict[treatment_slug]
         session['page'] = treatment_slug
         page_data_interput = {'page_points_splx_section': ['Podpunkt 1', 'Podpunkt 2', 'Podpunkt 3']}
+
+        
         return render_template(
             'treatment_details.html',
             pageTitle=pageTitle,
             nazwa_uslugi=treatments_dict[treatment_slug],
+            treatmentOne = treatments_db_all_by_route_dict(True, treatment_slug),
             page_data_interput=page_data_interput
         )
     else:
