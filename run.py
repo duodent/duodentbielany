@@ -932,7 +932,7 @@ def edit_element():
         else:
             return jsonify({'error': 'id error'}), 500
         
-        print('tutaj -------------------------------------------')
+        
 
         # Pobieram ostatni dane obrazu
         thisPhotoData = None
@@ -953,7 +953,11 @@ def edit_element():
                 filepath = os.path.join(app.config['UPLOAD_FOLDER_TREATMENTS'], filename)
             else:
                 thisPhotoData = allPhotoKeys[sekcja]
+                file_path_to_delete = os.path.join(app.config['UPLOAD_FOLDER_TREATMENTS'], thisPhotoData)  
+                filename = f"{random.randrange(100001, 799999)}_{secure_filename(file.filename)}"
+                filepath = os.path.join(app.config['UPLOAD_FOLDER_TREATMENTS'], filename)
         
+        print('tutaj -------------------------------------------', filename)
         # jeżli był obraz to kasujemy z serwera
         if thisPhotoData and file_path_to_delete:
             print(thisPhotoData)
@@ -968,11 +972,7 @@ def edit_element():
 
         # Zapis nowego pliku
         if filename and filepath:
-            try:
-                # Bezpieczna nazwa pliku
-                filename = f"{random.randrange(100001, 799999)}_{secure_filename(file.filename)}"
-                filepath = os.path.join(app.config['UPLOAD_FOLDER_TREATMENTS'], filename)
-                
+            try:                
                 # Zapis pliku
                 file.save(filepath)
                 value = filename
