@@ -857,10 +857,12 @@ def get_picker_options():
 
 @app.route('/admin/edytuj-wybrany-element', methods=['POST'])
 def edit_element():
-    data = request.json
-    element_id = data.get('id')
-    data_type = data.get('type')
-    value = data.get('value')
+    # Obsługa JSON
+    if request.is_json:
+        data = request.json
+        element_id = data.get('id')
+        data_type = data.get('type')
+        value = data.get('value')
 
     print(request)
 
@@ -904,6 +906,8 @@ def edit_element():
             return jsonify({'error': 'Błąd podczas aktualizacji'}), 500
         
         file = request.files['file']
+        element_id = request.form.get('id')
+        data_type = request.form.get('type')
 
         if not file or not element_id or data_type != 'img':
             return jsonify({'error': 'Nieprawidłowe dane'}), 400
