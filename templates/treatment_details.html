@@ -225,17 +225,32 @@
                     <div class="services-details-overview">
                         <div class="row">
                             {% for fileName in treatmentOne.page_photo_content_links_list_section_2 %}
+
                                 <div class="col-lg-6 col-md-6">
                                     <div class="single-gallery">
-                                        <img 
-                                            src="{{ url_for('static', filename='img/services/' + fileName) }}" 
-                                            alt="image"
-                                            {% if userName != 'NotLogin' %}
+                                        {% if userName != 'NotLogin' %}
+                                            {% if fileName %}
+                                            <img 
+                                                src="{{ url_for('static', filename='img/services/' + fileName) }}" 
+                                                alt="image"
                                                 id="page_photo_content_links_splx_section_{{treatmentOne.id}}_{{loop.index}}_{{treatmentOne.page_photo_content_links_list_section_2|length}}"
                                                 data-editable 
                                                 data-type="img"
+                                            />
+                                            {% else %}
+                                            <img 
+                                                src="{{ url_for('static', filename='img/services/1.jpg' ) }}" 
+                                                alt="image"
+                                                id="page_photo_content_links_splx_section_{{treatmentOne.id}}_{{loop.index}}_{{treatmentOne.page_photo_content_links_list_section_2|length}}"
+                                                data-editable 
+                                                data-type="img"
+                                            />
                                             {% endif %}
-                                        >
+                                        {% else %}
+                                            {% if fileName %}
+                                                <img src="{{ url_for('static', filename='img/services/' + fileName) }}" alt="image"/>
+                                            {% endif %}
+                                        {% endif %}
                                     </div>
                                 </div>
                             {% endfor %}
