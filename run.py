@@ -771,7 +771,7 @@ def update_element_in_db(element_id, data_type, value):
             SPLX_PHOTOS = ['page_photo_content_links_splx_section_2']
             if sekcja in SPLX_PHOTOS:
                 exactly_what = None
-                for c in BANERS: 
+                for c in SPLX_PHOTOS: 
                     if c == sekcja: exactly_what = c
                 if exactly_what is None:
                     print("Problem Klucza")
@@ -793,7 +793,7 @@ def update_element_in_db(element_id, data_type, value):
             SINGLE_PHOTOS = ['foto_page_header']
             if sekcja in SINGLE_PHOTOS:
                 exactly_what = None
-                for c in BANERS: 
+                for c in SINGLE_PHOTOS: 
                     if c == sekcja: exactly_what = c
                 if exactly_what is None:
                     print("Problem Klucza")
