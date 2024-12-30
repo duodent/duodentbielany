@@ -954,6 +954,8 @@ def edit_element():
         print('tutaj -------------------------------------------', thisPhotoData)
         if thisPhotoData:
             file_path_to_delete = os.path.join(app.config['UPLOAD_FOLDER_TREATMENTS'], thisPhotoData) 
+            
+        if file:
             filename = f"{random.randrange(100001, 799999)}_{secure_filename(file.filename)}"
             filepath = os.path.join(app.config['UPLOAD_FOLDER_TREATMENTS'], filename)
         
