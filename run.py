@@ -863,6 +863,19 @@ def edit_element():
         element_id = data.get('id')
         data_type = data.get('type')
         value = data.get('value')
+    else:
+        if 'file' not in request.files:
+            return jsonify({'error': 'Błąd podczas aktualizacji'}), 500
+        
+        file = request.files['file']
+        element_id = request.form.get('id')
+        data_type = request.form.get('type')
+
+        if not file or not element_id or data_type != 'img':
+            return jsonify({'error': 'Nieprawidłowe dane'}), 400
+        
+        if file and not allowed_img_file(file.filename):
+            return jsonify({'error': 'Nieprawidłowy plik obrazu'}), 400
 
     print(request)
 
@@ -902,19 +915,6 @@ def edit_element():
             return jsonify({'error': 'Nieprawidłowy format dla remover'}), 400
         
     if data_type == 'img':
-        if 'file' not in request.files:
-            return jsonify({'error': 'Błąd podczas aktualizacji'}), 500
-        
-        file = request.files['file']
-        element_id = request.form.get('id')
-        data_type = request.form.get('type')
-
-        if not file or not element_id or data_type != 'img':
-            return jsonify({'error': 'Nieprawidłowe dane'}), 400
-        
-        if file and not allowed_img_file(file.filename):
-            return jsonify({'error': 'Nieprawidłowy plik obrazu'}), 400
-
         element_id_split_part = editing_id_updater_reader(element_id)
         if 'status' in element_id_split_part:
             if not element_id_split_part['status']:
