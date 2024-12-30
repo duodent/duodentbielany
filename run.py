@@ -870,6 +870,7 @@ def edit_element():
         file = request.files['file']
         element_id = request.form.get('id')
         data_type = request.form.get('type')
+        value = None
 
         if not file or not element_id or data_type != 'img':
             return jsonify({'error': 'Nieprawidłowe dane'}), 400
