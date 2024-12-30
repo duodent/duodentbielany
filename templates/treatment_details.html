@@ -101,14 +101,27 @@
                 <div class="col-lg-8 col-md-12">
                     <div class="services-details-image">
                         <img 
-                            src="{{url_for('static', filename='img/services/single-dziecieca.jpg')}}" 
                             alt="image"
                             {% if userName!='NotLogin' %}
-                            id="treatment-foto_page_header-1-1-1" 
-                            data-editable 
-                            data-type="img"
+                                {% if treatmentOne.foto_page_header %}
+                                    src="{{url_for('static', filename='img/services/~ treatmentOne.foto_page_header ~')}}" 
+                                    id="treatment-foto_page_header-{{treatmentOne.id}}-1-1" 
+                                    data-editable 
+                                    data-type="img"
+                                {% else %}
+                                    src="{{url_for('static', filename='img/services/single.jpg')}}" 
+                                    id="treatment-foto_page_header-{{treatmentOne.id}}-1-1" 
+                                    data-editable 
+                                    data-type="img"
+                                {% endif %}
+                            {% else %}
+                                {% if treatmentOne.foto_page_header %}
+                                    src="{{url_for('static', filename='img/services/~ treatmentOne.foto_page_header ~')}}" 
+                                {% else %}
+                                    style="display: none;"
+                                {% endif %}
                             {% endif %}
-                        >
+                        />
                     </div>
                     <div class="services-details-content">
                         <h3 
