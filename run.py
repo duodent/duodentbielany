@@ -1215,10 +1215,11 @@ def treatments():
     )
 
 # Generate treatments_dict
-treatments_dict = {item["ready_route"]: item["tytul_glowny"] for item in treatments_db()}
+
 
 @app.route('/zabieg-stomatologiczny/<path:treatment_slug>')
 def treatment_dynamic(treatment_slug):
+    treatments_dict = {item["ready_route"]: item["tytul_glowny"] for item in treatments_db()}
     if treatment_slug in treatments_dict:
         pageTitle = treatments_dict[treatment_slug]
         session['page'] = treatment_slug
