@@ -944,6 +944,7 @@ def edit_element():
         ####################################################
         if strona == 'treatment':
             allPhotoKeys = treatments_foto_db_by_id(id_number)
+            print('tutaj -------------------------------------------', allPhotoKeys)
             if str(sekcja).count('splx'):
                 key_sekcja = str(sekcja).replace('splx', 'list')
                 thisPhotoData_list = allPhotoKeys[key_sekcja]
@@ -957,7 +958,6 @@ def edit_element():
                 filename = f"{random.randrange(100001, 799999)}_{secure_filename(file.filename)}"
                 filepath = os.path.join(app.config['UPLOAD_FOLDER_TREATMENTS'], filename)
         
-        print('tutaj -------------------------------------------', filename)
         # jeżli był obraz to kasujemy z serwera
         if thisPhotoData and file_path_to_delete:
             print(thisPhotoData)
