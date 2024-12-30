@@ -862,7 +862,7 @@ def edit_element():
     data_type = data.get('type')
     value = data.get('value')
 
-    print(data)
+    print(request)
 
     if not element_id or not data_type:
         return jsonify({'error': 'Brak wymaganych danych'}), 400
