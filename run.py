@@ -627,7 +627,34 @@ def treatment_managment():
         treatments_items=treatments_db()
     )
 
+def editing_id_updater_reader(element_id):
+    element_id_split_part = element_id.split("-")
+    export_dict = {'status': False}
+    if len(element_id_split_part) != 5:
+        return export_dict
+    try:
+        strona=element_id_split_part[0]
+        sekcja=element_id_split_part[1]
+        id_number=int(element_id_split_part[2])
+        part=int(element_id_split_part[3])
+        index=part-1
+        ofparts=int(element_id_split_part[4])
+        export_dict={
+            'status': True,
+            'strona': strona, 
+            'sekcja': sekcja, 
+            'id_number': id_number, 
+            'index': index, 
+            'part': part, 
+            'ofparts': ofparts, 
+            }
+    except (IndexError, ValueError):
+        export_dict = {'status': False}
+    return export_dict
+    
+####################################################
 # Funkcja do aktualizacji danych w bazie
+####################################################
 def update_element_in_db(element_id, data_type, value):
 
     # Dynamiczne zapytanie SQL w zależności od typu
@@ -638,22 +665,25 @@ def update_element_in_db(element_id, data_type, value):
         # kolumna = baner_h1_splx
         # numer = 1
         # pozycja 1 z 3
+    
+    element_id_split_part = editing_id_updater_reader(element_id)
+    if 'status' in element_id_split_part:
+        if not element_id_split_part['status']:
+            return False
+    else:
+        return False
+    
 
-    element_id_split_part = element_id.split("-")
-    if len(element_id_split_part) != 5:
+    if all(key in element_id_split_part for key in ['strona', 'sekcja', 'id_number', 'index', 'part', 'ofparts']):
+        strona=element_id_split_part['strona']
+        sekcja=element_id_split_part['sekcja']
+        id_number=element_id_split_part['id_number']
+        index=element_id_split_part['index']
+        part=element_id_split_part['part']
+        ofparts=element_id_split_part['ofparts']
+    else:
         return False
-    try:
-        strona=element_id_split_part[0]
-        sekcja=element_id_split_part[1]
-        id_number=int(element_id_split_part[2])
-        part=int(element_id_split_part[3])
-        index=part-1
-        ofparts=int(element_id_split_part[4])
-    except IndexError:
-        return False
-    except TypeError:
-        return False
-
+    
     spea_main = "#splx#"
     spea_second = "#|||#"
     ready_string_splx = None
@@ -729,8 +759,56 @@ def update_element_in_db(element_id, data_type, value):
         query = "UPDATE elements SET int_value = ? WHERE id = ?"
     elif data_type == 'remover':
         query = "UPDATE elements SET int_value = ? WHERE id = ?"
+
+
     elif data_type == 'img':
-        query = "UPDATE elements SET image_url = ? WHERE id = ?"
+        if strona == 'treatment':
+            ready_string_splx = None
+            table_db = 'tabela_uslug'
+            column_db = sekcja
+            id_db = id_number
+            
+            SPLX_PHOTOS = ['page_photo_content_links_splx_section_2']
+            if sekcja in SPLX_PHOTOS:
+                exactly_what = None
+                for c in BANERS: 
+                    if c == sekcja: exactly_what = c
+                if exactly_what is None:
+                    print("Problem Klucza")
+                    return False
+                
+                splet_key = exactly_what.replace('splx', 'list')
+                
+                cunet_list_db = None
+                for data_b in treatments_db_all_by_route_dict().values():
+                    if 'id' in data_b and splet_key in data_b:
+                        if data_b['id'] == id_db:
+                            cunet_list_db = data_b[splet_key]
+                            break
+                if isinstance(cunet_list_db, list):
+                    if len(cunet_list_db) == ofparts:
+                        cunet_list_db[index] = value
+                        ready_string_splx = spea_main.join(cunet_list_db)
+
+            SINGLE_PHOTOS = ['foto_page_header']
+            if sekcja in SINGLE_PHOTOS:
+                exactly_what = None
+                for c in BANERS: 
+                    if c == sekcja: exactly_what = c
+                if exactly_what is None:
+                    print("Problem Klucza")
+                    return False
+                ready_string_splx = value
+
+            # TWORZENIE ZESTAWU ZAPYTANIA MySQL
+            if ready_string_splx is not None and table_db is not None and column_db is not None and isinstance(id_db, int):
+                query = f"""
+                        UPDATE {table_db}
+                        SET {column_db} = %s
+                        WHERE id = %s
+                """
+                params = (ready_string_splx, id_db)
+
     elif data_type == 'url':
         query = "UPDATE elements SET url = ? WHERE id = ?"
     elif data_type == 'splx':
@@ -820,26 +898,79 @@ def edit_element():
             return jsonify({'error': 'Nieprawidłowy format dla remover'}), 400
         
     if data_type == 'img':
-        if 'file' in request.files:
-            file = request.files['file']
-            element_id = request.form.get('id')
-            data_type = request.form.get('type')
+        if 'file' not in request.files:
+            return jsonify({'error': 'Błąd podczas aktualizacji'}), 500
+        
+        file = request.files['file']
 
-            if not file or not element_id or data_type != 'img':
-                return jsonify({'error': 'Nieprawidłowe dane'}), 400
+        if not file or not element_id or data_type != 'img':
+            return jsonify({'error': 'Nieprawidłowe dane'}), 400
+        
+        if file and not allowed_img_file(file.filename):
+            return jsonify({'error': 'Nieprawidłowy plik obrazu'}), 400
 
-            # Zapis pliku
+        element_id_split_part = editing_id_updater_reader(element_id)
+        if 'status' in element_id_split_part:
+            if not element_id_split_part['status']:
+                return jsonify({'error': 'id error'}), 500
+        else:
+            return jsonify({'error': 'id error'}), 500
+        
+        if all(key in element_id_split_part for key in ['strona', 'sekcja', 'id_number', 'index', 'part', 'ofparts']):
+            strona=element_id_split_part['strona']
+            sekcja=element_id_split_part['sekcja']
+            id_number=element_id_split_part['id_number']
+            index=element_id_split_part['index']
+            part=element_id_split_part['part']
+            ofparts=element_id_split_part['ofparts']
+        else:
+            return jsonify({'error': 'id error'}), 500
+
+        # Pobieram ostatni dane obrazu
+        thisPhotoData = None
+        file_path_to_delete = None
+        filename = None
+        filepath = None
+        ####################################################
+        # Aktualizacja pliku w UPLOAD_FOLDER_TREATMENTS
+        ####################################################
+        if strona == 'treatment':
+            allPhotoKeys = treatments_foto_db_by_id(id_number)
+            if str(sekcja).count('splx'):
+                key_sekcja = str(sekcja).replace('splx', 'list')
+                thisPhotoData_list = allPhotoKeys[key_sekcja]
+                thisPhotoData = thisPhotoData_list[index]
+                file_path_to_delete = os.path.join(app.config['UPLOAD_FOLDER_TREATMENTS'], thisPhotoData)  
+                filename = f"{random.randrange(100001, 799999)}_{secure_filename(file.filename)}"
+                filepath = os.path.join(app.config['UPLOAD_FOLDER_TREATMENTS'], filename)
+            else:
+                thisPhotoData = allPhotoKeys[sekcja]
+        
+        # jeżli był obraz to kasujemy z serwera
+        if thisPhotoData and file_path_to_delete:
+            print(thisPhotoData)
+            
+            # Sprawdzenie, czy plik istnieje, i usunięcie go
+            if os.path.exists(file_path_to_delete):
+                try:
+                    os.remove(file_path_to_delete)
+                    print(f"Usunięto plik: {file_path_to_delete}")
+                except Exception as e:
+                    print(f"Błąd podczas usuwania pliku: {file_path_to_delete}, {e}")
+
+        # Zapis nowego pliku
+        if filename and filepath:
             try:
-                filename = f"{element_id}_{file.filename}"
-                filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-                # file.save(filepath)
-
-                # Aktualizacja w bazie (jeśli potrzebna)
-                # update_image_in_db(element_id, filename)
-
-                # return jsonify({'message': 'Zdjęcie zapisane!', 'newImageUrl': f"/{filepath}"})
+                # Bezpieczna nazwa pliku
+                filename = f"{random.randrange(100001, 799999)}_{secure_filename(file.filename)}"
+                filepath = os.path.join(app.config['UPLOAD_FOLDER_TREATMENTS'], filename)
+                
+                # Zapis pliku
+                file.save(filepath)
+                value = filename
+                print(f"Zapisano plik: {filepath}")
             except Exception as e:
-                return jsonify({'error': str(e)}), 500
+                return jsonify({'error': f'Błąd zapisu pliku: {str(e)}'}), 500
 
     # Aktualizacja w bazie (logika zależna od typu danych)
     success = update_element_in_db(element_id, data_type, value)
@@ -946,6 +1077,48 @@ def treatments_db():
 
     return export
 
+def treatments_foto_db_by_id(id_treatment = None):
+    zapytanie_sql = """
+        SELECT 
+            id,
+            foto_home,
+            foto_page_header,
+            page_photo_content_links_splx_section_2
+        FROM tabela_uslug
+        ORDER BY pozycja_kolejnosci ASC
+    """
+    db_dump = msq.connect_to_database(zapytanie_sql)
+    export = []
+
+    for data in db_dump:
+            
+        theme = {
+            "id": data[0],
+            "foto_home": data[1],
+            "foto_page_header": data[2],
+            "page_photo_content_links_splx_section_2": data[3],
+            "page_photo_content_links_list_section_2": check_separator_take_list('#splx#', data[3], len(str(data[3]).split('#splx#')))
+        }
+        if isinstance(id_treatment, int) and data[0] == id_treatment:
+            return theme
+        export.append(theme)
+
+    return export
+
+def check_separator_take_list(sepa: str, string: str, shout_parts: int):
+    """
+    Funkcja dzieli string na listę na podstawie separatora.
+    Jeśli liczba elementów jest mniejsza niż oczekiwana, uzupełnia brakujące puste elementy.
+    Jeśli jest większa, przycina listę do wymaganej długości.
+    """
+    parts = string.split(sepa)
+    if len(parts) == shout_parts:
+        return parts
+    elif len(parts) < shout_parts:
+        return parts + [""] * (shout_parts - len(parts))
+    else:  # len(parts) > shout_parts
+        return parts[:shout_parts]
+
 def treatments_db_all_by_route_dict(pick_element=False, route_string=''):
     """
     Pobiera wszystkie usługi z bazy danych i zwraca słownik, w którym kluczami są wartości kolumny `ready_route`,
@@ -958,20 +1131,6 @@ def treatments_db_all_by_route_dict(pick_element=False, route_string=''):
         FROM tabela_uslug
         ORDER BY pozycja_kolejnosci ASC
     """
-
-    def check_separator_take_list(sepa: str, string: str, shout_parts: int):
-        """
-        Funkcja dzieli string na listę na podstawie separatora.
-        Jeśli liczba elementów jest mniejsza niż oczekiwana, uzupełnia brakujące puste elementy.
-        Jeśli jest większa, przycina listę do wymaganej długości.
-        """
-        parts = string.split(sepa)
-        if len(parts) == shout_parts:
-            return parts
-        elif len(parts) < shout_parts:
-            return parts + [""] * (shout_parts - len(parts))
-        else:  # len(parts) > shout_parts
-            return parts[:shout_parts]
 
     try:
         # Połączenie z bazą danych i wykonanie zapytania
@@ -1001,6 +1160,7 @@ def treatments_db_all_by_route_dict(pick_element=False, route_string=''):
                 "page_points_splx_section_1": data[13],
                 "page_subcontent_section_1": data[14],
                 "page_photo_content_links_splx_section_2": data[15],
+                "page_photo_content_links_list_section_2": check_separator_take_list('#splx#', data[15], 2),
                 "page_subcontent_section_2": data[16],
                 "page_title_section_3": data[17],
                 "page_content_section_3": data[18],

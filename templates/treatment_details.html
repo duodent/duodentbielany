@@ -37,6 +37,8 @@
     </div>
 </div>
 <!-- breadcrumb end -->
+
+{{treatmentOne}}
     <!-- services-details-area -->
     <section class="services-details-area pb-100">
         <div class="container">
@@ -222,7 +224,22 @@
                     </p>
                     <div class="services-details-overview">
                         <div class="row">
+                            {% for loop, fileName in enumerate(treatmentOne.page_photo_content_links_list_section_2, start=1) %}
                             <div class="col-lg-6 col-md-6">
+                                <div class="single-gallery">
+                                    <img 
+                                        src="{{ url_for('static', filename='img/services/' + fileName) }}" 
+                                        alt="image"
+                                        {% if userName != 'NotLogin' %}
+                                            id="page_photo_content_links_splx_section_2{{treatmentOne.id}}_{{loop}}_{{treatmentOne.page_photo_content_links_list_section_2|length}}"
+                                            data-editable 
+                                            data-type="img"
+                                        {% endif %}
+                                    >
+                                </div>
+                            </div>
+                            {% endfor %}
+                            <!-- <div class="col-lg-6 col-md-6">
                                 <div class="single-gallery">
                                     <img 
                                         {% if userName!='NotLogin' %}
@@ -233,19 +250,7 @@
                                         src="../static/img/services/1.jpg" alt="image"
                                     >
                                 </div>
-                            </div>
-                            <div class="col-lg-6 col-md-6">
-                                <div class="single-gallery">
-                                    <img 
-                                        {% if userName!='NotLogin' %}
-                                        id="page_photo_content_links_splx_section_2_f_1" 
-                                        data-editable 
-                                        data-type="img"
-                                        {% endif %}
-                                        src="../static/img/services/1.jpg" alt="image"
-                                    >
-                                </div>
-                            </div>
+                            </div> -->
                         </div>
                     </div>
                     <p {% if userName!='NotLogin' %}id="treatment-page_subcontent_section_2-{{treatmentOne.id}}-1-1" data-editable data-type="text"{% endif %}>
