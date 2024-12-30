@@ -1111,7 +1111,7 @@ def check_separator_take_list(sepa: str, string: str, shout_parts: int):
     Jeśli liczba elementów jest mniejsza niż oczekiwana, uzupełnia brakujące puste elementy.
     Jeśli jest większa, przycina listę do wymaganej długości.
     """
-    print([sepa, string, shout_parts])
+    # print([sepa, string, shout_parts])
     if not isinstance(sepa, str) and not isinstance(string, str) and not isinstance(shout_parts, int):
         return []
     parts = string.split(sepa)
@@ -1154,9 +1154,9 @@ def treatments_db_all_by_route_dict(pick_element=False, route_string=''):
                 "pozycja_kolejnosci": data[6],
                 "baner_h1_splx": data[7],
                 # Dzielenie banera na listę
-                "baner_h1_splet": check_separator_take_list('#splx#', data[7], 3),
+                "baner_h1_splet": check_separator_take_list('#splx#', '' if data[7] is None else data[7], 3),
                 "baner_h2_splx": data[8],
-                "baner_h2_splet": check_separator_take_list('#splx#', data[8], 3),
+                "baner_h2_splet": check_separator_take_list('#splx#', '' if data[8] is None else data[8], 3),
                 "page_hashtag_section": data[9],
                 "foto_page_header": data[10],
                 "page_title_section_1": data[11],
@@ -1231,8 +1231,8 @@ def treatment_dynamic(treatment_slug):
         treatmentOne = treatments_db_all_by_route_dict(True, treatment_slug)
         
         return render_template(
-            # 'treatment_details.html',
-            'labo_one.html',
+            'treatment_details.html',
+            # 'labo_one.html',
             pageTitle=pageTitle,
             nazwa_uslugi=treatments_dict[treatment_slug],
             treatmentOne=treatmentOne,
