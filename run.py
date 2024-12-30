@@ -916,7 +916,7 @@ def edit_element():
         
     if data_type == 'img':
         element_id_split_part = editing_id_updater_reader(element_id)
-        print('tutaj -------------------------------------------', element_id_split_part)
+        print('tutaj -------------------------------------------', element_id)
         if 'status' in element_id_split_part:
             if not element_id_split_part['status']:
                 return jsonify({'error': 'id error 0'}), 500
