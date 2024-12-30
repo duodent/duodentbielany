@@ -1111,6 +1111,8 @@ def check_separator_take_list(sepa: str, string: str, shout_parts: int):
     Jeśli liczba elementów jest mniejsza niż oczekiwana, uzupełnia brakujące puste elementy.
     Jeśli jest większa, przycina listę do wymaganej długości.
     """
+    if not isinstance(sepa, str) and not isinstance(string, str) and not isinstance(shout_parts, int):
+        return []
     parts = string.split(sepa)
     if len(parts) == shout_parts:
         return parts
@@ -1118,6 +1120,7 @@ def check_separator_take_list(sepa: str, string: str, shout_parts: int):
         return parts + [""] * (shout_parts - len(parts))
     else:  # len(parts) > shout_parts
         return parts[:shout_parts]
+
 
 def treatments_db_all_by_route_dict(pick_element=False, route_string=''):
     """
@@ -1160,7 +1163,7 @@ def treatments_db_all_by_route_dict(pick_element=False, route_string=''):
                 "page_points_splx_section_1": data[13],
                 "page_subcontent_section_1": data[14],
                 "page_photo_content_links_splx_section_2": data[15],
-                # "page_photo_content_links_list_section_2": check_separator_take_list('#splx#', data[15], 2),
+                "page_photo_content_links_list_section_2": check_separator_take_list('#splx#', data[15], 2),
                 "page_subcontent_section_2": data[16],
                 "page_title_section_3": data[17],
                 "page_content_section_3": data[18],
