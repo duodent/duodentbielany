@@ -47,6 +47,9 @@ def allowed_file(filename):
 def allowed_img_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS_IMAGES
 
+# Główne separatatory dzielenia stringów na listy
+spea_main = "#splx#"
+spea_second = "#|||#"
 
 # Ustawienie ilości elementów na stronę (nie dotyczy sesji)
 app.config['PER_PAGE'] = 6
@@ -656,7 +659,7 @@ def editing_id_updater_reader(element_id):
 # Funkcja do aktualizacji danych w bazie
 ####################################################
 def update_element_in_db(element_id, data_type, value):
-    print(element_id, data_type, value)
+    # print(element_id, data_type, value)
     # Dynamiczne zapytanie SQL w zależności od typu
 
     # {strona=tabela}-{sekcja=kolumna}-{id=numer}-{część=pozycja}-{wszystkich=ilość pozycji}
@@ -683,9 +686,7 @@ def update_element_in_db(element_id, data_type, value):
         ofparts=element_id_split_part['ofparts']
     else:
         return False
-    
-    spea_main = "#splx#"
-    spea_second = "#|||#"
+
     ready_string_splx = None
     table_db = None
     column_db = None
@@ -811,8 +812,63 @@ def update_element_in_db(element_id, data_type, value):
 
     elif data_type == 'url':
         query = "UPDATE elements SET url = ? WHERE id = ?"
+
     elif data_type == 'splx':
-        query = "UPDATE elements SET splx_value = ? WHERE id = ?"
+        if strona == 'treatment':
+            ready_string_splx = None
+            table_db = 'tabela_uslug'
+            column_db = sekcja
+            id_db = id_number
+            
+            SPLX_SINGLE_ITEM = ['html id tutaj']
+            if sekcja in SPLX_SINGLE_ITEM:
+                exactly_what = None
+                for c in SPLX_MULTI_ITEM: 
+                    if c == sekcja: exactly_what = c
+                if exactly_what is None:
+                    print("Problem Klucza")
+                    return False
+                
+                cunet_list_db = None
+                for data_b in treatments_db_all_by_route_dict().values():
+                    if 'id' in data_b and exactly_what in data_b:
+                        if data_b['id'] == id_db:
+                            cunet_list_db = data_b[exactly_what]
+                            break
+                if isinstance(cunet_list_db, str):
+                    ready_string_splx = value
+            
+            SPLX_MULTI_ITEM = ['page_points_splx_section_1']
+            if sekcja in SPLX_MULTI_ITEM:
+                exactly_what = None
+                for c in SPLX_MULTI_ITEM: 
+                    if c == sekcja: exactly_what = c
+                if exactly_what is None:
+                    print("Problem Klucza")
+                    return False
+                
+                splet_key = exactly_what.replace('splx', 'string')
+                
+                cunet_list_db = None
+                for data_b in treatments_db_all_by_route_dict().values():
+                    if 'id' in data_b and splet_key in data_b:
+                        if data_b['id'] == id_db:
+                            cunet_list_db = data_b[splet_key]
+                            break
+                if isinstance(cunet_list_db, list):
+                    if len(cunet_list_db) == ofparts:
+                        cunet_list_db[index] = value
+                        ready_string_splx = spea_main.join(cunet_list_db)
+
+
+            # TWORZENIE ZESTAWU ZAPYTANIA MySQL
+            if ready_string_splx is not None and table_db is not None and column_db is not None and isinstance(id_db, int):
+                query = f"""
+                        UPDATE {table_db}
+                        SET {column_db} = %s
+                        WHERE id = %s
+                """
+                params = (ready_string_splx, id_db)
     else:
         print(f"Nieobsługiwany typ danych: {data_type}")
         return False
@@ -878,7 +934,6 @@ def edit_element():
         if file and not allowed_img_file(file.filename):
             return jsonify({'error': 'Nieprawidłowy plik obrazu'}), 400
 
-
     if not element_id or not data_type:
         return jsonify({'error': 'Brak wymaganych danych'}), 400
 
@@ -890,9 +945,7 @@ def edit_element():
 
     if data_type == 'splx':
         # Zapis jako string z separatorami w bazie
-        if isinstance(value, list):
-            value = ','.join(value)
-        else:
+        if not isinstance(value, str):
             return jsonify({'error': 'Nieprawidłowy format dla splx'}), 400
 
     if data_type == 'picker':
@@ -916,7 +969,6 @@ def edit_element():
         
     if data_type == 'img':
         element_id_split_part = editing_id_updater_reader(element_id)
-        print('tutaj -------------------------------------------', element_id)
         if 'status' in element_id_split_part:
             if not element_id_split_part['status']:
                 return jsonify({'error': 'id error 0'}), 500
@@ -933,8 +985,6 @@ def edit_element():
         else:
             return jsonify({'error': 'id error 2'}), 500
         
-        
-
         # Pobieram ostatni dane obrazu
         thisPhotoData = None
         file_path_to_delete = None
@@ -945,6 +995,8 @@ def edit_element():
         ####################################################
         if strona == 'treatment':
             allPhotoKeys = treatments_foto_db_by_id(id_number)
+            #Usatawiam Katalog zapisu dla treatment
+            UPLOAD_FOLDER_TREATMENTS_IMG = app.config['UPLOAD_FOLDER_TREATMENTS']
             if str(sekcja).count('splx'):
                 key_sekcja = str(sekcja).replace('splx', 'list')
                 thisPhotoData_list = allPhotoKeys[key_sekcja]
@@ -954,11 +1006,11 @@ def edit_element():
 
         
         if thisPhotoData:
-            file_path_to_delete = os.path.join(app.config['UPLOAD_FOLDER_TREATMENTS'], thisPhotoData) 
+            file_path_to_delete = os.path.join(UPLOAD_FOLDER_TREATMENTS_IMG, thisPhotoData) 
 
         if file:
             filename = f"{random.randrange(100001, 799999)}_{secure_filename(file.filename)}"
-            filepath = os.path.join(app.config['UPLOAD_FOLDER_TREATMENTS'], filename)
+            filepath = os.path.join(UPLOAD_FOLDER_TREATMENTS_IMG, filename)
         
         # jeżli był obraz to kasujemy z serwera
         if thisPhotoData and file_path_to_delete:
@@ -1107,7 +1159,7 @@ def treatments_foto_db_by_id(id_treatment = None):
             "foto_home": data[1],
             "foto_page_header": data[2],
             "page_photo_content_links_splx_section_2": data[3],
-            "page_photo_content_links_list_section_2": check_separator_take_list('#splx#', '' if data[3] is None else data[3], len(str(data[3]).split('#splx#')))
+            "page_photo_content_links_list_section_2": check_separator_take_list(spea_main, '' if data[3] is None else data[3], len(str(data[3]).split(spea_main)))
         }
         if isinstance(id_treatment, int) and data[0] == id_treatment:
             return theme
@@ -1153,6 +1205,26 @@ def treatments_db_all_by_route_dict(pick_element=False, route_string=''):
 
         # Iteracja przez wyniki zapytania
         for data in db_dump:
+
+            page_points_string_section_1_db = data[13]
+            if isinstance(page_points_string_section_1_db, str) and spea_second in str(page_points_string_section_1_db):
+                page_points_string_section_1_1, page_points_string_section_1_2 = str(page_points_string_section_1_db).split(spea_second)[:2]
+                page_points_string_section_1_1_len = len(page_points_string_section_1_1.split(spea_main))
+                if not page_points_string_section_1_1_len: page_points_string_section_1_1_len=1
+                page_points_string_section_1_2_len = len(page_points_string_section_1_2.split(spea_main))
+                if not page_points_string_section_1_2_len: page_points_string_section_1_2_len=1
+                page_points_list_section_1 = [
+                    check_separator_take_list(spea_main, page_points_string_section_1_1, page_points_string_section_1_1_len),
+                    check_separator_take_list(spea_main, page_points_string_section_1_2, page_points_string_section_1_2_len),
+                ]
+                page_points_string_section_1 = [
+                    page_points_string_section_1_1, page_points_string_section_1_2
+                ]
+            else:
+                page_points_list_section_1 = [[],[]]
+                page_points_string_section_1 = ['', '']
+            
+            
             # Tworzenie słownika dla pojedynczego rekordu
             theme = {
                 "id": data[0],
@@ -1164,17 +1236,19 @@ def treatments_db_all_by_route_dict(pick_element=False, route_string=''):
                 "pozycja_kolejnosci": data[6],
                 "baner_h1_splx": data[7],
                 # Dzielenie banera na listę
-                "baner_h1_splet": check_separator_take_list('#splx#', '' if data[7] is None else data[7], 3),
+                "baner_h1_splet": check_separator_take_list(spea_main, '' if data[7] is None else data[7], 3),
                 "baner_h2_splx": data[8],
-                "baner_h2_splet": check_separator_take_list('#splx#', '' if data[8] is None else data[8], 3),
+                "baner_h2_splet": check_separator_take_list(spea_main, '' if data[8] is None else data[8], 3),
                 "page_hashtag_section": data[9],
                 "foto_page_header": data[10],
                 "page_title_section_1": data[11],
                 "page_content_section_1": data[12],
                 "page_points_splx_section_1": data[13],
+                "page_points_string_section_1": page_points_string_section_1,
+                "page_points_list_section_1": page_points_list_section_1,
                 "page_subcontent_section_1": data[14],
                 "page_photo_content_links_splx_section_2": data[15],
-                "page_photo_content_links_list_section_2": check_separator_take_list('#splx#', '' if data[15] is None else data[15], 2),
+                "page_photo_content_links_list_section_2": check_separator_take_list(spea_main, '' if data[15] is None else data[15], 2),
                 "page_subcontent_section_2": data[16],
                 "page_title_section_3": data[17],
                 "page_content_section_3": data[18],

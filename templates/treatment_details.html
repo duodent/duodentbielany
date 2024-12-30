@@ -140,80 +140,84 @@
                         {% if userName!='NotLogin' %}
                         <div class="col-lg-6 col-sm-12">
                             <div class="mb-3"> 
-                                <label for="list-container_1" class="form-label">Twoja Lista</label>
-                                <div id="list-container_1" class="no-border">
+                                <label for="list-container_treatment-page_points_splx_section_1-{{treatmentOne.id}}-1-2" class="form-label">Kolumna</label>
+                                <div id="list-container_treatment-page_points_splx_section_1-{{treatmentOne.id}}-1-2" class="no-border">
                                     <!-- Dynamicznie dodawane elementy -->
                                 </div>
                                 <div class="text-end mt-3">
-                                    <button type="button" class="btn btn-warning btn-sm" onclick="addListItem('treatment-page_splx_section_2-1-1-1', template, 'list-container_', 'Nowy element')">
+                                    <button type="button" class="btn btn-warning btn-sm" onclick="addListItem('treatment-page_points_splx_section_1-{{treatmentOne.id}}-1-2', template, 'list-container_', 'Nowy element')">
                                         <i class="bi bi-plus-square-dotted"></i> Dodaj
                                     </button>
                                 </div>
                             </div>
-                            <button type="button" class="btn btn-success" onclick="exportList('1')">Eksportuj Listę</button>
+                            <button type="button" class="btn btn-success" onclick="exportList('treatment-page_points_splx_section_1-{{treatmentOne.id}}-1-2')">Eksportuj Listę</button>
                         </div>
                         <script>
                             // Wczytanie danych początkowych
                             document.addEventListener('DOMContentLoaded', () => {
-                                const initialData = "Punkt 1#splx#Punkt 2#splx#Punkt 3";
-                                addListFields(initialData, "1", "#splx#", template, "list-container_");
-                                initializeSortable("list-container_1");
+                                const initialData = "{{treatmentOne.page_points_string_section_1[0]}}";
+                                addListFields(initialData, "treatment-page_points_splx_section_1-{{treatmentOne.id}}-1-2", "#splx#", template, "list-container_");
+                                initializeSortable("list-container_treatment-page_points_splx_section_1-{{treatmentOne.id}}-1-2");
                             });
                         </script>
                         <div class="col-lg-6 col-sm-12">
                             <div class="mb-3">
-                                <label for="list-container_2" class="form-label">Twoja Lista</label>
-                                <div id="list-container_2" class="no-border">
+                                <label for="list-container_treatment-page_points_splx_section_1-{{treatmentOne.id}}-2-2" class="form-label">Kolumna</label>
+                                <div id="list-container_treatment-page_points_splx_section_1-{{treatmentOne.id}}-2-2" class="no-border">
                                     <!-- Dynamicznie dodawane elementy -->
                                 </div>
                                 <div class="text-end mt-3">
-                                    <button type="button" class="btn btn-warning btn-sm" onclick="addListItem('2', template, 'list-container_', 'Nowy element')">
+                                    <button type="button" class="btn btn-warning btn-sm" onclick="addListItem('treatment-page_points_splx_section_1-{{treatmentOne.id}}-2-2', template, 'list-container_', 'Nowy element')">
                                         <i class="bi bi-plus-square-dotted"></i> Dodaj
                                     </button>
                                 </div>
                             </div>
-                            <button type="button" class="btn btn-success" onclick="exportList('2')">Eksportuj Listę</button>
+                            <button type="button" class="btn btn-success" onclick="exportList('treatment-page_points_splx_section_1-{{treatmentOne.id}}-2-2')">Eksportuj Listę</button>
                         </div>
 
                         <script>
                             // Wczytanie danych początkowych
                             document.addEventListener('DOMContentLoaded', () => {
-                                const initialData = "Punkt 4#splx#Punkt 5#splx#Punkt 6";
-                                addListFields(initialData, "2", "#splx#", template, "list-container_");
-                                initializeSortable("list-container_2");
+                                const initialData = "{{treatmentOne.page_string_section_1[1]}}";
+                                addListFields(initialData, "treatment-page_points_splx_section_1-{{treatmentOne.id}}-2-2", "#splx#", template, "list-container_");
+                                initializeSortable("list-container_treatment-page_points_splx_section_1-{{treatmentOne.id}}-2-2");
                             });
                         </script>
                         {% else %}
                         <div class="col-lg-6 col-md-6">
                             <ul class="services-details-list">
-                                <li>
-                                    <i class="flaticon-check"></i>
-                                    Praesent rhoncus varius pharetra.
-                                </li>
-                                <li>
+                                {% for point in treatmentOne.page_list_section_1[0] %}
+                                    <li>
+                                        <i class="flaticon-check"></i>
+                                        {{point}}
+                                    </li>
+                                {% endfor %}
+                                <!-- <li>
                                     <i class="flaticon-check"></i>
                                     Ut hendrerit nisi eget urna vehicula rutrum.
                                 </li>
                                 <li>
                                     <i class="flaticon-check"></i>
                                     Nulla molestie bibendum blandit.
-                                </li>
+                                </li> -->
                             </ul>
                         </div>
                         <div class="col-lg-6 col-md-6">
                             <ul class="services-details-list">
-                                <li>
-                                    <i class="flaticon-check"></i>
-                                    Pellentesque volutpat lacus metus.
-                                </li>
-                                <li>
+                                {% for point in treatmentOne.page_list_section_1[1] %}
+                                    <li>
+                                        <i class="flaticon-check"></i>
+                                        {{point}}
+                                    </li>
+                                {% endfor %}
+                                <!-- <li>
                                     <i class="flaticon-check"></i>
                                     Ut porta odio volutpat nec
                                 </li>
                                 <li>
                                     <i class="flaticon-check"></i>
                                     Curabitur ultricies ex odio vitae facilisis
-                                </li>
+                                </li> -->
                             </ul>
                         </div>
                         {% endif %}
@@ -1015,8 +1019,15 @@
         // Funkcja eksportu wywoływana z przycisku
         function exportList(id) {
             const exportedData = joinListFields(`list-container_${id}`, "#splx#");
+            if (!exportedData) {
+                alert("Lista jest pusta, brak danych do eksportu.");
+                return;
+            }
+            let type = 'splx';
+            let value = exportedData;
+            sendDataToBackend(id, type, value)
             console.log("Eksportowane dane:", exportedData);
-            alert("Eksportowane dane:\n" + exportedData);
+            // alert("Eksportowane dane:\n" + exportedData);
         }
 
         // Inicjalizacja SortableJS
