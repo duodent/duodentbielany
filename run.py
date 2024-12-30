@@ -1160,7 +1160,7 @@ def treatments_db_all_by_route_dict(pick_element=False, route_string=''):
                 "page_points_splx_section_1": data[13],
                 "page_subcontent_section_1": data[14],
                 "page_photo_content_links_splx_section_2": data[15],
-                "page_photo_content_links_list_section_2": check_separator_take_list('#splx#', data[15], 2),
+                # "page_photo_content_links_list_section_2": check_separator_take_list('#splx#', data[15], 2),
                 "page_subcontent_section_2": data[16],
                 "page_title_section_3": data[17],
                 "page_content_section_3": data[18],
