@@ -1226,7 +1226,8 @@ def treatment_dynamic(treatment_slug):
         treatmentOne = treatments_db_all_by_route_dict(True, treatment_slug)
         
         return render_template(
-            'treatment_details.html',
+            # 'treatment_details.html',
+            'labo_one.html',
             pageTitle=pageTitle,
             nazwa_uslugi=treatments_dict[treatment_slug],
             treatmentOne=treatmentOne,
