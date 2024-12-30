@@ -858,7 +858,7 @@ def update_element_in_db(element_id, data_type, value):
                 if isinstance(cunet_list_db, list):
                     if len(cunet_list_db) == ofparts:
                         cunet_list_db[index] = value
-                        ready_string_splx = spea_main.join(cunet_list_db)
+                        ready_string_splx = spea_second.join(cunet_list_db)
 
 
             # TWORZENIE ZESTAWU ZAPYTANIA MySQL
