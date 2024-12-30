@@ -1097,7 +1097,7 @@ def treatments_foto_db_by_id(id_treatment = None):
             "foto_home": data[1],
             "foto_page_header": data[2],
             "page_photo_content_links_splx_section_2": data[3],
-            "page_photo_content_links_list_section_2": check_separator_take_list('#splx#', data[3], len(str(data[3]).split('#splx#')))
+            "page_photo_content_links_list_section_2": check_separator_take_list('#splx#', '' if data[3] is None else data[3], len(str(data[3]).split('#splx#')))
         }
         if isinstance(id_treatment, int) and data[0] == id_treatment:
             return theme
@@ -1163,7 +1163,7 @@ def treatments_db_all_by_route_dict(pick_element=False, route_string=''):
                 "page_points_splx_section_1": data[13],
                 "page_subcontent_section_1": data[14],
                 "page_photo_content_links_splx_section_2": data[15],
-                "page_photo_content_links_list_section_2": check_separator_take_list('#splx#', data[15], 2),
+                "page_photo_content_links_list_section_2": check_separator_take_list('#splx#', '' if data[15] is None else data[15], 2),
                 "page_subcontent_section_2": data[16],
                 "page_title_section_3": data[17],
                 "page_content_section_3": data[18],
@@ -1230,8 +1230,8 @@ def treatment_dynamic(treatment_slug):
         treatmentOne = treatments_db_all_by_route_dict(True, treatment_slug)
         
         return render_template(
-            # 'treatment_details.html',
-            'labo_one.html',
+            'treatment_details.html',
+            # 'labo_one.html',
             pageTitle=pageTitle,
             nazwa_uslugi=treatments_dict[treatment_slug],
             treatmentOne=treatmentOne,
