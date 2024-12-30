@@ -944,19 +944,18 @@ def edit_element():
         ####################################################
         if strona == 'treatment':
             allPhotoKeys = treatments_foto_db_by_id(id_number)
-            print('tutaj -------------------------------------------', allPhotoKeys)
             if str(sekcja).count('splx'):
                 key_sekcja = str(sekcja).replace('splx', 'list')
                 thisPhotoData_list = allPhotoKeys[key_sekcja]
                 thisPhotoData = thisPhotoData_list[index]
-                file_path_to_delete = os.path.join(app.config['UPLOAD_FOLDER_TREATMENTS'], thisPhotoData)  
-                filename = f"{random.randrange(100001, 799999)}_{secure_filename(file.filename)}"
-                filepath = os.path.join(app.config['UPLOAD_FOLDER_TREATMENTS'], filename)
             else:
                 thisPhotoData = allPhotoKeys[sekcja]
-                file_path_to_delete = os.path.join(app.config['UPLOAD_FOLDER_TREATMENTS'], thisPhotoData)  
-                filename = f"{random.randrange(100001, 799999)}_{secure_filename(file.filename)}"
-                filepath = os.path.join(app.config['UPLOAD_FOLDER_TREATMENTS'], filename)
+
+        if thisPhotoData:
+            print('tutaj -------------------------------------------', thisPhotoData)
+            file_path_to_delete = os.path.join(app.config['UPLOAD_FOLDER_TREATMENTS'], thisPhotoData) 
+            filename = f"{random.randrange(100001, 799999)}_{secure_filename(file.filename)}"
+            filepath = os.path.join(app.config['UPLOAD_FOLDER_TREATMENTS'], filename)
         
         # jeżli był obraz to kasujemy z serwera
         if thisPhotoData and file_path_to_delete:
