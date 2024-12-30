@@ -878,7 +878,7 @@ def edit_element():
         if file and not allowed_img_file(file.filename):
             return jsonify({'error': 'Nieprawidłowy plik obrazu'}), 400
 
-    print(request)
+    print(element_id, data_type, value)
 
     if not element_id or not data_type:
         return jsonify({'error': 'Brak wymaganych danych'}), 400
