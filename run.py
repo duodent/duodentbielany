@@ -862,6 +862,8 @@ def edit_element():
     data_type = data.get('type')
     value = data.get('value')
 
+    print(data)
+
     if not element_id or not data_type:
         return jsonify({'error': 'Brak wymaganych danych'}), 400
 
@@ -1227,7 +1229,7 @@ def treatment_dynamic(treatment_slug):
     if treatment_slug in treatments_dict:
         pageTitle = treatments_dict[treatment_slug]
         session['page'] = treatment_slug
-        page_data_interput = {'page_points_splx_section': ['Podpunkt 1', 'Podpunkt 2', 'Podpunkt 3']}
+
         treatmentOne = treatments_db_all_by_route_dict(True, treatment_slug)
         
         return render_template(
@@ -1235,8 +1237,7 @@ def treatment_dynamic(treatment_slug):
             # 'labo_one.html',
             pageTitle=pageTitle,
             nazwa_uslugi=treatments_dict[treatment_slug],
-            treatmentOne=treatmentOne,
-            page_data_interput=page_data_interput
+            treatmentOne=treatmentOne
         )
     else:
         abort(404)
