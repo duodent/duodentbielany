@@ -918,9 +918,9 @@ def edit_element():
         element_id_split_part = editing_id_updater_reader(element_id)
         if 'status' in element_id_split_part:
             if not element_id_split_part['status']:
-                return jsonify({'error': 'id error'}), 500
+                return jsonify({'error': 'id error 0'}), 500
         else:
-            return jsonify({'error': 'id error'}), 500
+            return jsonify({'error': 'id error 1'}), 500
         
         if all(key in element_id_split_part for key in ['strona', 'sekcja', 'id_number', 'index', 'part', 'ofparts']):
             strona=element_id_split_part['strona']
@@ -930,7 +930,7 @@ def edit_element():
             part=element_id_split_part['part']
             ofparts=element_id_split_part['ofparts']
         else:
-            return jsonify({'error': 'id error'}), 500
+            return jsonify({'error': 'id error 2'}), 500
         
         
 
@@ -954,7 +954,7 @@ def edit_element():
         print('tutaj -------------------------------------------', thisPhotoData)
         if thisPhotoData:
             file_path_to_delete = os.path.join(app.config['UPLOAD_FOLDER_TREATMENTS'], thisPhotoData) 
-            
+
         if file:
             filename = f"{random.randrange(100001, 799999)}_{secure_filename(file.filename)}"
             filepath = os.path.join(app.config['UPLOAD_FOLDER_TREATMENTS'], filename)
