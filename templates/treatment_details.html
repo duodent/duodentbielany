@@ -373,7 +373,7 @@
                         <div class="widget widget_info">
                             <!-- # zdjęcie doktora # -->
                             <div class="image">
-                                <img src="{{url_for('static', filename='img/doctor/' + treatmentOne.page_attached_worker_photo_link )}}" alt="image">
+                                <img src="{{treatmentOne.page_attached_worker_photo_link}}" alt="image">
                             </div>
                             <div class="content">
                                 {% if treatmentOne.page_attached_worker_status %}
@@ -383,7 +383,7 @@
                                     <!-- # ikona oka # -->
                                     <i class="bi bi-eye-slash eye-icon" style="color:#97a5b0"></i>
                                 {% endif %}
-                                
+
                                 <!-- # wybrany doktor # -->
                                 <h3 
                                     
@@ -403,7 +403,7 @@
                             {% if treatmentOne.page_attached_worker_status %}
                             <div class="widget widget_info">
                                 <div class="image">
-                                    <img src="{{url_for('static', filename='img/doctor/' + treatmentOne.page_attached_worker_photo_link )}}" alt="image">
+                                    <img src="{{treatmentOne.page_attached_worker_photo_link}}" alt="image">
                                 </div>
                                 <div class="content">
                                     <h3>{{treatmentOne.page_attached_worker_photo_name}}</h3>

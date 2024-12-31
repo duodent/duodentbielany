@@ -1243,8 +1243,13 @@ def treatments_db_all_by_route_dict(pick_element=False, route_string=''):
                 page_price_table_content_string_comma_section_5 = ['', '']
             
             # Dołaczony prcownik
-            try: page_attached_worker_photo_name, page_attached_worker_photo_link = msq.connect_to_database(f'SELECT name, avatar FROM admin WHERE id = {data[23]}')[0]
-            except IndexError: page_attached_worker_photo_name, page_attached_worker_photo_link = (None, None)
+            if data[23]:
+                page_attached_worker_id_sql = f'WHERE id = {data[23]}'
+                try: page_attached_worker_photo_name, page_attached_worker_photo_link = msq.connect_to_database(f'SELECT name, avatar FROM admin {page_attached_worker_id_sql};')[0]
+                except IndexError: page_attached_worker_photo_name, page_attached_worker_photo_link = (None, None)
+            else:
+                page_attached_worker_photo_name, page_attached_worker_photo_link = (None, None)
+
             # Tworzenie słownika dla pojedynczego rekordu
             theme = {
                 "id": data[0],
