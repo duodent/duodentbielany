@@ -838,7 +838,7 @@ def update_element_in_db(element_id, data_type, value):
                 if isinstance(cunet_list_db, str):
                     ready_string_splx = value
             
-            SPLX_MULTI_ITEM = ['page_points_splx_section_1']
+            SPLX_MULTI_ITEM = ['page_points_splx_section_1', 'page_price_table_content_splx_comma_section_5']
             if sekcja in SPLX_MULTI_ITEM:
                 exactly_what = None
                 for c in SPLX_MULTI_ITEM: 
@@ -885,25 +885,23 @@ def update_element_in_db(element_id, data_type, value):
     print(f"Nie udało się zaktualizować danych dla element_id: {element_id}")
     return False
 
-
-# Przykładowe dane do wysłania
-OPTIONS_DATA = {
-    "page_attached_worker_descriptions_list": [
-        {"id": "1", "description": "Opcja 1 dla elementu 1"},
-        {"id": "2", "description": "Opcja 2 dla elementu 1"},
-        {"id": "3", "description": "Opcja 3 dla elementu 1"}
-    ],
-    "page_attached_files_list": [
-        {"id": "10", "description": "Opcja A dla elementu 2"},
-        {"id": "11", "description": "Opcja B dla elementu 2"},
-        {"id": "12", "description": "Opcja C dla elementu 2"}
-    ]
-}
-
 @app.route('/admin/get-picker-options', methods=['GET'])
 def get_picker_options():
     # Pobierz ID elementu z parametrów zapytania
     element_id = request.args.get('id')
+    # Przykładowe dane do wysłania
+    OPTIONS_DATA = {
+        "page_attached_worker_descriptions_list": [
+            {"id": "1", "description": "Opcja 1 dla elementu 1"},
+            {"id": "2", "description": "Opcja 2 dla elementu 1"},
+            {"id": "3", "description": "Opcja 3 dla elementu 1"}
+        ],
+        "page_attached_files_list": [
+            {"id": "10", "description": "Opcja A dla elementu 2"},
+            {"id": "11", "description": "Opcja B dla elementu 2"},
+            {"id": "12", "description": "Opcja C dla elementu 2"}
+        ]
+    }
 
     # Sprawdź, czy istnieją dane dla danego ID
     if element_id in OPTIONS_DATA:
@@ -1206,6 +1204,7 @@ def treatments_db_all_by_route_dict(pick_element=False, route_string=''):
         # Iteracja przez wyniki zapytania
         for data in db_dump:
 
+            # Wypunktowania sekcja 1
             page_points_string_section_1_db = data[13]
             if isinstance(page_points_string_section_1_db, str) and spea_second in str(page_points_string_section_1_db):
                 page_points_string_section_1_1, page_points_string_section_1_2 = str(page_points_string_section_1_db).split(spea_second)[:2]
@@ -1223,6 +1222,25 @@ def treatments_db_all_by_route_dict(pick_element=False, route_string=''):
             else:
                 page_points_list_section_1 = [[],[]]
                 page_points_string_section_1 = ['', '']
+
+            # Cennik usług
+            page_price_table_content_string_comma_section_5_db = data[13]
+            if isinstance(page_price_table_content_string_comma_section_5_db, str) and spea_second in str(page_price_table_content_string_comma_section_5_db):
+                page_price_table_content_string_comma_section_5_1, page_price_table_content_string_comma_section_5_2 = str(page_price_table_content_string_comma_section_5_db).split(spea_second)[:2]
+                page_price_table_content_string_comma_section_5_1_len = len(page_price_table_content_string_comma_section_5_1.split(spea_main))
+                if not page_price_table_content_string_comma_section_5_1_len: page_price_table_content_string_comma_section_5_1_len=1
+                page_price_table_content_string_comma_section_5_2_len = len(page_price_table_content_string_comma_section_5_2.split(spea_main))
+                if not page_price_table_content_string_comma_section_5_2_len: page_price_table_content_string_comma_section_5_2_len=1
+                page_price_table_content_list_comma_section_5 = [
+                    check_separator_take_list(spea_main, page_price_table_content_string_comma_section_5_1, page_price_table_content_string_comma_section_5_1_len),
+                    check_separator_take_list(spea_main, page_price_table_content_string_comma_section_5_2, page_price_table_content_string_comma_section_5_2_len),
+                ]
+                page_price_table_content_string_comma_section_5 = [
+                    page_price_table_content_string_comma_section_5_1, page_price_table_content_string_comma_section_5_2
+                ]
+            else:
+                page_price_table_content_list_comma_section_5 = [[],[]]
+                page_price_table_content_string_comma_section_5 = ['', '']
             
             
             # Tworzenie słownika dla pojedynczego rekordu
@@ -1256,6 +1274,8 @@ def treatments_db_all_by_route_dict(pick_element=False, route_string=''):
                 "page_content_section_4": data[20],
                 "page_price_table_title_section_5": data[21],
                 "page_price_table_content_splx_comma_section_5": data[22],
+                "page_price_table_content_string_comma_section_5": page_price_table_content_string_comma_section_5,
+                "page_price_table_content_list_comma_section_5": page_price_table_content_list_comma_section_5,
                 "page_attached_worker_id": data[23],
                 "page_attached_worker_descriptions": data[24],
                 "page_attached_worker_status": data[25],
@@ -1303,7 +1323,13 @@ def treatments():
     )
 
 # Generate treatments_dict
-
+def validatorZip(list1, list2):
+    """
+    Dopasowuje elementy dwóch list do par na podstawie długości krótszej listy.
+    Pozostałe elementy są pomijane.
+    """
+    min_length = min(len(list1), len(list2))
+    return list1[:min_length], list2[:min_length]
 
 @app.route('/zabieg-stomatologiczny/<path:treatment_slug>')
 def treatment_dynamic(treatment_slug):
@@ -1313,7 +1339,14 @@ def treatment_dynamic(treatment_slug):
         session['page'] = treatment_slug
 
         treatmentOne = treatments_db_all_by_route_dict(True, treatment_slug)
-        
+        treatmentOne['prizeTableSync'] = []
+
+        desc, prizes = validatorZip(treatmentOne['page_price_table_content_list_comma_section_5'][0], 
+                                    treatmentOne['page_price_table_content_list_comma_section_5'][1])
+
+        for item in zip(desc, prizes):
+            treatmentOne['prizeTableSync'].append(item)
+
         return render_template(
             'treatment_details.html',
             # 'labo_one.html',

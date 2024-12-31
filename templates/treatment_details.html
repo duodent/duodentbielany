@@ -294,47 +294,47 @@
                     <div class="row">
                         <div class="col-lg-8 col-sm-12">
                             <div class="mb-3">
-                                <label for="list-container_3" class="form-label">Nazwa usługi</label>
-                                <div id="list-container_3" class="no-border">
+                                <label for="list-container_treatment-page_price_table_content_splx_comma_section_5-{{treatmentOne.id}}-1-2" class="form-label">Nazwa usługi</label>
+                                <div id="list-container_treatment-page_price_table_content_splx_comma_section_5-{{treatmentOne.id}}-1-2" class="no-border">
                                     <!-- Dynamicznie dodawane elementy -->
                                 </div>
                                 <div class="text-end mt-3">
-                                    <button type="button" class="btn btn-warning btn-sm" onclick="addListItem('3', template, 'list-container_', 'Nowa usługa')">
+                                    <button type="button" class="btn btn-warning btn-sm" onclick="addListItem('treatment-page_price_table_content_splx_comma_section_5-{{treatmentOne.id}}-1-2', template, 'list-container_', 'Nowa usługa')">
                                         <i class="bi bi-plus-square-dotted"></i>
                                     </button>
                                 </div>
                             </div>
-                            <button type="button" class="btn btn-success" onclick="exportList('3')">Eksportuj Listę</button>
+                            <button type="button" class="btn btn-success" onclick="exportList('treatment-page_price_table_content_splx_comma_section_5-{{treatmentOne.id}}-1-2')">Eksportuj Listę</button>
                         </div>
                         <script>
                             // Wczytanie danych początkowych
                             document.addEventListener('DOMContentLoaded', () => {
-                                const initialData = "Punkt 1#splx#Punkt 2#splx#Punkt 3";
-                                addListFields(initialData, "3", "#splx#", template, "list-container_");
-                                initializeSortable("list-container_3");
+                                const initialData = "{{treatmentOne.page_price_table_content_splx_comma_section_5[0]}}";
+                                addListFields(initialData, "treatment-page_price_table_content_splx_comma_section_5-{{treatmentOne.id}}-1-2", "#splx#", template, "list-container_");
+                                initializeSortable("list-container_treatment-page_price_table_content_splx_comma_section_5-{{treatmentOne.id}}-1-2");
                             });
                         </script>
                         <div class="col-lg-4 col-sm-12">
                             <div class="mb-3">
-                                <label for="list-container_4" class="form-label">Cena</label>
-                                <div id="list-container_4" class="no-border">
+                                <label for="list-container_treatment-page_price_table_content_splx_comma_section_5-{{treatmentOne.id}}-2-2" class="form-label">Cena</label>
+                                <div id="list-container_treatment-page_price_table_content_splx_comma_section_5-{{treatmentOne.id}}-2-2" class="no-border">
                                     <!-- Dynamicznie dodawane elementy -->
                                 </div>
                                 <div class="text-end mt-3">
-                                    <button type="button" class="btn btn-warning btn-sm" onclick="addListItem('4', template, 'list-container_', 'Nowy element')">
+                                    <button type="button" class="btn btn-warning btn-sm" onclick="addListItem('treatment-page_price_table_content_splx_comma_section_5-{{treatmentOne.id}}-2-2', template, 'list-container_', 'Cena')">
                                         <i class="bi bi-plus-square-dotted"></i>
                                     </button>
                                 </div>
                             </div>
-                            <button type="button" class="btn btn-success" onclick="exportList('4')">Eksportuj Listę</button>
+                            <button type="button" class="btn btn-success" onclick="exportList('treatment-page_price_table_content_splx_comma_section_5-{{treatmentOne.id}}-2-2')">Eksportuj Listę</button>
                         </div>
 
                         <script>
                             // Wczytanie danych początkowych
                             document.addEventListener('DOMContentLoaded', () => {
-                                const initialData = "Punkt 4#splx#Punkt 5#splx#Punkt 6";
-                                addListFields(initialData, "4", "#splx#", template, "list-container_");
-                                initializeSortable("list-container_4");
+                                const initialData = "{{treatmentOne.page_price_table_content_splx_comma_section_5[1]}}";
+                                addListFields(initialData, "treatment-page_price_table_content_splx_comma_section_5-{{treatmentOne.id}}-2-2", "#splx#", template, "list-container_");
+                                initializeSortable("list-container_treatment-page_price_table_content_splx_comma_section_5-{{treatmentOne.id}}-2-2");
                             });
                         </script>
                     </div>
@@ -342,33 +342,18 @@
                     <div class="card mt-5" style="width: 100%;">
                         <div class="card-header">
                             Featured
-                          </div>
-                          <ul class="list-group list-group-flush">
-                              <li class="list-group-item">
-                                  <div class="row">
-                                      <div class="col-8">Wkład k/k od</div>
-                                      <div class="col-4 border-start">od 190 zł</div>
-                                  </div>
-                              </li>
-                              <li class="list-group-item">
-                                  <div class="row">
-                                      <div class="col-8">Wkład k/k od</div>
-                                      <div class="col-4 border-start">od 190 zł</div>
-                                  </div>
-                              </li>
-                              <li class="list-group-item">
-                                  <div class="row">
-                                      <div class="col-8">Wkład k/k od</div>
-                                      <div class="col-4 border-start">od 190 zł</div>
-                                  </div>
-                              </li>
-                              <li class="list-group-item">
-                                  <div class="row">
-                                      <div class="col-8">Wkład k/k od</div>
-                                      <div class="col-4 border-start">od 190 zł</div>
-                                  </div>
-                              </li>
-                          </ul>
+                        </div>
+                        <ul class="list-group list-group-flush">
+                            {% for desc, prize in treatmentOne.prizeTableSync %}
+                                <li class="list-group-item">
+                                    <div class="row">
+                                        <div class="col-8">{{desc}}</div>
+                                        <div class="col-4 border-start">{{prize}}</div>
+                                    </div>
+                                </li>
+                            {% endfor %}
+                            
+                        </ul>
                     </div>
                     {% endif %}
                         
