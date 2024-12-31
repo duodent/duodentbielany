@@ -889,7 +889,15 @@ def update_element_in_db(element_id, data_type, value):
 def get_picker_options():
     # Pobierz ID elementu z parametrów zapytania
     element_id = request.args.get('id')
-    # Przykładowe dane do wysłania
+    try:
+        page_attached_worker_sql = f'WHERE status_usera = 1 AND user = 1'
+        page_attached_worker = msq.connect_to_database(f'SELECT id, name FROM admins {page_attached_worker_sql};')
+    except Exception as e:
+        print(f"Błąd połączenia z bazą danych: {e}")
+        return jsonify({"error": f"Błąd połączenia z bazą danych: {e}"}), 404
+
+
+    # Dane do wysłania
     OPTIONS_DATA = {
         "page_attached_worker_descriptions_list": [
             {"id": "1", "description": "Opcja 1 dla elementu 1"},
@@ -1244,7 +1252,7 @@ def treatments_db_all_by_route_dict(pick_element=False, route_string=''):
             
             # Dołaczony prcownik
             if data[23]:
-                page_attached_worker_id_sql = f'WHERE id = {data[23]}'
+                page_attached_worker_id_sql = f'WHERE id = {data[23]} AND status_usera = 1 AND user = 1'
                 try: page_attached_worker_photo_name, page_attached_worker_photo_link = msq.connect_to_database(f'SELECT name, avatar FROM admins {page_attached_worker_id_sql};')[0]
                 except IndexError: page_attached_worker_photo_name, page_attached_worker_photo_link = (None, None)
             else:
