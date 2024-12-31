@@ -311,7 +311,7 @@
                                     </button>
                                 </div>
                             </div>
-                            <button type="button" class="btn btn-success" onclick="exportList('treatment-page_price_table_content_splx_comma_section_5-{{treatmentOne.id}}-1-2')">Eksportuj Listę</button>
+                            <button type="button" class="btn btn-success" onclick="exportList('treatment-page_price_table_content_splx_comma_section_5-{{treatmentOne.id}}-1-2', false)">Zapisz opisy</button>
                         </div>
                         <script>
                             // Wczytanie danych początkowych
@@ -333,7 +333,7 @@
                                     </button>
                                 </div>
                             </div>
-                            <button type="button" class="btn btn-success" onclick="exportList('treatment-page_price_table_content_splx_comma_section_5-{{treatmentOne.id}}-2-2')">Eksportuj Listę</button>
+                            <button type="button" class="btn btn-success" onclick="exportList('treatment-page_price_table_content_splx_comma_section_5-{{treatmentOne.id}}-2-2', false)">Zapisz ceny</button>
                         </div>
 
                         <script>
@@ -1012,17 +1012,24 @@
         }
 
         // Funkcja eksportu wywoływana z przycisku
-        function exportList(id) {
+        function exportList(id, validate = true) {
+            // Pobierz dane do eksportu
             const exportedData = joinListFields(`list-container_${id}`, "#splx#");
-            if (!exportedData) {
+
+            // Walidacja danych (tylko jeśli validate = true)
+            if (validate && exportedData === "") {
                 alert("Lista jest pusta, brak danych do eksportu.");
                 return;
             }
-            let type = 'splx';
-            let value = exportedData;
-            sendDataToBackend(id, type, value)
+
+            // Typ danych i wartość do przesłania
+            const type = 'splx';
+            const value = exportedData;
+
+            // Wyślij dane do backendu
+            sendDataToBackend(id, type, value);
             console.log("Eksportowane dane:", exportedData);
-            // alert("Eksportowane dane:\n" + exportedData);
+            // alert("Eksportowane dane:\n" + exportedData); // Opcjonalne alerty
         }
 
         // Inicjalizacja SortableJS
