@@ -322,3 +322,21 @@
     opacity: 1;
     transition: opacity 1s ease-out; /* Animacja zanikania */
 }
+
+.widget.widget_info {
+    position: relative; /* Ustawienie pozycji odniesienia dla absolutnych elementów wewnętrznych */
+}
+
+.widget.widget_info .eye-icon {
+    position: absolute;
+    top: 10px; /* Odległość od góry widgetu */
+    right: 10px; /* Odległość od prawej krawędzi widgetu */
+    font-size: 20px; /* Rozmiar ikony */
+    color: #333; /* Kolor ikony */
+    cursor: pointer; /* Zmiana kursora na "rękę" przy najechaniu */
+    z-index: 10; /* Przewaga nad innymi elementami */
+}
+
+.widget.widget_info .eye-icon:hover {
+    color: #007bff; /* Kolor ikony po najechaniu */
+}

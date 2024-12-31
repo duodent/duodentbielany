@@ -369,30 +369,51 @@
                 </div>
                 <div class="col-lg-4 col-md-12">
                     <aside class="widget-area">
+                        {% if userName!='NotLogin' %}
                         <div class="widget widget_info">
+                            <!-- # zdjęcie doktora # -->
                             <div class="image">
-                                <img src="../static/img/doctor/1.jpg" alt="image">
+                                <img src="{{url_for('static', filename='img/doctor/' + treatmentOne.page_attached_worker_photo_link )}}" alt="image">
                             </div>
                             <div class="content">
+                                {% if treatmentOne.page_attached_worker_status %}
+                                    <!-- # ikona oka # -->
+                                    <i class="bi bi-eye eye-icon"></i>
+                                {% else %}
+                                    <!-- # ikona oka # -->
+                                    <i class="bi bi-eye-slash eye-icon" style="color:#97a5b0"></i>
+                                {% endif %}
+                                
+                                <!-- # wybrany doktor # -->
                                 <h3 
-                                    {% if userName!='NotLogin' %}
-                                    id="page_attached_worker_descriptions_list" 
+                                    
+                                    id="treatment-page_attached_worker_descriptions_list-{{treatmentOne.id}}-1-1" 
                                     data-editable 
                                     data-type="picker"
-                                    data-current-value="2"
-                                    {% endif %}
-                                    >Emma Brown</h3>
+                                    data-current-value="{{treatmentOne.page_attached_worker_id}}"
+                                    
+                                    >{{treatmentOne.page_attached_worker_photo_name}}</h3>
+
                                 <p {% if userName!='NotLogin' %}id="treatment-page_attached_worker_descriptions-{{treatmentOne.id}}-1-1" data-editable data-type="text"{% endif %}>
                                     {{treatmentOne.page_attached_worker_descriptions}}
                                 </p>
-                                <!-- <div class="share-link">
-                                    <a href="#"><i class='bx bxl-facebook'></i></a>
-                                    <a href="#"><i class='bx bxl-twitter'></i></a>
-                                    <a href="#"><i class='bx bxl-linkedin'></i></a>
-                                    <a href="#"><i class='bx bxl-instagram'></i></a>
-                                </div> -->
                             </div>
                         </div>
+                        {% else %}
+                            {% if treatmentOne.page_attached_worker_status %}
+                            <div class="widget widget_info">
+                                <div class="image">
+                                    <img src="{{url_for('static', filename='img/doctor/' + treatmentOne.page_attached_worker_photo_link )}}" alt="image">
+                                </div>
+                                <div class="content">
+                                    <h3>{{treatmentOne.page_attached_worker_photo_name}}</h3>
+                                    <p>
+                                        {{treatmentOne.page_attached_worker_descriptions}}
+                                    </p>
+                                </div>
+                            </div>
+                            {% endif %}
+                        {% endif %}
                         <div class="widget widget_categories">
                             
                             <!-- <img src="../static/img/appointment/pani-1-lookup.jpg" alt="image"> -->

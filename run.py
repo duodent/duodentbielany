@@ -1242,7 +1242,9 @@ def treatments_db_all_by_route_dict(pick_element=False, route_string=''):
                 page_price_table_content_list_comma_section_5 = [[],[]]
                 page_price_table_content_string_comma_section_5 = ['', '']
             
-            
+            # Dołaczony prcownik
+            try: page_attached_worker_photo_name, page_attached_worker_photo_link = msq.connect_to_database(f'SELECT name, avatar FROM admin WHERE id = {data[23]}')[0]
+            except IndexError: page_attached_worker_photo_name, page_attached_worker_photo_link = (None, None)
             # Tworzenie słownika dla pojedynczego rekordu
             theme = {
                 "id": data[0],
@@ -1277,6 +1279,8 @@ def treatments_db_all_by_route_dict(pick_element=False, route_string=''):
                 "page_price_table_content_string_comma_section_5": page_price_table_content_string_comma_section_5,
                 "page_price_table_content_list_comma_section_5": page_price_table_content_list_comma_section_5,
                 "page_attached_worker_id": data[23],
+                "page_attached_worker_photo_name": page_attached_worker_photo_name,
+                "page_attached_worker_photo_link": page_attached_worker_photo_link,
                 "page_attached_worker_descriptions": data[24],
                 "page_attached_worker_status": data[25],
                 "page_attached_files": data[26],
