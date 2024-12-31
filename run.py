@@ -766,7 +766,7 @@ def update_element_in_db(element_id, data_type, value):
                 ]
             if sekcja in CLASSIC_INT:
                 exactly_what = None
-                for c in CLASSIC_TEXT: 
+                for c in CLASSIC_INT: 
                     if c == sekcja: exactly_what = c
                 if exactly_what is None:
                     print("Problem Klucza")
