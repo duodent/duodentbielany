@@ -347,7 +347,7 @@
                         </script>
                     </div>
                     {% else %}
-                        {% if treatmentOne.prizeTableSync %}
+                        {% if treatmentOne.prizeTableSync!=[[''], ['']] %}
                             <div class="card mt-5" style="width: 100%;">
                                 {% if treatmentOne.page_price_table_title_section_5 %}
                                     <div class="card-header">
