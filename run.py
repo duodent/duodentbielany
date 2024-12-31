@@ -732,7 +732,7 @@ def update_element_in_db(element_id, data_type, value):
                 'tytul_glowny', 'page_title_section_1', 'page_attached_worker_descriptions',
                 'page_content_section_1', 'page_subcontent_section_1', 'page_subcontent_section_2',
                 'page_title_section_3', 'page_content_section_3', 'page_title_section_4',
-                'page_content_section_4', 'page_attached_worker_descriptions'
+                'page_content_section_4', 'page_attached_worker_descriptions', 'page_price_table_title_section_5'
                 ]
             if sekcja in CLASSIC_TEXT:
                 exactly_what = None
