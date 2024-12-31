@@ -755,7 +755,35 @@ def update_element_in_db(element_id, data_type, value):
 
 
     elif data_type == 'picker':
-        query = "UPDATE elements SET int_value = ? WHERE id = ?"
+        if strona == 'treatment':
+            ready_string_splx = None
+            table_db = 'tabela_uslug'
+            column_db = sekcja
+            id_db = id_number
+
+            CLASSIC_INT = [
+                'page_attached_worker_id'
+                ]
+            if sekcja in CLASSIC_INT:
+                exactly_what = None
+                for c in CLASSIC_TEXT: 
+                    if c == sekcja: exactly_what = c
+                if exactly_what is None:
+                    print("Problem Klucza")
+                    return False
+                
+                ready_string_splx = value
+
+
+            # TWORZENIE ZESTAWU ZAPYTANIA MySQL
+            if ready_string_splx is not None and table_db is not None and column_db is not None and isinstance(id_db, int):
+                query = f"""
+                        UPDATE {table_db}
+                        SET {column_db} = %s
+                        WHERE id = %s
+                """
+                params = (ready_string_splx, id_db)
+        
     elif data_type == 'adder':
         query = "UPDATE elements SET int_value = ? WHERE id = ?"
     elif data_type == 'remover':
@@ -902,10 +930,10 @@ def get_picker_options():
     
     OPTIONS_DATA = {}
     for treatments_id in page_treatments_id:
-        OPTIONS_DATA[f"treatment-page_attached_worker_descriptions_list-{treatments_id[0]}-1-1"] = [
+        OPTIONS_DATA[f"treatment-page_attached_worker_id-{treatments_id[0]}-1-1"] = [
             {"id": ident, "description": name} for ident, name in page_attached_worker
         ]
-    print(OPTIONS_DATA)
+    # print(OPTIONS_DATA)
     # Dane do wysłania
     {
         "page_attached_worker_descriptions_list": [
