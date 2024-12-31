@@ -902,7 +902,7 @@ def get_picker_options():
     
     OPTIONS_DATA = {}
     for treatments_id in page_treatments_id:
-        OPTIONS_DATA[f"treatment-page_attached_worker_descriptions_list-{treatments_id}-1-1"] = [
+        OPTIONS_DATA[f"treatment-page_attached_worker_descriptions_list-{treatments_id[0]}-1-1"] = [
             {"id": ident, "description": name} for ident, name in page_attached_worker
         ]
     print(OPTIONS_DATA)
