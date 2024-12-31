@@ -1224,7 +1224,7 @@ def treatments_db_all_by_route_dict(pick_element=False, route_string=''):
                 page_points_string_section_1 = ['', '']
 
             # Cennik usług
-            page_price_table_content_string_comma_section_5_db = data[21]
+            page_price_table_content_string_comma_section_5_db = data[22]
             if isinstance(page_price_table_content_string_comma_section_5_db, str) and spea_second in str(page_price_table_content_string_comma_section_5_db):
                 page_price_table_content_string_comma_section_5_1, page_price_table_content_string_comma_section_5_2 = str(page_price_table_content_string_comma_section_5_db).split(spea_second)[:2]
                 page_price_table_content_string_comma_section_5_1_len = len(page_price_table_content_string_comma_section_5_1.split(spea_main))
