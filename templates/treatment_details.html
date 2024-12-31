@@ -346,25 +346,25 @@
                         </script>
                     </div>
                     {% else %}
-                    <div class="card mt-5" style="width: 100%;">
                         {% if treatmentOne.prizeTableSync %}
-                            {% if treatmentOne.page_price_table_title_section_5 %}
-                                <div class="card-header">
-                                    {{treatmentOne.page_price_table_title_section_5}}
-                                </div>
-                            {% endif %}
-                            <ul class="list-group list-group-flush">
-                                {% for desc, prize in treatmentOne.prizeTableSync %}
-                                    <li class="list-group-item">
-                                        <div class="row">
-                                            <div class="col-8">{{desc}}</div>
-                                            <div class="col-4 border-start">{{prize}}</div>
-                                        </div>
-                                    </li>
-                                {% endfor %}
-                            </ul>
+                            <div class="card mt-5" style="width: 100%;">
+                                {% if treatmentOne.page_price_table_title_section_5 %}
+                                    <div class="card-header">
+                                        {{treatmentOne.page_price_table_title_section_5}}
+                                    </div>
+                                {% endif %}
+                                <ul class="list-group list-group-flush">
+                                    {% for desc, prize in treatmentOne.prizeTableSync %}
+                                        <li class="list-group-item">
+                                            <div class="row">
+                                                <div class="col-8">{{desc}}</div>
+                                                <div class="col-4 border-start">{{prize}}</div>
+                                            </div>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
                         {% endif %}
-                    </div>
                     {% endif %}
                         
                 </div>
