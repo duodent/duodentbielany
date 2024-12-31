@@ -292,6 +292,13 @@
                     </div>
                     {% if userName!='NotLogin' %}
                     <div class="row">
+                        <h3 id="treatment-page_price_table_title_section_5-{{treatmentOne.id}}-1-1" data-editable data-type="text">
+                        {% if treatmentOne.page_price_table_title_section_5 %}
+                            {{treatmentOne.page_price_table_title_section_5}}
+                        {% else %}
+                            Cennik
+                        {% endif %}
+                        </h3>
                         <div class="col-lg-8 col-sm-12">
                             <div class="mb-3">
                                 <label for="list-container_treatment-page_price_table_content_splx_comma_section_5-{{treatmentOne.id}}-1-2" class="form-label">Nazwa usługi</label>
@@ -341,9 +348,11 @@
                     {% else %}
                     <div class="card mt-5" style="width: 100%;">
                         {% if treatmentOne.prizeTableSync %}
-                            <div class="card-header">
-                                Featured
-                            </div>
+                            {% if treatmentOne.page_price_table_title_section_5 %}
+                                <div class="card-header">
+                                    {{treatmentOne.page_price_table_title_section_5}}
+                                </div>
+                            {% endif %}
                             <ul class="list-group list-group-flush">
                                 {% for desc, prize in treatmentOne.prizeTableSync %}
                                     <li class="list-group-item">
@@ -353,7 +362,6 @@
                                         </div>
                                     </li>
                                 {% endfor %}
-                                
                             </ul>
                         {% endif %}
                     </div>
