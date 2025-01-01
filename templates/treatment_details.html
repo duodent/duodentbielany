@@ -56,7 +56,10 @@
                     </div>
                 </div>
                 {% if userName!='NotLogin' %}
-                    <div id="baner-slogan-content" class="mb-30">
+                <div class="card mb-3">
+                    <img src="{{ bg_image_treatments_details }}" class="card-img-top" alt="Banner">
+                    <div class="card-body">
+                        <h5 class="card-title">Slogany banera</h5>
                         <div class="row">
                             <div    
                                 id="treatment-baner_h1_splx-{{treatmentOne.id}}-1-3" data-editable data-type="text" 
@@ -98,6 +101,8 @@
                             </div>
                         </div>
                     </div>
+                </div>
+
                 {% endif %}
             </div>
             <div class="row">
