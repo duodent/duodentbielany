@@ -1307,7 +1307,8 @@ def treatments_foto_db_by_id(id_treatment = None):
             id,
             foto_home,
             foto_page_header,
-            page_photo_content_links_splx_section_2
+            page_photo_content_links_splx_section_2,
+            optional_1
         FROM tabela_uslug
         ORDER BY pozycja_kolejnosci ASC
     """
@@ -1321,7 +1322,8 @@ def treatments_foto_db_by_id(id_treatment = None):
             "foto_home": data[1],
             "foto_page_header": data[2],
             "page_photo_content_links_splx_section_2": data[3],
-            "page_photo_content_links_list_section_2": check_separator_take_list(spea_main, '' if data[3] is None else data[3], len(str(data[3]).split(spea_main)))
+            "page_photo_content_links_list_section_2": check_separator_take_list(spea_main, '' if data[3] is None else data[3], len(str(data[3]).split(spea_main))),
+            "optional_1": data[4]
         }
         if isinstance(id_treatment, int) and data[0] == id_treatment:
             return theme
