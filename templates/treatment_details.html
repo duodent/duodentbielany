@@ -2,7 +2,8 @@
 {% block content %}
 
 <!-- page banner -->
-{% set bg_image_treatments_details = url_for('static', filename='img/banners/zabieg-4-banner.jpg') %}
+{% set bg_image_treatments_details = url_for('static', filename='img/banners/' + (treatmentOne.optional_1 or 'zabieg-4-banner.jpg')) %}
+
 <div class="page-banner-area mb-5" id="pageBanner" style="background-image: url('{{ bg_image_treatments_details }}');">
     <div class="container">
         <div class="page-banner-content">
@@ -58,15 +59,13 @@
                 {% if userName!='NotLogin' %}
                     <div class="card mb-3 p-2">
                         <img 
-                        {% if treatmentOne.optional_1 %}
-                        src="{{url_for('static', filename='img/banners/' + treatmentOne.optional_1 )}}" 
-                        {% else %}
-                        src="{{ bg_image_treatments_details }}"
-                        {% endif %}
-                        id="treatment-optional_1-{{treatmentOne.id}}-1-1" 
-                        data-editable 
-                        data-type="img"
-                        class="card-img-top" alt="Banner">
+                            src="{{ url_for('static', filename='img/banners/' + (treatmentOne.optional_1 or 'zabieg-4-banner.jpg')) }}" 
+                            id="treatment-optional_1-{{treatmentOne.id}}-1-1" 
+                            data-editable 
+                            data-type="img"
+                            class="card-img-top" 
+                            alt="Banner"
+                        />
                         
                         <div class="card-body">
                             <h5 class="card-title">Zarządzanie banerem na tej stronie</h5>
