@@ -833,8 +833,49 @@ def update_element_in_db(element_id, data_type, value):
                 params = (ready_string_splx, id_db)
 
     elif data_type == 'remover':
-        query = "UPDATE elements SET int_value = ? WHERE id = ?"
+        if strona == 'treatment':
+            ready_string_splx = None
+            table_db = 'tabela_uslug'
+            column_db = sekcja
+            id_db = id_number
 
+            TOREMOVE_INT = [
+                'page_attached_remove_files'
+                ]
+            if sekcja in TOREMOVE_INT:
+                exactly_what = None
+                for c in TOREMOVE_INT: 
+                    if c == sekcja: exactly_what = c
+                if exactly_what is None:
+                    print("Problem Klucza")
+                    return False
+                
+                splet_key = exactly_what.replace('remove', 'list')
+                cunet_list_db = None
+                for data_b in treatments_db_all_by_route_dict().values():
+                    if 'id' in data_b and splet_key in data_b:
+                        if data_b['id'] == id_db:
+                            cunet_list_db = data_b[splet_key]
+                            break
+
+                if isinstance(cunet_list_db, list) and len(cunet_list_db) == ofparts:
+                    if 0 <= index < len(cunet_list_db):  # Sprawdzenie zakresu
+                        del cunet_list_db[index]
+                        ready_string_splx = spea_main.join(map(str, cunet_list_db))
+                        column_db = sekcja.replace('remove', 'splx')
+                    else:
+                        print("Index out of range")
+                        return False
+
+
+            # TWORZENIE ZESTAWU ZAPYTANIA MySQL
+            if ready_string_splx is not None and table_db is not None and column_db is not None and isinstance(id_db, int):
+                query = f"""
+                        UPDATE {table_db}
+                        SET {column_db} = %s
+                        WHERE id = %s
+                """
+                params = (ready_string_splx, id_db)
 
     elif data_type == 'img':
         if strona == 'treatment':
