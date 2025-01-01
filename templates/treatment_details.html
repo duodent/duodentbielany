@@ -1118,13 +1118,9 @@
 
             // Zaktualizowanie stanu w atrybucie HTML
             element.setAttribute('data-state', newState);
-
-            // Przykładowe wysłanie nowego stanu do backendu
-            const formData = new FormData();
-            formData.append('id', elementId);
-            formData.append('new_state', newState);
-
-            sendFileToBackend(formData, element); // Funkcja wysyłająca dane do backendu
+            
+            
+            sendDataToBackend(elementId, 'switch', newState);
 
             // Wyświetlenie komunikatu o powodzeniu
             showSuccessMessage(
