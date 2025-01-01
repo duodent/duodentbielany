@@ -171,16 +171,33 @@
                             {% endif %}
                         />
                     </div>
-                    <div class="services-details-content">
-                        <h3 
-                            {% if userName!='NotLogin' %}id="treatment-page_title_section_1-{{treatmentOne.id}}-1-1" data-editable data-type="text"{% endif %}
-                            >{{treatmentOne.page_title_section_1}}</h3>
-                        <p 
-                            {% if userName!='NotLogin' %}id="treatment-page_content_section_1-{{treatmentOne.id}}-1-1" data-editable data-type="text"{% endif %}
-                            >
-                            {{treatmentOne.page_content_section_1}}
-                        </p>
-                    </div>
+
+                    {% if userName!='NotLogin' %}
+                        <div class="services-details-content">
+                            <h3 id="treatment-page_title_section_1-{{treatmentOne.id}}-1-1" data-editable data-type="text">
+                                {{treatmentOne.page_title_section_1}}
+                            </h3>
+                            <p id="treatment-page_content_section_1-{{treatmentOne.id}}-1-1" data-editable data-type="text">
+                                {{treatmentOne.page_content_section_1}}
+                            </p>
+                        </div>
+                    {% else %}
+                        {% if treatmentOne.page_title_section_1 or treatmentOne.page_content_section_1 %}
+                            <div class="services-details-content">
+                                {% if treatmentOne.page_title_section_1 %}
+                                    <h3>
+                                        {{treatmentOne.page_title_section_1}}
+                                    </h3>
+                                {% endif %}
+                                {% if treatmentOne.page_content_section_1 %}
+                                    <p>
+                                        {{treatmentOne.page_content_section_1}}
+                                    </p>
+                                {% endif %}
+                            </div>
+                        {% endif %}
+                    {% endif %}
+
                     <div class="row">
                         {% if userName!='NotLogin' %}
                         <div class="col-lg-6 col-sm-12">
@@ -267,11 +284,17 @@
                         </div>
                         {% endif %}
                     </div>
-                    <p 
-                        {% if userName!='NotLogin' %}id="treatment-page_subcontent_section_1-{{treatmentOne.id}}-1-1" data-editable data-type="text"{% endif %}
-                        >
-                        {{treatmentOne.page_subcontent_section_1}}
-                    </p>
+                    {% if userName!='NotLogin' %}
+                        <p id="treatment-page_subcontent_section_1-{{treatmentOne.id}}-1-1" data-editable data-type="text">
+                            {{treatmentOne.page_subcontent_section_1}}
+                        </p>
+                    {% else %}
+                        {% if treatmentOne.page_subcontent_section_1 %}
+                            <p>
+                                {{treatmentOne.page_subcontent_section_1}}
+                            </p>
+                        {% endif %}
+                    {% endif %}
                     <div class="services-details-overview">
                         <div class="row">
                             {% for fileName in treatmentOne.page_photo_content_links_list_section_2 %}
@@ -306,78 +329,122 @@
                             {% endfor %}
                         </div>
                     </div>
-                    <p {% if userName!='NotLogin' %}id="treatment-page_subcontent_section_2-{{treatmentOne.id}}-1-1" data-editable data-type="text"{% endif %}>
-                        {{treatmentOne.page_subcontent_section_2}}
-                    </p>
+                    {% if userName!='NotLogin' %}
+                        <p id="treatment-page_subcontent_section_2-{{treatmentOne.id}}-1-1" data-editable data-type="text">
+                            {{treatmentOne.page_subcontent_section_2}}
+                        </p>
+                    {% else %}
+                        {% if treatmentOne.page_subcontent_section_2 %}
+                            <p>
+                                {{treatmentOne.page_subcontent_section_2}}
+                            </p>
+                        {% endif %}
+                    {% endif %}
+                    
                     <div class="services-details-overview-content">
-                        <h4 {% if userName!='NotLogin' %}id="treatment-page_title_section_3-{{treatmentOne.id}}-1-1" data-editable data-type="text"{% endif %}>
-                            {{treatmentOne.page_title_section_3}}
-                        </h4>
-                        <p {% if userName!='NotLogin' %}id="treatment-page_content_section_3-{{treatmentOne.id}}-1-1" data-editable data-type="text"{% endif %}>
-                            {{treatmentOne.page_content_section_3}}
-                        </p>
-                        <h4 {% if userName!='NotLogin' %}id="treatment-page_title_section_4-{{treatmentOne.id}}-1-1" data-editable data-type="text"{% endif %}>
-                            {{treatmentOne.page_title_section_4}}
-                        </h4>
-                        <p {% if userName!='NotLogin' %}id="treatment-page_content_section_4-{{treatmentOne.id}}-1-1" data-editable data-type="text"{% endif %}>
-                            {{treatmentOne.page_content_section_4}}
-                        </p>
+                        {% if userName!='NotLogin' %}
+                            <h4 id="treatment-page_title_section_3-{{treatmentOne.id}}-1-1" data-editable data-type="text">
+                                {{treatmentOne.page_title_section_3}}
+                            </h4>
+                        {% else %}
+                            {% if treatmentOne.page_title_section_3 %}
+                                <h4>
+                                    {{treatmentOne.page_title_section_3}}
+                                </h4>
+                            {% endif %}
+                        {% endif %}
+
+                        {% if userName!='NotLogin' %}
+                            <p id="treatment-page_content_section_3-{{treatmentOne.id}}-1-1" data-editable data-type="text">
+                                {{treatmentOne.page_content_section_3}}
+                            </p>
+                        {% else %}
+                            {% if treatmentOne.page_content_section_3 %}
+                                <p>
+                                    {{treatmentOne.page_content_section_3}}
+                                </p>
+                            {% endif %}
+                        {% endif %}
+
+                        {% if userName!='NotLogin' %}
+                            <h4 id="treatment-page_title_section_4-{{treatmentOne.id}}-1-1" data-editable data-type="text">
+                                {{treatmentOne.page_title_section_4}}
+                            </h4>
+                        {% else %}
+                            {% if treatmentOne.page_title_section_4 %}
+                                <h4>
+                                    {{treatmentOne.page_title_section_4}}
+                                </h4>
+                            {% endif %}
+                        {% endif %}
+                        
+                        {% if userName!='NotLogin' %}
+                            <p id="treatment-page_content_section_4-{{treatmentOne.id}}-1-1" data-editable data-type="text">
+                                {{treatmentOne.page_content_section_4}}
+                            </p>
+                        {% else %}
+                            {% if treatmentOne.page_content_section_4 %}
+                                <p>
+                                    {{treatmentOne.page_content_section_4}}
+                                </p>
+                            {% endif %}
+                        {% endif %}
                     </div>
                     {% if userName!='NotLogin' %}
-                    <div class="row">
-                        <h3 id="treatment-page_price_table_title_section_5-{{treatmentOne.id}}-1-1" data-editable data-type="text">
-                        {% if treatmentOne.page_price_table_title_section_5 %}
-                            {{treatmentOne.page_price_table_title_section_5}}
-                        {% else %}
-                            Cennik
-                        {% endif %}
-                        </h3>
-                        <div class="col-lg-8 col-sm-12">
-                            <div class="mb-3">
-                                <label for="list-container_treatment-page_price_table_content_splx_comma_section_5-{{treatmentOne.id}}-1-2" class="form-label">Nazwa usługi</label>
-                                <div id="list-container_treatment-page_price_table_content_splx_comma_section_5-{{treatmentOne.id}}-1-2" class="no-border">
-                                    <!-- Dynamicznie dodawane elementy -->
+                        <div class="row">
+                            <h3 id="treatment-page_price_table_title_section_5-{{treatmentOne.id}}-1-1" data-editable data-type="text">
+                            {% if treatmentOne.page_price_table_title_section_5 %}
+                                {{treatmentOne.page_price_table_title_section_5}}
+                            {% else %}
+                                Cennik
+                            {% endif %}
+                            </h3>
+                            <div class="col-lg-8 col-sm-12">
+                                <div class="mb-3">
+                                    <label for="list-container_treatment-page_price_table_content_splx_comma_section_5-{{treatmentOne.id}}-1-2" class="form-label">Nazwa usługi</label>
+                                    <div id="list-container_treatment-page_price_table_content_splx_comma_section_5-{{treatmentOne.id}}-1-2" class="no-border">
+                                        <!-- Dynamicznie dodawane elementy -->
+                                    </div>
+                                    <div class="text-end mt-3">
+                                        <button type="button" class="btn btn-warning btn-sm" onclick="addListItem('treatment-page_price_table_content_splx_comma_section_5-{{treatmentOne.id}}-1-2', template, 'list-container_', 'Nowa usługa')">
+                                            <i class="bi bi-plus-square-dotted"></i>
+                                        </button>
+                                    </div>
                                 </div>
-                                <div class="text-end mt-3">
-                                    <button type="button" class="btn btn-warning btn-sm" onclick="addListItem('treatment-page_price_table_content_splx_comma_section_5-{{treatmentOne.id}}-1-2', template, 'list-container_', 'Nowa usługa')">
-                                        <i class="bi bi-plus-square-dotted"></i>
-                                    </button>
-                                </div>
+                                <button type="button" class="btn btn-success" onclick="exportList('treatment-page_price_table_content_splx_comma_section_5-{{treatmentOne.id}}-1-2', false)">Zapisz opisy</button>
                             </div>
-                            <button type="button" class="btn btn-success" onclick="exportList('treatment-page_price_table_content_splx_comma_section_5-{{treatmentOne.id}}-1-2', false)">Zapisz opisy</button>
-                        </div>
-                        <script>
-                            // Wczytanie danych początkowych
-                            document.addEventListener('DOMContentLoaded', () => {
-                                const initialData = "{{treatmentOne.page_price_table_content_string_comma_section_5[0]}}";
-                                addListFields(initialData, "treatment-page_price_table_content_splx_comma_section_5-{{treatmentOne.id}}-1-2", "#splx#", template, "list-container_");
-                                initializeSortable("list-container_treatment-page_price_table_content_splx_comma_section_5-{{treatmentOne.id}}-1-2");
-                            });
-                        </script>
-                        <div class="col-lg-4 col-sm-12">
-                            <div class="mb-3">
-                                <label for="list-container_treatment-page_price_table_content_splx_comma_section_5-{{treatmentOne.id}}-2-2" class="form-label">Cena</label>
-                                <div id="list-container_treatment-page_price_table_content_splx_comma_section_5-{{treatmentOne.id}}-2-2" class="no-border">
-                                    <!-- Dynamicznie dodawane elementy -->
+                            <script>
+                                // Wczytanie danych początkowych
+                                document.addEventListener('DOMContentLoaded', () => {
+                                    const initialData = "{{treatmentOne.page_price_table_content_string_comma_section_5[0]}}";
+                                    addListFields(initialData, "treatment-page_price_table_content_splx_comma_section_5-{{treatmentOne.id}}-1-2", "#splx#", template, "list-container_");
+                                    initializeSortable("list-container_treatment-page_price_table_content_splx_comma_section_5-{{treatmentOne.id}}-1-2");
+                                });
+                            </script>
+                            <div class="col-lg-4 col-sm-12">
+                                <div class="mb-3">
+                                    <label for="list-container_treatment-page_price_table_content_splx_comma_section_5-{{treatmentOne.id}}-2-2" class="form-label">Cena</label>
+                                    <div id="list-container_treatment-page_price_table_content_splx_comma_section_5-{{treatmentOne.id}}-2-2" class="no-border">
+                                        <!-- Dynamicznie dodawane elementy -->
+                                    </div>
+                                    <div class="text-end mt-3">
+                                        <button type="button" class="btn btn-warning btn-sm" onclick="addListItem('treatment-page_price_table_content_splx_comma_section_5-{{treatmentOne.id}}-2-2', template, 'list-container_', 'Cena')">
+                                            <i class="bi bi-plus-square-dotted"></i>
+                                        </button>
+                                    </div>
                                 </div>
-                                <div class="text-end mt-3">
-                                    <button type="button" class="btn btn-warning btn-sm" onclick="addListItem('treatment-page_price_table_content_splx_comma_section_5-{{treatmentOne.id}}-2-2', template, 'list-container_', 'Cena')">
-                                        <i class="bi bi-plus-square-dotted"></i>
-                                    </button>
-                                </div>
+                                <button type="button" class="btn btn-success" onclick="exportList('treatment-page_price_table_content_splx_comma_section_5-{{treatmentOne.id}}-2-2', false)">Zapisz ceny</button>
                             </div>
-                            <button type="button" class="btn btn-success" onclick="exportList('treatment-page_price_table_content_splx_comma_section_5-{{treatmentOne.id}}-2-2', false)">Zapisz ceny</button>
-                        </div>
 
-                        <script>
-                            // Wczytanie danych początkowych
-                            document.addEventListener('DOMContentLoaded', () => {
-                                const initialData = "{{treatmentOne.page_price_table_content_string_comma_section_5[1]}}";
-                                addListFields(initialData, "treatment-page_price_table_content_splx_comma_section_5-{{treatmentOne.id}}-2-2", "#splx#", template, "list-container_");
-                                initializeSortable("list-container_treatment-page_price_table_content_splx_comma_section_5-{{treatmentOne.id}}-2-2");
-                            });
-                        </script>
-                    </div>
+                            <script>
+                                // Wczytanie danych początkowych
+                                document.addEventListener('DOMContentLoaded', () => {
+                                    const initialData = "{{treatmentOne.page_price_table_content_string_comma_section_5[1]}}";
+                                    addListFields(initialData, "treatment-page_price_table_content_splx_comma_section_5-{{treatmentOne.id}}-2-2", "#splx#", template, "list-container_");
+                                    initializeSortable("list-container_treatment-page_price_table_content_splx_comma_section_5-{{treatmentOne.id}}-2-2");
+                                });
+                            </script>
+                        </div>
                     {% else %}
                         {% if treatmentOne.prizeTableSync!=[('', '')] %}
                             <div class="card mt-5" style="width: 100%;">
