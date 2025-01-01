@@ -1116,7 +1116,7 @@ def edit_element():
     
     if data_type == 'remover':
         # Walidacja i przypisanie ID z selektora
-        if not isinstance(value, None) or not isinstance(element_id, str):
+        if value is not None or not isinstance(element_id, str):
             return jsonify({'error': 'Nieprawidłowy format dla remover'}), 400
         
     if data_type == 'img':
