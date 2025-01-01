@@ -792,7 +792,7 @@ def update_element_in_db(element_id, data_type, value):
             id_db = id_number
 
             TOADD_INT = [
-                'page_attached_splx_files'
+                'page_attached_add_files'
                 ]
             if sekcja in TOADD_INT:
                 exactly_what = None
@@ -807,7 +807,9 @@ def update_element_in_db(element_id, data_type, value):
                     print(f"Nieobsługiwany typ danych: {value}")
                     return False
 
-                splet_key = exactly_what.replace('splx', 'list')
+                splet_key = exactly_what.replace('add', 'list')
+                
+
                 cunet_list_db = None
                 for data_b in treatments_db_all_by_route_dict().values():
                     if 'id' in data_b and splet_key in data_b:
@@ -815,13 +817,10 @@ def update_element_in_db(element_id, data_type, value):
                             cunet_list_db = data_b[splet_key]
                             break
                 if isinstance(cunet_list_db, list):
-                    if len(cunet_list_db) == ofparts:
-                        try:
-                            cunet_list_db[index] = value
-                            ready_string_splx = spea_main.join(cunet_list_db)
-                        except IndexError:
-                            print("Problem indexu w kluczu id")
-                            return False
+                    cunet_list_db.append(value)
+                    ready_string_splx = spea_main.join(cunet_list_db)
+                    column_db = exactly_what.replace('add', 'splx')
+
 
             # TWORZENIE ZESTAWU ZAPYTANIA MySQL
             if ready_string_splx is not None and table_db is not None and column_db is not None and isinstance(id_db, int):
@@ -1361,7 +1360,7 @@ def treatments_db_all_by_route_dict(pick_element=False, route_string=''):
                                 'name': page_attached_object_files_dump[1], 
                                 'file_name': page_attached_object_files_dump[2]
                                 }
-                            page_attached_object_files.append(page_attached_object_files_dump)
+                            page_attached_object_files.append(page_attached_object_files_dict)
                     except IndexError: continue
             else:
                 page_attached_list_files = []

@@ -494,10 +494,10 @@
                             <h3 class="widget-title">Przydatne pliki do pobrania</h3>
                             {% if userName!='NotLogin' %}
                                 <h3 
-                                    id="page_attached_files_list" 
+                                    id="treatment-page_attached_add_files-{{treatmentOne.id}}-1-1" 
                                     data-editable 
                                     data-type="adder"
-                                    data-current-value="2"
+                                    data-current-value
                                     class="text-success"
                                 ><i class="bi bi-plus-square-dotted"></i></h3>
                                 {% for file_item in treatmentOne.page_attached_object_files %}
@@ -532,73 +532,7 @@
                                     </div>
                                 {% endfor %}
                             {% endif %}
-                            <!-- <i {% if userName!='NotLogin' %}
-                                id="page_attached_files_list" 
-                                data-editable 
-                                data-type="adder"
-                                data-current-value="2"
-                                {% endif %}
-                                class="bi bi-plus-square-dotted"></i> -->
-                            <div class="row mb-3">
-                                <div class="col-2">
-                                    {% if userName!='NotLogin' %}
-                                    <h3 
-                                        id="page_attached_files_item_id" 
-                                        data-editable 
-                                        data-type="remover"
-                                        class="text-danger"
-                                    ><i class="bi bi-trash3-fill"></i></h3>
-                                    {% else %}
-                                    <h1><i class="fas fa-download text-info"></i></h1>
-                                    {% endif %}
-                                </div>
-                                <div class="col-10">
-                                    <p class="fw-bold">
-                                        <a href="/dokumenty/upowaznienie-do-samodzielnego-odbywania-wizyt-2024-788788.pdf">Upoważnienie do samodzielnego odbywania wizyt</a>
-                                    </p>
-
-                                </div>
-                            </div>
-                            <div class="row mb-3">
-                                <div class="col-2">
-                                    {% if userName!='NotLogin' %}
-                                    <h3 
-                                        id="page_attached_files_item_id" 
-                                        data-editable 
-                                        data-type="remover"
-                                        class="text-danger"
-                                    ><i class="bi bi-trash3-fill"></i></h3>
-                                    {% else %}
-                                    <h1><i class="fas fa-download text-info"></i></h1>
-                                    {% endif %}
-                                </div>
-                                <div class="col-10">
-                                    <p class="fw-bold">
-                                        <a href="/dokumenty/karta-z-danymi-2024-2024-787740.pdf">Karta z danymi 2024</a>
-                                    </p>
-
-                                </div>
-                            </div>
-                            <div class="row mb-3">
-                                <div class="col-2">
-                                    {% if userName!='NotLogin' %}
-                                    <h3 
-                                        id="page_attached_files_item_id" 
-                                        data-editable 
-                                        data-type="remover"
-                                        class="text-danger"
-                                    ><i class="bi bi-trash3-fill"></i></h3>
-                                    {% else %}
-                                    <h1><i class="fas fa-download text-info"></i></h1>
-                                    {% endif %}
-                                </div>
-                                <div class="col-10">
-                                    <p class="fw-bold">
-                                        <a href="/dokumenty/karta-z-danymi-2024-2024-787740.pdf">Karta z danymi 2024</a>
-                                    </p>
-
-                                </div>
-                            </div>
+                            
                         </div>
                         <!-- <div class="widget widget_instagram">
                             <h3 class="widget-title">Gallery</h3>
