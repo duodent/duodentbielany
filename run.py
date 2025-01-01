@@ -978,6 +978,22 @@ def get_picker_options():
         OPTIONS_DATA[f"treatment-page_attached_worker_id-{treatments_id[0]}-1-1"] = [
             {"id": ident, "description": name} for ident, name in page_attached_worker
         ]
+
+    try:
+        page_attached_files_sql = f'WHERE status_usera = 1 AND user = 1'
+        page_attached_files = msq.connect_to_database(f'SELECT id, name FROM files {page_attached_files_sql};')
+
+        page_treatments_id_sql = f'WHERE treatment_general_status = 1'
+        page_treatments_id = msq.connect_to_database(f'SELECT id FROM tabela_uslug {page_treatments_id_sql};')
+    except Exception as e:
+        print(f"Błąd połączenia z bazą danych: {e}")
+        return jsonify({"error": f"Błąd połączenia z bazą danych: {e}"}), 404
+    
+    for treatments_id in page_treatments_id:
+        OPTIONS_DATA[f"treatment-page_attached_add_files-{treatments_id[0]}-1-1"] = [
+            {"id": ident, "description": name} for ident, name in page_attached_files
+        ]
+
     # print(OPTIONS_DATA)
     # Dane do wysłania
     {
