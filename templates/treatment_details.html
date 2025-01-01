@@ -304,18 +304,6 @@
                                     </div>
                                 </div>
                             {% endfor %}
-                            <!-- <div class="col-lg-6 col-md-6">
-                                <div class="single-gallery">
-                                    <img 
-                                        {% if userName!='NotLogin' %}
-                                        id="page_photo_content_links_splx_section_2_f_1" 
-                                        data-editable 
-                                        data-type="img"
-                                        {% endif %}
-                                        src="../static/img/services/1.jpg" alt="image"
-                                    >
-                                </div>
-                            </div> -->
                         </div>
                     </div>
                     <p {% if userName!='NotLogin' %}id="treatment-page_subcontent_section_2-{{treatmentOne.id}}-1-1" data-editable data-type="text"{% endif %}>
@@ -424,10 +412,10 @@
                             <div class="content">
                                 {% if treatmentOne.page_attached_worker_status %}
                                     <!-- # ikona oka # -->
-                                    <i class="bi bi-eye eye-icon"></i>
+                                    <i class="bi bi-eye eye-icon" id="treatment-page_attached_worker_status-{{treatmentOne.id}}-1-1" data-type="switch" data-state="{{treatmentOne.page_attached_worker_status}}"></i>
                                 {% else %}
                                     <!-- # ikona oka # -->
-                                    <i class="bi bi-eye-slash eye-icon" style="color:#97a5b0"></i>
+                                    <i class="bi bi-eye-slash eye-icon" id="treatment-page_attached_worker_status-{{treatmentOne.id}}-1-1" data-type="switch" data-state="0" style="color:#02bbff"></i>
                                 {% endif %}
 
                                 <!-- # wybrany doktor # -->
@@ -998,112 +986,153 @@
     // SPLX V 2.0
     // Szablon elementu listy
     const template = `
-            <div class="item-container d-flex align-items-center mb-2">
-                <div class="drag-handle me-2">
-                    <i class="bi bi-grip-vertical" style="cursor: grab;"></i>
-                </div>
-                <div class="editable-content flex-grow-1 p-2 fs-6 bg-light text-dark" contenteditable="true">
-                    &^^idemDiv&^^
-                </div>
-                <button type="button" class="remove-btn btn btn-outline-danger ms-2">
-                    <i class="bi bi-trash3-fill" style="font-size: 15px;"></i>
-                </button>
+        <div class="item-container d-flex align-items-center mb-2">
+            <div class="drag-handle me-2">
+                <i class="bi bi-grip-vertical" style="cursor: grab;"></i>
             </div>
-        `;
+            <div class="editable-content flex-grow-1 p-2 fs-6 bg-light text-dark" contenteditable="true">
+                &^^idemDiv&^^
+            </div>
+            <button type="button" class="remove-btn btn btn-outline-danger ms-2">
+                <i class="bi bi-trash3-fill" style="font-size: 15px;"></i>
+            </button>
+        </div>
+    `;
 
-        // Funkcja do wczytywania elementów z danych
-        function addListFields(data, id, sep, template, containerID) {
-            const container = document.getElementById(containerID + id);
-            if (!container) {
-                console.error(`Container with ID ${containerID + id} does not exist.`);
-                return;
-            }
-
-            const html = data.split(sep)
-                .map(value => template.replace("&^^idemDiv&^^", value))
-                .join("");
-
-            container.innerHTML += html;
+    // Funkcja do wczytywania elementów z danych
+    function addListFields(data, id, sep, template, containerID) {
+        const container = document.getElementById(containerID + id);
+        if (!container) {
+            console.error(`Container with ID ${containerID + id} does not exist.`);
+            return;
         }
 
-        // Funkcja do dodawania nowego elementu
-        function addListItem(id, template, containerID, defaultValue = "") {
-            const container = document.getElementById(containerID + id);
-            if (!container) {
-                console.error(`Container with ID ${containerID + id} does not exist.`);
-                return;
-            }
+        const html = data.split(sep)
+            .map(value => template.replace("&^^idemDiv&^^", value))
+            .join("");
 
-            container.insertAdjacentHTML(
-                'beforeend',
-                template.replace("&^^idemDiv&^^", defaultValue)
-            );
+        container.innerHTML += html;
+    }
+
+    // Funkcja do dodawania nowego elementu
+    function addListItem(id, template, containerID, defaultValue = "") {
+        const container = document.getElementById(containerID + id);
+        if (!container) {
+            console.error(`Container with ID ${containerID + id} does not exist.`);
+            return;
         }
 
-        // Funkcja do eksportu danych
-        function joinListFields(containerID, separator = "#splx#") {
-            const container = document.getElementById(containerID);
-            if (!container) {
-                console.error(`Container with ID ${containerID} does not exist.`);
-                return "";
-            }
+        container.insertAdjacentHTML(
+            'beforeend',
+            template.replace("&^^idemDiv&^^", defaultValue)
+        );
+    }
 
-            const items = Array.from(container.querySelectorAll(".editable-content"));
-
-            const processedItems = items.map((item) => {
-                return item.innerText.replace(/\s+/g, " ").trim();
-            });
-
-            return processedItems.join(separator);
+    // Funkcja do eksportu danych
+    function joinListFields(containerID, separator = "#splx#") {
+        const container = document.getElementById(containerID);
+        if (!container) {
+            console.error(`Container with ID ${containerID} does not exist.`);
+            return "";
         }
 
-        // Funkcja eksportu wywoływana z przycisku
-        function exportList(id, validate = true) {
-            // Pobierz dane do eksportu
-            const exportedData = joinListFields(`list-container_${id}`, "#splx#");
+        const items = Array.from(container.querySelectorAll(".editable-content"));
 
-            // Walidacja danych (tylko jeśli validate = true)
-            if (validate && exportedData === "") {
-                alert("Lista jest pusta, brak danych do eksportu.");
-                return;
-            }
+        const processedItems = items.map((item) => {
+            return item.innerText.replace(/\s+/g, " ").trim();
+        });
 
-            // Typ danych i wartość do przesłania
-            const type = 'splx';
-            const value = exportedData;
+        return processedItems.join(separator);
+    }
 
-            // Wyślij dane do backendu
-            sendDataToBackend(id, type, value);
-            showSuccessMessage(`Lista o ID ${id} zostało wyeksportowana! Poczekaj na przeładowanie aplikacji!`, id);
-            console.log("Eksportowane dane:", exportedData);
-            // alert("Eksportowane dane:\n" + exportedData); // Opcjonalne alerty
+    // Funkcja eksportu wywoływana z przycisku
+    function exportList(id, validate = true) {
+        // Pobierz dane do eksportu
+        const exportedData = joinListFields(`list-container_${id}`, "#splx#");
+
+        // Walidacja danych (tylko jeśli validate = true)
+        if (validate && exportedData === "") {
+            alert("Lista jest pusta, brak danych do eksportu.");
+            return;
         }
 
-        // Inicjalizacja SortableJS
-        function initializeSortable(containerID) {
-            const container = document.getElementById(containerID);
-            if (!container) {
-                console.error(`Container with ID ${containerID} does not exist.`);
-                return;
-            }
+        // Typ danych i wartość do przesłania
+        const type = 'splx';
+        const value = exportedData;
 
-            new Sortable(container, {
-                animation: 150,
-                ghostClass: "sortable-ghost",
-                onEnd: function (evt) {
-                    console.log(`Element przeniesiony z pozycji ${evt.oldIndex} na pozycję ${evt.newIndex}`);
-                }
-            });
+        // Wyślij dane do backendu
+        sendDataToBackend(id, type, value);
+        showSuccessMessage(`Lista o ID ${id} zostało wyeksportowana! Poczekaj na przeładowanie aplikacji!`, id);
+        console.log("Eksportowane dane:", exportedData);
+        // alert("Eksportowane dane:\n" + exportedData); // Opcjonalne alerty
+    }
+
+    // Inicjalizacja SortableJS
+    function initializeSortable(containerID) {
+        const container = document.getElementById(containerID);
+        if (!container) {
+            console.error(`Container with ID ${containerID} does not exist.`);
+            return;
         }
 
-        // Obsługa usuwania elementów
-        document.addEventListener("click", function (e) {
-            if (e.target && e.target.closest(".remove-btn")) {
-                const item = e.target.closest(".item-container");
-                if (item) item.remove();
+        new Sortable(container, {
+            animation: 150,
+            ghostClass: "sortable-ghost",
+            onEnd: function (evt) {
+                console.log(`Element przeniesiony z pozycji ${evt.oldIndex} na pozycję ${evt.newIndex}`);
             }
         });
-    
+    }
+
+    // Obsługa usuwania elementów
+    document.addEventListener("click", function (e) {
+        if (e.target && e.target.closest(".remove-btn")) {
+            const item = e.target.closest(".item-container");
+            if (item) item.remove();
+        }
+    });
+
+    // // // SWX 
+    //   
+    // // // Logika przełącznika z dwoma stanami: ON i OFF // // //
+    //   
+    // // // Funkcje do zarządzania stanem: ustawianie, odczyt, zapis i reset // // //
+
+    // SWX V 1.0
+    document.addEventListener('click', (event) => {
+        const element = event.target;
+
+        // Sprawdź, czy kliknięty element ma atrybut data-type="switch"
+        if (element.getAttribute('data-type') === 'switch') {
+            const elementId = element.getAttribute('id');
+            const currentState = parseInt(element.getAttribute('data-state'), 10);
+
+            // Sprawdzenie aktualnego stanu i przełączenie
+            const newState = currentState === 0 ? 1 : 0;
+
+            // Wyświetlenie komunikatu o zmianie
+            const confirmToggle = confirm(
+                `Czy na pewno chcesz zmienić stan elementu o ID ${elementId} na ${newState === 1 ? 'ON' : 'OFF'}?`
+            );
+            if (!confirmToggle) return;
+
+            // Zaktualizowanie stanu w atrybucie HTML
+            element.setAttribute('data-state', newState);
+
+            // Przykładowe wysłanie nowego stanu do backendu
+            const formData = new FormData();
+            formData.append('id', elementId);
+            formData.append('new_state', newState);
+
+            sendFileToBackend(formData, element); // Funkcja wysyłająca dane do backendu
+
+            // Wyświetlenie komunikatu o powodzeniu
+            showSuccessMessage(
+                `Stan elementu o ID ${elementId} został zmieniony na ${newState === 1 ? 'ON' : 'OFF'}!`,
+                elementId
+            );
+        }
+    });
 </script>
 {% endif %}
     
