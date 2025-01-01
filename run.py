@@ -759,7 +759,7 @@ def update_element_in_db(element_id, data_type, value):
                 """
                 params = (ready_string_splx, id_db)
 
-                
+
     elif data_type == 'switch':
         ####################################################
         # Aktualizacja stanów i statusów w tabela_uslug
@@ -1578,19 +1578,34 @@ def validatorZip(list1, list2):
 
 @app.route('/zabieg-stomatologiczny/<path:treatment_slug>')
 def treatment_dynamic(treatment_slug):
-    treatments_dict = {item["ready_route"]: item["tytul_glowny"] for item in treatments_db()}
+    treatmentShortly = treatments_db()
+    treatments_dict = {item["ready_route"]: item["tytul_glowny"] for item in treatmentShortly}
     if treatment_slug in treatments_dict:
         pageTitle = treatments_dict[treatment_slug]
         session['page'] = treatment_slug
 
         treatmentOne = treatments_db_all_by_route_dict(True, treatment_slug)
         treatmentOne['prizeTableSync'] = []
-
         desc, prizes = validatorZip(treatmentOne['page_price_table_content_list_comma_section_5'][0], 
                                     treatmentOne['page_price_table_content_list_comma_section_5'][1])
-
         for item in zip(desc, prizes):
             treatmentOne['prizeTableSync'].append(item)
+        """
+        "id": data[0],
+            "foto_home": data[1],
+            "icon": data[2],
+            "tytul_glowny": data[3],
+            "ready_route": data[4],
+            "opis_home": data[5],
+        """
+        treatmentOne['treatmentShorts'] = []
+        i=0
+        for item in treatmentShortly:
+            if 'tytul_glowny' in item:
+                if item['tytul_glowny'] != treatments_dict[treatment_slug]:
+                    treatmentOne['treatmentShorts'].append(item)
+                    i+=1
+            if i==3: break
 
         return render_template(
             'treatment_details.html',
