@@ -785,7 +785,53 @@ def update_element_in_db(element_id, data_type, value):
                 params = (ready_string_splx, id_db)
         
     elif data_type == 'adder':
-        query = "UPDATE elements SET int_value = ? WHERE id = ?"
+        if strona == 'treatment':
+            ready_string_splx = None
+            table_db = 'tabela_uslug'
+            column_db = sekcja
+            id_db = id_number
+
+            TOADD_INT = [
+                'page_attached_splx_files'
+                ]
+            if sekcja in TOADD_INT:
+                exactly_what = None
+                for c in TOADD_INT: 
+                    if c == sekcja: exactly_what = c
+                if exactly_what is None:
+                    print("Problem Klucza")
+                    return False
+                
+                try: value = int(value)
+                except ValueError:
+                    print(f"Nieobsługiwany typ danych: {value}")
+                    return False
+
+                splet_key = exactly_what.replace('splx', 'list')
+                cunet_list_db = None
+                for data_b in treatments_db_all_by_route_dict().values():
+                    if 'id' in data_b and splet_key in data_b:
+                        if data_b['id'] == id_db:
+                            cunet_list_db = data_b[splet_key]
+                            break
+                if isinstance(cunet_list_db, list):
+                    if len(cunet_list_db) == ofparts:
+                        try:
+                            cunet_list_db[index] = value
+                            ready_string_splx = spea_main.join(cunet_list_db)
+                        except IndexError:
+                            print("Problem indexu w kluczu id")
+                            return False
+
+            # TWORZENIE ZESTAWU ZAPYTANIA MySQL
+            if ready_string_splx is not None and table_db is not None and column_db is not None and isinstance(id_db, int):
+                query = f"""
+                        UPDATE {table_db}
+                        SET {column_db} = %s
+                        WHERE id = %s
+                """
+                params = (ready_string_splx, id_db)
+
     elif data_type == 'remover':
         query = "UPDATE elements SET int_value = ? WHERE id = ?"
 
@@ -1295,6 +1341,32 @@ def treatments_db_all_by_route_dict(pick_element=False, route_string=''):
             else:
                 page_attached_worker_photo_name, page_attached_worker_photo_link = (None, None)
 
+            # Pliki
+            if isinstance(data[26], str):
+                page_attached_list_files_split = str(data[26]).split(spea_main)
+                page_attached_list_files = []
+                page_attached_object_files = []
+                for c in page_attached_list_files_split:
+                    try: 
+                        c=int(c)
+                        page_attached_list_files.append(c)
+                    except ValueError: continue
+                    
+                    page_attached_object_files_sql = f'WHERE id = {c}'
+                    try: 
+                        page_attached_object_files_dump = msq.connect_to_database(f'SELECT id, name, file_name FROM files {page_attached_object_files_sql};')[0]
+                        if len(page_attached_object_files_dump)==3:
+                            page_attached_object_files_dict = {
+                                'id': page_attached_object_files_dump[0], 
+                                'name': page_attached_object_files_dump[1], 
+                                'file_name': page_attached_object_files_dump[2]
+                                }
+                            page_attached_object_files.append(page_attached_object_files_dump)
+                    except IndexError: continue
+            else:
+                page_attached_list_files = []
+                page_attached_object_files = []
+
             # Tworzenie słownika dla pojedynczego rekordu
             theme = {
                 "id": data[0],
@@ -1318,6 +1390,7 @@ def treatments_db_all_by_route_dict(pick_element=False, route_string=''):
                 "page_points_list_section_1": page_points_list_section_1,
                 "page_subcontent_section_1": data[14],
                 "page_photo_content_links_splx_section_2": data[15],
+                # Dzielenie foto na listę
                 "page_photo_content_links_list_section_2": check_separator_take_list(spea_main, '' if data[15] is None else data[15], 2),
                 "page_subcontent_section_2": data[16],
                 "page_title_section_3": data[17],
@@ -1326,14 +1399,19 @@ def treatments_db_all_by_route_dict(pick_element=False, route_string=''):
                 "page_content_section_4": data[20],
                 "page_price_table_title_section_5": data[21],
                 "page_price_table_content_splx_comma_section_5": data[22],
+                # Dzielenie wypunktowania na kolumny stringów
                 "page_price_table_content_string_comma_section_5": page_price_table_content_string_comma_section_5,
+                # Dzielenie wypunktowania na kolumny list
                 "page_price_table_content_list_comma_section_5": page_price_table_content_list_comma_section_5,
                 "page_attached_worker_id": data[23],
                 "page_attached_worker_photo_name": page_attached_worker_photo_name,
                 "page_attached_worker_photo_link": page_attached_worker_photo_link,
                 "page_attached_worker_descriptions": data[24],
                 "page_attached_worker_status": data[25],
-                "page_attached_files": data[26],
+                "page_attached_splx_files": data[26],
+                # Dzielenie załączone na listę
+                "page_attached_list_files": page_attached_list_files,
+                "page_attached_object_files": page_attached_object_files,
                 "page_attached_treatments": data[27],
                 "page_attached_contact": data[28],
                 "page_attached_status": data[29],
