@@ -700,37 +700,6 @@ def update_element_in_db(element_id, data_type, value):
     query = None
     params = None
 
-    if data_type == 'switch':
-        ####################################################
-        # Aktualizacja stanów i statusów w tabela_uslug
-        ####################################################
-        if strona == 'treatment':
-            ready_string_splx = None
-            table_db = 'tabela_uslug'
-            column_db = sekcja
-            id_db = id_number
-
-            # BANERS
-            CLASSIC_INT = ['page_attached_worker_status']
-            if sekcja in CLASSIC_INT:
-                exactly_what = None
-                for c in CLASSIC_INT: 
-                    if c == sekcja: exactly_what = c
-                if exactly_what is None:
-                    print("Problem Klucza")
-                    return False
-                
-                ready_string_splx = value
-
-            # TWORZENIE ZESTAWU ZAPYTANIA MySQL
-            if ready_string_splx is not None and table_db is not None and column_db is not None and isinstance(id_db, int):
-                query = f"""
-                        UPDATE {table_db}
-                        SET {column_db} = %s
-                        WHERE id = %s
-                """
-                params = (ready_string_splx, id_db)
-
     if data_type == 'text':
         ####################################################
         # Aktualizacja tekstu w tabela_uslug
@@ -790,6 +759,37 @@ def update_element_in_db(element_id, data_type, value):
                 """
                 params = (ready_string_splx, id_db)
 
+                
+    elif data_type == 'switch':
+        ####################################################
+        # Aktualizacja stanów i statusów w tabela_uslug
+        ####################################################
+        if strona == 'treatment':
+            ready_string_splx = None
+            table_db = 'tabela_uslug'
+            column_db = sekcja
+            id_db = id_number
+
+            # BANERS
+            CLASSIC_INT = ['page_attached_worker_status']
+            if sekcja in CLASSIC_INT:
+                exactly_what = None
+                for c in CLASSIC_INT: 
+                    if c == sekcja: exactly_what = c
+                if exactly_what is None:
+                    print("Problem Klucza")
+                    return False
+                
+                ready_string_splx = value
+
+            # TWORZENIE ZESTAWU ZAPYTANIA MySQL
+            if ready_string_splx is not None and table_db is not None and column_db is not None and isinstance(id_db, int):
+                query = f"""
+                        UPDATE {table_db}
+                        SET {column_db} = %s
+                        WHERE id = %s
+                """
+                params = (ready_string_splx, id_db)
 
     elif data_type == 'picker':
         if strona == 'treatment':
