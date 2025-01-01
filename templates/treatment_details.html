@@ -716,6 +716,7 @@
                 formData.append('file', file);
 
                 sendFileToBackend(formData, element);
+                showSuccessMessage(`Zdjęcie o ID ${elementId} zostało Zaktualizowane! Poczekaj na przeładowanie aplikacji!`, elementId);
             });
 
             fileInput.click();
@@ -752,6 +753,7 @@
                         element.textContent = options.find((opt) => opt.id == selectedValue).description;
                         element.setAttribute('data-current-value', selectedValue);
                         selectElement.replaceWith(element);
+                        showSuccessMessage(`Wskazanie o ID ${elementId} zostało dokonane! Poczekaj na przeładowanie aplikacji!`, elementId);
                     });
                 })
                 .catch((error) => {
@@ -800,7 +802,7 @@
                         originalElement.setAttribute('data-initialized', 'true'); // Zapobiega wielokrotnej inicjalizacji
 
                         // Wyświetlenie informacji o sukcesie
-                        showSuccessMessage(`Pozycja o ID ${selectedValue} została dodana!`, elementId);
+                        showSuccessMessage(`Pozycja o ID ${selectedValue} została dodana! Poczekaj na przeładowanie aplikacji!`, elementId);
 
                         console.log(`Dodano element o ID: ${selectedValue} i przywrócono pierwotny stan.`);
                     });
@@ -814,7 +816,8 @@
         if (confirmRemove) {
             sendDataToBackend(elementId, dataType, null);
             // Wyświetlenie informacji o sukcesie
-            showSuccessMessage(`Pozycja o ID ${elementId} została usunieta!`, "");
+            showSuccessMessage(`Pozycja o ID ${elementId} została usunieta! Poczekaj na przeładowanie aplikacji!`, "");
+
         }
     } else if (dataType === 'url') {
             // Otwartą logikę pozostawiamy na później
@@ -1070,6 +1073,7 @@
 
             // Wyślij dane do backendu
             sendDataToBackend(id, type, value);
+            showSuccessMessage(`Lista o ID ${id} zostało wyeksportowana! Poczekaj na przeładowanie aplikacji!`, id);
             console.log("Eksportowane dane:", exportedData);
             // alert("Eksportowane dane:\n" + exportedData); // Opcjonalne alerty
         }
