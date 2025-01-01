@@ -33,13 +33,19 @@ app.config['SESSION_REDIS'] = redis.StrictRedis(host='localhost', port=6379, db=
 
 # Ścieżka do katalogu z plikami
 UPLOAD_FOLDER = 'dokumenty'
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'doc', 'docx', 'odt'}  # Rozszerzenia dozwolone
 UPLOAD_FOLDER_TREATMENTS = './static/img/services'
+UPLOAD_FOLDER_BANNERS = './static/img/banners/'
+ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'doc', 'docx', 'odt'}  # Rozszerzenia dozwolone
 ALLOWED_EXTENSIONS_IMAGES = {'png', 'jpg', 'jpeg', 'gif'}
+
+# Konfiguracja katalogu dla plików związanych z dokumnetami
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 # Konfiguracja katalogu dla plików związanych z zabiegami
 app.config['UPLOAD_FOLDER_TREATMENTS'] = UPLOAD_FOLDER_TREATMENTS
+
+# Konfiguracja katalogu dla plików związanych z banerami
+app.config['UPLOAD_FOLDER_BANNERS'] = UPLOAD_FOLDER_BANNERS
 
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
@@ -906,7 +912,7 @@ def update_element_in_db(element_id, data_type, value):
                         cunet_list_db[index] = value
                         ready_string_splx = spea_main.join(cunet_list_db)
 
-            SINGLE_PHOTOS = ['foto_page_header']
+            SINGLE_PHOTOS = ['foto_page_header', 'optional_1']
             if sekcja in SINGLE_PHOTOS:
                 exactly_what = None
                 for c in SINGLE_PHOTOS: 
@@ -1148,7 +1154,11 @@ def edit_element():
         if strona == 'treatment':
             allPhotoKeys = treatments_foto_db_by_id(id_number)
             #Usatawiam Katalog zapisu dla treatment
-            UPLOAD_FOLDER_TREATMENTS_IMG = app.config['UPLOAD_FOLDER_TREATMENTS']
+            expected_folders = ['optional_1']
+            if sekcja in expected_folders:
+                UPLOAD_FOLDER_TREATMENTS_IMG = app.config['UPLOAD_FOLDER_BANNERS']
+            else:
+                UPLOAD_FOLDER_TREATMENTS_IMG = app.config['UPLOAD_FOLDER_TREATMENTS']
             if str(sekcja).count('splx'):
                 key_sekcja = str(sekcja).replace('splx', 'list')
                 thisPhotoData_list = allPhotoKeys[key_sekcja]
