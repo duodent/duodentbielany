@@ -990,10 +990,16 @@ def get_picker_options():
         print(f"Błąd połączenia z bazą danych: {e}")
         return jsonify({"error": f"Błąd połączenia z bazą danych: {e}"}), 404
     
+    getTreatments_db_all_by_id_dict = {val['id']: val['page_attached_list_files'] for val in treatments_db_all_by_route_dict().values()}
+
     for treatments_id in page_treatments_id:
-        OPTIONS_DATA[f"treatment-page_attached_add_files-{treatments_id[0]}-1-1"] = [
-            {"id": ident, "description": name} for ident, name in page_attached_files
-        ]
+        OPTIONS_DATA[f"treatment-page_attached_add_files-{treatments_id[0]}-1-1"] = []
+        for ident, name in page_attached_files:
+            if treatments_id[0] in getTreatments_db_all_by_id_dict:
+                if ident not in getTreatments_db_all_by_id_dict[treatments_id[0]]:
+                    ready_record = {"id": ident, "description": name}
+                    OPTIONS_DATA[f"treatment-page_attached_add_files-{treatments_id[0]}-1-1"].append(ready_record)
+        
 
     # print(OPTIONS_DATA)
     # Dane do wysłania
