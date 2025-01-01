@@ -980,7 +980,7 @@ def get_picker_options():
         ]
 
     try:
-        page_attached_files_sql = f'WHERE status_usera = 1 AND user = 1'
+        page_attached_files_sql = f'WHERE status_aktywnosci = 1'
         page_attached_files = msq.connect_to_database(f'SELECT id, name FROM files {page_attached_files_sql};')
 
         page_treatments_id_sql = f'WHERE treatment_general_status = 1'
