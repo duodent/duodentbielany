@@ -818,7 +818,7 @@ def update_element_in_db(element_id, data_type, value):
                             break
                 if isinstance(cunet_list_db, list):
                     cunet_list_db.append(value)
-                    ready_string_splx = spea_main.join(cunet_list_db)
+                    ready_string_splx = spea_main.join(map(str, cunet_list_db))
                     column_db = exactly_what.replace('add', 'splx')
 
 
