@@ -497,7 +497,7 @@
                                 id="treatment-page_attached_add_files-{{treatmentOne.id}}-1-1" 
                                 data-editable 
                                 data-type="adder"
-                                data-current-value="1000"
+                                data-current-value="0"
                                 class="text-success"
                             ><i class="bi bi-plus-square-dotted"></i></h3>
                             {% for file_item in treatmentOne.page_attached_object_files %}
@@ -722,6 +722,12 @@
                     // Tworzenie elementu select
                     const selectElement = document.createElement('select');
                     selectElement.className = 'form-select';
+                    
+                    // Dodanie opcji "Wybierz" na początek
+                    const defaultOption = document.createElement('option');
+                    defaultOption.value = 0;
+                    defaultOption.textContent = 'Wybierz';
+                    selectElement.appendChild(defaultOption);
 
                     // Dodanie opcji do selecta
                     options.forEach(({ id, description }) => {
