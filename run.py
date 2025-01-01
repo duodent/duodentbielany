@@ -817,7 +817,8 @@ def update_element_in_db(element_id, data_type, value):
                             cunet_list_db = data_b[splet_key]
                             break
                 if isinstance(cunet_list_db, list):
-                    cunet_list_db.append(value)
+                    if value not in cunet_list_db:  # Sprawdź, czy wartość już nie istnieje na liście
+                        cunet_list_db.append(value)
                     ready_string_splx = spea_main.join(map(str, cunet_list_db))
                     column_db = exactly_what.replace('add', 'splx')
 
