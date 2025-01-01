@@ -665,7 +665,7 @@ def editing_id_updater_reader(element_id):
 # Funkcja do aktualizacji danych w bazie
 ####################################################
 def update_element_in_db(element_id, data_type, value):
-    # print(element_id, data_type, value)
+    print("\n\n\n\n", element_id, data_type, value, "\n\n\n\n")
     # Dynamiczne zapytanie SQL w zależności od typu
 
     # {strona=tabela}-{sekcja=kolumna}-{id=numer}-{część=pozycja}-{wszystkich=ilość pozycji}
