@@ -90,6 +90,24 @@
                     </div>
                 </div>
             </div>
+
+            <!-- Modal błędów -->
+            <div class="modal fade" id="error-modal" tabindex="-1" aria-labelledby="errorModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="errorModalLabel">Błąd</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <p id="error-modal-message">Wystąpił nieoczekiwany błąd.</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Zamknij</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
             
     </div>
@@ -122,6 +140,13 @@
 </script>
 <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.14.0/Sortable.min.js"></script>
 <script>
+    // Funkcja wyświetlająca modal błędów
+    function showErrorModal(message) {
+        const errorModal = new bootstrap.Modal(document.getElementById('error-modal'));
+        document.getElementById('error-modal-message').textContent = message || 'Wystąpił nieoczekiwany błąd.';
+        errorModal.show();
+    }
+
     document.addEventListener('DOMContentLoaded', function () {
         // Dodawanie kategorii
         document.getElementById('add-category-form').addEventListener('submit', function (e) {
@@ -136,12 +161,15 @@
                 })
                 .then(response => response.json())
                 .then(data => {
+                    if (data.error) {
+                        throw new Error(data.error);
+                    }
                     alert(data.message);
                     location.reload();
                 })
                 .catch(error => {
                     console.error('Błąd:', error);
-                    alert('Wystąpił błąd: ' + error.message);
+                    showErrorModal(error.message);
                 });
             }
         });
@@ -168,12 +196,15 @@
                         })
                         .then(response => response.json())
                         .then(data => {
+                            if (data.error) {
+                                throw new Error(data.error);
+                            }
                             alert(data.message);
                             location.reload();
                         })
                         .catch(error => {
                             console.error('Błąd:', error);
-                            alert('Wystąpił błąd: ' + error.message);
+                            showErrorModal(error.message);
                         });
                     }
                 };
@@ -193,12 +224,15 @@
                     })
                     .then(response => response.json())
                     .then(data => {
+                        if (data.error) {
+                            throw new Error(data.error);
+                        }
                         alert(data.message);
                         location.reload();
                     })
                     .catch(error => {
                         console.error('Błąd:', error);
-                        alert('Wystąpił błąd: ' + error.message);
+                        showErrorModal(error.message);
                     });
                 }
             });
@@ -218,15 +252,19 @@
                 })
                 .then(response => response.json())
                 .then(data => {
+                    if (data.error) {
+                        throw new Error(data.error);
+                    }
                     alert(data.message);
                 })
                 .catch(error => {
                     console.error('Błąd:', error);
-                    alert('Wystąpił błąd: ' + error.message);
+                    showErrorModal(error.message);
                 });
             }
         });
     });
+
 
 </script>
 
