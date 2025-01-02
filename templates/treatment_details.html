@@ -824,11 +824,12 @@
             fileInput.type = 'file';
             fileInput.accept = 'image/*';
 
-            fileInput.addEventListener('change', () => {
+            fileInput.addEventListener('change', async () => { // Używamy async
                 const file = fileInput.files[0];
                 if (!file) return;
 
-                const confirmUpload = showConfirmModal('Czy na pewno chcesz załadować to zdjęcie?');
+                // Wyświetlenie modala i oczekiwanie na potwierdzenie
+                const confirmUpload = await showConfirmModal('Czy na pewno chcesz załadować to zdjęcie?');
                 if (!confirmUpload) return;
 
                 const formData = new FormData();
@@ -841,7 +842,32 @@
             });
 
             fileInput.click();
-        } else if (dataType === 'picker') {
+        }
+        // if (dataType === 'img') {
+        //     // Obsługa obrazka (bez zmian)
+        //     const fileInput = document.createElement('input');
+        //     fileInput.type = 'file';
+        //     fileInput.accept = 'image/*';
+
+        //     fileInput.addEventListener('change', () => {
+        //         const file = fileInput.files[0];
+        //         if (!file) return;
+
+        //         const confirmUpload = showConfirmModal('Czy na pewno chcesz załadować to zdjęcie?');
+        //         if (!confirmUpload) return;
+
+        //         const formData = new FormData();
+        //         formData.append('id', elementId);
+        //         formData.append('type', dataType);
+        //         formData.append('file', file);
+
+        //         sendFileToBackend(formData, element);
+        //         showSuccessMessage(`Zdjęcie o ID ${elementId} zostało Zaktualizowane! Poczekaj na przeładowanie aplikacji!`, elementId);
+        //     });
+
+        //     fileInput.click();
+        // } 
+        else if (dataType === 'picker') {
             // Obsługa typu picker
             fetchPickerOptions(elementId)
                 .then((options) => {
