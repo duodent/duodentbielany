@@ -616,23 +616,23 @@
                         {% endif %}
 
                         {% if userName!='NotLogin' %}
-                        <div class="widget widget_categories d-flex">
+                        <div class="widget widget_categories">
                             <h3 class="widget-title">Opcje Administratora</h3>
-                            {% if treatmentOne.treatment_general_status %}
-                                <!-- # ikona oka # -->
-                                <i class="bi bi-eye eye-icon icon-size" id="treatment-treatment_general_status-{{treatmentOne.id}}-1-1" data-type="switch" data-state="{{treatmentOne.page_attached_worker_status}}"></i>
-                            {% else %}
-                                <!-- # ikona oka # -->
-                                <i class="bi bi-eye-slash eye-icon icon-size" id="treatment-treatment_general_status-{{treatmentOne.id}}-1-1" data-type="switch" data-state="0" style="color:#02bbff"></i>
-                            {% endif %}
-                            <h3 
-                                id="treatment-treatment_general_status-{{treatmentOne.id}}-1-1" 
-                                data-editable 
-                                data-type="remover"
-                                class="text-danger"
-                            ><i class="bi bi-trash3-fill icon-size"></i></h3>
-                            
-
+                            <div class="d-flex">
+                                {% if treatmentOne.treatment_general_status %}
+                                    <!-- # ikona oka # -->
+                                    <i class="bi bi-eye eye-icon icon-size" id="treatment-treatment_general_status-{{treatmentOne.id}}-1-1" data-type="switch" data-state="{{treatmentOne.page_attached_worker_status}}"></i>
+                                {% else %}
+                                    <!-- # ikona oka # -->
+                                    <i class="bi bi-eye-slash eye-icon icon-size" id="treatment-treatment_general_status-{{treatmentOne.id}}-1-1" data-type="switch" data-state="0" style="color:#02bbff"></i>
+                                {% endif %}
+                                <h3 
+                                    id="treatment-treatment_general_status-{{treatmentOne.id}}-1-1" 
+                                    data-editable 
+                                    data-type="remover"
+                                    class="text-danger"
+                                ><i class="bi bi-trash3-fill icon-size"></i></h3>
+                            </div>
                         </div>
                         {% endif %}
                             
