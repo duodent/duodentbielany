@@ -856,21 +856,23 @@
             fileInput.type = 'file';
             fileInput.accept = 'image/*';
 
-            fileInput.addEventListener('change', async () => { // Używamy async
+            fileInput.addEventListener('change', () => {
                 const file = fileInput.files[0];
                 if (!file) return;
 
-                // Wyświetlenie modala i oczekiwanie na potwierdzenie
-                const confirmUpload = showConfirmModal('Czy na pewno chcesz załadować to zdjęcie?');
-                if (!confirmUpload) return;
+                // Wywołanie modala z callbackiem
+                showConfirmModal('Czy na pewno chcesz załadować to zdjęcie?', (confirmUpload) => {
+                    if (!confirmUpload) return;
 
-                const formData = new FormData();
-                formData.append('id', elementId);
-                formData.append('type', dataType);
-                formData.append('file', file);
+                    const formData = new FormData();
+                    formData.append('id', elementId);
+                    formData.append('type', dataType);
+                    formData.append('file', file);
 
-                sendFileToBackend(formData, element);
-                showSuccessMessage(`Zdjęcie o ID ${elementId} zostało Zaktualizowane! Poczekaj na przeładowanie aplikacji!`, elementId);
+                    // Wysyłanie pliku po potwierdzeniu
+                    sendFileToBackend(formData, element);
+                    showSuccessMessage(`Zdjęcie o ID ${elementId} zostało zaktualizowane! Poczekaj na przeładowanie aplikacji!`, elementId);
+                });
             });
 
             fileInput.click();
