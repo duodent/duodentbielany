@@ -63,12 +63,40 @@
                 <li class="list-group-item d-flex justify-content-between align-items-center" data-id="{{ category.id }}">
                     <span class="category-name">{{ category.name }}</span>
                     <div>
+                        <!-- Dodawanie pliku -->
+                        <i class="bi bi-plus-square text-primary add-file" data-category-id="{{ category.id }}" title="Dodaj plik"></i>
                         <i class="bi bi-pencil-square text-warning edit-category" data-id="{{ category.id }}" title="Edytuj"></i>
                         <i class="bi bi-trash-fill text-danger delete-category" data-id="{{ category.id }}" title="Usuń"></i>
                     </div>
                 </li>
                 {% endfor %}
             </ul>
+
+            <!-- Modal dodawania plików -->
+            <div class="modal fade" id="add-file-modal" tabindex="-1" aria-labelledby="addFileModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header bg-primary text-white">
+                            <h5 class="modal-title" id="addFileModalLabel">Dodaj Plik</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="add-file-form" enctype="multipart/form-data">
+                                <input type="hidden" id="modal-category-id">
+                                <div class="form-floating mb-3">
+                                    <input type="text" class="form-control" id="file-name" placeholder="Nazwa pliku" required>
+                                    <label for="file-name">Nazwa pliku</label>
+                                </div>
+                                <div class="form-floating mb-3">
+                                    <input type="file" class="form-control" id="file-input" required>
+                                    <label for="file-input">Wybierz plik</label>
+                                </div>
+                                <button type="submit" class="btn btn-primary"><i class="bi bi-save me-1"></i>Dodaj</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
             <!-- Modal do edycji kategorii -->
             <div class="modal fade" id="edit-category-modal" tabindex="-1" aria-labelledby="editCategoryModalLabel" aria-hidden="true">
@@ -498,6 +526,54 @@
                         showErrorModal(error.message);
                     });
                 });
+            });
+        });
+    });
+
+    document.addEventListener('DOMContentLoaded', function () {
+        // Otwieranie modala dodawania plików
+        document.querySelectorAll('.add-file').forEach(button => {
+            button.addEventListener('click', function () {
+                const categoryId = this.dataset.categoryId;
+                document.getElementById('modal-category-id').value = categoryId;
+
+                const addFileModal = new bootstrap.Modal(document.getElementById('add-file-modal'));
+                addFileModal.show();
+            });
+        });
+
+        // Dodawanie pliku
+        document.getElementById('add-file-form').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const formData = new FormData();
+            formData.append('file', document.getElementById('file-input').files[0]);
+            formData.append('category_id', document.getElementById('modal-category-id').value);
+            formData.append('name', document.getElementById('file-name').value);
+
+            fetch('/admin/dodaj_plik', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => {
+                if (!response.ok) {
+                    return response.text().then(err => { throw new Error(err); });
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.error) {
+                    throw new Error(data.error);
+                }
+                // Zamknij modal i pokaż sukces
+                const addFileModal = bootstrap.Modal.getInstance(document.getElementById('add-file-modal'));
+                addFileModal.hide();
+
+                showSuccessModal(data.message, () => location.reload());
+            })
+            .catch(error => {
+                console.error('Błąd:', error);
+                showErrorModal(error.message);
             });
         });
     });
