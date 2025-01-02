@@ -95,7 +95,7 @@
             <div class="modal fade" id="error-modal" tabindex="-1" aria-labelledby="errorModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
-                        <div class="modal-header">
+                        <div class="modal-header bg-danger text-white">
                             <h5 class="modal-title" id="errorModalLabel">Błąd</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
@@ -108,6 +108,25 @@
                     </div>
                 </div>
             </div>
+
+            <!-- Modal sukcesów -->
+            <div class="modal fade" id="success-modal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header bg-success text-white">
+                            <h5 class="modal-title" id="successModalLabel">Sukces</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <p id="success-modal-message">Operacja zakończona pomyślnie.</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Zamknij</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </div>
             
     </div>
@@ -147,6 +166,20 @@
         errorModal.show();
     }
 
+    // Funkcja wyświetlająca modal sukcesów
+    function showSuccessModal(message, callback) {
+        const successModal = new bootstrap.Modal(document.getElementById('success-modal'));
+        document.getElementById('success-modal-message').textContent = message || 'Operacja zakończona pomyślnie.';
+        successModal.show();
+
+        // Dodajemy możliwość wywołania callbacka po zamknięciu modala
+        const modalElement = document.getElementById('success-modal');
+        modalElement.addEventListener('hidden.bs.modal', function onHidden() {
+            if (callback) callback();
+            modalElement.removeEventListener('hidden.bs.modal', onHidden);
+        });
+    }
+
     document.addEventListener('DOMContentLoaded', function () {
         // Dodawanie kategorii
         document.getElementById('add-category-form').addEventListener('submit', function (e) {
@@ -164,8 +197,7 @@
                     if (data.error) {
                         throw new Error(data.error);
                     }
-                    alert(data.message);
-                    location.reload();
+                    showSuccessModal(data.message, () => location.reload());
                 })
                 .catch(error => {
                     console.error('Błąd:', error);
@@ -199,8 +231,7 @@
                             if (data.error) {
                                 throw new Error(data.error);
                             }
-                            alert(data.message);
-                            location.reload();
+                            showSuccessModal(data.message, () => location.reload());
                         })
                         .catch(error => {
                             console.error('Błąd:', error);
@@ -227,8 +258,7 @@
                         if (data.error) {
                             throw new Error(data.error);
                         }
-                        alert(data.message);
-                        location.reload();
+                        showSuccessModal(data.message, () => location.reload());
                     })
                     .catch(error => {
                         console.error('Błąd:', error);
@@ -255,7 +285,7 @@
                     if (data.error) {
                         throw new Error(data.error);
                     }
-                    alert(data.message);
+                    showSuccessModal(data.message);
                 })
                 .catch(error => {
                     console.error('Błąd:', error);
@@ -264,6 +294,7 @@
             }
         });
     });
+
 
 
 </script>
