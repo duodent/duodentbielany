@@ -1,134 +1,72 @@
-{% extends 'base.html' %}
-{% block content %}
+<h1>Zarządzanie Plikami</h1>
+{{categorized_files}}
+{% for item in categorized_files %}
+    <h2>Kategoria: {{ item.category }}</h2>
+    <ul>
+        {% for file in item.file_list %}
+            <li>
+                <span class="file-name">{{ file.name }}</span>
+                - <a href="/{{ file.file_name }}" download>Pobierz</a>
+                - <button class="edit-file-name" data-file-id="{{ file.id }}">Edytuj nazwę</button>
+                <button class="delete-file" data-file-name="{{ file.file_name }}">Usuń</button>
+            </li>
+        {% else %}
+            <li>Brak aktywnych plików w tej kategorii.</li>
+        {% endfor %}
+    </ul>
+{% endfor %}
 
-<!-- breadcrumb start -->
-<div id="breadcrumb-small" class="breadcrumb-small mb-5" style="display: none;">
-    <div class="container justify-content-center">
-        <div class="justify-content-center">
-            <ul class="breadcrumb-pages-list">
-                <li><a href="/"><i class="bi bi-houses-fill" style="font-size: 1rem;"></i></a></li>
-                <li><a href="/zabiegi-stomatologiczne-kompleksowa-oferta">Zabiegi</a></li>
-                <li>Edycja</li>
-            </ul>
-        </div>
-    </div>
+<!-- Modal do edycji nazwy wyświetlanej pliku -->
+<div id="edit-file-modal" style="display: none;">
+    <input type="text" id="edit-file-input" placeholder="Nowa nazwa wyświetlana pliku" required>
+    <button id="edit-file-save">Zapisz</button>
+    <button id="edit-file-cancel">Anuluj</button>
 </div>
-<!-- breadcrumb end -->
-
-<section class="blog-area pb-70">
-    <div class="container">
-        <div class="row align-items-center">
-            <div class="col-lg-6 mx-auto">
-                <div class="section-title-warp">
-                    <span class="sub-title">
-                        <i class="flaticon-hashtag-symbol"></i>
-                        Zabiegi widoczne na stronie
-                    </span>
-                    <h2>Zabiegi <span>widoczne</span> na stronie <span>www</span> dla Twoich klientów</h2>
-                    <p>
-                        Zarządzaj kolejnością i edytuj nazwy swoich zabiegów opublikowanych na stronie www.
-                    </p>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <h1>Zarządzanie Plikami</h1>
-            {{categorized_files}}
-            {% for item in categorized_files %}
-                <h2>Kategoria: {{ item.category }}</h2>
-                <ul>
-                    {% for file in item.file_list %}
-                        <li>
-                            <span class="file-name">{{ file.name }}</span>
-                            - <a href="/{{ file.file_name }}" download>Pobierz</a>
-                            - <button class="edit-file-name" data-file-id="{{ file.id }}">Edytuj nazwę</button>
-                            <button class="delete-file" data-file-name="{{ file.file_name }}">Usuń</button>
-                        </li>
-                    {% else %}
-                        <li>Brak aktywnych plików w tej kategorii.</li>
-                    {% endfor %}
-                </ul>
-            {% endfor %}
-
-            <!-- Modal do edycji nazwy wyświetlanej pliku -->
-            <div id="edit-file-modal" style="display: none;">
-                <input type="text" id="edit-file-input" placeholder="Nowa nazwa wyświetlana pliku" required>
-                <button id="edit-file-save">Zapisz</button>
-                <button id="edit-file-cancel">Anuluj</button>
-            </div>
 
 
 
 
 
-            <h1>Zarządzanie Kategoriami</h1>
-            {{categories}}
-            <!-- Formularz dodawania kategorii -->
-            <form id="add-category-form">
-                <input type="text" id="category-name" placeholder="Nazwa kategorii" required>
-                <button type="submit">Dodaj kategorię</button>
-            </form>
+<h1>Zarządzanie Kategoriami</h1>
+{{categories}}
+<!-- Formularz dodawania kategorii -->
+<form id="add-category-form">
+    <input type="text" id="category-name" placeholder="Nazwa kategorii" required>
+    <button type="submit">Dodaj kategorię</button>
+</form>
 
-            <!-- Lista kategorii do sortowania -->
-            <ul id="category-list-sort">
-                {% for category in categories %}
-                <li data-id="{{ category.id }}">
-                    <span class="category-name">{{ category.name }}</span>
-                    <button class="edit-category" data-id="{{ category.id }}">Edytuj</button>
-                    <button class="delete-category" data-id="{{ category.id }}">Usuń</button>
-                </li>
-                {% endfor %}
-            </ul>
-
-
-            <!-- Formularz edycji nazwy kategorii -->
-            <div id="edit-category-modal" style="display: none;">
-                <input type="text" id="edit-category-name" placeholder="Nowa nazwa kategorii" required>
-                <button id="save-category-name">Zapisz</button>
-                <button id="cancel-edit">Anuluj</button>
-            </div>
-
-            <h1>Dodaj Plik</h1>
-            <form id="upload-file-form" enctype="multipart/form-data">
-                <select id="file-category" required>
-                    <option value="">Wybierz kategorię</option>
-                    {% for category in categories %}
-                    <option value="{{ category.id }}">{{ category.name }}</option>
-                    {% endfor %}
-                </select>
-                <input type="text" id="file-name" placeholder="Nazwa pliku" required>
-                <input type="file" id="file-input" required>
-                <button type="submit">Dodaj plik</button>
-            </form>
-        </div>
-    </div>
-</section>
+<!-- Lista kategorii do sortowania -->
+<ul id="category-list-sort">
+    {% for category in categories %}
+    <li data-id="{{ category.id }}">
+        <span class="category-name">{{ category.name }}</span>
+        <button class="edit-category" data-id="{{ category.id }}">Edytuj</button>
+        <button class="delete-category" data-id="{{ category.id }}">Usuń</button>
+    </li>
+    {% endfor %}
+</ul>
 
 
+<!-- Formularz edycji nazwy kategorii -->
+<div id="edit-category-modal" style="display: none;">
+    <input type="text" id="edit-category-name" placeholder="Nowa nazwa kategorii" required>
+    <button id="save-category-name">Zapisz</button>
+    <button id="cancel-edit">Anuluj</button>
+</div>
 
+<h1>Dodaj Plik</h1>
+<form id="upload-file-form" enctype="multipart/form-data">
+    <select id="file-category" required>
+        <option value="">Wybierz kategorię</option>
+        {% for category in categories %}
+        <option value="{{ category.id }}">{{ category.name }}</option>
+        {% endfor %}
+    </select>
+    <input type="text" id="file-name" placeholder="Nazwa pliku" required>
+    <input type="file" id="file-input" required>
+    <button type="submit">Dodaj plik</button>
+</form>
 
-{% endblock %}
-{% block bottom_scripts %}
-<script>
-    $(document).ready(function () {
-        setTimeout(function () {
-            // Pokaż #breadcrumb-small
-            $("#breadcrumb-small")
-                .css({
-                    display: "block", // Ustaw widoczność
-                    textAlign: "center", // Wyrównanie tekstu do środka
-                    width: "100%", // Rozciągnij na całą szerokość
-                })
-                .animate(
-                    {
-                        height: "50px",
-                        paddingTop: "10px"
-                    },
-                    1200 // Czas animacji
-                );
-        }, 2000); 
-    });
-</script>
 <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.14.0/Sortable.min.js"></script>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
@@ -373,4 +311,3 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 </script>
-{% endblock %}
