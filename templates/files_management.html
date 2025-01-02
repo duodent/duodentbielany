@@ -231,6 +231,9 @@
                         throw new Error(data.error);
                     }
                     showSuccessModal(data.message, () => location.reload());
+
+                    // Czyszczenie formularza
+                    document.getElementById('add-category-form').reset();
                 })
                 .catch(error => {
                     console.error('Błąd:', error);
