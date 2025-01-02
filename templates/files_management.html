@@ -71,7 +71,7 @@
                             <i class="flaticon-hashtag-symbol"></i>
                             Ustaw kolejność Kategorii
                         </span>
-                        <h1 class="m-3">Zarządzaj <span>plikami</span> w kategoriach: <span>dodawaj</span>, <span>edytuj</span> lub <span>usuwaj</span> elementy</h1>
+                        
                         <p class="m-1">
                             Organizuj pliki według kategorii, zmieniaj ich nazwy, usuwaj zbędne elementy lub dodawaj nowe pliki i kategorie. Ułatwiamy zarządzanie zasobami w prosty i intuicyjny sposób.
                         </p>
@@ -82,27 +82,32 @@
             
 
             <!-- Lista kategorii do sortowania -->
-            <ul id="category-list-sort" class="list-unstyled">
-                {% for category in categories %}
-                <li class="d-flex justify-content-center align-items-center border-0 p-3" data-id="{{ category.id }}">
-                    <!-- Nagłówek kategorii -->
-                    <div class="col-lg-12 col-md-12 section-title-warp d-flex justify-content-center align-items-center">
-                        <span class="sub-title">
-                            <i class="flaticon-hashtag-symbol"></i>
-                            {{ category.name }}
-                        </span>
-                        <div class="p-lg-5 p-md-3 fs-sm-1 fs-lg-3">
-                            <!-- Dodaj plik -->
-                            <i class="bi bi-cloud-upload text-primary add-file ms-3 me-3" data-category-id="{{ category.id }}" title="Dodaj plik"></i>
-                            <!-- Edytuj kategorię -->
-                            <i class="bi bi-pencil-square text-warning me-3 edit-category" data-id="{{ category.id }}" title="Edytuj"></i>
-                            <!-- Usuń kategorię -->
-                            <i class="bi bi-trash-fill text-danger delete-category" data-id="{{ category.id }}" title="Usuń"></i>
+            <div class="row align-items-center mt-2">
+                <div class="col-lg-6 mx-auto">
+                    <div id="category-list-sort" class="row">
+                        {% for category in categories %}
+                        <div class="col-12 justify-content-center align-items-center border-0 p-3" data-id="{{ category.id }}">
+                            <!-- Nagłówek kategorii -->
+                            <div class="col-lg-12 col-md-12 section-title-warp d-flex justify-content-center align-items-center">
+                                <span class="sub-title">
+                                    <i class="flaticon-hashtag-symbol"></i>
+                                    {{ category.name }}
+                                </span>
+                                <div class="p-lg-5 p-md-3 fs-sm-1 fs-lg-3">
+                                    <!-- Dodaj plik -->
+                                    <i class="bi bi-cloud-upload text-primary add-file ms-3 me-3" data-category-id="{{ category.id }}" title="Dodaj plik"></i>
+                                    <!-- Edytuj kategorię -->
+                                    <i class="bi bi-pencil-square text-warning me-3 edit-category" data-id="{{ category.id }}" title="Edytuj"></i>
+                                    <!-- Usuń kategorię -->
+                                    <i class="bi bi-trash-fill text-danger delete-category" data-id="{{ category.id }}" title="Usuń"></i>
+                                </div>
+                            </div>
                         </div>
+                        {% endfor %}
                     </div>
-                </li>
-                {% endfor %}
-            </ul>
+                </div>
+            </div>
+            
 
             <!-- Modal dodawania plików -->
             <div class="modal fade" id="add-file-modal" tabindex="-1" aria-labelledby="addFileModalLabel" aria-hidden="true">
