@@ -342,13 +342,7 @@
 }
 
 .icon-size {
-    font-size: 1rem !important; /* Domyślny rozmiar */
-}
-
-@media (min-width: 576px) { /* Rozmiar SM */
-    .icon-size {
-        font-size: 1.8rem !important;
-    }
+    font-size: 1.8rem !important; /* Domyślny rozmiar */
 }
 
 @media (min-width: 992px) { /* Rozmiar LG */
@@ -356,3 +350,22 @@
         font-size: 1.3rem !important;
     }
 }
+
+@media (min-width: 762px) { /* Rozmiar MD */
+    .icon-size {
+        font-size: 1.5rem !important;
+    }
+}
+
+@media (min-width: 576px) { /* Rozmiar SM */
+    .icon-size {
+        font-size: 1.7rem !important;
+    }
+}
+
+@media (min-width: 320px) { /* Rozmiar XS */
+    .icon-size {
+        font-size: 1.8rem !important;
+    }
+}
+
