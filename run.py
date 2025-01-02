@@ -639,7 +639,7 @@ def treatment_managment():
     return render_template(
         "treatment_management.html", 
         pageTitle=pageTitle,
-        treatments_items=treatments_db()
+        treatments_items=treatments_db(False)
     )
 
 def editing_id_updater_reader(element_id):
@@ -1316,8 +1316,11 @@ def add_treatment():
         return jsonify({'message': f'Wystąpił błąd: {str(e)}'}), 500
 
 
-def treatments_db():
-    zapytanie_sql = """
+def treatments_db(acvtity=False):
+
+    where_query_acvtity = 'WHERE treatment_general_status = 1' if acvtity else ''
+
+    zapytanie_sql = f"""
         SELECT 
             id,
             foto_home,
@@ -1327,6 +1330,7 @@ def treatments_db():
             opis_home,
             pozycja_kolejnosci
         FROM tabela_uslug
+        {where_query_acvtity}
         ORDER BY pozycja_kolejnosci ASC
     """
     db_dump = msq.connect_to_database(zapytanie_sql)
@@ -1565,7 +1569,7 @@ def treatments():
     session['page'] = 'treatments'
     pageTitle = 'Zabiegi'
 
-    treatments_items = treatments_db()
+    treatments_items = treatments_db(True)
 
     return render_template(
         'treatments.html',
@@ -1584,7 +1588,7 @@ def validatorZip(list1, list2):
 
 @app.route('/zabieg-stomatologiczny/<path:treatment_slug>')
 def treatment_dynamic(treatment_slug):
-    treatmentShortly = treatments_db()
+    treatmentShortly = treatments_db(True)
     treatments_dict = {item["ready_route"]: item["tytul_glowny"] for item in treatmentShortly}
     if treatment_slug in treatments_dict:
         pageTitle = treatments_dict[treatment_slug]
