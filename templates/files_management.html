@@ -460,6 +460,8 @@
                             if (data.error) {
                                 throw new Error(data.error);
                             }
+                            // Zamknij modal edycji przed pokazaniem modala sukcesu
+                            editModal.hide();
                             showSuccessModal(data.message, () => location.reload());
                         })
                         .catch(error => {
