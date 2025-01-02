@@ -621,15 +621,17 @@
                             <div class="d-flex">
                                 {% if treatmentOne.treatment_general_status %}
                                     <!-- # ikona oka # -->
-                                    <i class="bi bi-eye eye-icon icon-size" id="treatment-treatment_general_status-{{treatmentOne.id}}-1-1" data-type="switch" data-state="{{treatmentOne.page_attached_worker_status}}"></i>
+                                    <i class="bi bi-eye eye-icon icon-size" title="Ukryj" id="treatment-treatment_general_status-{{treatmentOne.id}}-1-1" data-type="switch" data-state="{{treatmentOne.page_attached_worker_status}}"></i>
+
                                 {% else %}
                                     <!-- # ikona oka # -->
-                                    <i class="bi bi-eye-slash eye-icon icon-size" id="treatment-treatment_general_status-{{treatmentOne.id}}-1-1" data-type="switch" data-state="0" style="color:#02bbff"></i>
+                                    <i class="bi bi-eye-slash eye-icon icon-size" title="Pokaż" id="treatment-treatment_general_status-{{treatmentOne.id}}-1-1" data-type="switch" data-state="0" style="color:#02bbff"></i>
                                 {% endif %}
                                 <i
                                     id="treatment-treatment_general_status-{{treatmentOne.id}}-1-1" 
                                     data-editable 
                                     data-type="remover"
+                                    title="Usuń z zabiegów"
                                     class="bi bi-trash3-fill text-danger icon-size ms-5"></i></h3>
                             </div>
                         </div>
