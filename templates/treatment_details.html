@@ -933,7 +933,7 @@
                 });
     } else if (dataType === 'remover') {
         // Obsługa typu remover
-        const confirmRemove = confirm('Czy na pewno chcesz usunąć ten element?');
+        const confirmRemove = showConfirmModal('Czy na pewno chcesz usunąć ten element?');
         if (confirmRemove) {
             sendDataToBackend(elementId, dataType, null);
             // Wyświetlenie informacji o sukcesie
@@ -1243,7 +1243,7 @@
             const newState = currentState === 0 ? 1 : 0;
 
             // Wyświetlenie komunikatu o zmianie
-            const confirmToggle = confirm(
+            const confirmToggle = showConfirmModal(
                 `Czy na pewno chcesz zmienić stan elementu o ID ${elementId} na ${newState === 1 ? 'ON' : 'OFF'}?`
             );
             if (!confirmToggle) return;
