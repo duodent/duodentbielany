@@ -175,10 +175,10 @@
                     {% if userName!='NotLogin' %}
                         <div class="services-details-content">
                             <h3 id="treatment-page_title_section_1-{{treatmentOne.id}}-1-1" data-editable data-type="text">
-                                {{treatmentOne.page_title_section_1}}
+                                {{treatmentOne.page_title_section_1|linebreaksbr}}
                             </h3>
                             <p id="treatment-page_content_section_1-{{treatmentOne.id}}-1-1" data-editable data-type="text">
-                                {{treatmentOne.page_content_section_1}}
+                                {{treatmentOne.page_content_section_1|linebreaksbr}}
                             </p>
                         </div>
                     {% else %}
@@ -186,12 +186,12 @@
                             <div class="services-details-content">
                                 {% if treatmentOne.page_title_section_1 %}
                                     <h3>
-                                        {{treatmentOne.page_title_section_1}}
+                                        {{treatmentOne.page_title_section_1|linebreaksbr}}
                                     </h3>
                                 {% endif %}
                                 {% if treatmentOne.page_content_section_1 %}
                                     <p>
-                                        {{treatmentOne.page_content_section_1}}
+                                        {{treatmentOne.page_content_section_1|linebreaksbr}}
                                     </p>
                                 {% endif %}
                             </div>
@@ -286,12 +286,12 @@
                     </div>
                     {% if userName!='NotLogin' %}
                         <p id="treatment-page_subcontent_section_1-{{treatmentOne.id}}-1-1" data-editable data-type="text">
-                            {{treatmentOne.page_subcontent_section_1}}
+                            {{treatmentOne.page_subcontent_section_1|linebreaksbr}}
                         </p>
                     {% else %}
                         {% if treatmentOne.page_subcontent_section_1 %}
                             <p>
-                                {{treatmentOne.page_subcontent_section_1}}
+                                {{treatmentOne.page_subcontent_section_1|linebreaksbr}}
                             </p>
                         {% endif %}
                     {% endif %}
@@ -331,12 +331,12 @@
                     </div>
                     {% if userName!='NotLogin' %}
                         <p id="treatment-page_subcontent_section_2-{{treatmentOne.id}}-1-1" data-editable data-type="text">
-                            {{treatmentOne.page_subcontent_section_2}}
+                            {{treatmentOne.page_subcontent_section_2|linebreaksbr}}
                         </p>
                     {% else %}
                         {% if treatmentOne.page_subcontent_section_2 %}
                             <p>
-                                {{treatmentOne.page_subcontent_section_2}}
+                                {{treatmentOne.page_subcontent_section_2|linebreaksbr}}
                             </p>
                         {% endif %}
                     {% endif %}
@@ -344,36 +344,36 @@
                     <div class="services-details-overview-content">
                         {% if userName!='NotLogin' %}
                             <h4 id="treatment-page_title_section_3-{{treatmentOne.id}}-1-1" data-editable data-type="text">
-                                {{treatmentOne.page_title_section_3}}
+                                {{treatmentOne.page_title_section_3|linebreaksbr}}
                             </h4>
                         {% else %}
                             {% if treatmentOne.page_title_section_3 %}
                                 <h4>
-                                    {{treatmentOne.page_title_section_3}}
+                                    {{treatmentOne.page_title_section_3|linebreaksbr}}
                                 </h4>
                             {% endif %}
                         {% endif %}
 
                         {% if userName!='NotLogin' %}
                             <p id="treatment-page_content_section_3-{{treatmentOne.id}}-1-1" data-editable data-type="text">
-                                {{treatmentOne.page_content_section_3}}
+                                {{treatmentOne.page_content_section_3|linebreaksbr}}
                             </p>
                         {% else %}
                             {% if treatmentOne.page_content_section_3 %}
                                 <p>
-                                    {{treatmentOne.page_content_section_3}}
+                                    {{treatmentOne.page_content_section_3|linebreaksbr}}
                                 </p>
                             {% endif %}
                         {% endif %}
 
                         {% if userName!='NotLogin' %}
                             <h4 id="treatment-page_title_section_4-{{treatmentOne.id}}-1-1" data-editable data-type="text">
-                                {{treatmentOne.page_title_section_4}}
+                                {{treatmentOne.page_title_section_4|linebreaksbr}}
                             </h4>
                         {% else %}
                             {% if treatmentOne.page_title_section_4 %}
                                 <h4>
-                                    {{treatmentOne.page_title_section_4}}
+                                    {{treatmentOne.page_title_section_4|linebreaksbr}}
                                 </h4>
                             {% endif %}
                         {% endif %}
@@ -385,7 +385,7 @@
                         {% else %}
                             {% if treatmentOne.page_content_section_4 %}
                                 <p>
-                                    {{treatmentOne.page_content_section_4}}
+                                    {{treatmentOne.page_content_section_4|linebreaksbr}}
                                 </p>
                             {% endif %}
                         {% endif %}
@@ -394,7 +394,7 @@
                         <div class="row">
                             <h3 id="treatment-page_price_table_title_section_5-{{treatmentOne.id}}-1-1" data-editable data-type="text">
                             {% if treatmentOne.page_price_table_title_section_5 %}
-                                {{treatmentOne.page_price_table_title_section_5}}
+                                {{treatmentOne.page_price_table_title_section_5|linebreaksbr}}
                             {% else %}
                                 Cennik
                             {% endif %}
@@ -450,7 +450,7 @@
                             <div class="card mt-5" style="width: 100%;">
                                 {% if treatmentOne.page_price_table_title_section_5 %}
                                     <div class="card-header">
-                                        {{treatmentOne.page_price_table_title_section_5}}
+                                        {{treatmentOne.page_price_table_title_section_5|linebreaksbr}}
                                     </div>
                                 {% endif %}
                                 <ul class="list-group list-group-flush">
@@ -493,10 +493,10 @@
                                     data-type="picker"
                                     data-current-value="{{treatmentOne.page_attached_worker_id}}"
                                     
-                                    >{{treatmentOne.page_attached_worker_photo_name}}</h3>
+                                    >{{treatmentOne.page_attached_worker_photo_name|linebreaksbr}}</h3>
 
                                 <p {% if userName!='NotLogin' %}id="treatment-page_attached_worker_descriptions-{{treatmentOne.id}}-1-1" data-editable data-type="text"{% endif %}>
-                                    {{treatmentOne.page_attached_worker_descriptions}}
+                                    {{treatmentOne.page_attached_worker_descriptions|linebreaksbr}}
                                 </p>
                             </div>
                         </div>
@@ -946,19 +946,19 @@
                 .catch((error) => {
                     console.error('Błąd wczytywania opcji:', error);
                 });
-    } else if (dataType === 'remover') {
-        // Obsługa typu remover
-        showConfirmModal('Czy na pewno chcesz usunąć ten element?', (confirmRemove) => {
-            if (confirmRemove) {
-                sendDataToBackend(elementId, dataType, null);
-                // Wyświetlenie informacji o sukcesie
-                showSuccessMessage(`Pozycja o ID ${elementId} została usunięta! Poczekaj na przeładowanie aplikacji!`, "");
-            }
-        });
-    } else if (dataType === 'url') {
-            // Otwartą logikę pozostawiamy na później
-            console.log(`Logic for URL is not yet implemented for element ${elementId}.`);
-            alert('Obsługa URL jest w trakcie wdrażania. Spróbuj później.');
+        } else if (dataType === 'remover') {
+            // Obsługa typu remover
+            showConfirmModal('Czy na pewno chcesz usunąć ten element?', (confirmRemove) => {
+                if (confirmRemove) {
+                    sendDataToBackend(elementId, dataType, null);
+                    // Wyświetlenie informacji o sukcesie
+                    showSuccessMessage(`Pozycja o ID ${elementId} została usunięta! Poczekaj na przeładowanie aplikacji!`, "");
+                }
+            });
+        } else if (dataType === 'url') {
+                // Otwartą logikę pozostawiamy na później
+                console.log(`Logic for URL is not yet implemented for element ${elementId}.`);
+                alert('Obsługa URL jest w trakcie wdrażania. Spróbuj później.');
         } else {
             // Obsługa innych typów danych
             element.setAttribute('contenteditable', 'true');
