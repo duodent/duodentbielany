@@ -1298,38 +1298,7 @@
     // // // Funkcje do zarządzania stanem: ustawianie, odczyt, zapis i reset // // //
 
     // SWX V 1.0
-    // document.addEventListener('click', (event) => {
-    //     const element = event.target;
-
-    //     // Sprawdź, czy kliknięty element ma atrybut data-type="switch"
-    //     if (element.getAttribute('data-type') === 'switch') {
-    //         const elementId = element.getAttribute('id');
-    //         const currentState = parseInt(element.getAttribute('data-state'), 10);
-
-    //         // Sprawdzenie aktualnego stanu i przełączenie
-    //         const newState = currentState === 0 ? 1 : 0;
-
-    //         (async () => {
-    //             const confirmToggle = await showConfirmModal(
-    //                 `Czy na pewno chcesz zmienić stan elementu o ID ${elementId} na ${newState === 1 ? 'ON' : 'OFF'}?`
-    //             );
-    //             if (!confirmToggle) return;
-
-    //             // Zaktualizowanie stanu w atrybucie HTML
-    //             element.setAttribute('data-state', newState);
-
-    //             // Wysłanie danych do backendu
-    //             sendDataToBackend(elementId, 'switch', newState);
-
-    //             // Wyświetlenie komunikatu o powodzeniu
-    //             showSuccessMessage(
-    //                 `Stan elementu o ID ${elementId} został zmieniony na ${newState === 1 ? 'ON' : 'OFF'}!`,
-    //                 elementId
-    //             );
-    //         })();
-    //     }
-    // });
-    document.addEventListener('click', async (event) => {
+    document.addEventListener('click', (event) => {
         const element = event.target;
 
         // Sprawdź, czy kliknięty element ma atrybut data-type="switch"
@@ -1340,8 +1309,7 @@
             // Sprawdzenie aktualnego stanu i przełączenie
             const newState = currentState === 0 ? 1 : 0;
 
-            try {
-                // Wyświetlenie modala i oczekiwanie na potwierdzenie
+            (async () => {
                 const confirmToggle = await showConfirmModal(
                     `Czy na pewno chcesz zmienić stan elementu o ID ${elementId} na ${newState === 1 ? 'ON' : 'OFF'}?`
                 );
@@ -1351,19 +1319,19 @@
                 element.setAttribute('data-state', newState);
 
                 // Wysłanie danych do backendu
-                await sendDataToBackend(elementId, 'switch', newState);
+                sendDataToBackend(elementId, 'switch', newState);
 
                 // Wyświetlenie komunikatu o powodzeniu
                 showSuccessMessage(
                     `Stan elementu o ID ${elementId} został zmieniony na ${newState === 1 ? 'ON' : 'OFF'}!`,
                     elementId
                 );
-            } catch (error) {
-                console.error(`Błąd podczas zmiany stanu elementu o ID ${elementId}:`, error);
-                showErrorModal(`Nie udało się zmienić stanu elementu o ID ${elementId}. Spróbuj ponownie.`);
-            }
+            })();
         }
     });
+
+    
+
 </script>
 {% endif %}
     
