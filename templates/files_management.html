@@ -72,7 +72,7 @@
                             Ustaw kolejność Kategorii
                         </span>
                         
-                        <p class="m-1">
+                        <p class="mt-2">
                             Organizuj pliki według kategorii, zmieniaj ich nazwy, usuwaj zbędne elementy lub dodawaj nowe pliki i kategorie. Ułatwiamy zarządzanie zasobami w prosty i intuicyjny sposób.
                         </p>
                     </div>
@@ -84,7 +84,7 @@
             <!-- Lista kategorii do sortowania -->
             <div class="row align-items-center mt-2">
                 <div class="col-lg-6 mx-auto">
-                    <div id="category-list-sort" class="row">
+                    <div id="category-list-sort" class="row border-1 rounded border-secondary">
                         {% for category in categories %}
                         <div class="col-12 justify-content-center align-items-center border-0 p-3" data-id="{{ category.id }}">
                             <!-- Nagłówek kategorii -->
