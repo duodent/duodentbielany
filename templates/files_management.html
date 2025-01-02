@@ -88,7 +88,7 @@
                         {% for category in categories %}
                         <div class="col-12 justify-content-center align-items-center p-3" data-id="{{ category.id }}">
                             <!-- Nagłówek kategorii -->
-                            <div class="col-lg-12 col-md-12 section-title-warp d-flex justify-content-center align-items-center">
+                            <div class="edit-category-name-col col-lg-12 col-md-12 section-title-warp d-flex justify-content-center align-items-center">
                                 <span class="sub-title">
                                     <i class="flaticon-hashtag-symbol"></i>
                                     {{ category.name }}
@@ -375,7 +375,10 @@
         document.querySelectorAll('.edit-category').forEach(button => {
             button.addEventListener('click', function () {
                 const categoryId = this.dataset.id;
-                const currentName = this.closest('.list-group-item').querySelector('.category-name').textContent;
+                const currentName = this.closest('.edit-category-name-col').querySelector('.sub-title').textContent.trim();
+                // const currentName = this.closest('.col-12')
+                //     .querySelector('.sub-title')
+                //     .textContent.trim();
 
                 const modal = new bootstrap.Modal(document.getElementById('edit-category-modal'));
                 document.getElementById('edit-category-name').value = currentName;
