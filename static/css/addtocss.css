@@ -340,3 +340,19 @@
 .widget.widget_info .eye-icon:hover {
     color: #007bff; /* Kolor ikony po najechaniu */
 }
+
+.icon-size {
+    font-size: 1rem; /* Domyślny rozmiar */
+}
+
+@media (min-width: 576px) { /* Rozmiar SM */
+    .icon-size {
+        font-size: 1.5rem;
+    }
+}
+
+@media (min-width: 992px) { /* Rozmiar LG */
+    .icon-size {
+        font-size: 2rem;
+    }
+}
