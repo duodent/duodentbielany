@@ -1308,25 +1308,19 @@
 
             // Sprawdzenie aktualnego stanu i przełączenie
             const newState = currentState === 0 ? 1 : 0;
-
-            (async () => {
-                const confirmToggle = await showConfirmModal(
-                    `Czy na pewno chcesz zmienić stan elementu o ID ${elementId} na ${newState === 1 ? 'ON' : 'OFF'}?`
-                );
-                if (!confirmToggle) return;
-
-                // Zaktualizowanie stanu w atrybucie HTML
-                element.setAttribute('data-state', newState);
-
-                // Wysłanie danych do backendu
-                sendDataToBackend(elementId, 'switch', newState);
-
-                // Wyświetlenie komunikatu o powodzeniu
-                showSuccessMessage(
-                    `Stan elementu o ID ${elementId} został zmieniony na ${newState === 1 ? 'ON' : 'OFF'}!`,
-                    elementId
-                );
-            })();
+            showConfirmModal(`Czy na pewno chcesz zmienić stan elementu na ${newState === 1 ? 'ON' : 'OFF'}?`, (confirmRemove) => {
+                if (confirmRemove) {
+                    // Zaktualizowanie stanu w atrybucie HTML
+                    element.setAttribute('data-state', newState);
+                    // Wysłanie danych do backendu
+                    sendDataToBackend(elementId, 'switch', newState);
+                    // Wyświetlenie komunikatu o powodzeniu
+                    showSuccessMessage(
+                        `Stan elementu o ID ${elementId} został zmieniony na ${newState === 1 ? 'ON' : 'OFF'}!`,
+                        elementId
+                    );
+                }
+            });
         }
     });
 
