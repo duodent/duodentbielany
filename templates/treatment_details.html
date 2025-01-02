@@ -800,26 +800,6 @@
     }
 
     // Funkcja wyświetlająca modal potwierdzeń
-    // function showConfirmModal(message) {
-    //     return new Promise((resolve) => {
-    //         const confirmModal = new bootstrap.Modal(document.getElementById('confirm-modal'));
-    //         document.getElementById('confirm-modal-message').textContent = message || 'Czy na pewno chcesz kontynuować?';
-    //         confirmModal.show();
-
-    //         const confirmButton = document.getElementById('confirm-modal-confirm');
-    //         const cancelButton = document.querySelector('#confirm-modal .btn-secondary');
-
-    //         confirmButton.onclick = function () {
-    //             confirmModal.hide();
-    //             resolve(true); // Zwraca true, gdy użytkownik potwierdzi
-    //         };
-
-    //         cancelButton.onclick = function () {
-    //             confirmModal.hide();
-    //             resolve(false); // Zwraca false, gdy użytkownik anuluje
-    //         };
-    //     });
-    // }
     function showConfirmModal(message, onConfirm) {
         const confirmModal = new bootstrap.Modal(document.getElementById('confirm-modal'));
         document.getElementById('confirm-modal-message').textContent = message || 'Czy na pewno chcesz kontynuować?';
@@ -876,32 +856,7 @@
             });
 
             fileInput.click();
-        }
-        // if (dataType === 'img') {
-        //     // Obsługa obrazka (bez zmian)
-        //     const fileInput = document.createElement('input');
-        //     fileInput.type = 'file';
-        //     fileInput.accept = 'image/*';
-
-        //     fileInput.addEventListener('change', () => {
-        //         const file = fileInput.files[0];
-        //         if (!file) return;
-
-        //         const confirmUpload = showConfirmModal('Czy na pewno chcesz załadować to zdjęcie?');
-        //         if (!confirmUpload) return;
-
-        //         const formData = new FormData();
-        //         formData.append('id', elementId);
-        //         formData.append('type', dataType);
-        //         formData.append('file', file);
-
-        //         sendFileToBackend(formData, element);
-        //         showSuccessMessage(`Zdjęcie o ID ${elementId} zostało Zaktualizowane! Poczekaj na przeładowanie aplikacji!`, elementId);
-        //     });
-
-        //     fileInput.click();
-        // } 
-        else if (dataType === 'picker') {
+        } else if (dataType === 'picker') {
             // Obsługa typu picker
             fetchPickerOptions(elementId)
                 .then((options) => {
@@ -993,13 +948,6 @@
                 });
     } else if (dataType === 'remover') {
         // Obsługa typu remover
-        // const confirmRemove = showConfirmModal('Czy na pewno chcesz usunąć ten element?');
-        // if (confirmRemove) {
-        //     sendDataToBackend(elementId, dataType, null);
-        //     // Wyświetlenie informacji o sukcesie
-        //     showSuccessMessage(`Pozycja o ID ${elementId} została usunieta! Poczekaj na przeładowanie aplikacji!`, "");
-
-        // }
         showConfirmModal('Czy na pewno chcesz usunąć ten element?', (confirmRemove) => {
             if (confirmRemove) {
                 sendDataToBackend(elementId, dataType, null);
