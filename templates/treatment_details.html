@@ -800,18 +800,25 @@
     }
 
     // Funkcja wyświetlająca modal potwierdzeń
-    function showConfirmModal(message, onConfirm) {
-        const confirmModal = new bootstrap.Modal(document.getElementById('confirm-modal'));
-        document.getElementById('confirm-modal-message').textContent = message || 'Czy na pewno chcesz kontynuować?';
-        confirmModal.show();
+    function showConfirmModal(message) {
+        return new Promise((resolve) => {
+            const confirmModal = new bootstrap.Modal(document.getElementById('confirm-modal'));
+            document.getElementById('confirm-modal-message').textContent = message || 'Czy na pewno chcesz kontynuować?';
+            confirmModal.show();
 
-        const confirmButton = document.getElementById('confirm-modal-confirm');
-        const modalElement = document.getElementById('confirm-modal');
+            const confirmButton = document.getElementById('confirm-modal-confirm');
+            const cancelButton = document.querySelector('#confirm-modal .btn-secondary');
 
-        confirmButton.onclick = function () {
-            if (onConfirm) onConfirm();
-            confirmModal.hide();
-        };
+            confirmButton.onclick = function () {
+                confirmModal.hide();
+                resolve(true); // Zwraca true, gdy użytkownik potwierdzi
+            };
+
+            cancelButton.onclick = function () {
+                confirmModal.hide();
+                resolve(false); // Zwraca false, gdy użytkownik anuluje
+            };
+        });
     }
 
     function makeElementEditable(element) {
@@ -829,7 +836,7 @@
                 if (!file) return;
 
                 // Wyświetlenie modala i oczekiwanie na potwierdzenie
-                const confirmUpload = await showConfirmModal('Czy na pewno chcesz załadować to zdjęcie?');
+                const confirmUpload = showConfirmModal('Czy na pewno chcesz załadować to zdjęcie?');
                 if (!confirmUpload) return;
 
                 const formData = new FormData();
