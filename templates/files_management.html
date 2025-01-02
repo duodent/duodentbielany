@@ -147,6 +147,52 @@
             </div>
 
         </div>
+        <div class="row">
+            {% for item in categorized_files %}
+                <!-- Nagłówek kategorii -->
+                <div class="col-lg-12 col-md-12 section-title-warp">
+                    <span class="sub-title">
+                        <i class="flaticon-hashtag-symbol"></i>
+                        {{ item.category }}
+                    </span>
+                </div>
+        
+                {% for file in item.file_list %}
+                    <div class="col-sm-12 col-lg-4 col-md-6">
+                        <div class="single-blog">
+                            <div class="blog-content">
+                                <div class="row">
+                                    <div class="col-2">
+                                        <h1><i class="fas fa-download text-info"></i></h1>
+                                    </div>
+                                    <div class="col-10">
+                                        <h5>
+                                            <a href="/{{ file.file_name }}">{{ file.name }}</a>
+                                        </h5>
+                                    </div>
+                                </div>
+                                <ul class="entry-meta">
+                                    <li>
+                                        <i class="far fa-folder-open"></i>
+                                        {{ item.category }}
+                                    </li>
+                                    <li class="mt-2">
+                                        <!-- Opcje administratora -->
+                                        <i class="bi bi-pencil-square text-warning edit-file-name" data-file-id="{{ file.id }}" title="Edytuj nazwę"></i>
+                                        <i class="bi bi-trash-fill text-danger delete-file" data-file-name="{{ file.file_name }}" title="Usuń"></i>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                {% else %}
+                    <div class="col-lg-12">
+                        <p>Brak aktywnych plików w tej kategorii.</p>
+                    </div>
+                {% endfor %}
+            {% endfor %}
+        </div>
+        
             
     </div>
 </section>
@@ -331,6 +377,104 @@
         });
     });
 
+    document.addEventListener('DOMContentLoaded', function () {
+        // Funkcja wyświetlająca modal błędów
+        function showErrorModal(message) {
+            const errorModal = new bootstrap.Modal(document.getElementById('error-modal'));
+            document.getElementById('error-modal-message').textContent = message || 'Wystąpił nieoczekiwany błąd.';
+            errorModal.show();
+        }
+
+        // Funkcja wyświetlająca modal sukcesów
+        function showSuccessModal(message, callback) {
+            const successModal = new bootstrap.Modal(document.getElementById('success-modal'));
+            document.getElementById('success-modal-message').textContent = message || 'Operacja zakończona pomyślnie.';
+            successModal.show();
+
+            const modalElement = document.getElementById('success-modal');
+            modalElement.addEventListener('hidden.bs.modal', function onHidden() {
+                if (callback) callback();
+                modalElement.removeEventListener('hidden.bs.modal', onHidden);
+            });
+        }
+
+        // Funkcja wyświetlająca modal potwierdzeń
+        function showConfirmModal(message, onConfirm) {
+            const confirmModal = new bootstrap.Modal(document.getElementById('confirm-modal'));
+            document.getElementById('confirm-modal-message').textContent = message || 'Czy na pewno chcesz kontynuować?';
+            confirmModal.show();
+
+            const confirmButton = document.getElementById('confirm-modal-confirm');
+            const modalElement = document.getElementById('confirm-modal');
+
+            confirmButton.onclick = function () {
+                if (onConfirm) onConfirm();
+                confirmModal.hide();
+            };
+        }
+
+        // Edycja nazwy pliku
+        document.querySelectorAll('.edit-file-name').forEach(button => {
+            button.addEventListener('click', function () {
+                const fileId = this.dataset.fileId;
+                const currentName = this.closest('.blog-content').querySelector('h5 a').textContent;
+
+                const modal = new bootstrap.Modal(document.getElementById('edit-file-modal'));
+                document.getElementById('edit-file-input').value = currentName;
+                modal.show();
+
+                document.getElementById('edit-file-form').onsubmit = function (e) {
+                    e.preventDefault();
+                    const newName = document.getElementById('edit-file-input').value.trim();
+
+                    if (newName) {
+                        fetch('/admin/edytuj_nazwe_pliku', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ file_id: fileId, new_name: newName })
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.error) {
+                                throw new Error(data.error);
+                            }
+                            showSuccessModal(data.message, () => location.reload());
+                        })
+                        .catch(error => {
+                            console.error('Błąd:', error);
+                            showErrorModal(error.message);
+                        });
+                    }
+                };
+            });
+        });
+
+        // Usuwanie pliku
+        document.querySelectorAll('.delete-file').forEach(button => {
+            button.addEventListener('click', function () {
+                const fileName = this.dataset.fileName;
+
+                showConfirmModal('Czy na pewno chcesz usunąć ten plik?', function () {
+                    fetch('/admin/usun_plik', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ file_name: fileName })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.error) {
+                            throw new Error(data.error);
+                        }
+                        showSuccessModal(data.message, () => location.reload());
+                    })
+                    .catch(error => {
+                        console.error('Błąd:', error);
+                        showErrorModal(error.message);
+                    });
+                });
+            });
+        });
+    });
 
 
 </script>
