@@ -127,6 +127,25 @@
                 </div>
             </div>
 
+            <!-- Modal potwierdzeń -->
+            <div class="modal fade" id="confirm-modal" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header bg-warning text-white">
+                            <h5 class="modal-title" id="confirmModalLabel">Potwierdź Działanie</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <p id="confirm-modal-message">Czy na pewno chcesz wykonać tę operację?</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Anuluj</button>
+                            <button type="button" class="btn btn-danger" id="confirm-modal-confirm">Potwierdź</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </div>
             
     </div>
@@ -172,12 +191,26 @@
         document.getElementById('success-modal-message').textContent = message || 'Operacja zakończona pomyślnie.';
         successModal.show();
 
-        // Dodajemy możliwość wywołania callbacka po zamknięciu modala
         const modalElement = document.getElementById('success-modal');
         modalElement.addEventListener('hidden.bs.modal', function onHidden() {
             if (callback) callback();
             modalElement.removeEventListener('hidden.bs.modal', onHidden);
         });
+    }
+
+    // Funkcja wyświetlająca modal potwierdzeń
+    function showConfirmModal(message, onConfirm) {
+        const confirmModal = new bootstrap.Modal(document.getElementById('confirm-modal'));
+        document.getElementById('confirm-modal-message').textContent = message || 'Czy na pewno chcesz kontynuować?';
+        confirmModal.show();
+
+        const confirmButton = document.getElementById('confirm-modal-confirm');
+        const modalElement = document.getElementById('confirm-modal');
+
+        confirmButton.onclick = function () {
+            if (onConfirm) onConfirm();
+            confirmModal.hide();
+        };
     }
 
     document.addEventListener('DOMContentLoaded', function () {
@@ -247,7 +280,7 @@
             button.addEventListener('click', function () {
                 const categoryId = this.dataset.id;
 
-                if (confirm('Czy na pewno chcesz usunąć tę kategorię?')) {
+                showConfirmModal('Czy na pewno chcesz usunąć tę kategorię?', function () {
                     fetch('/admin/usun_kategorie', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
@@ -264,7 +297,7 @@
                         console.error('Błąd:', error);
                         showErrorModal(error.message);
                     });
-                }
+                });
             });
         });
 
