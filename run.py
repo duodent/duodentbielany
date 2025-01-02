@@ -620,7 +620,7 @@ def ustawieni_pracownicy():
 def inject_shared_variable():
     return {
         'userName': session.get("username", 'NotLogin'),
-        'treatmentMenu': {item["ready_route"]: item["tytul_glowny"] for item in treatments_db()}
+        'treatmentMenu': {item["ready_route"]: item["tytul_glowny"] for item in treatments_db(True)}
     }
 
 @app.route('/admin/zarzadzanie-zabiegami')
@@ -1331,7 +1331,7 @@ def treatments_db(acvtity=False):
             pozycja_kolejnosci
         FROM tabela_uslug
         {where_query_acvtity}
-        ORDER BY pozycja_kolejnosci ASC
+        ORDER BY pozycja_kolejnosci ASC;
     """
     db_dump = msq.connect_to_database(zapytanie_sql)
     export = []
@@ -1588,8 +1588,8 @@ def validatorZip(list1, list2):
 
 @app.route('/zabieg-stomatologiczny/<path:treatment_slug>')
 def treatment_dynamic(treatment_slug):
-    treatmentShortly = treatments_db(True)
-    treatments_dict = {item["ready_route"]: item["tytul_glowny"] for item in treatmentShortly}
+    treatmentShortly = treatments_db()
+    treatments_dict = {item["ready_route"]: item["tytul_glowny"] for item in treatments_db(False)}
     if treatment_slug in treatments_dict:
         pageTitle = treatments_dict[treatment_slug]
         session['page'] = treatment_slug
