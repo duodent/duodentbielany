@@ -74,6 +74,7 @@ class LoginForm(FlaskForm):
 #     translation = translator.translate(str(text), dest='en')
 #     return translation.text
 
+
 def format_date(date_input, pl=True):
     ang_pol = {
         'January': 'styczeń',
@@ -322,6 +323,11 @@ def smart_truncate(content, length=400):
         truncated_content = content[:length].rsplit(' ', 1)[0]
         return f"{truncated_content}..."
 
+@app.template_filter('linebreaksbr')
+def linebreaksbr(value):
+    if not isinstance(value, str):
+        return value
+    return value.replace('\n', '<br />')
 
 @app.route('/robots.txt', methods=['GET'])
 def robots():
