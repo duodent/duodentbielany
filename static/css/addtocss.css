@@ -342,17 +342,17 @@
 }
 
 .icon-size {
-    font-size: 1rem; /* Domyślny rozmiar */
+    font-size: 1.5rem; /* Domyślny rozmiar */
 }
 
 @media (min-width: 576px) { /* Rozmiar SM */
     .icon-size {
-        font-size: 1.5rem;
+        font-size: 2rem;
     }
 }
 
 @media (min-width: 992px) { /* Rozmiar LG */
     .icon-size {
-        font-size: 2rem;
+        font-size: 1rem;
     }
 }
