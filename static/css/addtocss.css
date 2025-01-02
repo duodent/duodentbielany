@@ -342,7 +342,7 @@
 }
 
 .icon-size {
-    font-size: 1.8rem !important; /* Domyślny rozmiar */
+    font-size: 1.8rem; /* Domyślny rozmiar */
 }
 
 @media (min-width: 992px) { /* Rozmiar LG */
