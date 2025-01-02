@@ -31,84 +31,67 @@
                 </div>
             </div>
         </div>
+
         <div class="row">
-            <h1 class="mb-4">Zarządzanie Plikami</h1>
-        
-            {% for item in categorized_files %}
-                <div class="accordion mb-4" id="category-accordion-{{ item.category }}">
-                    <div class="accordion-item">
-                        <h2 class="accordion-header d-flex justify-content-between align-items-center">
-                            <span>Kategoria: {{ item.category }}</span>
-                            <div>
-                                <i class="bi bi-plus-square-fill text-primary me-2" data-bs-toggle="collapse" data-bs-target="#add-file-{{ item.category }}" aria-expanded="false" aria-controls="add-file-{{ item.category }}" title="Dodaj plik"></i>
-                                <i class="bi bi-pencil-square text-warning me-2 edit-category" data-id="{{ item.id }}" title="Edytuj kategorię"></i>
-                                <i class="bi bi-trash-fill text-danger delete-category" data-id="{{ item.id }}" title="Usuń kategorię"></i>
-                            </div>
-                        </h2>
-                        <div class="accordion-collapse collapse show" id="add-file-{{ item.category }}" data-bs-parent="#category-accordion-{{ item.category }}">
-                            <div class="accordion-body">
-                                <ul class="list-group mb-3">
-                                    {% for file in item.file_list %}
-                                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                                            <span class="file-name">{{ file.name }}</span>
-                                            <div>
-                                                <a href="/{{ file.file_name }}" class="btn btn-link text-decoration-none" download><i class="bi bi-download text-success me-2" title="Pobierz"></i></a>
-                                                <i class="bi bi-pencil-square text-warning edit-file-name" data-file-id="{{ file.id }}" title="Edytuj nazwę"></i>
-                                                <i class="bi bi-trash-fill text-danger delete-file" data-file-name="{{ file.file_name }}" title="Usuń"></i>
-                                            </div>
-                                        </li>
-                                    {% else %}
-                                        <li class="list-group-item">Brak aktywnych plików w tej kategorii.</li>
-                                    {% endfor %}
-                                </ul>
-        
-                                <!-- Formularz dodawania pliku -->
-                                <div class="collapse" id="add-file-form-{{ item.category }}">
-                                    <form class="row g-3" enctype="multipart/form-data" data-category-id="{{ item.category }}">
-                                        <div class="form-floating col-md-8">
-                                            <input type="text" class="form-control" id="file-name-{{ item.category }}" placeholder="Nazwa pliku" required>
-                                            <label for="file-name-{{ item.category }}">Nazwa pliku</label>
-                                        </div>
-                                        <div class="form-floating col-md-4">
-                                            <input type="file" class="form-control" id="file-input-{{ item.category }}" required>
-                                            <label for="file-input-{{ item.category }}">Wybierz plik</label>
-                                        </div>
-                                        <div class="d-flex justify-content-end">
-                                            <button type="submit" class="btn btn-primary"><i class="bi bi-plus-lg me-1"></i>Dodaj</button>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            {% endfor %}
-        
-            <!-- Modal do edycji nazwy pliku -->
-            <div id="edit-file-modal" class="modal fade" tabindex="-1">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title">Edytuj nazwę pliku</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <form id="edit-file-form">
+            <h1 class="mb-4">Zarządzanie Kategoriami</h1>
+
+            <!-- Formularz dodawania kategorii -->
+            <div class="accordion mb-4" id="category-management">
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="add-category-heading">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#add-category-collapse" aria-expanded="false" aria-controls="add-category-collapse">
+                            <i class="bi bi-plus-square me-2 text-primary"></i> Dodaj Nową Kategorię
+                        </button>
+                    </h2>
+                    <div id="add-category-collapse" class="accordion-collapse collapse" aria-labelledby="add-category-heading" data-bs-parent="#category-management">
+                        <div class="accordion-body">
+                            <form id="add-category-form">
                                 <div class="form-floating mb-3">
-                                    <input type="text" class="form-control" id="edit-file-input" placeholder="Nowa nazwa pliku" required>
-                                    <label for="edit-file-input">Nowa nazwa pliku</label>
+                                    <input type="text" class="form-control" id="category-name" placeholder="Nazwa kategorii" required>
+                                    <label for="category-name">Nazwa kategorii</label>
                                 </div>
-                                <div class="d-flex justify-content-end">
-                                    <button type="submit" class="btn btn-success"><i class="bi bi-save me-1"></i>Zapisz</button>
-                                    <button type="button" class="btn btn-secondary ms-2" data-bs-dismiss="modal">Anuluj</button>
-                                </div>
+                                <button type="submit" class="btn btn-success"><i class="bi bi-plus-lg me-1"></i>Dodaj Kategorię</button>
                             </form>
                         </div>
                     </div>
                 </div>
             </div>
-        
+
+            <!-- Lista kategorii do sortowania -->
+            <ul id="category-list-sort" class="list-group">
+                {% for category in categories %}
+                <li class="list-group-item d-flex justify-content-between align-items-center" data-id="{{ category.id }}">
+                    <span class="category-name">{{ category.name }}</span>
+                    <div>
+                        <i class="bi bi-pencil-square text-warning edit-category" data-id="{{ category.id }}" title="Edytuj"></i>
+                        <i class="bi bi-trash-fill text-danger delete-category" data-id="{{ category.id }}" title="Usuń"></i>
+                    </div>
+                </li>
+                {% endfor %}
+            </ul>
+
+            <!-- Modal do edycji kategorii -->
+            <div class="modal fade" id="edit-category-modal" tabindex="-1" aria-labelledby="editCategoryModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="editCategoryModalLabel">Edytuj Kategorię</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="edit-category-form">
+                                <div class="form-floating mb-3">
+                                    <input type="text" class="form-control" id="edit-category-name" placeholder="Nowa nazwa kategorii" required>
+                                    <label for="edit-category-name">Nowa nazwa kategorii</label>
+                                </div>
+                                <button type="submit" class="btn btn-primary"><i class="bi bi-save me-1"></i>Zapisz</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
+            
     </div>
 </section>
 
@@ -139,102 +122,19 @@
 </script>
 <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.14.0/Sortable.min.js"></script>
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    // Dodawanie nowej kategorii
-    document.getElementById('add-category-form').addEventListener('submit', function(e) {
-        e.preventDefault();
-        const categoryName = document.getElementById('category-name').value;
+    document.addEventListener('DOMContentLoaded', function () {
+        // Dodawanie kategorii
+        document.getElementById('add-category-form').addEventListener('submit', function (e) {
+            e.preventDefault();
+            const categoryName = document.getElementById('category-name').value.trim();
 
-        fetch('/admin/dodaj_kategorie', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ name: categoryName, position: 0 })
-        })
-        .then(response => {
-            if (!response.ok) {
-                return response.text().then(err => { throw new Error(err); });
-            }
-            return response.json();
-        })
-        .then(data => {
-            alert(data.message);
-            location.reload();
-        })
-        .catch(error => {
-            console.error('Błąd:', error);
-            alert('Wystąpił błąd: ' + error.message);
-        });
-    });
-
-    // Sortowanie kategorii
-    const categoryList = document.getElementById('category-list-sort');
-    new Sortable(categoryList, {
-        animation: 150,
-        onEnd: function() {
-            // Pobieramy listę ID z data-id
-            const newOrder = Array.from(categoryList.children).map(item => item.dataset.id);
-
-            // Wysyłamy listę ID do serwera
-            fetch('/admin/aktualizuj_kolejnosc', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ order: newOrder })
-            })
-            .then(response => response.json())
-            .then(data => {
-                alert(data.message);
-            })
-            .catch(error => {
-                console.error('Błąd:', error);
-                alert('Wystąpił błąd: ' + error.message);
-            });
-        }
-    });
-
-    document.getElementById('upload-file-form').addEventListener('submit', function(e) {
-        e.preventDefault();
-        
-        const formData = new FormData();
-        formData.append('file', document.getElementById('file-input').files[0]);
-        formData.append('category_id', document.getElementById('file-category').value);
-        formData.append('name', document.getElementById('file-name').value);
-
-        fetch('/admin/dodaj_plik', {
-            method: 'POST',
-            body: formData
-        })
-        .then(response => {
-            if (!response.ok) {
-                return response.text().then(err => { throw new Error(err); });
-            }
-            return response.json();
-        })
-        .then(data => {
-            alert(data.message);
-            location.reload();
-        })
-        .catch(error => {
-            console.error('Błąd:', error);
-            alert('Wystąpił błąd: ' + error.message);
-        });
-    });
-
-    document.querySelectorAll('.delete-category').forEach(button => {
-        button.addEventListener('click', function() {
-            const categoryId = this.dataset.id;
-
-            if (confirm('Czy na pewno chcesz usunąć tę kategorię wraz z powiązanymi plikami?')) {
-                fetch('/admin/usun_kategorie', {
+            if (categoryName) {
+                fetch('/admin/dodaj_kategorie', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ category_id: categoryId })
+                    body: JSON.stringify({ name: categoryName })
                 })
-                .then(response => {
-                    if (!response.ok) {
-                        return response.text().then(err => { throw new Error(err); });
-                    }
-                    return response.json();
-                })
+                .then(response => response.json())
                 .then(data => {
                     alert(data.message);
                     location.reload();
@@ -245,80 +145,80 @@ document.addEventListener('DOMContentLoaded', function() {
                 });
             }
         });
-    });
 
-    const modal = document.getElementById('edit-category-modal');
-    const input = document.getElementById('edit-category-name');
-    let currentCategoryId = null;
+        // Edycja kategorii
+        document.querySelectorAll('.edit-category').forEach(button => {
+            button.addEventListener('click', function () {
+                const categoryId = this.dataset.id;
+                const currentName = this.closest('.list-group-item').querySelector('.category-name').textContent;
 
-    // Obsługa kliknięcia w "Edytuj"
-    document.querySelectorAll('.edit-category').forEach(button => {
-        button.addEventListener('click', function () {
-            currentCategoryId = this.dataset.id;
-            const currentName = this.parentElement.querySelector('.category-name').textContent;
-            input.value = currentName;
-            modal.style.display = 'block';
+                const modal = new bootstrap.Modal(document.getElementById('edit-category-modal'));
+                document.getElementById('edit-category-name').value = currentName;
+                modal.show();
+
+                document.getElementById('edit-category-form').onsubmit = function (e) {
+                    e.preventDefault();
+                    const newName = document.getElementById('edit-category-name').value.trim();
+
+                    if (newName) {
+                        fetch('/admin/edytuj_kategorie', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ category_id: categoryId, new_name: newName })
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            alert(data.message);
+                            location.reload();
+                        })
+                        .catch(error => {
+                            console.error('Błąd:', error);
+                            alert('Wystąpił błąd: ' + error.message);
+                        });
+                    }
+                };
+            });
         });
-    });
 
-    // Anulowanie edycji
-    document.getElementById('cancel-edit').addEventListener('click', function () {
-        modal.style.display = 'none';
-        currentCategoryId = null;
-    });
+        // Usuwanie kategorii
+        document.querySelectorAll('.delete-category').forEach(button => {
+            button.addEventListener('click', function () {
+                const categoryId = this.dataset.id;
 
-    // Zapisanie nowej nazwy
-    document.getElementById('save-category-name').addEventListener('click', function () {
-        const newName = input.value.trim();
-        if (!newName) {
-            alert('Nowa nazwa kategorii nie może być pusta.');
-            return;
-        }
-
-        fetch('/admin/edytuj_kategorie', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ category_id: currentCategoryId, new_name: newName })
-        })
-            .then(response => {
-                if (!response.ok) {
-                    return response.text().then(err => { throw new Error(err); });
+                if (confirm('Czy na pewno chcesz usunąć tę kategorię?')) {
+                    fetch('/admin/usun_kategorie', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ category_id: categoryId })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        alert(data.message);
+                        location.reload();
+                    })
+                    .catch(error => {
+                        console.error('Błąd:', error);
+                        alert('Wystąpił błąd: ' + error.message);
+                    });
                 }
-                return response.json();
-            })
-            .then(data => {
-                alert(data.message);
-                location.reload();
-            })
-            .catch(error => {
-                console.error('Błąd:', error);
-                alert('Wystąpił błąd: ' + error.message);
-            })
-            .finally(() => {
-                modal.style.display = 'none';
-                currentCategoryId = null;
             });
-    });
+        });
 
-    document.querySelectorAll('.delete-file').forEach(button => {
-        button.addEventListener('click', function () {
-            const fileName = this.dataset.fileName;
+        // Sortowanie kategorii
+        const categoryList = document.getElementById('category-list-sort');
+        new Sortable(categoryList, {
+            animation: 150,
+            onEnd: function () {
+                const newOrder = Array.from(categoryList.children).map(item => item.dataset.id);
 
-            if (confirm('Czy na pewno chcesz usunąć ten plik?')) {
-                fetch('/admin/usun_plik', {
+                fetch('/admin/aktualizuj_kolejnosc', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ file_name: fileName })
+                    body: JSON.stringify({ order: newOrder })
                 })
-                .then(response => {
-                    if (!response.ok) {
-                        return response.text().then(err => { throw new Error(err); });
-                    }
-                    return response.json();
-                })
+                .then(response => response.json())
                 .then(data => {
                     alert(data.message);
-                    location.reload();
                 })
                 .catch(error => {
                     console.error('Błąd:', error);
@@ -327,58 +227,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     });
-
-    const editModal = document.getElementById('edit-file-modal');
-    const editInput = document.getElementById('edit-file-input');
-    let currentFileId = null;
-
-    // Obsługa kliknięcia w "Edytuj nazwę"
-    document.querySelectorAll('.edit-file-name').forEach(button => {
-        button.addEventListener('click', function () {
-            currentFileId = this.dataset.fileId;
-            const currentName = this.parentElement.querySelector('.file-name').textContent;
-            editInput.value = currentName;
-            editModal.style.display = 'block';
-        });
-    });
-
-    // Anulowanie edycji
-    document.getElementById('edit-file-cancel').addEventListener('click', function () {
-        editModal.style.display = 'none';
-        currentFileId = null;
-    });
-
-    // Zapisanie nowej nazwy
-    document.getElementById('edit-file-save').addEventListener('click', function () {
-        const newName = editInput.value.trim();
-        if (!newName) {
-            alert('Nowa nazwa pliku nie może być pusta.');
-            return;
-        }
-
-        console.log({ file_id: currentFileId, new_name: newName }); // Logowanie danych przed wysłaniem
-
-        fetch('/admin/edytuj_nazwe_pliku', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ file_id: currentFileId, new_name: newName })
-        })
-        .then(response => {
-            if (!response.ok) {
-                return response.json().then(err => { throw new Error(err.message); });
-            }
-            return response.json();
-        })
-        .then(data => {
-            alert(data.message);
-            location.reload();
-        })
-        .catch(error => {
-            console.error('Błąd:', error);
-            alert('Wystąpił błąd: ' + error.message);
-        });
-    });
-});
 
 </script>
+
 {% endblock %}
