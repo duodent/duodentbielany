@@ -395,22 +395,26 @@
                     <div class="single-footer-widget">
                         <h3>Zabiegi</h3>
                         <div class="footer-widget-blog">
-                            <article class="item">
-                                <a href="/zabieg-stomatologiczny/protetyka-stomatologiczna-piekny-usmiech" class="thumb">
-                                    {% set bg_image_protetyka =url_for('static', filename='img/services/protetyka-home.jpg') %}
-                                    <span 
-                                        class="fullimage" 
-                                        style="background-image: url('{{ bg_image_protetyka }}');"
-                                        role="img">
-                                    </span>
-                                </a>
-                                <div class="info">
-                                    <h4><a href="/zabieg-stomatologiczny/protetyka-stomatologiczna-piekny-usmiech"><i class="flaticon-chair"></i> Protetyka</a></h4>
-                                    <span>
-                                        Nowoczesne rozwiązania protetyczne!
-                                    </span>
-                                </div>
-                            </article>
+                            {% for treat in treatmentFooter %}
+                                {% with bg_image=url_for('static', filename='img/services/' + treat.foto_home) %}
+                                    <article class="item">
+                                        <a href="/zabieg-stomatologiczny/{{treat.ready_route}}" class="thumb">
+                                            <span 
+                                                class="fullimage" 
+                                                style="background-image: url('{{ bg_image }}');"
+                                                role="img">
+                                            </span>
+                                        </a>
+                                        <div class="info">
+                                            <h4><a href="/zabieg-stomatologiczny/{{treat.ready_route}}"><i class="{{treat.icon}}"></i> {{treat.tytul_glowny}}</a></h4>
+                                            <span>
+                                                {{treat.opis_home}}
+                                            </span>
+                                        </div>
+                                    </article>
+                                {% endwith %}
+                            {% endfor %}
+                           
                             <article class="item">
                                 <a href="/zabieg-stomatologiczny/chirurgia-implantologia-odbudowa-usmiechu" class="thumb">
                                     {% set bg_image_implantologia =url_for('static', filename='img/services/implantologia-home.jpg') %}

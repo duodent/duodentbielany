@@ -170,60 +170,29 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-lg-4 col-md-6">
-                    <div class="single-services">
-                        <div class="services-image">
-                            <a href="/protetyka-stomatologiczna-piekny-usmiech"><img src="static/img/services/protetyka-home.jpg" alt="image"></a>
-                            <div class="icon">
-                                <a href="/protetyka-stomatologiczna-piekny-usmiech"><i class="flaticon-chair"></i></a>
+                {% for treat in treatmentFooter %}
+                    {% with bg_image=url_for('static', filename='img/services/' + treat.foto_home) %}
+                        <div class="col-lg-4 col-md-6">
+                            <div class="single-services">
+                                <div class="services-image">
+                                    <a href="/zabieg-stomatologiczny/{{treat.ready_route}}"><img src="{{ bg_image }}" alt="image"></a>
+                                    <div class="icon">
+                                        <a href="/zabieg-stomatologiczny/{{treat.ready_route}}"><i class="{{treat.icon}}"></i></a>
+                                    </div>
+                                </div>
+                                <div class="services-content">
+                                    <h3>
+                                        <a href="/zabieg-stomatologiczny/{{treat.ready_route}}">{{treat.tytul_glowny}}</a>
+                                    </h3>
+                                    <p>
+                                        {{treat.opis_home}}
+                                    </p>
+                                </div>
                             </div>
                         </div>
-                        <div class="services-content">
-                            <h3>
-                                <a href="/protetyka-stomatologiczna-piekny-usmiech">Protetyka</a>
-                            </h3>
-                            <p>
-                                Odkryj nowoczesne rozwiązania protetyczne, które przywrócą pełnię Twojego uśmiechu!
-                            </p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6">
-                    <div class="single-services">
-                        <div class="services-image">
-                            <a href="/chirurgia-implantologia-odbudowa-usmiechu"><img src="static/img/services/implantologia-home.jpg" alt="image"></a>
-                            <div class="icon">
-                                <a href="/chirurgia-implantologia-odbudowa-usmiechu"><i class="flaticon-dental-implant"></i></a>
-                            </div>
-                        </div>
-                        <div class="services-content">
-                            <h3>
-                                <a href="/chirurgia-implantologia-odbudowa-usmiechu">Implantologia</a>
-                            </h3>
-                            <p>
-                                Odzyskaj wygodę i komfort jedzenia z nowoczesnymi implantami!
-                            </p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6">
-                    <div class="single-services">
-                        <div class="services-image">
-                            <a href="/ortodoncja-aparaty-na-prosty-usmiech"><img src="static/img/services/ortodoncja-home.jpg" alt="image"></a>
-                            <div class="icon">
-                                <a href="/ortodoncja-aparaty-na-prosty-usmiech"><i class="flaticon-tooth"></i></a>
-                            </div>
-                        </div>
-                        <div class="services-content">
-                            <h3>
-                                <a href="/ortodoncja-aparaty-na-prosty-usmiech">Ortodoncja</a>
-                            </h3>
-                            <p>
-                                Zadbaj o idealne ustawienie zębów dla zdrowia, komfortu i harmonii całej twarzy!
-                            </p>
-                        </div>
-                    </div>
-                </div>
+                    {% endwith %}
+                {% endfor %}
+                
             </div>
         </div>
     </section>

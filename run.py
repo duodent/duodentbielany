@@ -618,9 +618,14 @@ def ustawieni_pracownicy():
 
 @app.context_processor
 def inject_shared_variable():
+
+    treatmentFooter = treatments_db(True)
+    if len(treatmentFooter) >= 3:
+        treatmentFooter = treatmentFooter[:3]
     return {
         'userName': session.get("username", 'NotLogin'),
-        'treatmentMenu': {item["ready_route"]: item["tytul_glowny"] for item in treatments_db(True)}
+        'treatmentMenu': {item["ready_route"]: item["tytul_glowny"] for item in treatments_db(True)},
+        'treatmentFooter': treatmentFooter
     }
 
 @app.route('/admin/zarzadzanie-zabiegami')
