@@ -1588,7 +1588,7 @@ def validatorZip(list1, list2):
 
 @app.route('/zabieg-stomatologiczny/<path:treatment_slug>')
 def treatment_dynamic(treatment_slug):
-    treatmentShortly = treatments_db()
+    
     treatments_dict = {item["ready_route"]: item["tytul_glowny"] for item in treatments_db(False)}
     if treatment_slug in treatments_dict:
         pageTitle = treatments_dict[treatment_slug]
@@ -1600,7 +1600,8 @@ def treatment_dynamic(treatment_slug):
                                     treatmentOne['page_price_table_content_list_comma_section_5'][1])
         for item in zip(desc, prizes):
             treatmentOne['prizeTableSync'].append(item)
-
+        
+        treatmentShortly = treatments_db(True)
         treatmentOne['treatmentShorts'] = []
         i=0
         for item in treatmentShortly:
