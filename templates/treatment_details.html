@@ -666,6 +666,61 @@
                     </aside>
                 </div>
             </div>
+            
+            <!-- Modal błędów -->
+            <div class="modal fade" id="error-modal" tabindex="-1" aria-labelledby="errorModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header bg-danger text-white">
+                            <h5 class="modal-title" id="errorModalLabel">Błąd</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <p id="error-modal-message">Wystąpił nieoczekiwany błąd.</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Zamknij</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal sukcesów -->
+            <div class="modal fade" id="success-modal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header bg-success text-white">
+                            <h5 class="modal-title" id="successModalLabel">Sukces</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <p id="success-modal-message">Operacja zakończona pomyślnie.</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Zamknij</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal potwierdzeń -->
+            <div class="modal fade" id="confirm-modal" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header bg-warning text-white">
+                            <h5 class="modal-title" id="confirmModalLabel">Potwierdź Działanie</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <p id="confirm-modal-message">Czy na pewno chcesz wykonać tę operację?</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Anuluj</button>
+                            <button type="button" class="btn btn-danger" id="confirm-modal-confirm">Potwierdź</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
     <!-- services-details-area end -->
@@ -724,6 +779,40 @@
 {% if userName!='NotLogin' %}
 <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.14.0/Sortable.min.js"></script>
 <script>
+    // Funkcja wyświetlająca modal błędów
+    function showErrorModal(message) {
+        const errorModal = new bootstrap.Modal(document.getElementById('error-modal'));
+        document.getElementById('error-modal-message').textContent = message || 'Wystąpił nieoczekiwany błąd.';
+        errorModal.show();
+    }
+
+    // Funkcja wyświetlająca modal sukcesów
+    function showSuccessModal(message, callback) {
+        const successModal = new bootstrap.Modal(document.getElementById('success-modal'));
+        document.getElementById('success-modal-message').textContent = message || 'Operacja zakończona pomyślnie.';
+        successModal.show();
+
+        const modalElement = document.getElementById('success-modal');
+        modalElement.addEventListener('hidden.bs.modal', function onHidden() {
+            if (callback) callback();
+            modalElement.removeEventListener('hidden.bs.modal', onHidden);
+        });
+    }
+
+    // Funkcja wyświetlająca modal potwierdzeń
+    function showConfirmModal(message, onConfirm) {
+        const confirmModal = new bootstrap.Modal(document.getElementById('confirm-modal'));
+        document.getElementById('confirm-modal-message').textContent = message || 'Czy na pewno chcesz kontynuować?';
+        confirmModal.show();
+
+        const confirmButton = document.getElementById('confirm-modal-confirm');
+        const modalElement = document.getElementById('confirm-modal');
+
+        confirmButton.onclick = function () {
+            if (onConfirm) onConfirm();
+            confirmModal.hide();
+        };
+    }
 
     function makeElementEditable(element) {
         const dataType = element.getAttribute('data-type');
@@ -739,7 +828,7 @@
                 const file = fileInput.files[0];
                 if (!file) return;
 
-                const confirmUpload = confirm('Czy na pewno chcesz załadować to zdjęcie?');
+                const confirmUpload = showConfirmModal('Czy na pewno chcesz załadować to zdjęcie?');
                 if (!confirmUpload) return;
 
                 const formData = new FormData();
