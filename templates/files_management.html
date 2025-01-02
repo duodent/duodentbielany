@@ -441,9 +441,9 @@
                 const fileId = this.dataset.fileId;
                 const currentName = this.closest('.blog-content').querySelector('h5 a').textContent;
 
-                const modal = new bootstrap.Modal(document.getElementById('edit-file-modal'));
+                const editModal = new bootstrap.Modal(document.getElementById('edit-file-modal'));
                 document.getElementById('edit-file-input').value = currentName;
-                modal.show();
+                editModal.show();
 
                 document.getElementById('edit-file-form').onsubmit = function (e) {
                     e.preventDefault();
@@ -462,6 +462,8 @@
                             }
                             // Zamknij modal edycji przed pokazaniem modala sukcesu
                             editModal.hide();
+
+                            // Wyświetl modal sukcesu
                             showSuccessModal(data.message, () => location.reload());
                         })
                         .catch(error => {
