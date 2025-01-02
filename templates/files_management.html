@@ -64,7 +64,7 @@
             </div>
 
             <!-- Nagłówek sekcji -->
-            <div class="row align-items-center mt-2">
+            <div class="row align-items-center mt-3">
                 <div class="col-lg-6 mx-auto">
                     <div class="section-title-warp">
                         <span class="sub-title">
@@ -72,8 +72,8 @@
                             Ustaw kolejność Kategorii
                         </span>
                         
-                        <p class="mt-2">
-                            Organizuj pliki według kategorii, zmieniaj ich nazwy, usuwaj zbędne elementy lub dodawaj nowe pliki i kategorie. Ułatwiamy zarządzanie zasobami w prosty i intuicyjny sposób.
+                        <p class="mt-3">
+                            Organizuj pliki według kategorii, zmieniaj ich nazwy, usuwaj zbędne elementy lub dodawaj nowe pliki i kategorie.
                         </p>
                     </div>
                 </div>
@@ -86,7 +86,7 @@
                 <div class="col-lg-6 mx-auto">
                     <div id="category-list-sort" class="row">
                         {% for category in categories %}
-                        <div class="col-12 justify-content-center align-items-center border-1 p-3" data-id="{{ category.id }}">
+                        <div class="col-12 justify-content-center align-items-center border border-1 rounded border-secondary p-3" data-id="{{ category.id }}">
                             <!-- Nagłówek kategorii -->
                             <div class="col-lg-12 col-md-12 section-title-warp d-flex justify-content-center align-items-center">
                                 <span class="sub-title">
