@@ -1231,7 +1231,7 @@ def edit_element():
                 if not allPhotoKeys:
                     return jsonify({'error': 'No photo data found'}), 404
 
-                for key, val in allPhotoKeys:
+                for key, val in allPhotoKeys.items():
                     if val:  # Jeśli wartość istnieje, przetwarzaj dalej
                         file_paths = []
 
