@@ -25,6 +25,7 @@ run_example.py
 
 # Ale nie ignoruj tych konkretnych banerów
 !/static/img/banners/zabieg-4-banner.jpg
+!/static/img/banners/zabiegi-4-banner.jpg
 !/static/img/banners/zespol-4-banner.jpg
 !/static/img/banners/lekarz-4-banner.jpg
 !/static/img/banners/download-4-banner.jpg
