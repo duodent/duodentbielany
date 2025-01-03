@@ -956,7 +956,13 @@
                         } else {
                             // Użycie klasy na podstawie tekstu opisu
                             const iconClass = selectedOpis || 'default-icon-class';
-                            selectElement.replaceWith(`<i class="${iconClass} icon-size me-3"></i>`);
+
+                            // Tworzenie nowego elementu <i>
+                            const iconElement = document.createElement('i');
+                            iconElement.className = `${iconClass} icon-size me-3`;
+
+                            // Zastąpienie elementu nowym elementem <i>
+                            selectElement.replaceWith(iconElement);
                         }
 
                         showSuccessMessage(`Wskazanie o ID ${elementId} zostało dokonane! Poczekaj na przeładowanie aplikacji!`, elementId);
