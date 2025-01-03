@@ -2,7 +2,9 @@
 
 {% block content %}
 <!-- page banner -->
-<div class="page-banner-area mb-5" style="background-image: url(static/img/banners/error500-1-banner.jpg);">
+{% set bg_image_error = url_for('static', filename='img/banners/error500-1-banner.jpg') %}
+
+<div class="page-banner-area mb-5" id="pageBanner" style="background-image: url('{{ bg_image_error }}');">
     <div class="container">
         <div class="page-banner-content">
             <h2>500 Error</h2>
