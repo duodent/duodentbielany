@@ -915,7 +915,6 @@ def update_element_in_db(element_id, data_type, value):
                         print("Index out of range")
                         return False
 
-
             # TWORZENIE ZESTAWU ZAPYTANIA MySQL
             if ready_string_splx is not None and table_db is not None and column_db is not None and isinstance(id_db, int):
                 query = f"""
@@ -924,6 +923,26 @@ def update_element_in_db(element_id, data_type, value):
                         WHERE id = %s
                 """
                 params = (ready_string_splx, id_db)
+            
+            # zmiana zapytania na DELETE 
+            TODELETE_INT = [
+                'treatment_remove_page'
+                ]
+            if sekcja in TODELETE_INT:
+                exactly_what = None
+                for c in TODELETE_INT: 
+                    if c == sekcja: exactly_what = c
+                if exactly_what is None:
+                    print("Problem Klucza")
+                    return False
+                
+                # TWORZENIE ZESTAWU ZAPYTANIA MySQL
+                if ready_string_splx is not None and table_db is not None and isinstance(id_db, int):
+                    query = f"""
+                            DELETE FROM {table_db}
+                            WHERE id = %s
+                    """
+                    params = (id_db,)
 
     elif data_type == 'img':
         if strona == 'treatment':
@@ -1162,18 +1181,88 @@ def edit_element():
         if not isinstance(value, int):
             return jsonify({'error': 'Nieprawidłowy format dla int'}), 400
 
+    # Obsługa różnych typów operacji w zależności od data_type
     if data_type == 'switch':
-        try: value=int(value)
-        except: return jsonify({'error': 'Nieprawidłowy format wymagana liczba int'}), 400
-        # Walidacja i przypisanie ID z selektora
+        try:
+            value = int(value)  # Próba konwersji value na liczbę całkowitą
+        except:
+            return jsonify({'error': 'Nieprawidłowy format wymagana liczba int'}), 400
+        
+        # Walidacja typu value (powinno być int)
         if not isinstance(value, int):
             return jsonify({'error': 'Nieprawidłowy format dla int'}), 400  
-    
+
     if data_type == 'remover':
-        # Walidacja i przypisanie ID z selektora
+        # Walidacja typu element_id (powinien być string)
         if value is not None or not isinstance(element_id, str):
             return jsonify({'error': 'Nieprawidłowy format dla remover'}), 400
         
+        TODELETE_INT = [
+            'treatment_remove_page'
+        ]
+        
+        # Sprawdzenie, czy element_id zawiera frazę z listy TODELETE_INT
+        if any(a in element_id for a in TODELETE_INT):
+            # Rozbij element_id na części składowe
+            element_id_split_part = editing_id_updater_reader(element_id)
+            
+            # Walidacja obecności klucza 'status' i jego wartości
+            if 'status' in element_id_split_part:
+                if not element_id_split_part['status']:
+                    return jsonify({'error': 'id error 0'}), 500
+            else:
+                return jsonify({'error': 'id error 1'}), 500
+
+            # Walidacja obecności wymaganych kluczy w element_id_split_part
+            if all(key in element_id_split_part for key in ['strona', 'sekcja', 'id_number', 'index', 'part', 'ofparts']):
+                strona = element_id_split_part['strona']
+                sekcja = element_id_split_part['sekcja']
+                id_number = element_id_split_part['id_number']
+                index = element_id_split_part['index']
+                part = element_id_split_part['part']
+                ofparts = element_id_split_part['ofparts']
+            else:
+                return jsonify({'error': 'id error 2'}), 500
+
+            # Logika usuwania danych, jeśli strona i sekcja są zgodne
+            if strona == 'treatment' and sekcja in TODELETE_INT:
+                # Pobierz dane o zdjęciach z bazy
+                allPhotoKeys = treatments_foto_db_by_id(id_number)
+                if not allPhotoKeys:
+                    return jsonify({'error': 'No photo data found'}), 404
+
+                # Iteruj przez listę słowników zwróconą przez treatments_foto_db_by_id
+                for dictitem in allPhotoKeys:
+                    for key, val in dictitem.items():
+                        if val:  # Jeśli wartość istnieje, przetwarzaj dalej
+                            file_paths = []
+
+                            # Obsługa różnych formatów danych (pojedynczy plik lub lista)
+                            if isinstance(val, str) and spea_main not in val:
+                                # Pojedynczy plik
+                                file_paths = [val]
+                            elif isinstance(val, list):
+                                # Lista plików
+                                file_paths = val
+
+                            # Ustal katalog docelowy na podstawie klucza z dictitem
+                            if key in ['optional_1']:
+                                folder = app.config['UPLOAD_FOLDER_BANNERS']
+                            else:
+                                folder = app.config['UPLOAD_FOLDER_TREATMENTS']
+
+                            # Usuń każdy plik znajdujący się w file_paths
+                            for file_name in file_paths:
+                                file_path = os.path.join(folder, file_name)
+                                if os.path.exists(file_path):
+                                    try:
+                                        os.remove(file_path)
+                                        print(f"Usunięto plik: {file_path}")
+                                    except Exception as e:
+                                        print(f"Błąd przy usuwaniu {file_path}: {e}")
+                                else:
+                                    print(f"Plik nie istnieje: {file_path}")
+
     if data_type == 'img':
         element_id_split_part = editing_id_updater_reader(element_id)
         if 'status' in element_id_split_part:

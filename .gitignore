@@ -1,9 +1,24 @@
-# Ignoruj plik /bin/config_utils.py
+# Pliki konfiguracyjne
 /bin/config_utils.py
+
+# Logi aplikacji
 /logs/errors.log
+
+# Tymczasowe pliki Pythona
 temp.py
+
+# Konfiguracja Gunicorn
 gunicorn_config.py
+
+# Przykładowe skrypty uruchomieniowe
 run_exaple.py
 run_ex.py
 run_example.py
+
+# Sesje Flask
 /flask_session/*
+
+# Katalogi ze statycznymi obrazami
+/static/img/banners/*
+/static/img/services/*
+/static/img/doctor/*
