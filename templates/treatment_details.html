@@ -621,15 +621,15 @@
                             {% set bg_image_foto_home=url_for('static', filename='img/services/' + treatmentOne.foto_home) %}
                             <div class="single-services">
                                 <div class="services-image">
-                                    <a href="/zabieg-stomatologiczny/{{treatmentOne.ready_route}}">
-                                        <img src="{{ bg_image_foto_home }}" alt="image"></a>
+                                    
+                                        <img src="{{ bg_image_foto_home }}" alt="image">
                                     <div class="icon">
-                                        <a href=""><i class="{{treatmentOne.icon}}"></i></a>
+                                        <i class="{{treatmentOne.icon}}"></i>
                                     </div>
                                 </div>
                                 <div class="services-content">
                                     <h3>
-                                        <a href="">{{treatmentOne.tytul_glowny}}</a>
+                                        {{treatmentOne.tytul_glowny}}
                                     </h3>
                                     <p>
                                         {{treatmentOne.opis_home}}
