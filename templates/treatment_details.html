@@ -628,15 +628,16 @@
                                             src="{{ bg_image_foto_home }}" 
                                             alt="image"/>
 
-                                    <div class="icon">
-                                        
-                                    </div>
                                 </div>
                                 <div class="services-content">
                                     <h3>
                                         {{treatmentOne.tytul_glowny}}
                                     </h3>
-                                    <p>
+                                    <p  
+                                        id="treatment-opis_home-{{treatmentOne.id}}-1-1"
+                                        data-editable 
+                                        data-type="text"
+                                        >
                                         {{treatmentOne.opis_home}}
                                     </p>
                                 </div>
