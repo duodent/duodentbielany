@@ -994,7 +994,7 @@ def update_element_in_db(element_id, data_type, value):
                         cunet_list_db[index] = value
                         ready_string_splx = spea_main.join(cunet_list_db)
 
-            SINGLE_PHOTOS = ['foto_page_header', 'optional_1']
+            SINGLE_PHOTOS = ['foto_page_header', 'optional_1', 'foto_home']
             if sekcja in SINGLE_PHOTOS:
                 exactly_what = None
                 for c in SINGLE_PHOTOS: 
