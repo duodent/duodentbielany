@@ -515,8 +515,17 @@ img {
     margin-left: 0;
 }
 
-.main-navbar .navbar .navbar-nav .nav-item:hover a, .main-navbar .navbar .navbar-nav .nav-item.active a {
+/* .main-navbar .navbar .navbar-nav .nav-item:hover a, .main-navbar .navbar .navbar-nav .nav-item.active a {
     color: #06a3da;
+} */
+.main-navbar .navbar .navbar-nav .nav-item:hover a, 
+.main-navbar .navbar .navbar-nav .nav-item.active a {
+    color: #06a3da; /* Kolor tekstu i elementów inline */
+}
+
+.main-navbar .navbar .navbar-nav .nav-item:hover a svg, 
+.main-navbar .navbar .navbar-nav .nav-item.active a svg {
+    fill: currentColor; /* Dziedziczenie koloru przez SVG */
 }
 
 .main-navbar .navbar .navbar-nav .nav-item .dropdown-menu {
