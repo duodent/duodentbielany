@@ -946,7 +946,11 @@
                         // Zamiana selecta na oryginalny element z aktualizacją
                         element.textContent = options.find((opt) => opt.id == selectedValue).description;
                         element.setAttribute('data-current-value', selectedValue);
-                        selectElement.replaceWith(element);
+
+                        const expacter_array = ['treatment-icon-'];
+                        if (!expacter_array.some(prefix => elementId.startsWith(prefix))) {
+                            selectElement.replaceWith(element);
+                        }
                         showSuccessMessage(`Wskazanie o ID ${elementId} zostało dokonane! Poczekaj na przeładowanie aplikacji!`, elementId);
                     });
                 })
