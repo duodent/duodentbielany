@@ -1,19 +1,19 @@
 {% extends 'base.html' %}
 {% block content %}
-<!-- page banner -->
-{% set bg_image_login =url_for('static', filename='img/banners/login-1-banner.jpg') %}
-<div class="page-banner-area mb-5" id="pageBanner" style="background-image: url('{{ bg_image_login }}');">
-    <div class="container">
-        <div class="page-banner-content">
-            <h2>Zarządzanie witryną - Logowanie</h2>
-            <ul class="pages-list">
-                <li><a href="/">Duodent Bielany</a></li>
+
+<!-- breadcrumb start -->
+<div id="breadcrumb-small" class="breadcrumb-small mb-5" style="display: none;">
+    <div class="container justify-content-center">
+        <div class="justify-content-center">
+            <ul class="breadcrumb-pages-list">
+                <li><a href="/"><i class="bi bi-houses-fill" style="font-size: 1rem;"></i></a></li>
                 <li>Logowanie</li>
             </ul>
         </div>
     </div>
 </div>
-<!-- page banner end -->
+<!-- breadcrumb end -->
+
 <!-- login-area -->
 <section class="login-area ptb-100">
     <div class="container">
@@ -67,15 +67,21 @@
 <script>
     $(document).ready(function () {
         setTimeout(function () {
-            $("#pageBanner").animate(
-                { 
-                    height: "0px", // Zmień wysokość
-                    paddingTop: "0px", // Usuń górny padding
-                    paddingBottom: "0px" // Usuń dolny padding
-                }, 
-                1000 // Czas animacji w milisekundach
-            );
-        }, 5000); // Poczekaj 5 sekund przed uruchomieniem animacji
+            // Pokaż #breadcrumb-small
+            $("#breadcrumb-small")
+                .css({
+                    display: "block", // Ustaw widoczność
+                    textAlign: "center", // Wyrównanie tekstu do środka
+                    width: "100%", // Rozciągnij na całą szerokość
+                })
+                .animate(
+                    {
+                        height: "50px",
+                        paddingTop: "10px"
+                    },
+                    1200 // Czas animacji
+                );
+        }, 2000); 
     });
 </script>
 {% endblock %}
