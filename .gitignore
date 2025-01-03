@@ -33,9 +33,10 @@ run_example.py
 !/static/img/banners/about-4-banner.jpg
 !/static/img/banners/error500-1-banner.jpg
 !/static/img/banners/error404-1-banner.jpg
-!/static/img/banners/single.jpg
-!/static/img/banners/1.jpg
 
 
 /static/img/services/*
+!/static/img/services/single.jpg
+!/static/img/services/1.jpg
+
 /static/img/doctor/*
