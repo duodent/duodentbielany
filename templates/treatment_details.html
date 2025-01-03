@@ -618,6 +618,24 @@
                         {% if userName!='NotLogin' %}
                         <div class="widget widget_categories">
                             <h3 class="widget-title">Opcje Administratora</h3>
+                            {% set bg_image_foto_home=url_for('static', filename='img/services/' + treatmentOne.foto_home) %}
+                            <div class="single-services">
+                                <div class="services-image">
+                                    <a href="/zabieg-stomatologiczny/{{treatmentOne.ready_route}}">
+                                        <img src="{{ bg_image_foto_home }}" alt="image"></a>
+                                    <div class="icon">
+                                        <a href=""><i class="{{treatmentOne.icon}}"></i></a>
+                                    </div>
+                                </div>
+                                <div class="services-content">
+                                    <h3>
+                                        <a href="">{{treatmentOne.tytul_glowny}}</a>
+                                    </h3>
+                                    <p>
+                                        {{treatmentOne.opis_home}}
+                                    </p>
+                                </div>
+                            </div>
                             <div class="d-flex">
                                 {% if treatmentOne.treatment_general_status %}
                                     <!-- # ikona oka # -->
