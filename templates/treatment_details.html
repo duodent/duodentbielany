@@ -51,7 +51,7 @@
                             <i class="flaticon-hashtag-symbol"></i>
                             Usługi
                         </span>
-                        <h2 {% if userName!='NotLogin' %}id="treatment-tytul_glowny-{{treatmentOne.id}}-1-1" data-editable data-type="text"{% endif %}>
+                        <h2>
                             {{treatmentOne.tytul_glowny}}
                         </h2>
                     </div>
@@ -630,7 +630,10 @@
 
                                 </div>
                                 <div class="services-content">
-                                    <h3>
+                                    <h3 
+                                    id="treatment-tytul_glowny-{{treatmentOne.id}}-1-1" 
+                                    data-editable 
+                                    data-type="text">
                                         {{treatmentOne.tytul_glowny}}
                                     </h3>
                                     <p  
