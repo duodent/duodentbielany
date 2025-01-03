@@ -57,6 +57,20 @@ def allowed_img_file(filename):
 spea_main = "#splx#"
 spea_second = "#|||#"
 
+# Główne ikony aplikacji
+iconer_changer_by_neme = {
+    'flaticon-chair': 1,
+    'flaticon-dental-implant': 2,
+    'flaticon-dental-care': 3,
+    'flaticon-tooth-1': 4,
+    'flaticon-tooth-2': 5,
+    'flaticon-tooth' : 6,
+}
+
+iconer_changer_by_id = {
+    key: val for val, key in iconer_changer_by_neme.items()
+}
+
 # Ustawienie ilości elementów na stronę (nie dotyczy sesji)
 app.config['PER_PAGE'] = 6
 
@@ -823,6 +837,12 @@ def update_element_in_db(element_id, data_type, value):
                 ready_string_splx = value
 
 
+            # Specyficzna zamiana na stringa dla ikony
+            if sekcja == "icon":
+                exactly_what = "icon"
+
+                ready_string_splx = iconer_changer_by_id[value]
+
             # TWORZENIE ZESTAWU ZAPYTANIA MySQL
             if ready_string_splx is not None and table_db is not None and column_db is not None and isinstance(id_db, int):
                 query = f"""
@@ -1079,36 +1099,32 @@ def get_picker_options():
 
         page_treatments_id_sql = f'WHERE treatment_general_status = 1'
         page_treatments_id = msq.connect_to_database(f'SELECT id FROM tabela_uslug {page_treatments_id_sql};')
+
+        page_attached_files_sql = f'WHERE status_aktywnosci = 1'
+        page_attached_files = msq.connect_to_database(f'SELECT id, name FROM files {page_attached_files_sql};')
     except Exception as e:
         print(f"Błąd połączenia z bazą danych: {e}")
         return jsonify({"error": f"Błąd połączenia z bazą danych: {e}"}), 404
     
     OPTIONS_DATA = {}
+    getTreatments_db_all_by_id_dict = {val['id']: val['page_attached_list_files'] for val in treatments_db_all_by_route_dict().values()}
+
     for treatments_id in page_treatments_id:
         OPTIONS_DATA[f"treatment-page_attached_worker_id-{treatments_id[0]}-1-1"] = [
             {"id": ident, "description": name} for ident, name in page_attached_worker
         ]
 
-    try:
-        page_attached_files_sql = f'WHERE status_aktywnosci = 1'
-        page_attached_files = msq.connect_to_database(f'SELECT id, name FROM files {page_attached_files_sql};')
-
-        page_treatments_id_sql = f'WHERE treatment_general_status = 1'
-        page_treatments_id = msq.connect_to_database(f'SELECT id FROM tabela_uslug {page_treatments_id_sql};')
-    except Exception as e:
-        print(f"Błąd połączenia z bazą danych: {e}")
-        return jsonify({"error": f"Błąd połączenia z bazą danych: {e}"}), 404
-    
-    getTreatments_db_all_by_id_dict = {val['id']: val['page_attached_list_files'] for val in treatments_db_all_by_route_dict().values()}
-
-    for treatments_id in page_treatments_id:
         OPTIONS_DATA[f"treatment-page_attached_add_files-{treatments_id[0]}-1-1"] = []
         for ident, name in page_attached_files:
             if treatments_id[0] in getTreatments_db_all_by_id_dict:
                 if ident not in getTreatments_db_all_by_id_dict[treatments_id[0]]:
                     ready_record = {"id": ident, "description": name}
                     OPTIONS_DATA[f"treatment-page_attached_add_files-{treatments_id[0]}-1-1"].append(ready_record)
-        
+
+        OPTIONS_DATA[f"treatment-icon-{treatments_id[0]}-1-1"] = [
+            {"id": ident, "description": name} for ident, name in iconer_changer_by_id.items()
+        ]
+
 
     # print(OPTIONS_DATA)
     # Dane do wysłania
@@ -1703,7 +1719,10 @@ def treatment_dynamic(treatment_slug):
                     treatmentOne['treatmentShorts'].append(item)
                     i+=1
             if i==3: break
-
+        treatmentOne['icon_id'] = 0
+        if treatmentOne.get('icon'):
+            treatmentOne['icon_id'] = iconer_changer_by_neme.get(treatmentOne.get('icon'), 0)
+            
         return render_template(
             'treatment_details.html',
             # 'labo_one.html',

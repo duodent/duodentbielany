@@ -624,7 +624,7 @@
                                     
                                         <img src="{{ bg_image_foto_home }}" alt="image">
                                     <div class="icon">
-                                        <i class="{{treatmentOne.icon}}"></i>
+                                        
                                     </div>
                                 </div>
                                 <div class="services-content">
@@ -637,6 +637,13 @@
                                 </div>
                             </div>
                             <div class="d-flex">
+                                <i  
+                                    id="treatment-icon-{{treatmentOne.id}}-1-1" 
+                                    data-editable 
+                                    data-type="picker"
+                                    data-current-value="{{treatmentOne.icon_id}}"
+                                    class="{{treatmentOne.icon}} icon-size ms-3"></i>
+
                                 {% if treatmentOne.treatment_general_status %}
                                     <!-- # ikona oka # -->
                                     <i class="bi bi-eye eye-icon icon-size" title="Ukryj" id="treatment-treatment_general_status-{{treatmentOne.id}}-1-1" data-type="switch" data-state="{{treatmentOne.page_attached_worker_status}}"></i>
@@ -650,7 +657,9 @@
                                     data-editable 
                                     data-type="remover"
                                     title="Usuń z zabiegów"
-                                    class="bi bi-trash3-fill text-danger icon-size ms-3"></i></h3>
+                                    class="bi bi-trash3-fill text-danger icon-size ms-3"></i>
+                                
+                                
                             </div>
                         </div>
                         {% endif %}
