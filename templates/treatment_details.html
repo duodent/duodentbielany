@@ -948,9 +948,16 @@
                         element.setAttribute('data-current-value', selectedValue);
 
                         const expacter_array = ['treatment-icon-'];
+
+                        // Sprawdzenie, czy elementId zaczyna się od któregoś prefiksu z expacter_array
                         if (!expacter_array.some(prefix => elementId.startsWith(prefix))) {
+                            // Jeśli NIE zaczyna się od żadnego z prefiksów
                             selectElement.replaceWith(element);
+                        } else {
+                            // Jeśli ZACZYNA się od jednego z prefiksów
+                            selectElement.replaceWith(`<i class="${element} icon-size me-3"></i>`);
                         }
+
                         showSuccessMessage(`Wskazanie o ID ${elementId} zostało dokonane! Poczekaj na przeładowanie aplikacji!`, elementId);
                     });
                 })
