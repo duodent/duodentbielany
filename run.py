@@ -2204,18 +2204,18 @@ def team_mambers(name_pracownika):
         member_data_prepared = [member_data for member_data in generator_userDataDB() if member_data['id'] == idPracownika]
         if member_data_prepared:
             member_data_prepared = member_data_prepared[0]
-            """Strona plików do pobrania."""
-            if session.get('username', False)\
-                and (
-                    session.get('userperm', {}).get('administrator', 0)==1\
-                        or session.get('userperm', {}).get('super_user', 0)==1):
-                del member_data_prepared['password']
-                del member_data_prepared['salt']
-                del member_data_prepared['contact']
-                del member_data_prepared['uprawnienia']
-                del member_data_prepared['email']
-                del member_data_prepared['login']
-                del member_data_prepared['id'] # Wymagane do zarządzania
+            # """Strona plików do pobrania."""
+            # if session.get('username', False)\
+            #     and (
+            #         session.get('userperm', {}).get('administrator', 0)==1\
+            #             or session.get('userperm', {}).get('super_user', 0)==1):
+            del member_data_prepared['password']
+            del member_data_prepared['salt']
+            del member_data_prepared['contact']
+            del member_data_prepared['uprawnienia']
+            del member_data_prepared['email']
+            del member_data_prepared['login']
+            # del member_data_prepared['id'] # Wymagane do zarządzania
                 
         else:
             member_data_prepared = {}
