@@ -935,7 +935,7 @@ def update_element_in_db(element_id, data_type, value):
                 if exactly_what is None:
                     print("Problem Klucza")
                     return False
-                
+                ready_string_splx = True
                 # TWORZENIE ZESTAWU ZAPYTANIA MySQL
                 if ready_string_splx is not None and table_db is not None and isinstance(id_db, int):
                     query = f"""
@@ -943,6 +943,7 @@ def update_element_in_db(element_id, data_type, value):
                             WHERE id = %s
                     """
                     params = (id_db,)
+                    
 
     elif data_type == 'img':
         if strona == 'treatment':
