@@ -369,3 +369,6 @@
     }
 }
 
+.nav-item.active .nav-link {
+    color: #06a3da; /* Kolor dla aktywnego elementu */
+}
