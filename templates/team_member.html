@@ -15,11 +15,11 @@
                     Twój uśmiech w <span>najlepszych rękach</span>
                 </h1>
             </div>
-            <h2 class="line">{{dane_pracownika['name']}}</h2>
+            <h2 class="line">{{dane_pracownika.name}}</h2>
             <ul class="pages-list">
                 <li><a href="/">Duodent Bielany</a></li>
                 <li><a href="/poznaj-nasz-zespol-specjalistow-stomatologii">Zespół</a></li>
-                <li>{{dane_pracownika['name']}}/li>
+                <li>{{dane_pracownika.name}}/li>
             </ul>
         </div>
     </div>
@@ -45,28 +45,93 @@
         <div class="row">
             <div class="col-lg-4 col-md-6">
                 <div class="dentist-details-image">
-                    <img src="{{dane_pracownika['avatar']}}" alt="image">
+                    <img 
+                    id="team-avatar-{{dane_pracownika.id}}-1-1"
+                    data-editable 
+                    data-type="img"
+                    src="{{dane_pracownika.avatar}}" alt="image">
                 </div>
             </div>
             <div class="col-lg-7 col-md-6">
                 <div class="dentist-details-content">
                     <h3>
-                        <a href="javascript:void(0)">{{dane_pracownika['name']}}</a>
+                        <a href="javascript:void(0)">{{dane_pracownika.name}}</a>
                     </h3>
-                    <span>{{dane_pracownika['stanowisko']}}</span>
+                    <span>{{dane_pracownika.stanowisko}}</span>
                     
                     <div class="content-overview">
-                        <p><span>Kwalifikacje</span><br/>{{dane_pracownika['kwalifikacje']}}</p>
-                        <p><span>Doświadczenie zawodowe</span><br/>{{dane_pracownika['doswiadczenie']}}</p>
-                        <p><span>Wykształcenie</span><br/>{{dane_pracownika['wyksztalcenie']}}</p>
+                        <p><span>Kwalifikacje</span><br/>{{dane_pracownika.kwalifikacje}}</p>
+                        <p><span>Doświadczenie zawodowe</span><br/>{{dane_pracownika.doswiadczenie}}</p>
+                        <p><span>Wykształcenie</span><br/>{{dane_pracownika.wyksztalcenie}}</p>
                     </div>
+                    {% if userName!='NotLogin' %}
+                    <div class="content-overview">
+                        <!-- tutaj będą opcje administratora -->
+                    </div>
+                    {% endif %}
                 </div>
             </div>
         </div>
         <div class="dentist-details-overview-content">
             <p>
-                {{dane_pracownika['opis']}}
+                {{dane_pracownika.opis}}
             </p>
+        </div>
+
+
+        <!-- Modal błędów -->
+        <div class="modal fade" id="error-modal" tabindex="-1" aria-labelledby="errorModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header bg-danger text-white">
+                        <h5 class="modal-title" id="errorModalLabel">Błąd</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p id="error-modal-message">Wystąpił nieoczekiwany błąd.</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Zamknij</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal sukcesów -->
+        <div class="modal fade" id="success-modal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header bg-success text-white">
+                        <h5 class="modal-title" id="successModalLabel">Sukces</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p id="success-modal-message">Operacja zakończona pomyślnie.</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Zamknij</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal potwierdzeń -->
+        <div class="modal fade" id="confirm-modal" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header bg-warning text-white">
+                        <h5 class="modal-title" id="confirmModalLabel">Potwierdź Działanie</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p id="confirm-modal-message">Czy na pewno chcesz wykonać tę operację?</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Anuluj</button>
+                        <button type="button" class="btn btn-danger" id="confirm-modal-confirm">Potwierdź</button>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </section>
@@ -121,4 +186,523 @@
         });
     });
 </script>
+
+{% if userName!='NotLogin' %}
+<script src="https://cdn.jsdelivr.net/npm/sortablejs@1.14.0/Sortable.min.js"></script>
+<script>
+    // Funkcja wyświetlająca modal błędów
+    function showErrorModal(message) {
+        const errorModal = new bootstrap.Modal(document.getElementById('error-modal'));
+        document.getElementById('error-modal-message').textContent = message || 'Wystąpił nieoczekiwany błąd.';
+        errorModal.show();
+    }
+
+    // Funkcja wyświetlająca modal sukcesów
+    function showSuccessModal(message, callback) {
+        const successModal = new bootstrap.Modal(document.getElementById('success-modal'));
+        document.getElementById('success-modal-message').textContent = message || 'Operacja zakończona pomyślnie.';
+        successModal.show();
+
+        const modalElement = document.getElementById('success-modal');
+        modalElement.addEventListener('hidden.bs.modal', function onHidden() {
+            if (callback) callback();
+            modalElement.removeEventListener('hidden.bs.modal', onHidden);
+        });
+    }
+
+    // Funkcja wyświetlająca modal potwierdzeń
+    function showConfirmModal(message, onConfirm) {
+        const confirmModal = new bootstrap.Modal(document.getElementById('confirm-modal'));
+        document.getElementById('confirm-modal-message').textContent = message || 'Czy na pewno chcesz kontynuować?';
+
+        const confirmButton = document.getElementById('confirm-modal-confirm');
+        const cancelButton = document.querySelector('#confirm-modal .btn-secondary');
+
+        // Dodaj obsługę kliknięcia na "Potwierdź"
+        confirmButton.onclick = function () {
+            confirmModal.hide();
+            if (typeof onConfirm === 'function') {
+                onConfirm(true); // Wywołaj callback z wartością true
+            }
+        };
+
+        // Dodaj obsługę kliknięcia na "Anuluj"
+        cancelButton.onclick = function () {
+            confirmModal.hide();
+            if (typeof onConfirm === 'function') {
+                onConfirm(false); // Wywołaj callback z wartością false
+            }
+        };
+
+        confirmModal.show();
+    }
+
+    function makeElementEditable(element) {
+        const dataType = element.getAttribute('data-type');
+        const elementId = element.getAttribute('id');
+
+        if (dataType === 'img') {
+            // Obsługa obrazka (bez zmian)
+            const fileInput = document.createElement('input');
+            fileInput.type = 'file';
+            fileInput.accept = 'image/*';
+
+            fileInput.addEventListener('change', () => {
+                const file = fileInput.files[0];
+                if (!file) return;
+
+                // Wywołanie modala z callbackiem
+                showConfirmModal('Czy na pewno chcesz załadować to zdjęcie?', (confirmUpload) => {
+                    if (!confirmUpload) return;
+
+                    const formData = new FormData();
+                    formData.append('id', elementId);
+                    formData.append('type', dataType);
+                    formData.append('file', file);
+
+                    // Wysyłanie pliku po potwierdzeniu
+                    sendFileToBackend(formData, element);
+                    showSuccessMessage(`Zdjęcie o ID ${elementId} zostało zaktualizowane! Poczekaj na przeładowanie aplikacji!`, elementId);
+                });
+            });
+
+            fileInput.click();
+        } else if (dataType === 'picker') {
+            // Obsługa typu picker
+            fetchPickerOptions(elementId)
+                .then((options) => {
+                    const selectElement = document.createElement('select');
+                    selectElement.className = 'form-select'; // Bootstrap style (opcjonalnie)
+
+                    // Dodanie opcji do selecta
+                    options.forEach(({ id, description }) => {
+                        const option = document.createElement('option');
+                        option.value = id;
+                        option.textContent = description;
+                        selectElement.appendChild(option);
+                    });
+
+                    // Ustawienie początkowej wartości
+                    const currentValue = element.getAttribute('data-current-value');
+                    if (currentValue) {
+                        selectElement.value = currentValue;
+                    }
+
+                    // Zamiana elementu na selecta
+                    element.replaceWith(selectElement);
+
+                    // Obsługa wyboru i wysyłki danych
+                    selectElement.addEventListener('change', () => {
+                        const selectedValue = selectElement.value;
+                        sendDataToBackend(elementId, dataType, selectedValue);
+
+                        // Zamiana selecta na oryginalny element z aktualizacją
+                        element.textContent = options.find((opt) => opt.id == selectedValue).description;
+                        element.setAttribute('data-current-value', selectedValue);
+
+                        const expacter_array = ['treatment-icon-'];
+                        // Pobranie wybranego opisu z tekstu opcji
+                        const selectedOpis = selectElement.options[selectElement.selectedIndex].innerText;
+
+                        if (!expacter_array.some(prefix => elementId.startsWith(prefix))) {
+                            selectElement.replaceWith(element); // Jeśli elementId nie pasuje do żadnego prefiksu
+                        } else {
+                            // Użycie klasy na podstawie tekstu opisu
+                            const iconClass = selectedOpis || 'default-icon-class';
+
+                            // Tworzenie nowego elementu <i>
+                            const iconElement = document.createElement('i');
+                            iconElement.className = `${iconClass} icon-size me-3`;
+
+                            // Zastąpienie elementu nowym elementem <i>
+                            selectElement.replaceWith(iconElement);
+                        }
+
+                        showSuccessMessage(`Wskazanie o ID ${elementId} zostało dokonane! Poczekaj na przeładowanie aplikacji!`, elementId);
+                    });
+                })
+                .catch((error) => {
+                    console.error('Błąd wczytywania opcji:', error);
+                });
+        } else if (dataType === 'adder') {
+            // Zapamiętanie oryginalnego elementu przed zmianą
+            const originalElement = element.cloneNode(true);
+
+            fetchPickerOptions(elementId)
+                .then((options) => {
+                    // Tworzenie elementu select
+                    const selectElement = document.createElement('select');
+                    selectElement.className = 'form-select';
+                    
+                    // Dodanie opcji "Wybierz" na początek
+                    const defaultOption = document.createElement('option');
+                    defaultOption.value = 0;
+                    defaultOption.textContent = 'Wybierz';
+                    selectElement.appendChild(defaultOption);
+
+                    // Dodanie opcji do selecta
+                    options.forEach(({ id, description }) => {
+                        const option = document.createElement('option');
+                        option.value = id;
+                        option.textContent = description;
+                        selectElement.appendChild(option);
+                    });
+
+                    // Zamiana elementu na select
+                    element.replaceWith(selectElement);
+
+                    // Obsługa zdarzenia change
+                    selectElement.addEventListener('change', () => {
+                        const selectedValue = selectElement.value;
+
+                        // Wysyłanie wybranej wartości do backendu
+                        sendDataToBackend(elementId, dataType, selectedValue);
+
+                        // Przywrócenie pierwotnego elementu
+                        originalElement.setAttribute('data-current-value', selectedValue); // Aktualizacja wartości
+                        selectElement.replaceWith(originalElement);
+
+                        // Bezpośrednie przypisanie zdarzenia dblclick do przywróconego elementu
+                        originalElement.addEventListener('dblclick', () => makeElementEditable(originalElement));
+                        originalElement.setAttribute('data-initialized', 'true'); // Zapobiega wielokrotnej inicjalizacji
+
+                        // Wyświetlenie informacji o sukcesie
+                        showSuccessMessage(`Pozycja o ID ${selectedValue} została dodana! Poczekaj na przeładowanie aplikacji!`, elementId);
+
+                        console.log(`Dodano element o ID: ${selectedValue} i przywrócono pierwotny stan.`);
+                    });
+                })
+                .catch((error) => {
+                    console.error('Błąd wczytywania opcji:', error);
+                });
+        } else if (dataType === 'remover') {
+            // Obsługa typu remover
+            showConfirmModal('Czy na pewno chcesz usunąć ten element?', (confirmRemove) => {
+                if (confirmRemove) {
+                    sendDataToBackend(elementId, dataType, null);
+                    // Wyświetlenie informacji o sukcesie
+                    showSuccessMessage(`Pozycja o ID ${elementId} została usunięta! Poczekaj na przeładowanie aplikacji!`, "");
+                }
+            });
+        } else if (dataType === 'url') {
+                // Otwartą logikę pozostawiamy na później
+                console.log(`Logic for URL is not yet implemented for element ${elementId}.`);
+                alert('Obsługa URL jest w trakcie wdrażania. Spróbuj później.');
+        } else {
+            // Obsługa innych typów danych
+            element.setAttribute('contenteditable', 'true');
+            element.focus();
+            element.style.border = '2px dashed #007bff';
+
+            element.addEventListener(
+                'blur',
+                () => {
+                    element.setAttribute('contenteditable', 'false');
+                    element.style.border = 'none';
+
+                    const updatedValue = element.innerText.trim();
+                    if (!validateInput(updatedValue, dataType)) {
+                        alert('Nieprawidłowa wartość!');
+                        return;
+                    }
+
+                    const processedValue = processDataType(dataType, updatedValue);
+                    sendDataToBackend(elementId, dataType, processedValue);
+                },
+                { once: true }
+            );
+        }
+    }
+
+    function showSuccessMessage(message, elementID) {
+        // Tworzenie elementu z wiadomością
+        const messageElement = document.createElement('div');
+        messageElement.textContent = message;
+        messageElement.className = 'success-message';
+        document.body.appendChild(messageElement);
+
+        // Usuwanie wiadomości po 5 sekundach
+        setTimeout(() => {
+            messageElement.style.opacity = '0'; // Rozpoczęcie animacji zanikania
+            setTimeout(() => {
+                messageElement.remove(); // Usunięcie elementu
+                // Przeładowanie strony i przewinięcie do wskazanego elementu
+                window.location.href = `${window.location.origin}${window.location.pathname}#${elementID}`;
+                window.location.reload();
+            }, 1000); // Czas trwania animacji
+        }, 5000); // Czas wyświetlania wiadomości
+    }
+
+
+
+    function fetchPickerOptions(elementId) {
+        return new Promise((resolve, reject) => {
+            $.ajax({
+                url: '/admin/get-picker-options',
+                type: 'GET',
+                data: { id: elementId },
+                success: (response) => {
+                    if (response.options) {
+                        resolve(response.options); // Zakładamy, że backend zwraca listę obiektów { id, description }
+                    } else {
+                        reject('Brak opcji w odpowiedzi.');
+                    }
+                },
+                error: (xhr) => {
+                    reject('Błąd wczytywania opcji: ' + xhr.responseJSON.error);
+                }
+            });
+        });
+    }
+
+    // Funkcja walidacji podstawowej
+    function validateInput(value, dataType) {
+        switch (dataType) {
+            case 'text':
+                return value.length > 0;
+            case 'picker':
+            case 'adder': // Walidacja dla picker i adder
+                return !isNaN(parseInt(value));
+            case 'remover': // Walidacja dla remover (zwraca true zawsze)
+                return true;
+            case 'img':
+            case 'url':
+                const urlPattern = /^(https?:\/\/)?([a-zA-Z0-9.-]+)\.([a-zA-Z]{2,})(:[0-9]{1,5})?(\/.*)?$/;
+                return urlPattern.test(value);
+            default:
+                console.warn(`Nieznany typ danych: ${dataType}`);
+                return false;
+        }
+    }
+
+    // Funkcja przetwarzania danych
+    function processDataType(dataType, value) {
+        switch (dataType) {
+            case 'text':
+                return value.trim(); // Usuwa niepotrzebne spacje
+            case 'picker':
+            case 'adder': // Adder przetwarzany podobnie jak picker
+                return parseInt(value);
+            case 'remover': // Remover zwraca zawsze null
+                return null;
+            case 'img':
+            case 'url':
+                return value.trim(); // Usuwa spacje z początku i końca
+            default:
+                console.warn(`Nieznany typ danych: ${dataType}`);
+                return value;
+        }
+    }
+
+    // Funkcja do wysyłania danych do backendu
+    function sendDataToBackend(id, type, value) {
+        $.ajax({
+            url: '/admin/edytuj-wybrany-element',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({ id, type, value }),
+            success: (response) => {
+                console.log('Zaktualizowano:', response.message);
+            },
+            error: (xhr) => {
+                console.error('Błąd aktualizacji:', xhr.responseJSON.error);
+            }
+        });
+    }
+
+    // Funkcja do przesyłania plików do backendu
+    function sendFileToBackend(formData, element) {
+        $.ajax({
+            url: '/admin/edytuj-wybrany-element',
+            type: 'POST',
+            processData: false, // Ważne przy używaniu FormData
+            contentType: false,
+            data: formData,
+            success: (response) => {
+                console.log('Zdjęcie zaktualizowano:', response.message);
+
+                // Opcjonalnie: Ustaw nowe zdjęcie w elemencie
+                const newImageUrl = response.newImageUrl; // URL zwracany przez backend
+                if (newImageUrl) {
+                    element.src = newImageUrl;
+                }
+            },
+            error: (xhr) => {
+                console.error('Błąd podczas aktualizacji zdjęcia:', xhr.responseJSON.error);
+            }
+        });
+    }
+
+    function initializeEditableElements() {
+        const editableElements = document.querySelectorAll('[data-editable]');
+        editableElements.forEach((element) => {
+            if (!element.hasAttribute('data-initialized')) { // Unikamy dodawania eventów dwa razy
+                element.addEventListener('dblclick', () => makeElementEditable(element));
+                element.setAttribute('data-initialized', 'true');
+            }
+        });
+    }
+
+    document.addEventListener('DOMContentLoaded', initializeEditableElements);
+
+
+    // // //  // // //  //      //        //
+    //        //    //  //        //   //
+    // // //  // // //  //          //
+          //  //        //        //  //
+    // // //  //        // //  //       //
+
+
+    // // // SPLX 
+    //   
+    // // // Logika dynamicznej listy z edytowalnymi polami // // //
+    //   
+    // // // Funkcje do dodawania, usuwania, sortowania i eksportu danych // // //
+
+    // SPLX V 2.0
+    // Szablon elementu listy
+    const template = `
+        <div class="item-container d-flex align-items-center mb-2">
+            <div class="drag-handle me-2">
+                <i class="bi bi-grip-vertical" style="cursor: grab;"></i>
+            </div>
+            <div class="editable-content flex-grow-1 p-2 fs-6 bg-light text-dark" contenteditable="true">
+                &^^idemDiv&^^
+            </div>
+            <button type="button" class="remove-btn btn btn-outline-danger ms-2">
+                <i class="bi bi-trash3-fill" style="font-size: 15px;"></i>
+            </button>
+        </div>
+    `;
+
+    // Funkcja do wczytywania elementów z danych
+    function addListFields(data, id, sep, template, containerID) {
+        const container = document.getElementById(containerID + id);
+        if (!container) {
+            console.error(`Container with ID ${containerID + id} does not exist.`);
+            return;
+        }
+
+        const html = data.split(sep)
+            .map(value => template.replace("&^^idemDiv&^^", value))
+            .join("");
+
+        container.innerHTML += html;
+    }
+
+    // Funkcja do dodawania nowego elementu
+    function addListItem(id, template, containerID, defaultValue = "") {
+        const container = document.getElementById(containerID + id);
+        if (!container) {
+            console.error(`Container with ID ${containerID + id} does not exist.`);
+            return;
+        }
+
+        container.insertAdjacentHTML(
+            'beforeend',
+            template.replace("&^^idemDiv&^^", defaultValue)
+        );
+    }
+
+    // Funkcja do eksportu danych
+    function joinListFields(containerID, separator = "#splx#") {
+        const container = document.getElementById(containerID);
+        if (!container) {
+            console.error(`Container with ID ${containerID} does not exist.`);
+            return "";
+        }
+
+        const items = Array.from(container.querySelectorAll(".editable-content"));
+
+        const processedItems = items.map((item) => {
+            return item.innerText.replace(/\s+/g, " ").trim();
+        });
+
+        return processedItems.join(separator);
+    }
+
+    // Funkcja eksportu wywoływana z przycisku
+    function exportList(id, validate = true) {
+        // Pobierz dane do eksportu
+        const exportedData = joinListFields(`list-container_${id}`, "#splx#");
+
+        // Walidacja danych (tylko jeśli validate = true)
+        if (validate && exportedData === "") {
+            alert("Lista jest pusta, brak danych do eksportu.");
+            return;
+        }
+
+        // Typ danych i wartość do przesłania
+        const type = 'splx';
+        const value = exportedData;
+
+        // Wyślij dane do backendu
+        sendDataToBackend(id, type, value);
+        showSuccessMessage(`Lista o ID ${id} zostało wyeksportowana! Poczekaj na przeładowanie aplikacji!`, id);
+        console.log("Eksportowane dane:", exportedData);
+        // alert("Eksportowane dane:\n" + exportedData); // Opcjonalne alerty
+    }
+
+    // Inicjalizacja SortableJS
+    function initializeSortable(containerID) {
+        const container = document.getElementById(containerID);
+        if (!container) {
+            console.error(`Container with ID ${containerID} does not exist.`);
+            return;
+        }
+
+        new Sortable(container, {
+            animation: 150,
+            ghostClass: "sortable-ghost",
+            onEnd: function (evt) {
+                console.log(`Element przeniesiony z pozycji ${evt.oldIndex} na pozycję ${evt.newIndex}`);
+            }
+        });
+    }
+
+    // Obsługa usuwania elementów
+    document.addEventListener("click", function (e) {
+        if (e.target && e.target.closest(".remove-btn")) {
+            const item = e.target.closest(".item-container");
+            if (item) item.remove();
+        }
+    });
+
+    // // // SWX 
+    //   
+    // // // Logika przełącznika z dwoma stanami: ON i OFF // // //
+    //   
+    // // // Funkcje do zarządzania stanem: ustawianie, odczyt, zapis i reset // // //
+
+    // SWX V 1.0
+    document.addEventListener('click', (event) => {
+        const element = event.target;
+
+        // Sprawdź, czy kliknięty element ma atrybut data-type="switch"
+        if (element.getAttribute('data-type') === 'switch') {
+            const elementId = element.getAttribute('id');
+            const currentState = parseInt(element.getAttribute('data-state'), 10);
+
+            // Sprawdzenie aktualnego stanu i przełączenie
+            const newState = currentState === 0 ? 1 : 0;
+            showConfirmModal(`Czy na pewno chcesz zmienić stan elementu na ${newState === 1 ? 'ON' : 'OFF'}?`, (confirmRemove) => {
+                if (confirmRemove) {
+                    // Zaktualizowanie stanu w atrybucie HTML
+                    element.setAttribute('data-state', newState);
+                    // Wysłanie danych do backendu
+                    sendDataToBackend(elementId, 'switch', newState);
+                    // Wyświetlenie komunikatu o powodzeniu
+                    showSuccessMessage(
+                        `Stan elementu o ID ${elementId} został zmieniony na ${newState === 1 ? 'ON' : 'OFF'}!`,
+                        elementId
+                    );
+                }
+            });
+        }
+    });
+
+    
+
+</script>
+{% endif %}
 {% endblock %}
