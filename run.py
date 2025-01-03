@@ -1231,37 +1231,35 @@ def edit_element():
                 if not allPhotoKeys:
                     return jsonify({'error': 'No photo data found'}), 404
 
-                # Iteruj przez listę słowników zwróconą przez treatments_foto_db_by_id
-                for dictitem in allPhotoKeys:
-                    for key, val in dictitem.items():
-                        if val:  # Jeśli wartość istnieje, przetwarzaj dalej
-                            file_paths = []
+                for key, val in allPhotoKeys:
+                    if val:  # Jeśli wartość istnieje, przetwarzaj dalej
+                        file_paths = []
 
-                            # Obsługa różnych formatów danych (pojedynczy plik lub lista)
-                            if isinstance(val, str) and spea_main not in val:
-                                # Pojedynczy plik
-                                file_paths = [val]
-                            elif isinstance(val, list):
-                                # Lista plików
-                                file_paths = val
+                        # Obsługa różnych formatów danych (pojedynczy plik lub lista)
+                        if isinstance(val, str) and spea_main not in val:
+                            # Pojedynczy plik
+                            file_paths = [val]
+                        elif isinstance(val, list):
+                            # Lista plików
+                            file_paths = val
 
-                            # Ustal katalog docelowy na podstawie klucza z dictitem
-                            if key in ['optional_1']:
-                                folder = app.config['UPLOAD_FOLDER_BANNERS']
+                        # Ustal katalog docelowy na podstawie klucza z dictitem
+                        if key in ['optional_1']:
+                            folder = app.config['UPLOAD_FOLDER_BANNERS']
+                        else:
+                            folder = app.config['UPLOAD_FOLDER_TREATMENTS']
+
+                        # Usuń każdy plik znajdujący się w file_paths
+                        for file_name in file_paths:
+                            file_path = os.path.join(folder, file_name)
+                            if os.path.exists(file_path):
+                                try:
+                                    os.remove(file_path)
+                                    print(f"Usunięto plik: {file_path}")
+                                except Exception as e:
+                                    print(f"Błąd przy usuwaniu {file_path}: {e}")
                             else:
-                                folder = app.config['UPLOAD_FOLDER_TREATMENTS']
-
-                            # Usuń każdy plik znajdujący się w file_paths
-                            for file_name in file_paths:
-                                file_path = os.path.join(folder, file_name)
-                                if os.path.exists(file_path):
-                                    try:
-                                        os.remove(file_path)
-                                        print(f"Usunięto plik: {file_path}")
-                                    except Exception as e:
-                                        print(f"Błąd przy usuwaniu {file_path}: {e}")
-                                else:
-                                    print(f"Plik nie istnieje: {file_path}")
+                                print(f"Plik nie istnieje: {file_path}")
 
     if data_type == 'img':
         element_id_split_part = editing_id_updater_reader(element_id)
