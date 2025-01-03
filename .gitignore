@@ -40,3 +40,4 @@ run_example.py
 !/static/img/services/1.jpg
 
 /static/img/doctor/*
+!/static/img/doctor/with-out-face-avatar.jpg
