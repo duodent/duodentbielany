@@ -621,8 +621,13 @@
                             {% set bg_image_foto_home=url_for('static', filename='img/services/' + treatmentOne.foto_home) %}
                             <div class="single-services">
                                 <div class="services-image">
-                                    
-                                        <img src="{{ bg_image_foto_home }}" alt="image">
+                                        <img 
+                                            id="treatment-foto_home-{{treatmentOne.id}}-1-1"
+                                            data-editable 
+                                            data-type="img"
+                                            src="{{ bg_image_foto_home }}" 
+                                            alt="image"/>
+
                                     <div class="icon">
                                         
                                     </div>
