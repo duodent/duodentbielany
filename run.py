@@ -2205,11 +2205,10 @@ def team_mambers(name_pracownika):
         if member_data_prepared:
             member_data_prepared = member_data_prepared[0]
             """Strona plików do pobrania."""
-            if 'username' not in session\
-                and not (
-                    session['userperm']['administrator'] == 1\
-                        or session['userperm']['super_user'] == 1
-                ):
+            if session.get('username', False)\
+                and (
+                    session.get('userperm', {}).get('administrator', 0)==1\
+                        or session.get('userperm', {}).get('super_user', 0)==1):
                 del member_data_prepared['password']
                 del member_data_prepared['salt']
                 del member_data_prepared['contact']
