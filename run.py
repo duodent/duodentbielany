@@ -1478,6 +1478,7 @@ def edit_element():
                 try:
                     if process_photo(file, filepath):
                         # podmieniam zdjęcie w workers_team
+                        print(old_fotoNameofAvatar_oryginal)
                         if old_fotoNameofAvatar_oryginal and isinstance(old_fotoNameofAvatar_oryginal, str):
                             try: 
                                 query_sel_workers_team = f"""
@@ -1488,7 +1489,7 @@ def edit_element():
                             if id_in_workers_team:
                                 query_upd_workers_team = """
                                     UPDATE workers_team
-                                    SET avatar = %s
+                                    SET EMPLOYEE_PHOTO = %s
                                     WHERE id = %s
                                 """
                                 params_upd_workers_team = (photo_link, id_in_workers_team)
