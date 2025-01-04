@@ -120,7 +120,7 @@
                                     Opcje Administratora
                                 </h3>
                                 <h5>Uprawnienia</h5>
-                                <div class="d-flex">
+                                <div class="d-flex justify-content-center">
                                     <!-- Opcje Administratora i Uprawnienia -->
                                     {% if dane_pracownika.uprawnienia.administrator %}
                                         <i  
@@ -129,7 +129,7 @@
                                             data-type="switch" 
                                             data-state="{{dane_pracownika.uprawnienia.administrator}}"
                                             class="bi-shield-lock-fill icon-size text-info me-1"></i> 
-                                            <span class="fw-light me-1 ms-1 d-block">
+                                            <span class="fw-light me-1 ms-1">
                                                 Administrator <!-- Administrator -->
                                             </span>
                                     {% else %}
