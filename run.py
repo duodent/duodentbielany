@@ -1493,6 +1493,10 @@ def edit_element():
                                 params_upd_workers_team = (photo_link, id_in_workers_team)
                                 if not msq.insert_to_database(query_upd_workers_team, params_upd_workers_team):
                                     print('Nie znaleziono zdjęcia do podmiany w workers_team')
+                                else:
+                                    print('Zdjęcie zostało podmienione w workers_team!')
+
+                    else: return jsonify({"errors": ["Nie udało się zapisać przesłanego pliku."]}), 500
                 except Exception as e:
                     return jsonify({"errors": ["Nie udało się zapisać przesłanego pliku."]}), 500
 
