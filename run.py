@@ -789,6 +789,40 @@ def update_element_in_db(element_id, data_type, value):
                 """
                 params = (ready_string_splx, id_db)
 
+        ####################################################
+        # Aktualizacja tekstu w admins
+        ####################################################
+        if strona == 'team':
+            ready_string_splx = None
+            table_db = 'admins'
+            column_db = sekcja
+            id_db = id_number
+
+            # NORMALNY TEXT
+            CLASSIC_TEXT = [
+                'name', 'stanowisko', 'kwalifikacje',
+                'doswiadczenie', 'wyksztalcenie', 'email',
+                'phone', 'facebook', 'instagram',
+                'twitter', 'linkedin', 'opis'
+            ]
+            if sekcja in CLASSIC_TEXT:
+                exactly_what = None
+                for c in CLASSIC_TEXT: 
+                    if c == sekcja: exactly_what = c
+                if exactly_what is None:
+                    print("Problem Klucza")
+                    return False
+                ready_string_splx = value
+
+
+            # TWORZENIE ZESTAWU ZAPYTANIA MySQL
+            if ready_string_splx is not None and table_db is not None and column_db is not None and isinstance(id_db, int):
+                query = f"""
+                        UPDATE {table_db}
+                        SET {column_db} = %s
+                        WHERE id = %s
+                """
+                params = (ready_string_splx, id_db)
 
     elif data_type == 'switch':
         ####################################################

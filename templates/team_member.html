@@ -46,26 +46,73 @@
             <div class="col-lg-4 col-md-6">
                 <div class="dentist-details-image">
                     <img 
-                    id="team-avatar-{{dane_pracownika.id}}-1-1"
-                    data-editable 
-                    data-type="img"
-                    src="{{dane_pracownika.avatar}}" alt="image">
+                        {% if dane_pracownika.uprawnienia %}
+                            id="team-avatar-{{dane_pracownika.id}}-1-1"
+                            data-editable 
+                            data-type="img"
+                        {% endif %}
+                        src="{{dane_pracownika.avatar}}" alt="image">
                 </div>
             </div>
             <div class="col-lg-7 col-md-6">
                 <div class="dentist-details-content">
-                    <h3>
-                        <a href="javascript:void(0)">{{dane_pracownika.name}}</a>
-                    </h3>
-                    <span>{{dane_pracownika.stanowisko}}</span>
-                    
-                    <div class="content-overview">
-                        <p><span>Kwalifikacje</span><br/>{{dane_pracownika.kwalifikacje}}</p>
-                        <p><span>Doświadczenie zawodowe</span><br/>{{dane_pracownika.doswiadczenie}}</p>
-                        <p><span>Wykształcenie</span><br/>{{dane_pracownika.wyksztalcenie}}</p>
-                    </div>
-                    {{dane_pracownika}}
+                    {% if dane_pracownika.uprawnienia %}
+                        <h3
+                            id="team-name-{{dane_pracownika.id}}-1-1"
+                            data-editable 
+                            data-type="text"
+                            >
+                            {{dane_pracownika.name}}
+                        </h3>
+                        <span
+                            id="team-stanowisko-{{dane_pracownika.id}}-1-1"
+                            data-editable 
+                            data-type="text"
+                            >
+                            {{dane_pracownika.stanowisko}}
+                        </span>
+                        <div class="content-overview">
+                            <p><span>Kwalifikacje</span></p>
+                            <p
+                                id="team-kwalifikacje-{{dane_pracownika.id}}-1-1"
+                                data-editable 
+                                data-type="text"
+                                >
+                                {{dane_pracownika.kwalifikacje}}
+                            </p>
+                            <p><span>Doświadczenie zawodowe</span></p>
+                            <p
+                                id="team-doswiadczenie-{{dane_pracownika.id}}-1-1"
+                                data-editable 
+                                data-type="text"
+                                >
+                                {{dane_pracownika.doswiadczenie}}
+                            </p>
+                            <p><span>Wykształcenie</span></p>
+                            <p
+                                id="team-wyksztalcenie-{{dane_pracownika.id}}-1-1"
+                                data-editable 
+                                data-type="text"
+                                >
+                                {{dane_pracownika.wyksztalcenie}}
+                            </p>
+                        </div>
+                    {% else %}
+                        <h3>
+                            <a href="javascript:void(0)">{{dane_pracownika.name}}</a>
+                        </h3>
+                        <span>
+                            {{dane_pracownika.stanowisko}}
+                        </span>
+                        <div class="content-overview">
+                            <p><span>Kwalifikacje</span><br/>{{dane_pracownika.kwalifikacje}}</p>
+                            <p><span>Doświadczenie zawodowe</span><br/>{{dane_pracownika.doswiadczenie}}</p>
+                            <p><span>Wykształcenie</span><br/>{{dane_pracownika.wyksztalcenie}}</p>
+                        </div>
+                    {% endif %}
+
                     {% if userName!='NotLogin' %}
+                        {{dane_pracownika}}
                         <div class="content-overview">
                             <!-- tutaj będą opcje administratora -->
                             {% if dane_pracownika.uprawnienia %}
@@ -128,7 +175,9 @@
                                 <div class="d-flex">
                                     <i class="bi-envelope-fill icon-size"></i>
                                     <div 
-                                        contenteditable
+                                        id="team-email-{{dane_pracownika.id}}-1-1"
+                                        data-editable 
+                                        data-type="text"
                                         class="border rounded border-secondary p-2 ms-2 mb-2" 
                                         style="min-width: 200px;">
                                         {{ dane_pracownika.email }}
@@ -140,7 +189,9 @@
                                 <div class="d-flex">
                                     <i class="bi-telephone-fill icon-size"></i>
                                     <div 
-                                        contenteditable="true" 
+                                        id="team-phone-{{dane_pracownika.id}}-1-1"
+                                        data-editable 
+                                        data-type="text"
                                         class="border rounded border-secondary p-2 ms-2 mb-2" 
                                         style="min-width: 200px;">
                                         {{ dane_pracownika.contact.phone }}
@@ -151,7 +202,9 @@
                                 <div class="d-flex">
                                     <i class="bi-facebook icon-size"></i>
                                     <div 
-                                        contenteditable="true" 
+                                        id="team-facebook-{{dane_pracownika.id}}-1-1"
+                                        data-editable 
+                                        data-type="text"
                                         class="border rounded border-secondary p-2 ms-2 mb-2" 
                                         style="min-width: 200px;">
                                         {{ dane_pracownika.contact.facebook }}
@@ -162,7 +215,9 @@
                                 <div class="d-flex">
                                     <i class="bi-instagram icon-size"></i>
                                     <div 
-                                        contenteditable="true" 
+                                        id="team-instagram-{{dane_pracownika.id}}-1-1"
+                                        data-editable 
+                                        data-type="text"
                                         class="border rounded border-secondary p-2 ms-2 mb-2" 
                                         style="min-width: 200px;">
                                         {{ dane_pracownika.contact.instagram }}
@@ -173,7 +228,9 @@
                                 <div class="d-flex">
                                     <i class="bi-twitter icon-size"></i>
                                     <div 
-                                        contenteditable="true" 
+                                        id="team-twitter-{{dane_pracownika.id}}-1-1"
+                                        data-editable 
+                                        data-type="text"
                                         class="border rounded border-secondary p-2 ms-2 mb-2" 
                                         style="min-width: 200px;">
                                         {{ dane_pracownika.contact.twitter }}
@@ -184,7 +241,9 @@
                                 <div class="d-flex">
                                     <i class="bi-linkedin icon-size"></i>
                                     <div 
-                                        contenteditable="true" 
+                                        id="team-linkedin-{{dane_pracownika.id}}-1-1"
+                                        data-editable 
+                                        data-type="text"
                                         class="border rounded border-secondary p-2 ms-2 mb-2" 
                                         style="min-width: 200px;">
                                         {{ dane_pracownika.contact.linkedin }}
@@ -198,7 +257,13 @@
             </div>
         </div>
         <div class="dentist-details-overview-content">
-            <p>
+            <p
+                {% if dane_pracownika.uprawnienia %}
+                    id="team-opis-{{dane_pracownika.id}}-1-1"
+                    data-editable 
+                    data-type="text"
+                {% endif %}
+                >
                 {{dane_pracownika.opis}}
             </p>
         </div>
