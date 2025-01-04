@@ -64,66 +64,52 @@
                         <p><span>Doświadczenie zawodowe</span><br/>{{dane_pracownika.doswiadczenie}}</p>
                         <p><span>Wykształcenie</span><br/>{{dane_pracownika.wyksztalcenie}}</p>
                     </div>
-                    {{dane_pracownika}}
-                    {% if userName != 'NotLogin' %}
+                    {% if userName!='NotLogin' %}
                         <div class="content-overview">
-                            <!-- Opcje Administratora i Uprawnienia -->
-                            <h1>Opcje Administratora i Uprawnienia</h1>
-
-                            {% if dane_pracownika.uprawnienia is defined and dane_pracownika.uprawnienia %}
+                            <!-- tutaj będą opcje administratora -->
+                            <h1>
+                                Opcje Administratora i Uprawnienia
+                            </h1>
+                            {% if dane_pracownika.uprawnienia %}
                             <div class="d-flex">
-                                <!-- Wyświetlanie uprawnień -->
+                                <!-- Opcje Administratora i Uprawnienia -->
                                 {% if dane_pracownika.uprawnienia.administrator %}
                                 <i class="bi-shield-lock-fill icon-size"></i> <!-- Administrator -->
+                                <i class="bi-shield-check icon-size"></i> <!-- Super User -->
+                                <i class="bi-person-fill icon-size"></i> <!-- User -->
                                 {% endif %}
-                            </div>
-                            {% else %}
-                            <!-- Wyświetlanie domyślnej ikony, jeśli brak klucza 'uprawnienia' -->
-                            <div class="d-flex">
-                                <i class="bi-person-fill icon-size"></i> <!-- Domyślna ikona dla użytkownika -->
                             </div>
                             {% endif %}
-
-                            {% if dane_pracownika.contact is defined and dane_pracownika.contact %}
-                                <!-- Numer telefonu -->
-                                {% if dane_pracownika.contact.phone %}
-                                <div>
-                                    <i class="bi-telephone-fill"></i>
-                                    <div contenteditable="true">{{ dane_pracownika.contact.phone }}</div>
-                                </div>
-                                {% endif %}
-                                
-                                <!-- Facebook -->
-                                {% if dane_pracownika.contact.facebook %}
-                                <div>
-                                    <i class="bi-facebook"></i>
-                                    <div contenteditable="true">{{ dane_pracownika.contact.facebook }}</div>
-                                </div>
-                                {% endif %}
-                                
-                                <!-- Instagram -->
-                                {% if dane_pracownika.contact.instagram %}
-                                <div>
-                                    <i class="bi-instagram"></i>
-                                    <div contenteditable="true">{{ dane_pracownika.contact.instagram }}</div>
-                                </div>
-                                {% endif %}
-                                
-                                <!-- Twitter -->
-                                {% if dane_pracownika.contact.twitter %}
-                                <div>
-                                    <i class="bi-twitter"></i>
-                                    <div contenteditable="true">{{ dane_pracownika.contact.twitter }}</div>
-                                </div>
-                                {% endif %}
-                                
-                                <!-- LinkedIn -->
-                                {% if dane_pracownika.contact.linkedin %}
-                                <div>
-                                    <i class="bi-linkedin"></i>
-                                    <div contenteditable="true">{{ dane_pracownika.contact.linkedin }}</div>
-                                </div>
-                                {% endif %}
+                            {% if dane_pracownika.contact %}
+                            <!-- Numer telefonu -->
+                            <div>
+                                <i class="bi-telephone-fill"></i>
+                                <div contenteditable="true">{{ dane_pracownika.contact.phone }}</div>
+                            </div>
+                            
+                            <!-- Facebook -->
+                            <div>
+                                <i class="bi-facebook"></i>
+                                <div contenteditable="true">{{ dane_pracownika.contact.facebook }}</div>
+                            </div>
+                            
+                            <!-- Instagram -->
+                            <div>
+                                <i class="bi-instagram"></i>
+                                <div contenteditable="true">{{ dane_pracownika.contact.instagram }}</div>
+                            </div>
+                            
+                            <!-- Twitter -->
+                            <div>
+                                <i class="bi-twitter"></i>
+                                <div contenteditable="true">{{ dane_pracownika.contact.twitter }}</div>
+                            </div>
+                            
+                            <!-- LinkedIn -->
+                            <div>
+                                <i class="bi-linkedin"></i>
+                                <div contenteditable="true">{{ dane_pracownika.contact.linkedin }}</div>
+                            </div>
                             {% endif %}
                         </div>
                     {% endif %}
