@@ -68,16 +68,16 @@
                     {% if userName!='NotLogin' %}
                         <div class="content-overview">
                             <!-- tutaj będą opcje administratora -->
-                            <h3>
-                                Opcje Administratora
-                            </h3>
                             {% if dane_pracownika.uprawnienia %}
+                                <h3>
+                                    Opcje Administratora
+                                </h3>
                                 <h5>Uprawnienia</h5>
                                 <div class="d-flex">
                                     <!-- Opcje Administratora i Uprawnienia -->
-                                    <i class="bi-shield-lock-fill icon-size"></i> <!-- Administrator -->
-                                    <i class="bi-shield-check icon-size"></i> <!-- Super User -->
-                                    <i class="bi-person-fill icon-size"></i> <!-- User -->
+                                    <i class="bi-shield-lock-fill icon-size text-primary-emphasis"></i> <!-- Administrator -->
+                                    <i class="bi-shield-check icon-size text-primary-emphasis"></i> <!-- Super User -->
+                                    <i class="bi-person-fill icon-size text-secondary"></i> <!-- User -->
                                 </div>
                             {% endif %}
                             {% if dane_pracownika.email %}
