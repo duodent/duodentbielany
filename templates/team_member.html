@@ -75,9 +75,51 @@
                                 <h5>Uprawnienia</h5>
                                 <div class="d-flex">
                                     <!-- Opcje Administratora i Uprawnienia -->
-                                    <i class="bi-shield-lock-fill icon-size text-info"></i> <!-- Administrator -->
-                                    <i class="bi-shield-check icon-size text-info"></i> <!-- Super User -->
-                                    <i class="bi-person-fill icon-size text-secondary"></i> <!-- User -->
+                                    {% if dane_pracownika.uprawnienia.administrator %}
+                                        <i  
+                                            title="Odbierz uprawnienia administratora" 
+                                            id="team-administrator-{{dane_pracownika.id}}-1-1" 
+                                            data-type="switch" 
+                                            data-state="{{dane_pracownika.uprawnienia.administrator}}"
+                                            class="bi-shield-lock-fill icon-size text-info"></i> <!-- Administrator -->
+                                    {% else %}
+                                        <i 
+                                            title="Przyznaj uprawnienia administratora" 
+                                            id="team-administrator-{{dane_pracownika.id}}-1-1" 
+                                            data-type="switch" 
+                                            data-state="{{dane_pracownika.uprawnienia.administrator}}"
+                                            class="bi-shield-lock-fill icon-size text-secondary"></i> <!-- Administrator -->
+                                    {% endif %}
+                                    {% if dane_pracownika.uprawnienia.super_user %}
+                                        <i 
+                                            title="Odbierz uprawnienia super użytkownika" 
+                                            id="team-super_user-{{dane_pracownika.id}}-1-1" 
+                                            data-type="switch" 
+                                            data-state="{{dane_pracownika.uprawnienia.super_user}}"
+                                            class="bi-shield-check icon-size text-info"></i> <!-- Super User -->
+                                    {% else %}
+                                        <i 
+                                            title="Przyznaj uprawnienia super użytkownika" 
+                                            id="team-super_user-{{dane_pracownika.id}}-1-1" 
+                                            data-type="switch" 
+                                            data-state="{{dane_pracownika.uprawnienia.super_user}}"
+                                            class="bi-shield-check icon-size text-secondary"></i> <!-- Super User -->
+                                    {% endif %}
+                                    {% if dane_pracownika.uprawnienia.user %}
+                                        <i 
+                                            title="Odbierz uprawnienia pracownika" 
+                                            id="team-user-{{dane_pracownika.id}}-1-1" 
+                                            data-type="switch" 
+                                            data-state="{{dane_pracownika.uprawnienia.user}}"
+                                            class="bi-person-fill icon-size text-info"></i> <!-- User -->
+                                    {% else %}
+                                        <i 
+                                            title="Przyznaj uprawnienia pracownika" 
+                                            id="team-user-{{dane_pracownika.id}}-1-1" 
+                                            data-type="switch" 
+                                            data-state="{{dane_pracownika.uprawnienia.user}}"
+                                            class="bi-person-fill icon-size text-secondary"></i> <!-- User -->
+                                    {% endif %}
                                 </div>
                             {% endif %}
                             {% if dane_pracownika.email %}
