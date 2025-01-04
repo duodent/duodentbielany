@@ -76,9 +76,9 @@
     <!-- top header  -->
     <div class="top-header-area">
         <div class="container">
-            <!-- Widoczne tylko na ekranach mniejszych niż lg -->
-            <div class="row align-items-center d-lg-none">
-                <div class="col-sm-6 col-lg-8 col-md-12">
+            <div class="row align-items-center">
+                <!-- Widoczne tylko na ekranach mniejszych niż lg -->
+                <div class="col-6 d-lg-none">
                     <div class="d-flex justify-content-center">
                         <div class="m-3">
                             <a href="https://www.google.com/maps/search/?api=1&query=52.283455,20.900840" target="_blank"><i class="bi bi-geo-alt icon-size"></i></a>
@@ -105,10 +105,10 @@
                         {% endif %}
                     </div>
                 </div>
-            </div>
-            <!-- Widoczne tylko na ekranach lg i większych -->
-            <div class="row align-items-center d-none d-lg-block">
-                <div class="col-6">
+            
+               
+                <!-- Widoczne tylko na ekranach lg i większych -->
+                <div class="col-6  d-none d-lg-block">
                     <ul class="top-header-information">
                         <li>
                             <i class="far fa-map-marker-alt"></i>
