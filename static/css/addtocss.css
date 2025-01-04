@@ -65,26 +65,7 @@
     transition: all 0.3s ease-in-out; /* Płynne przejście */
     box-shadow: 0 0 0px rgba(0, 255, 0, 0.5); /* Początkowy brak cienia */
 }
-/* .widget_categories .phone-icon {
-    animation: phone-ring-big 15s linear infinite;
-} */
-@keyframes phone-ring-big {
-    0% {
-        transform: scale(1);
-        color: black;
-        box-shadow: 0 0 0px rgba(0, 255, 0, 0.5); /* Brak cienia */
-    }
-    50% {
-        transform: scale(1.1); /* Delikatne powiększenie */
-        color: green; /* Zmiana koloru */
-        box-shadow: 0 0 20px rgba(0, 255, 0, 0.7); /* Pulsujący cień */
-    }
-    100% {
-        transform: scale(1);
-        color: black;
-        box-shadow: 0 0 0px rgba(0, 255, 0, 0.5); /* Powrót do początkowego stanu */
-    }
-}
+
 
 @keyframes phone-ring {
     0% {
