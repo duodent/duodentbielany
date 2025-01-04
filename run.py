@@ -1425,6 +1425,7 @@ def edit_element():
 
             if isinstance(old_fotoNameofAvatar, str):
                 if old_fotoNameofAvatar.count('/'):
+                    old_fotoNameofAvatar_oryginal = old_fotoNameofAvatar
                     old_fotoNameofAvatar = old_fotoNameofAvatar.split('/')[-1]
                     thisPhotoData = None if old_fotoNameofAvatar == 'with-out-face-avatar.jpg' else old_fotoNameofAvatar
                 else:
@@ -1477,10 +1478,10 @@ def edit_element():
                 try:
                     if process_photo(file, filepath):
                         # podmieniam zdjęcie w workers_team
-                        if isinstance(old_fotoNameofAvatar, str):
+                        if old_fotoNameofAvatar_oryginal and isinstance(old_fotoNameofAvatar_oryginal, str):
                             try: 
                                 query_sel_workers_team = f"""
-                                    SELECT id FROM workers_team WHERE EMPLOYEE_PHOTO='{old_fotoNameofAvatar}';
+                                    SELECT id FROM workers_team WHERE EMPLOYEE_PHOTO='{old_fotoNameofAvatar_oryginal}';
                                 """
                                 id_in_workers_team = msq.connect_to_database(query_sel_workers_team)[0][0]
                             except IndexError: id_in_workers_team = None
