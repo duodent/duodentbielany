@@ -128,14 +128,20 @@
                                             id="team-administrator-{{dane_pracownika.id}}-1-1" 
                                             data-type="switch" 
                                             data-state="{{dane_pracownika.uprawnienia.administrator}}"
-                                            class="bi-shield-lock-fill icon-size text-info"></i> <!-- Administrator -->
+                                            class="bi-shield-lock-fill icon-size text-info me-1"></i> 
+                                            <span class="fs-1">
+                                                Administrator <!-- Administrator -->
+                                            </span>
                                     {% else %}
                                         <i 
                                             title="Przyznaj uprawnienia administratora" 
                                             id="team-administrator-{{dane_pracownika.id}}-1-1" 
                                             data-type="switch" 
                                             data-state="{{dane_pracownika.uprawnienia.administrator}}"
-                                            class="bi-shield-lock-fill icon-size text-secondary"></i> <!-- Administrator -->
+                                            class="bi-shield-lock-fill icon-size text-secondary"></i> 
+                                            <span class="fs-1">
+                                                Administrator <!-- Administrator -->
+                                            </span><!-- Administrator -->
                                     {% endif %}
                                     {% if dane_pracownika.uprawnienia.super_user %}
                                         <i 
@@ -143,14 +149,21 @@
                                             id="team-super_user-{{dane_pracownika.id}}-1-1" 
                                             data-type="switch" 
                                             data-state="{{dane_pracownika.uprawnienia.super_user}}"
-                                            class="bi-shield-check icon-size text-info"></i> <!-- Super User -->
+                                            class="bi-shield-check icon-size text-info"></i>
+                                            <span class="fs-1">
+                                                Super User <!-- Super User -->
+                                            </span> <!-- Super User -->
                                     {% else %}
                                         <i 
                                             title="Przyznaj uprawnienia super użytkownika" 
                                             id="team-super_user-{{dane_pracownika.id}}-1-1" 
                                             data-type="switch" 
                                             data-state="{{dane_pracownika.uprawnienia.super_user}}"
-                                            class="bi-shield-check icon-size text-secondary"></i> <!-- Super User -->
+                                            class="bi-shield-check icon-size text-secondary"></i>
+                                            <span class="fs-1">
+                                                Super User <!-- Super User -->
+                                            </span> <!-- Super User -->
+                                            
                                     {% endif %}
                                     {% if dane_pracownika.uprawnienia.user %}
                                         <i 
@@ -159,6 +172,9 @@
                                             data-type="switch" 
                                             data-state="{{dane_pracownika.uprawnienia.user}}"
                                             class="bi-person-fill icon-size text-info"></i> <!-- User -->
+                                            <span class="fs-1">
+                                                Pracownik <!-- Pracownik -->
+                                            </span> <!-- Pracownik -->
                                     {% else %}
                                         <i 
                                             title="Przyznaj uprawnienia pracownika" 
@@ -166,6 +182,9 @@
                                             data-type="switch" 
                                             data-state="{{dane_pracownika.uprawnienia.user}}"
                                             class="bi-person-fill icon-size text-secondary"></i> <!-- User -->
+                                            <span class="fs-1">
+                                                Pracownik <!-- Pracownik -->
+                                            </span> <!-- Pracownik -->
                                     {% endif %}
                                 </div>
                             {% endif %}
