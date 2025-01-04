@@ -58,6 +58,11 @@
     }
 }
 
+.widget_categories .phone-icon {
+    animation: phone-ring 15s linear infinite;
+}
+
+
 @keyframes phone-ring {
     0% {
         transform: scale(1) rotate(0deg); /* Początkowy brak rotacji */
