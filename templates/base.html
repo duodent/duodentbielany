@@ -76,20 +76,48 @@
     <!-- top header  -->
     <div class="top-header-area">
         <div class="container">
-            <div class="row align-items-center">
-                <div class="col-sm-6 col-lg-8 col-md-12">
-                    <!-- Widoczne tylko na ekranach mniejszych niż lg -->
-                    <ul class="top-header-information d-lg-none">
+            <!-- Widoczne tylko na ekranach mniejszych niż lg -->
+            <div class="row align-items-center d-lg-none">
+                <div class="col-sm-6 col-lg-8 col-md-12 d-flex">
+                    <ul class="top-header-information">
                         <li>
-                            <a href="https://www.google.com/maps/search/?api=1&query=52.283455,20.900840" target="_blank"><i class="far fa-map-marker-alt icon-size"></i> <h5>Arkuszowa 63</h5></a>
+                            <a href="https://www.google.com/maps/search/?api=1&query=52.283455,20.900840" target="_blank"><i class="far fa-map-marker-alt icon-size"></i></a>
                         </li>
                         <li>
                             
-                            <a href="mailto:arkuszowa@duodent.com.pl"><i class="far fa-envelope-open icon-size"></i> <h5>@e-mail</h5></a>
+                            <a href="mailto:arkuszowa@duodent.com.pl"><i class="far fa-envelope-open icon-size"></i></a>
                         </li>
                     </ul>
-                    <!-- Widoczne tylko na ekranach lg i większych -->
-                    <ul class="top-header-information d-none d-lg-block">
+                    <ul class="top-header-optional">
+                        <li>
+                            <a href="https://www.facebook.com/duodent.przychodnia" target="_blank">
+                                <i class="bx bxl-facebook icon-size"></i>
+                            </a>
+                            <a href="https://www.instagram.com/duodent_bielany">
+                                <i class="bx bxl-instagram icon-size"></i>
+                            </a>
+                        </li>
+                        {% if userName!='NotLogin' %}
+                        <li>
+                            <a href="/admin/logout" data-bs-toggle="tooltip" data-bs-placement="bottom" title="{{ userName }}">
+                                <i class="fas fa-user icon-size"></i>
+                            </a>
+                        </li>
+                        {% endif %}
+                        <!-- <li class="languages-list">
+                            <select>
+                                <option value="1">English</option>
+                                <option value="3">Russian</option>
+                                <option value="3">Spanish</option>
+                            </select>
+                        </li> -->
+                    </ul>
+                </div>
+            </div>
+            <!-- Widoczne tylko na ekranach lg i większych -->
+            <div class="row align-items-center d-none d-lg-block">
+                <div class="col-sm-6 col-lg-8 col-md-12">
+                    <ul class="top-header-information">
                         <li>
                             <i class="far fa-map-marker-alt"></i>
                             <a href="https://www.google.com/maps/search/?api=1&query=52.283455,20.900840" target="_blank"><span>ul. Arkuszowa 63, Warszawa</span></a>
