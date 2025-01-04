@@ -2256,17 +2256,17 @@ def team_mambers(name_pracownika):
                     member_data_prepared.pop('uprawnienia', None)
                 elif direct_by_permision(session, permission_sought='user'):  # Pracownik
                     # Usuń wybrane dane
-                    keys_to_remove = ['password', 'salt', 'uprawnienia', 'email', 'login']
+                    keys_to_remove = ['password', 'salt', 'uprawnienia', 'email', 'login', 'contact', 'status_usera']
                     for key in keys_to_remove:
                         member_data_prepared.pop(key, None)
                 else:
                     # Brak innych uprawnień - usuń cały pakiet
-                    keys_to_remove = ['password', 'salt', 'contact', 'uprawnienia', 'email', 'login']
+                    keys_to_remove = ['password', 'salt', 'contact', 'uprawnienia', 'email', 'login', 'contact', 'status_usera']
                     for key in keys_to_remove:
                         member_data_prepared.pop(key, None)
             else:
                 # Użytkownik niezalogowany - usuń wszystko
-                keys_to_remove = ['password', 'salt', 'contact', 'uprawnienia', 'email', 'login']
+                keys_to_remove = ['password', 'salt', 'contact', 'uprawnienia', 'email', 'login', 'contact', 'status_usera']
                 for key in keys_to_remove:
                     member_data_prepared.pop(key, None)
                 
