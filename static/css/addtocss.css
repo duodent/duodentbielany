@@ -59,7 +59,7 @@
 }
 
 .phone-icon {
-    animation: phone-ring-big 2s infinite; /* Powtarzanie animacji co 2 sekundy */
+    animation: phone-ring 15s linear infinite; /* Powtarzanie animacji co 2 sekundy */
     font-size: 11rem; /* Ustawienie rozmiaru ikony */
     display: inline-block;
     transition: all 0.3s ease-in-out; /* Płynne przejście */
