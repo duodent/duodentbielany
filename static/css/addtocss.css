@@ -63,7 +63,7 @@
     font-size: 11rem; /* Ustawienie rozmiaru ikony */
     display: inline-block;
     transition: all 0.3s ease-in-out; /* Płynne przejście */
-    box-shadow: 0 0 0px rgba(0, 255, 0, 0.5); /* Początkowy brak cienia */
+
 }
 
 
@@ -74,7 +74,7 @@
     }
     1% {
         transform: scale(1.05) rotate(-5deg); /* Rotacja w lewo */
-        color: green; /* Zmiana koloru */
+        color: #17668b; /* Zmiana koloru */
     }
     10% {
         transform: scale(1.05) rotate(5deg); /* Rotacja w prawo */
