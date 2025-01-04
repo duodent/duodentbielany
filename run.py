@@ -2245,16 +2245,16 @@ def team_mambers(name_pracownika):
             # Idealne do zastosowania w wielu endpointach systemu!
             # ========================================================
             if session.get('username', False):
-                if direct_by_permision(session, permision_supoust='administrator'):  # Administrator
+                if direct_by_permision(session, permission_sought='administrator'):  # Administrator
                     # Usuń tylko hasło i salt
                     member_data_prepared.pop('password', None)
                     member_data_prepared.pop('salt', None)
-                elif direct_by_permision(session, permision_supoust='super_user'):  # Super user
+                elif direct_by_permision(session, permission_sought='super_user'):  # Super user
                     # Usuń hasło, salt i uprawnienia
                     member_data_prepared.pop('password', None)
                     member_data_prepared.pop('salt', None)
                     member_data_prepared.pop('uprawnienia', None)
-                elif direct_by_permision(session, permision_supoust='user'):  # Pracownik
+                elif direct_by_permision(session, permission_sought='user'):  # Pracownik
                     # Usuń wybrane dane
                     keys_to_remove = ['password', 'salt', 'uprawnienia', 'email', 'login']
                     for key in keys_to_remove:
