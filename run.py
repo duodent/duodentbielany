@@ -2195,6 +2195,36 @@ def team_memeber_router():
             "by_name": theme_name,
             "by_login": theme_login
         }
+
+def direct_by_permision(session, permission_sought=None):
+    """
+    Zwraca poziom uprawnień użytkownika na podstawie sesji.
+    
+    :param session: dict - obiekt sesji zawierający informacje o użytkowniku.
+    :param permission_sought: str - nazwa konkretnego uprawnienia do sprawdzenia.
+    :return: int - poziom uprawnień (4 - Administrator, 3 - Super User, 2 - Pracownik, 0 - Brak uprawnień).
+    """
+    if not session.get('username', False):
+        # Użytkownik niezalogowany
+        return 0
+
+    userperm = session.get('userperm', {})
+
+    if permission_sought:
+        # Jeśli określono konkretne uprawnienie
+        return userperm.get(permission_sought, 0)
+
+    # Sprawdzenie poziomu ogólnego uprawnienia
+    if userperm.get('administrator', 0) == 1:
+        return 4  # Administrator
+    elif userperm.get('super_user', 0) == 1:
+        return 3  # Super user
+    elif userperm.get('user', 0) == 1:
+        return 2  # Pracownik
+    else:
+        return 0  # Brak dodatkowych uprawnień
+
+
 @app.route('/zespol/<string:name_pracownika>')
 def team_mambers(name_pracownika):
     DYNAMIC_team_memeber_dict = team_memeber_router()
@@ -2202,26 +2232,51 @@ def team_mambers(name_pracownika):
     if name_pracownika in DYNAMIC_team_memeber_dict_id:
         idPracownika = DYNAMIC_team_memeber_dict_id[name_pracownika]
         member_data_prepared = [member_data for member_data in generator_userDataDB() if member_data['id'] == idPracownika]
+
         if member_data_prepared:
             member_data_prepared = member_data_prepared[0]
-            # """Strona plików do pobrania."""
-            # if session.get('username', False)\
-            #     and (
-            #         session.get('userperm', {}).get('administrator', 0)==1\
-            #             or session.get('userperm', {}).get('super_user', 0)==1):
-            del member_data_prepared['password']
-            del member_data_prepared['salt']
-            del member_data_prepared['contact']
-            del member_data_prepared['uprawnienia']
-            del member_data_prepared['email']
-            del member_data_prepared['login']
-            # del member_data_prepared['id'] # Wymagane do zarządzania
+
+            # Sprawdzanie uprawnień
+            # ========================================================
+            # 🌟 Model implementacji uprawnień - Rekomendacja 🌟
+            # Ten kod jest czytelny, modułowy i łatwy w rozbudowie.
+            # Każdy poziom uprawnień ma jasno określoną logikę.
+            # Użycie funkcji `direct_by_permision` zapewnia elastyczność.
+            # Idealne do zastosowania w wielu endpointach systemu!
+            # ========================================================
+            if session.get('username', False):
+                if direct_by_permision(session, permision_supoust='administrator'):  # Administrator
+                    # Usuń tylko hasło i salt
+                    member_data_prepared.pop('password', None)
+                    member_data_prepared.pop('salt', None)
+                elif direct_by_permision(session, permision_supoust='super_user'):  # Super user
+                    # Usuń hasło, salt i uprawnienia
+                    member_data_prepared.pop('password', None)
+                    member_data_prepared.pop('salt', None)
+                    member_data_prepared.pop('uprawnienia', None)
+                elif direct_by_permision(session, permision_supoust='user'):  # Pracownik
+                    # Usuń wybrane dane
+                    keys_to_remove = ['password', 'salt', 'uprawnienia', 'email', 'login']
+                    for key in keys_to_remove:
+                        member_data_prepared.pop(key, None)
+                else:
+                    # Brak innych uprawnień - usuń cały pakiet
+                    keys_to_remove = ['password', 'salt', 'contact', 'uprawnienia', 'email', 'login']
+                    for key in keys_to_remove:
+                        member_data_prepared.pop(key, None)
+            else:
+                # Użytkownik niezalogowany - usuń wszystko
+                keys_to_remove = ['password', 'salt', 'contact', 'uprawnienia', 'email', 'login']
+                for key in keys_to_remove:
+                    member_data_prepared.pop(key, None)
                 
         else:
             member_data_prepared = {}
-        ready_name = member_data_prepared['name']
+
+        ready_name = member_data_prepared.get('name', 'Brak nazwy')
         pageTitle = ready_name
         session['page'] = ready_name
+
         return render_template(
             'team_member.html',
             pageTitle=pageTitle,
