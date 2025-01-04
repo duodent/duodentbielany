@@ -68,10 +68,11 @@
                     {% if userName!='NotLogin' %}
                         <div class="content-overview">
                             <!-- tutaj będą opcje administratora -->
-                            <h1>
-                                Opcje Administratora i Uprawnienia
-                            </h1>
+                            <h3>
+                                Opcje Administratora
+                            </h3>
                             {% if dane_pracownika.uprawnienia %}
+                                <h5>Uprawnienia</h5>
                                 <div class="d-flex">
                                     <!-- Opcje Administratora i Uprawnienia -->
                                     <i class="bi-shield-lock-fill icon-size"></i> <!-- Administrator -->
@@ -79,7 +80,13 @@
                                     <i class="bi-person-fill icon-size"></i> <!-- User -->
                                 </div>
                             {% endif %}
-                            
+                            {% if dane_pracownika.email %}
+                            <!-- Email -->
+                            <div>
+                                <i class="bi-envelop-fill"></i>
+                                <div contenteditable="true">{{ dane_pracownika.email }}</div>
+                            </div>
+                            {% endif %}
                             {% if dane_pracownika.contact %}
                             <!-- Numer telefonu -->
                             <div>
