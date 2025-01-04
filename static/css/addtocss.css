@@ -58,9 +58,16 @@
     }
 }
 
-.widget_categories .phone-icon {
-    animation: phone-ring-big 15s linear infinite;
+.phone-icon {
+    animation: phone-ring-big 2s infinite; /* Powtarzanie animacji co 2 sekundy */
+    font-size: 11rem; /* Ustawienie rozmiaru ikony */
+    display: inline-block;
+    transition: all 0.3s ease-in-out; /* Płynne przejście */
+    box-shadow: 0 0 0px rgba(0, 255, 0, 0.5); /* Początkowy brak cienia */
 }
+/* .widget_categories .phone-icon {
+    animation: phone-ring-big 15s linear infinite;
+} */
 @keyframes phone-ring-big {
     0% {
         transform: scale(1);
