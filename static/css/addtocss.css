@@ -58,7 +58,7 @@
     }
 }
 
-.phone-icon {
+.widget-phone-icon {
     animation: phone-ring 15s linear infinite; /* Powtarzanie animacji co 2 sekundy */
     font-size: 11rem; /* Ustawienie rozmiaru ikony */
     display: inline-block;
