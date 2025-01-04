@@ -72,15 +72,14 @@
                                 Opcje Administratora i Uprawnienia
                             </h1>
                             {% if dane_pracownika.uprawnienia %}
-                            <div class="d-flex">
-                                <!-- Opcje Administratora i Uprawnienia -->
-                                {% if dane_pracownika.uprawnienia.administrator %}
-                                <i class="bi-shield-lock-fill icon-size"></i> <!-- Administrator -->
-                                <i class="bi-shield-check icon-size"></i> <!-- Super User -->
-                                <i class="bi-person-fill icon-size"></i> <!-- User -->
-                                {% endif %}
-                            </div>
+                                <div class="d-flex">
+                                    <!-- Opcje Administratora i Uprawnienia -->
+                                    <i class="bi-shield-lock-fill icon-size"></i> <!-- Administrator -->
+                                    <i class="bi-shield-check icon-size"></i> <!-- Super User -->
+                                    <i class="bi-person-fill icon-size"></i> <!-- User -->
+                                </div>
                             {% endif %}
+                            
                             {% if dane_pracownika.contact %}
                             <!-- Numer telefonu -->
                             <div>
