@@ -78,7 +78,18 @@
         <div class="container">
             <div class="row align-items-center">
                 <div class="col-sm-6 col-lg-8 col-md-12">
-                    <ul class="top-header-information">
+                    <!-- Widoczne tylko na ekranach mniejszych niż lg -->
+                    <ul class="top-header-information d-lg-none">
+                        <li>
+                            <a href="https://www.google.com/maps/search/?api=1&query=52.283455,20.900840" target="_blank"><i class="far fa-map-marker-alt icon-size"></i></a>
+                        </li>
+                        <li>
+                            
+                            <a href="mailto:arkuszowa@duodent.com.pl"><span><i class="far fa-envelope-open icon-size"></i></span></a>
+                        </li>
+                    </ul>
+                    <!-- Widoczne tylko na ekranach lg i większych -->
+                    <ul class="top-header-information d-none d-lg-block">
                         <li>
                             <i class="far fa-map-marker-alt"></i>
                             <a href="https://www.google.com/maps/search/?api=1&query=52.283455,20.900840" target="_blank"><span>ul. Arkuszowa 63, Warszawa</span></a>
