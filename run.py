@@ -35,6 +35,7 @@ app.config['SESSION_REDIS'] = redis.StrictRedis(host='localhost', port=6379, db=
 UPLOAD_FOLDER = 'dokumenty'
 UPLOAD_FOLDER_TREATMENTS = './static/img/services'
 UPLOAD_FOLDER_BANNERS = './static/img/banners/'
+UPLOAD_FOLDER_AVATARS = './static/img/doctor/'
 ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'doc', 'docx', 'odt'}  # Rozszerzenia dozwolone
 ALLOWED_EXTENSIONS_IMAGES = {'png', 'jpg', 'jpeg', 'gif'}
 
@@ -46,6 +47,9 @@ app.config['UPLOAD_FOLDER_TREATMENTS'] = UPLOAD_FOLDER_TREATMENTS
 
 # Konfiguracja katalogu dla plików związanych z banerami
 app.config['UPLOAD_FOLDER_BANNERS'] = UPLOAD_FOLDER_BANNERS
+
+# Konfiguracja katalogu dla plików związanych z banerami
+app.config['UPLOAD_FOLDER_AVATARS'] = UPLOAD_FOLDER_AVATARS
 
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
@@ -1041,6 +1045,33 @@ def update_element_in_db(element_id, data_type, value):
                         WHERE id = %s
                 """
                 params = (ready_string_splx, id_db)
+        
+        if strona == 'team':
+            ready_string_splx = None
+            table_db = 'admins'
+            column_db = sekcja
+            id_db = id_number
+
+            # AVATAR
+            SINGLE_PHOTOS = ['avatar']
+            if sekcja in SINGLE_PHOTOS:
+                exactly_what = None
+                for c in SINGLE_PHOTOS: 
+                    if c == sekcja: exactly_what = c
+                if exactly_what is None:
+                    print("Problem Klucza")
+                    return False
+                
+                ready_string_splx = value
+
+            # TWORZENIE ZESTAWU ZAPYTANIA MySQL
+            if ready_string_splx is not None and table_db is not None and column_db is not None and isinstance(id_db, int):
+                query = f"""
+                        UPDATE {table_db}
+                        SET {column_db} = %s
+                        WHERE id = %s
+                """
+                params = (ready_string_splx, id_db)
 
     elif data_type == 'url':
         query = "UPDATE elements SET url = ? WHERE id = ?"
@@ -1348,6 +1379,28 @@ def edit_element():
             else:
                 thisPhotoData = allPhotoKeys[sekcja]
 
+        if strona == 'team':
+
+            try:
+                ava_query = f'SELECT {sekcja} FROM admins WHERE id={id_number};'
+                old_fotoNameofAvatar = msq.connect_to_database(ava_query)[0][0]
+            except IndexError:
+                old_fotoNameofAvatar = None
+
+            if isinstance(old_fotoNameofAvatar, str):
+                if old_fotoNameofAvatar.count('/'):
+                    old_fotoNameofAvatar = old_fotoNameofAvatar.split('/')[-1]
+                    thisPhotoData = None if old_fotoNameofAvatar == 'with-out-face-avatar.jpg' else old_fotoNameofAvatar
+                else:
+                    thisPhotoData = None
+            
+            expected_folders = []
+            if sekcja in expected_folders:
+                "Opcja otworzona w celu skalowania aplikacji! w przypadku innych katalogów"
+                pass
+            else:
+                UPLOAD_FOLDER_TREATMENTS_IMG = app.config['UPLOAD_FOLDER_AVATARS']
+
         
         if thisPhotoData:
             file_path_to_delete = os.path.join(UPLOAD_FOLDER_TREATMENTS_IMG, thisPhotoData) 
@@ -1370,13 +1423,27 @@ def edit_element():
 
         # Zapis nowego pliku
         if filename and filepath:
-            try:                
-                # Zapis pliku
-                file.save(filepath)
-                value = filename
-                print(f"Zapisano plik: {filepath}")
-            except Exception as e:
-                return jsonify({'error': f'Błąd zapisu pliku: {str(e)}'}), 500
+            if strona == 'treatment':
+                try:                
+                    # Zapis pliku
+                    file.save(filepath)
+                    value = filename
+                    print(f"Zapisano plik: {filepath}")
+                except Exception as e:
+                    return jsonify({'error': f'Błąd zapisu pliku: {str(e)}'}), 500
+                
+            if strona == 'team':
+
+                # Zapisz zdjęcie
+                try:
+                    process_photo(file, filepath)
+                except Exception as e:
+                    return jsonify({"errors": ["Nie udało się zapisać przesłanego pliku."]}), 500
+
+                domena_strony_www = 'https://www.duodentbielany.pl/'
+                katalog_zdjecia = 'static/img/doctor/'
+                photo_link = f'{domena_strony_www}{katalog_zdjecia}{filename}'
+                value = photo_link
 
     # Aktualizacja w bazie (logika zależna od typu danych)
     success = update_element_in_db(element_id, data_type, value)
