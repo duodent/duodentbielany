@@ -74,7 +74,7 @@
     }
     1% {
         transform: scale(1.05) rotate(-5deg); /* Rotacja w lewo */
-        color: #17668b; /* Zmiana koloru */
+        color: #4cc5fd; /* Zmiana koloru */
     }
     10% {
         transform: scale(1.05) rotate(5deg); /* Rotacja w prawo */
