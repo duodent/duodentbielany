@@ -280,7 +280,8 @@ def process_photo(photo, save_path):
         # Sprawdzenie orientacji obrazu (portretowa)
         width, height = img.size
         if width > height:
-            raise ValueError("Zdjęcie nie jest w orientacji portretowej.")
+            print("Zdjęcie nie jest w orientacji portretowej.")
+            return False
 
         # Zmniejszenie do podstawy 350px, zachowując proporcje
         base_width = 350
@@ -304,9 +305,10 @@ def process_photo(photo, save_path):
 
         # Zapisz przetworzony obraz
         img.save(save_path)
+        return True
     except Exception as e:
-        # print(f"Error processing photo: {e}")
-        raise ValueError(f"Nie udało się przetworzyć obrazu: {e}")
+        print(f"Error processing photo: {e}")
+        return False
     
 
 ############################
@@ -1467,16 +1469,33 @@ def edit_element():
                     return jsonify({'error': f'Błąd zapisu pliku: {str(e)}'}), 500
                 
             if strona == 'team':
-
-                # Zapisz zdjęcie
-                try:
-                    process_photo(file, filepath)
-                except Exception as e:
-                    return jsonify({"errors": ["Nie udało się zapisać przesłanego pliku."]}), 500
-
                 domena_strony_www = 'https://www.duodentbielany.pl/'
                 katalog_zdjecia = 'static/img/doctor/'
                 photo_link = f'{domena_strony_www}{katalog_zdjecia}{filename}'
+
+                # Zapisz zdjęcie
+                try:
+                    if process_photo(file, filepath):
+                        # podmieniam zdjęcie w workers_team
+                        if isinstance(old_fotoNameofAvatar, str):
+                            try: 
+                                query_sel_workers_team = f"""
+                                    SELECT id FROM workers_team WHERE EMPLOYEE_PHOTO='{old_fotoNameofAvatar}';
+                                """
+                                id_in_workers_team = msq.connect_to_database(query_sel_workers_team)[0][0]
+                            except IndexError: id_in_workers_team = None
+                            if id_in_workers_team:
+                                query_upd_workers_team = """
+                                    UPDATE workers_team
+                                    SET avatar = %s
+                                    WHERE id = %s
+                                """
+                                params_upd_workers_team = (photo_link, id_in_workers_team)
+                                if not msq.insert_to_database(query_upd_workers_team, params_upd_workers_team):
+                                    print('Nie znaleziono zdjęcia do podmiany w workers_team')
+                except Exception as e:
+                    return jsonify({"errors": ["Nie udało się zapisać przesłanego pliku."]}), 500
+
                 value = photo_link
 
     # Aktualizacja w bazie (logika zależna od typu danych)
