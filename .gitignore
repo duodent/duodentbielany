@@ -14,6 +14,7 @@ gunicorn_config.py
 run_exaple.py
 run_ex.py
 run_example.py
+sql_queries.sql
 
 # Sesje Flask
 /flask_session/*
