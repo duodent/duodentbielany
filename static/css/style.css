@@ -1941,6 +1941,13 @@ img {
     font-size: 14px;
     box-shadow: none;
 }
+
+.appointment-overview-box .make-appointment-content form .form-floating .form-select {
+    all: unset;
+    display: block;
+    width: 100%;
+}
+
 .appointment-overview-box .make-appointment-content form .form-group .form-control:focus{
     border-color: #0f0c32;
 }
