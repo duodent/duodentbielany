@@ -29,7 +29,7 @@ def send_html_email(subject, html_body, to_email):
 
         # Dodaj treść HTML
         message.attach(MIMEText(html_body, "html"))
-
+        print(smtp_config)
         # Utwórz połączenie z serwerem SMTP
         with smtplib.SMTP(smtp_server, smtp_port) as server:
             # Rozszerzenie STARTTLS
