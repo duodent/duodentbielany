@@ -784,6 +784,8 @@ def update_element_in_db(element_id, data_type, value):
 
             # TWORZENIE ZESTAWU ZAPYTANIA MySQL
             if ready_string_splx is not None and table_db is not None and column_db is not None and isinstance(id_db, int):
+                if ready_string_splx=='':
+                    ready_string_splx=None
                 query = f"""
                         UPDATE {table_db}
                         SET {column_db} = %s
