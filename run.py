@@ -2582,8 +2582,13 @@ def firstConntactMessage(email_address, procedure):
                     <strong>Zespół Duodent</strong>
                 </p>
                 <p style="font-size: 12px; color: #686d71; margin-top: 30px; border-top: 1px solid #ccc; padding-top: 10px;">
-                    Ten e-mail został wygenerowany automatycznie ale można odpowiadać na tę wiadomość. W przypadku pytań prosimy o kontakt pod 
+                    Ten e-mail został wygenerowany automatycznie, ale można odpowiadać na tę wiadomość. W przypadku pytań prosimy o kontakt pod 
                     adresem e-mail <a href="mailto:arkuszowa@duodent.com.pl" style="color: #24363f;">arkuszowa@duodent.com.pl</a>.
+                </p>
+                <p style="font-size: 12px; color: #d60000; margin-top: 10px;">
+                    <strong>UWAGA!</strong> Jeśli to nie Ty rejestrowałeś(-aś) wizytę w naszej przychodni, prosimy o niezwłoczny kontakt 
+                    telefoniczny pod numerem <strong>790 777 350</strong> lub mailowy na adres 
+                    <a href="mailto:arkuszowa@duodent.com.pl" style="color: #24363f;">arkuszowa@duodent.com.pl</a>.
                 </p>
             </body>
         </html>
