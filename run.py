@@ -2508,17 +2508,21 @@ def contact_api():
 
         # Wstawienie danych do bazy
         try:
-            if msq.insert_to_database(query, params):  # Przykładowa funkcja w Twoim module bazy danych
-                return jsonify({
-                    "status": "success",
-                    "message": "Dziękujemy za kontakt!",
-                    "data": {
-                        "name": name,
-                        "email": email,
-                        "subject": subject,
-                        "message": message
-                    }
-                }), 200
+            if msq.insert_to_database(query, params): # Przykładowa funkcja w Twoim module bazy danych
+                def dupaBlada():
+                    # obsługa wysyłania powiadomień 
+                    return True
+                if dupaBlada():
+                    return jsonify({
+                        "status": "success",
+                        "message": "Dziękujemy za kontakt!",
+                        "data": {
+                            "name": name,
+                            "email": email,
+                            "subject": subject,
+                            "message": message
+                        }
+                    }), 200
             else:
                 return jsonify({
                     "status": "error",
