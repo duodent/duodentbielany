@@ -381,3 +381,31 @@
 .nav-item.active .nav-link {
     color: #06a3da; /* Kolor dla aktywnego elementu */
 }
+
+.prices-small {
+    font-size: 0.6rem; /* Domyślny rozmiar dla najmniejszych ekranów */
+}
+
+@media (min-width: 480px) {
+    .prices-small {
+        font-size: 0.8rem; /* Dla ekranów szerszych niż 480px */
+    }
+}
+
+@media (min-width: 768px) {
+    .prices-small {
+        font-size: 0.9rem; /* Dla ekranów szerszych niż 768px */
+    }
+}
+
+@media (min-width: 992px) {
+    .prices-small {
+        font-size: 1rem; /* Dla ekranów szerszych niż 992px */
+    }
+}
+
+@media (min-width: 1200px) {
+    .prices-small {
+        font-size: 1.2rem; /* Dla ekranów szerszych niż 1200px */
+    }
+}
