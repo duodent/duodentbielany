@@ -2513,16 +2513,68 @@ def contact_api():
         try:
             if msq.insert_to_database(query, params): # Przykładowa funkcja w Twoim module bazy danych
                 if firstConntactMessage(email, "general_inquiry"):
-                    return jsonify({
-                        "status": "success",
-                        "message": "Dziękujemy za kontakt!",
-                        "data": {
-                            "name": name,
-                            "email": email,
-                            "subject": subject,
-                            "message": message
-                        }
-                    }), 200
+                    # Wywołaj funkcję wysyłania e-maila HTML
+                    subject = f"Nowa wiadomość ze strony kontaktowej od - {name}"
+                    html_body = f"""
+                        <html>
+                            <body style="font-family: Arial, sans-serif; color: #333; line-height: 1.6;">
+                                <h1 style="color: #24363f;">Nowa wiadomość ze strony kontaktowej</h1>
+                                <p>
+                                    Otrzymaliśmy nową wiadomość ze strony kontaktowej Duodent Bielany. Poniżej znajdują się szczegóły zgłoszenia:
+                                </p>
+                                <table style="border-collapse: collapse; width: 100%; margin-top: 20px;">
+                                    <tr style="background-color: #f9f9f9;">
+                                        <th style="border: 1px solid #ccc; padding: 10px; text-align: left;">Opis</th>
+                                        <th style="border: 1px solid #ccc; padding: 10px; text-align: left;">Dane</th>
+                                    </tr>
+                                    <tr>
+                                        <td style="border: 1px solid #ccc; padding: 10px;">Imię i nazwisko</td>
+                                        <td style="border: 1px solid #ccc; padding: 10px;">{name}</td>
+                                    </tr>
+                                    <tr style="background-color: #f9f9f9;">
+                                        <td style="border: 1px solid #ccc; padding: 10px;">Adres e-mail</td>
+                                        <td style="border: 1px solid #ccc; padding: 10px;">{email}</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="border: 1px solid #ccc; padding: 10px;">Temat wiadomości</td>
+                                        <td style="border: 1px solid #ccc; padding: 10px;">{subject}</td>
+                                    </tr>
+                                    <tr style="background-color: #f9f9f9;">
+                                        <td style="border: 1px solid #ccc; padding: 10px;">Treść wiadomości</td>
+                                        <td style="border: 1px solid #ccc; padding: 10px;">{message}</td>
+                                    </tr>
+                                </table>
+                                <p style="margin-top: 20px;">
+                                    Prosimy o jak najszybsze zapoznanie się z wiadomością i kontakt z nadawcą, jeśli wymaga tego sytuacja.
+                                </p>
+                                <p>
+                                    Odpowiedź można wysłać bezpośrednio na adres e-mail nadawcy: 
+                                    <a href="mailto:{email}" style="color: #24363f;">{email}</a>.
+                                </p>
+                                <p style="font-size: 12px; color: #686d71; margin-top: 30px; border-top: 1px solid #ccc; padding-top: 10px;">
+                                    Wiadomość wygenerowana automatycznie przez system kontaktowy Duodent.
+                                </p>
+                            </body>
+                        </html>
+                    """
+                    email_address = msq.connect_to_database(f'SELECT config_smtp_username FROM system_setting;')[0][0],
+                    try:
+                        send_html_email(subject, html_body, email_address)
+                        print(f"Powiadomienie wysłane do {email_address} dla procedury appointment.")
+                        return jsonify({
+                            "status": "success",
+                            "message": "Dziękujemy za kontakt!",
+                            "data": {
+                                "name": name,
+                                "email": email,
+                                "subject": subject,
+                                "message": message
+                            }
+                        }), 200
+                    except Exception as e:
+                        print(f"Błąd wysyłania powiadomienia: {e}")
+                        return jsonify({"status": "error", "message": "Błąd podczas rejestracji"}), 400
+                    
                 else:
                     return jsonify({"status": "error", "message": "Błąd podczas rejestracji"}), 400
                     
@@ -2680,7 +2732,59 @@ def book_appointment_api():
         try:
             if msq.insert_to_database(query, params):
                 if firstConntactMessage(email, "appointment"):
-                    return jsonify({"status": "success", "message": "Rezerwacja przyjęta! Skontaktujemy się w celu ustalenia szczegółów."}), 200
+                    # Wywołaj funkcję wysyłania e-maila HTML
+                    subject = f"Nowy wniosek o rejestrację wizyty - {name}"
+                    html_body = f"""
+                        <html>
+                            <body style="font-family: Arial, sans-serif; color: #333; line-height: 1.6;">
+                                <h1 style="color: #24363f;">Nowy wniosek o rejestrację wizyty</h1>
+                                <p>
+                                    Otrzymaliśmy nowy wniosek o rejestrację wizyty w placówce Duodent Bielany. Szczegóły zgłoszenia znajdują się poniżej:
+                                </p>
+                                <table style="border-collapse: collapse; width: 100%; margin-top: 20px;">
+                                    <tr style="background-color: #f9f9f9;">
+                                        <th style="border: 1px solid #ccc; padding: 10px; text-align: left;">Opis</th>
+                                        <th style="border: 1px solid #ccc; padding: 10px; text-align: left;">Dane</th>
+                                    </tr>
+                                    <tr>
+                                        <td style="border: 1px solid #ccc; padding: 10px;">Imię i nazwisko</td>
+                                        <td style="border: 1px solid #ccc; padding: 10px;">{name}</td>
+                                    </tr>
+                                    <tr style="background-color: #f9f9f9;">
+                                        <td style="border: 1px solid #ccc; padding: 10px;">Adres e-mail</td>
+                                        <td style="border: 1px solid #ccc; padding: 10px;">{email}</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="border: 1px solid #ccc; padding: 10px;">Numer telefonu</td>
+                                        <td style="border: 1px solid #ccc; padding: 10px;">{phone}</td>
+                                    </tr>
+                                    <tr style="background-color: #f9f9f9;">
+                                        <td style="border: 1px solid #ccc; padding: 10px;">Data wizyty</td>
+                                        <td style="border: 1px solid #ccc; padding: 10px;">{visit_date}</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="border: 1px solid #ccc; padding: 10px;">Typ pacjenta</td>
+                                        <td style="border: 1px solid #ccc; padding: 10px;">{patient_type}</td>
+                                    </tr>
+                                </table>
+                                <p style="margin-top: 20px;">
+                                    Prosimy o jak najszybsze skontaktowanie się z pacjentem w celu ustalenia szczegółów wizyty i jej potwierdzenia.
+                                </p>
+                                <p style="font-size: 12px; color: #686d71; margin-top: 30px; border-top: 1px solid #ccc; padding-top: 10px;">
+                                    Wiadomość wygenerowana automatycznie przez system rejestracji Duodent.
+                                </p>
+                            </body>
+                        </html>
+                    """
+                    email_address = msq.connect_to_database(f'SELECT config_smtp_username FROM system_setting;')[0][0],
+                    try:
+                        send_html_email(subject, html_body, email_address)
+                        print(f"Powiadomienie wysłane do {email_address} dla procedury appointment.")
+                        return jsonify({"status": "success", "message": "Rezerwacja przyjęta! Skontaktujemy się w celu ustalenia szczegółów."}), 200
+                    except Exception as e:
+                        print(f"Błąd wysyłania powiadomienia: {e}")
+                        return jsonify({"status": "error", "message": "Błąd podczas rejestracji"}), 400
+                    
                 else:
                     return jsonify({"status": "error", "message": "Błąd podczas rejestracji"}), 400
             else:
