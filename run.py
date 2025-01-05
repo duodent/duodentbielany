@@ -20,6 +20,7 @@ import os
 from flask_session import Session
 import hashlib
 import uuid
+from sendEmailBySmtp import send_html_email
 
 app = Flask(__name__)
 
@@ -2511,10 +2512,7 @@ def contact_api():
         # Wstawienie danych do bazy
         try:
             if msq.insert_to_database(query, params): # Przykładowa funkcja w Twoim module bazy danych
-                def dupaBlada():
-                    # obsługa wysyłania powiadomień 
-                    return True
-                if dupaBlada():
+                if firstConntactMessage(email, "general_inquiry"):
                     return jsonify({
                         "status": "success",
                         "message": "Dziękujemy za kontakt!",
@@ -2525,6 +2523,9 @@ def contact_api():
                             "message": message
                         }
                     }), 200
+                else:
+                    return jsonify({"status": "error", "message": "Błąd podczas rejestracji"}), 400
+                    
             else:
                 return jsonify({
                     "status": "error",
@@ -2541,6 +2542,76 @@ def contact_api():
             "status": "error",
             "message": "Nieprawidłowy format danych."
         }), 400
+
+def firstConntactMessage(email_address, procedure):
+    # Przykładowe dane bazowe
+    subject = ""
+    html_body = ""
+
+    # Obsługa różnych procedur
+    if procedure == "appointment":
+        subject = "Status Rezerwacji Wizyty - Wniosek przyjęty do realizacji!"
+        html_body = f"""
+        <html>
+            <body style="font-family: Arial, sans-serif; color: #333; line-height: 1.6;">
+                <div style="text-align: center; margin-bottom: 20px;">
+                    <img src="https://duodentbielany.pl/static/img/logotyp_duodent_bielany_solidfill_light.png" alt="Duodent Bielany Logo" style="width: 150px; height: auto;">
+                </div>
+                <h1 style="color: #24363f;">Witaj!</h1>
+                <p>
+                    Dziękujemy za złożenie wniosku o rezerwację wizyty w naszej placówce stomatologicznej Duodent. 
+                    Państwa zgłoszenie zostało przyjęte do realizacji i obecnie trwa proces rejestracji.
+                </p>
+                <p>
+                    Nasz zespół recepcyjny wkrótce skontaktuje się z Państwem w celu dopełnienia niezbędnych formalności oraz ustalenia szczegółów wizyty, 
+                    takich jak godzina spotkania we wskazanym dniu. Prosimy o cierpliwość, zwykle kontaktujemy się w ciągu 24 godzin.
+                </p>
+                <p>
+                    Jeśli mają Państwo pilne pytania lub chcą dokonać dodatkowych ustaleń, zapraszamy do kontaktu telefonicznego z naszą recepcją 
+                    pod numerem <strong style="color: #d60000;">790 777 350</strong>. 
+                </p>
+                <p>
+                    Jesteśmy do Państwa dyspozycji w godzinach otwarcia przychodni, a nasz zespół z przyjemnością udzieli wszelkich informacji i pomocy.
+                </p>
+                <p style="font-size: 12px; color: #686d71;">
+                    <strong style="color: #d60000;">UWAGA:</strong> Wysłanie wniosku o rezerwację <strong style="color: #24363f;">nie gwarantuje jeszcze potwierdzenia terminu wizyty</strong>. 
+                    Gwarantuje rozpoczęcie procesu rejestracji. Prosimy czekać na kontakt z naszej strony.
+                </p>
+                <p>
+                    Pozdrawiamy serdecznie,<br>
+                    <strong>Zespół Duodent</strong>
+                </p>
+                <p style="font-size: 12px; color: #686d71; margin-top: 30px; border-top: 1px solid #ccc; padding-top: 10px;">
+                    Ten e-mail został wygenerowany automatycznie. Prosimy nie odpowiadać na tę wiadomość. W przypadku pytań prosimy o kontakt pod 
+                    adresem e-mail <a href="mailto:arkuszowa@duodent.com.pl" style="color: #24363f;">arkuszowa@duodent.com.pl</a>.
+                </p>
+            </body>
+        </html>
+        """
+    elif procedure == "general_inquiry":
+        subject = "Dziękujemy za kontakt!"
+        html_body = f"""
+        <html>
+            <body>
+                <h1>Witaj!</h1>
+                <p>Dziękujemy za przesłanie zapytania. Odpowiemy na nie w możliwie najszybszym czasie.</p>
+                <p>Jeśli potrzebujesz szybkiego kontaktu, skorzystaj z naszego numeru telefonu: <strong>790 777 350</strong>.</p>
+                <p>Pozdrawiamy,<br>Zespół Duodent</p>
+            </body>
+        </html>
+        """
+    else:
+        print(f"Nieznana procedura: {procedure}")
+        return False
+
+    # Wywołaj funkcję wysyłania e-maila HTML
+    try:
+        send_html_email(subject, html_body, email_address)
+        print(f"Powiadomienie wysłane do {email_address} dla procedury {procedure}.")
+        return True
+    except Exception as e:
+        print(f"Błąd wysyłania powiadomienia: {e}")
+        return False
 
 
 @app.route('/umow-wizyte-online', methods=['GET'])
@@ -2596,7 +2667,10 @@ def book_appointment_api():
 
         try:
             if msq.insert_to_database(query, params):
-                return jsonify({"status": "success", "message": "Rezerwacja przyjęta! Skontaktujemy się w celu ustalenia szczegółów."}), 200
+                if firstConntactMessage(email, "appointment"):
+                    return jsonify({"status": "success", "message": "Rezerwacja przyjęta! Skontaktujemy się w celu ustalenia szczegółów."}), 200
+                else:
+                    return jsonify({"status": "error", "message": "Błąd podczas rejestracji"}), 400
             else:
                 return jsonify({"status": "error", "message": "Ups, coś poszło nie tak. Spróbuj ponownie."}), 500
         except Exception as e:
