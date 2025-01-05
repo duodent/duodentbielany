@@ -57,7 +57,7 @@ def send_html_email(subject, html_body, to_email):
             server.sendmail(smtp_username, to_email, message.as_string())
             print(f"E-mail sent successfully to {to_email}!")
     except Exception as e:
-        handle_error(f'Wysyłanie  maila do {to_email} nieudane: {e}', './logs/errors.log')
+        handle_error(f'Wysyłanie  maila do {to_email} nieudane: {e}', 'logs/errors.log')
 
 if __name__ == "__main__":
     
