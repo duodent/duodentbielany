@@ -28,7 +28,7 @@ def send_html_email(subject, html_body, to_email):
         
 
         # Debug: Wyświetl szczegóły wiadomości i konfiguracji
-        print("SMTP Config:", smtp_config)
+        print("SMTP Config:", smtp_server, smtp_port, smtp_username)
         print("Message Info:", {
             "From": message['From'],
             "To": message['To'],
