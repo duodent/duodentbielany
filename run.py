@@ -2598,7 +2598,7 @@ def firstConntactMessage(email_address, procedure):
         html_body = f"""
         <html>
             <body>
-                <<div style="text-align: center; margin-bottom: 20px;">
+                <div style="text-align: center; margin-bottom: 20px;">
                     <img src="https://duodentbielany.pl/static/img/logotyp_duodent_bielany_solidfill_light.png" alt="Duodent Bielany Logo" style="width: 350px; height: auto;">
                 </div>
                 <h1 style="color: #24363f;">Witaj!</h1>
