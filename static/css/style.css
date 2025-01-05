@@ -1942,7 +1942,7 @@ img {
     box-shadow: none;
 }
 
-.appointment-overview-box .make-appointment-content form .form-floating .form-select {
+.appointment-overview-box .make-appointment-content form .form-seclect-clear  {
     all: unset;
     display: block;
     width: 100%;
