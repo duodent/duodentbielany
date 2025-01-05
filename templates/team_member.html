@@ -595,7 +595,7 @@
         } else if (dataType === 'url') {
                 // Otwartą logikę pozostawiamy na później
                 console.log(`Logic for URL is not yet implemented for element ${elementId}.`);
-                alert('Obsługa URL jest w trakcie wdrażania. Spróbuj później.');
+                showErrorModal('Obsługa URL jest w trakcie wdrażania. Spróbuj później.');
         } else {
             // Obsługa innych typów danych
             element.setAttribute('contenteditable', 'true');
@@ -610,7 +610,7 @@
 
                     const updatedValue = element.innerText.trim();
                     if (!validateInput(updatedValue, dataType)) {
-                        alert('Nieprawidłowa wartość!');
+                        showErrorModal('Nieprawidłowa wartość!');
                         return;
                     }
 
