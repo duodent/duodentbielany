@@ -27,18 +27,33 @@ def send_html_email(subject, html_body, to_email):
         message["Subject"] = subject
         
 
-        # Dodaj treść HTML
-        message.attach(MIMEText(html_body, "html"))
-        print(smtp_config)
+        # Debug: Wyświetl szczegóły wiadomości i konfiguracji
+        print("SMTP Config:", smtp_config)
+        print("Message Info:", {
+            "From": message['From'],
+            "To": message['To'],
+            "Subject": message['Subject'],
+            "Body": html_body
+        })
+
         # Utwórz połączenie z serwerem SMTP
-        with smtplib.SMTP(smtp_server, smtp_port) as server:
-            # Rozszerzenie STARTTLS
-            server.starttls()
+        print("Connecting to SMTP server...")
+        with smtplib.SMTP_SSL(smtp_config['smtp_server'], smtp_config['smtp_port']) as server:
+            print("Connected to SMTP server.")
+
+            # Debug: Wyślij polecenie HELO/EHLO do serwera
+            response = server.ehlo()
+            print("EHLO Response:", response)
+
             # Zaloguj się do konta SMTP
-            server.login(smtp_username, smtp_password)
+            print("Logging in to SMTP server...")
+            server.login(smtp_config['smtp_username'], smtp_config['smtp_password'])
+            print("Logged in successfully.")
 
             # Wyślij wiadomość
-            server.sendmail(smtp_username, to_email, message.as_string())
+            print("Sending email...")
+            server.sendmail(smtp_config['smtp_username'], to_email, message.as_string())
+            print(f"E-mail sent successfully to {to_email}!")
     except Exception as e:
         handle_error(f'Wysyłanie  maila do {to_email} nieudane: {e}', './logs/errors.log')
 
