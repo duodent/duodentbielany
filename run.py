@@ -2555,7 +2555,7 @@ def firstConntactMessage(email_address, procedure):
         <html>
             <body style="font-family: Arial, sans-serif; color: #333; line-height: 1.6;">
                 <div style="text-align: center; margin-bottom: 20px;">
-                    <img src="https://duodentbielany.pl/static/img/logotyp_duodent_bielany_solidfill_light.png" alt="Duodent Bielany Logo" style="width: 150px; height: auto;">
+                    <img src="https://duodentbielany.pl/static/img/logotyp_duodent_bielany_solidfill_light.png" alt="Duodent Bielany Logo" style="width: 350px; height: auto;">
                 </div>
                 <h1 style="color: #24363f;">Witaj!</h1>
                 <p>
@@ -2582,7 +2582,7 @@ def firstConntactMessage(email_address, procedure):
                     <strong>Zespół Duodent</strong>
                 </p>
                 <p style="font-size: 12px; color: #686d71; margin-top: 30px; border-top: 1px solid #ccc; padding-top: 10px;">
-                    Ten e-mail został wygenerowany automatycznie. Prosimy nie odpowiadać na tę wiadomość. W przypadku pytań prosimy o kontakt pod 
+                    Ten e-mail został wygenerowany automatycznie ale można odpowiadać na tę wiadomość. W przypadku pytań prosimy o kontakt pod 
                     adresem e-mail <a href="mailto:arkuszowa@duodent.com.pl" style="color: #24363f;">arkuszowa@duodent.com.pl</a>.
                 </p>
             </body>
@@ -2593,10 +2593,17 @@ def firstConntactMessage(email_address, procedure):
         html_body = f"""
         <html>
             <body>
-                <h1>Witaj!</h1>
+                <<div style="text-align: center; margin-bottom: 20px;">
+                    <img src="https://duodentbielany.pl/static/img/logotyp_duodent_bielany_solidfill_light.png" alt="Duodent Bielany Logo" style="width: 350px; height: auto;">
+                </div>
+                <h1 style="color: #24363f;">Witaj!</h1>
                 <p>Dziękujemy za przesłanie zapytania. Odpowiemy na nie w możliwie najszybszym czasie.</p>
                 <p>Jeśli potrzebujesz szybkiego kontaktu, skorzystaj z naszego numeru telefonu: <strong>790 777 350</strong>.</p>
                 <p>Pozdrawiamy,<br>Zespół Duodent</p>
+                <p style="font-size: 12px; color: #686d71; margin-top: 30px; border-top: 1px solid #ccc; padding-top: 10px;">
+                    Ten e-mail został wygenerowany automatycznie ale można odpowiadać na tę wiadomość. W przypadku pytań prosimy o kontakt pod 
+                    adresem e-mail <a href="mailto:arkuszowa@duodent.com.pl" style="color: #24363f;">arkuszowa@duodent.com.pl</a>.
+                </p>
             </body>
         </html>
         """
