@@ -2489,30 +2489,53 @@ def contact_api():
         data = request.get_json()
         name = data.get('name')
         email = data.get('email')
+        subject = data.get('subject')
         message = data.get('message')
-        # Możesz tutaj zapisać dane do bazy lub wysłać e-mail
-        return jsonify({
-            "status": "success",
-            "message": "Dziękujemy za kontakt!",
-            "data": {
-                "name": name,
-                "email": email,
-                "message": message
-            }
-        }), 200
+        consent = data.get('consent')
+
+        if not consent:
+            return jsonify({
+                "status": "error",
+                "message": "Musisz wyrazić zgodę na przetwarzanie danych osobowych."
+            }), 400
+
+        # Zapytanie SQL
+        query = """
+            INSERT INTO contact_messages (name, email, subject, message, consent)
+            VALUES (%s, %s, %s, %s, %s);
+        """
+        params = (name, email, subject, message, consent)
+
+        # Wstawienie danych do bazy
+        try:
+            if msq.insert_to_database(query, params):  # Przykładowa funkcja w Twoim module bazy danych
+                return jsonify({
+                    "status": "success",
+                    "message": "Dziękujemy za kontakt!",
+                    "data": {
+                        "name": name,
+                        "email": email,
+                        "subject": subject,
+                        "message": message
+                    }
+                }), 200
+            else:
+                return jsonify({
+                    "status": "error",
+                    "message": "Ups, coś poszło nie tak 😞"
+                }), 500
+        except Exception as e:
+            return jsonify({
+                "status": "error",
+                "message": f"Błąd serwera: {str(e)}"
+            }), 500
     else:
         # Obsługa formularza HTML
-        name = request.form.get('name')
-        email = request.form.get('email')
-        message = request.form.get('message')
-        # Możesz tutaj zapisać dane do bazy lub wysłać e-mail
-        return render_template(
-            'contact_success.html',
-            pageTitle='Dziękujemy za kontakt!',
-            name=name,
-            email=email,
-            message=message
-        )
+        return jsonify({
+            "status": "error",
+            "message": "Nieprawidłowy format danych."
+        }), 400
+
 
 @app.route('/umow-wizyte-online', methods=['GET'])
 def book_appointment_page():

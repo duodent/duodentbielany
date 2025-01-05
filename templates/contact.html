@@ -382,4 +382,48 @@
         });
     });
 </script>
+<script>
+    /*-------------------------
+        Ajax Contact Form 
+    ---------------------------*/
+    $(function () {
+        var form = $('#contact-form');
+        var formMessages = $('.form-messege');
+
+        $(form).submit(function (e) {
+            e.preventDefault();
+
+            // Pobranie danych z formularza
+            var formData = {
+                name: $('#name').val(),
+                email: $('#email').val(),
+                subject: $('#subject').val(),
+                message: $('#message').val(),
+                consent: $('#consent').is(':checked') // Sprawdzanie checkboxa
+            };
+
+            // Wysyłanie danych JSON przez AJAX
+            $.ajax({
+                type: 'POST',
+                url: '/api/kontakt',
+                contentType: 'application/json',
+                data: JSON.stringify(formData),
+            })
+                .done(function (response) {
+                    $(formMessages).removeClass('error').addClass('success');
+                    $(formMessages).text(response.message);
+                    $('#contact-form input, #contact-form textarea').val('');
+                    $('#contact-form input[type="checkbox"]').prop('checked', false);
+                })
+                .fail(function (data) {
+                    $(formMessages).removeClass('success').addClass('error');
+                    if (data.responseJSON && data.responseJSON.message) {
+                        $(formMessages).text(data.responseJSON.message);
+                    } else {
+                        $(formMessages).text('Wystąpił błąd! Spróbuj ponownie później.');
+                    }
+                });
+        });
+    });
+</script>
 {% endblock %}
