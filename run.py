@@ -2734,8 +2734,7 @@ def book_appointment_api():
                 if firstConntactMessage(email, "appointment"):
                     # Wywołaj funkcję wysyłania e-maila HTML
                     subject = f"Nowy wniosek o rejestrację wizyty - {name}"
-                    html_body = "Otrzymaliśmy nowy wniosek o rejestrację wizyty w placówce Duodent Bielany"
-                    f"""
+                    html_body = f"""
                         <html>
                             <body style="font-family: Arial, sans-serif; color: #333; line-height: 1.6;">
                                 <h1 style="color: #24363f;">Nowy wniosek o rejestrację wizyty</h1>
