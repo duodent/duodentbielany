@@ -105,16 +105,13 @@
                                     </div>
                                 </div>
                                 <div class="col-lg-6">
-                                    <div>
-                                        <label>Pacjent</label>
-                                        <select 
-                                            id="patient_type" name="patient_type" 
-                                            required  class="form-select form-select-lg mb-3" 
-                                            style="padding-bottom: 5px;"
-                                            aria-label="Default select example"> 
+                                    <div class="form-floating">
+                                        <select id="patient_type" name="patient_type"  class="form-select" id="floatingSelect" aria-label="Pacjent" required>
+                                            <option selected>Wiek Pacjenta</option>
                                             <option value="adult">Dorosły</option>
                                             <option value="child">Dziecko</option>
                                         </select>
+                                        <label for="floatingSelect">Pacjent</label>
                                     </div>
                                 </div>
                                 <div class="col-lg-6">
