@@ -2557,10 +2557,10 @@ def contact_api():
                             </body>
                         </html>
                     """
-                    email_address = msq.connect_to_database(f'SELECT config_smtp_username FROM system_setting;')[0][0],
+                    email_address = msq.connect_to_database(f'SELECT config_smtp_username FROM system_setting;')[0][0]
                     try:
                         send_html_email(subject, html_body, email_address)
-                        print(f"Powiadomienie wysłane do {email_address} dla procedury appointment.")
+                        print(f"Powiadomienie wysłane do {email_address} dla procedury general_inquiry.")
                         return jsonify({
                             "status": "success",
                             "message": "Dziękujemy za kontakt!",
@@ -2776,7 +2776,7 @@ def book_appointment_api():
                             </body>
                         </html>
                     """
-                    email_address = msq.connect_to_database(f'SELECT config_smtp_username FROM system_setting;')[0][0],
+                    email_address = msq.connect_to_database(f'SELECT config_smtp_username FROM system_setting;')[0][0]
                     try:
                         send_html_email(subject, html_body, email_address)
                         print(f"Powiadomienie wysłane do {email_address} dla procedury appointment.")
