@@ -1057,7 +1057,7 @@
     function validateInput(value, dataType) {
         switch (dataType) {
             case 'text':
-                return value.length > 0;
+                return true; // value.length > 0;
             case 'picker':
             case 'adder': // Walidacja dla picker i adder
                 return !isNaN(parseInt(value));
