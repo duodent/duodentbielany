@@ -18,6 +18,8 @@ import random
 import re
 import os
 from flask_session import Session
+import hashlib
+import uuid
 
 app = Flask(__name__)
 
@@ -2547,38 +2549,60 @@ def book_appointment_page():
     pageTitle = 'Umów wizytę online'
     return render_template('book_appointment.html', pageTitle=pageTitle)
 
+def generate_hash():
+    """Generuje unikalny hash dla linku wizyty."""
+    unique_id = str(uuid.uuid4())
+    return hashlib.sha256(unique_id.encode()).hexdigest()
+
+
+def is_valid_email(email):
+    """Sprawdza, czy email jest w poprawnym formacie."""
+    email_regex = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
+    return re.match(email_regex, email) is not None
+
 @app.route('/api/umow-wizyte', methods=['POST'])
 def book_appointment_api():
-    # Sprawdzamy, czy dane zostały przesłane w formacie JSON
     if request.is_json:
         data = request.get_json()
         name = data.get('name')
         email = data.get('email')
         phone = data.get('phone')
-        birth_date = data.get('birth_date')
+        patient_type = data.get('patient_type')
         visit_date = data.get('visit_date')
-        visit_time = data.get('visit_time')
         consent = data.get('consent')
 
-        # Walidacja checkboxa zgody
         if not consent:
             return jsonify({"status": "error", "message": "Musisz wyrazić zgodę na przetwarzanie danych osobowych."}), 400
 
-        # Tutaj możesz zapisać dane do bazy lub wysłać e-mail
-        return jsonify({
-            "status": "success",
-            "message": "Rezerwacja przyjęta!",
-            "data": {
-                "name": name,
-                "email": email,
-                "phone": phone,
-                "birth_date": birth_date,
-                "visit_date": visit_date,
-                "visit_time": visit_time
-            }
-        }), 200
+        # Walidacja danych
+        if not consent:
+            return jsonify({"status": "error", "message": "Musisz wyrazić zgodę na przetwarzanie danych osobowych."}), 400
+
+        if not name or not email or not phone or not patient_type or not visit_date:
+            return jsonify({"status": "error", "message": "Wszystkie pola są wymagane."}), 400
+
+        if not is_valid_email(email):
+            return jsonify({"status": "error", "message": "Nieprawidłowy adres email."}), 400
+
+        # Generowanie unikalnego linku
+        generated_hash = generate_hash()
+
+        # Zapytanie SQL
+        query = """
+            INSERT INTO appointment_requests (name, email, phone, patient_type, visit_date, consent, status, link_hash)
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s);
+        """
+        params = (name, email, phone, patient_type, visit_date, consent, "in_progress", generated_hash)
+
+        try:
+            if msq.insert_to_database(query, params):
+                return jsonify({"status": "success", "message": "Rezerwacja przyjęta! Skontaktujemy się w celu ustalenia szczegółów."}), 200
+            else:
+                return jsonify({"status": "error", "message": "Ups, coś poszło nie tak. Spróbuj ponownie."}), 500
+        except Exception as e:
+            return jsonify({"status": "error", "message": f"Błąd serwera: {str(e)}"}), 500
     else:
-        return jsonify({"status": "error", "message": "Nieprawidłowy format danych"}), 400
+        return jsonify({"status": "error", "message": "Nieprawidłowy format danych."}), 400
 
 
 if __name__ == '__main__':
