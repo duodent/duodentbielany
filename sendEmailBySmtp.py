@@ -19,13 +19,15 @@ def send_html_email(subject, html_body, to_email):
         # Utwórz wiadomość
         message = MIMEMultipart()
         smtp_server = smtp_config['smtp_server']
-        smtp_port =smtp_config['smtp_port']
+        smtp_port = smtp_config['smtp_port']
         smtp_username = smtp_config['smtp_username']
         smtp_password = smtp_config['smtp_password']
         message["From"] = smtp_username
         message["To"] = to_email
         message["Subject"] = subject
         
+        # Dodaj treść HTML do wiadomości
+        message.attach(MIMEText(html_body, "html"))
 
         # Debug: Wyświetl szczegóły wiadomości i konfiguracji
         print("SMTP Config:", smtp_server, smtp_port, smtp_username)
@@ -38,7 +40,7 @@ def send_html_email(subject, html_body, to_email):
 
         # Utwórz połączenie z serwerem SMTP
         print("Connecting to SMTP server...")
-        with smtplib.SMTP_SSL(smtp_config['smtp_server'], smtp_config['smtp_port']) as server:
+        with smtplib.SMTP_SSL(smtp_server, smtp_port) as server:
             print("Connected to SMTP server.")
 
             # Debug: Wyślij polecenie HELO/EHLO do serwera
@@ -47,12 +49,12 @@ def send_html_email(subject, html_body, to_email):
 
             # Zaloguj się do konta SMTP
             print("Logging in to SMTP server...")
-            server.login(smtp_config['smtp_username'], smtp_config['smtp_password'])
+            server.login(smtp_username, smtp_password)
             print("Logged in successfully.")
 
             # Wyślij wiadomość
             print("Sending email...")
-            server.sendmail(smtp_config['smtp_username'], to_email, message.as_string())
+            server.sendmail(smtp_username, to_email, message.as_string())
             print(f"E-mail sent successfully to {to_email}!")
     except Exception as e:
         handle_error(f'Wysyłanie  maila do {to_email} nieudane: {e}', './logs/errors.log')
