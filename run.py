@@ -1130,8 +1130,8 @@ def calculate_statistics():
     tygodniowa_statystyka_uslug = 120  # Liczba usług wykonanych w tygodniu
     data_rozpoczecia_dzialalnosci = datetime(1989, 5, 20)  # Data rozpoczęcia działalności
     liczba_pracownikow = len(generator_teamDB())  # Aktualna liczba pracowników
-    zadeklarowani_pracownicy = 3  # Członkowie zespołu z poza strony www
-    procent_zadowolonych_klientow = 85  # Zadeklarowany procent zadowolonych klientów (w %)
+    zadeklarowani_pracownicy = 10  # Członkowie zespołu z poza strony www
+    procent_zadowolonych_klientow = 75  # Zadeklarowany procent zadowolonych klientów (w %)
 
     # Wyliczenia
     zrealizowane_uslugi = tygodniowa_statystyka_uslug * 52  # Zrealizowane usługi w skali roku
