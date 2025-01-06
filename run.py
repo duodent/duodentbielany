@@ -1187,6 +1187,11 @@ def team_memeber_router():
 
 
 
+def get_company_setting():
+    got_data = take_data_where_ID("*", 'table', 'id', 1)
+
+    return
+
 
 
 
@@ -1809,7 +1814,34 @@ def dokumenty():
         categories=categs  # Pełna lista kategorii z ID i name
     )
 
+@app.route('/admin/ustawienia-aplikacji')
+def ustawienia_aplikacji():
+    """Ustawienia Strony Duodent BIelany."""
+    
+     # Sprawdzanie uprawnień
+    # ========================================================
+    # 🌟 Model implementacji uprawnień - Rekomendacja 🌟
+    # Ten kod jest czytelny, modułowy i łatwy w rozbudowie.
+    # Każdy poziom uprawnień ma jasno określoną logikę.
+    # Użycie funkcji `direct_by_permision` zapewnia elastyczność.
+    # Idealne do zastosowania w wielu endpointach systemu!
+    # ========================================================
+    if session.get('username', False):
+        if not (
+                direct_by_permision(session, permission_sought='administrator')\
+                    # or direct_by_permision(session, permission_sought='super_user')
+            ):  # Brak uprawnień
+            return redirect(url_for('index'))
+    else:
+        # Użytkownik niezalogowany
+        return redirect(url_for('index'))
 
+
+    return render_template(
+            "setting_company.html", 
+            companyData=get_company_setting(),
+            adminTrue=True
+            )
 
 
 
