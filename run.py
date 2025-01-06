@@ -154,10 +154,6 @@ def allowed_file(filename):
 def allowed_img_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS_IMAGES
 
-class LoginForm(FlaskForm):
-    username = StringField('Nazwa użytkownika', validators=[DataRequired()])
-    password = PasswordField('Hasło', validators=[DataRequired()])
-    submit = SubmitField('Zaloguj się')
 
 def check_separator_take_list(sepa: str, string: str, shout_parts: int):
     """
@@ -198,6 +194,71 @@ def validatorZip(list1, list2):
     min_length = min(len(list1), len(list2))
     return list1[:min_length], list2[:min_length]
 
+
+def bez_polskich_znakow(text):
+    """Zamienia polskie znaki na zwykłe litery."""
+    return ''.join(
+        c for c in unicodedata.normalize('NFD', text)
+        if unicodedata.category(c) != 'Mn'
+    )
+
+def slugify(text):
+    # Zamiana znaków diakrytycznych na ich odpowiedniki
+    text = unicodedata.normalize('NFKD', text).encode('ascii', 'ignore').decode('ascii')
+    # Usunięcie wszystkich znaków poza literami, cyframi i spacjami
+    text = re.sub(r'[^\w\s-]', '', text)
+    # Zamiana spacji i podwójnych myślników na pojedynczy myślnik
+    text = re.sub(r'[-\s]+', '-', text).strip('-')
+    return text.lower()
+
+def validate_register_data(data, existing_users):
+    """
+    Waliduje dane przesłane podczas rejestracji, w tym unikalność loginu i emaila.
+    
+    Args:
+        data (dict): Dane przesłane z formularza.
+        existing_users (list): Lista istniejących użytkowników z bazy danych.
+
+    Returns:
+        list: Lista błędów (jeśli występują).
+    """
+    errors = []
+
+    # Wymagane pola
+    if not data.get('login'):
+        errors.append("Pole 'login' jest wymagane.")
+    if not data.get('fullName'):
+        errors.append("Pole 'Imię i nazwisko' jest wymagane.")
+    if not data.get('email'):
+        errors.append("Pole 'email' jest wymagane.")
+    if not data.get('password') or not data.get('confirmPassword'):
+        errors.append("Hasło i potwierdzenie hasła są wymagane.")
+    if data.get('password') != data.get('confirmPassword'):
+        errors.append("Hasła muszą się zgadzać.")
+
+    # Walidacja unikalności loginu i emaila
+    login = data.get('login')
+    email = data.get('email')
+
+    if any(user['login'] == login for user in existing_users):
+        errors.append(f"Użytkownik z loginem '{login}' już istnieje.")
+    if any(user['email'] == email for user in existing_users):
+        errors.append(f"Użytkownik z emailem '{email}' już istnieje.")
+
+    # Walidacja dla roli pracownika
+    if 'user' in data.getlist('roles[]', []):
+        if not data.get('position'):
+            errors.append("Pole 'Stanowisko' jest wymagane dla pracownika.")
+        if not data.get('qualifications'):
+            errors.append("Pole 'Kwalifikacje' jest wymagane dla pracownika.")
+        if not data.get('experience'):
+            errors.append("Pole 'Doświadczenie zawodowe' jest wymagane dla pracownika.")
+        if not data.get('education'):
+            errors.append("Pole 'Wykształcenie' jest wymagane dla pracownika.")
+        if not data.get('description'):
+            errors.append("Pole 'Opis pracownika' jest wymagane dla pracownika.")
+
+    return errors
 
 
 
@@ -1097,71 +1158,6 @@ def get_fileBy_categories(category_id, route_name="dokumenty/", status_aktywnosc
 #  Rdzeń działania aplikacji, ściśle powiązany z endpointami.
 # ========================================================================================= #
 
-def bez_polskich_znakow(text):
-    """Zamienia polskie znaki na zwykłe litery."""
-    return ''.join(
-        c for c in unicodedata.normalize('NFD', text)
-        if unicodedata.category(c) != 'Mn'
-    )
-
-def slugify(text):
-    # Zamiana znaków diakrytycznych na ich odpowiedniki
-    text = unicodedata.normalize('NFKD', text).encode('ascii', 'ignore').decode('ascii')
-    # Usunięcie wszystkich znaków poza literami, cyframi i spacjami
-    text = re.sub(r'[^\w\s-]', '', text)
-    # Zamiana spacji i podwójnych myślników na pojedynczy myślnik
-    text = re.sub(r'[-\s]+', '-', text).strip('-')
-    return text.lower()
-
-def validate_register_data(data, existing_users):
-    """
-    Waliduje dane przesłane podczas rejestracji, w tym unikalność loginu i emaila.
-    
-    Args:
-        data (dict): Dane przesłane z formularza.
-        existing_users (list): Lista istniejących użytkowników z bazy danych.
-
-    Returns:
-        list: Lista błędów (jeśli występują).
-    """
-    errors = []
-
-    # Wymagane pola
-    if not data.get('login'):
-        errors.append("Pole 'login' jest wymagane.")
-    if not data.get('fullName'):
-        errors.append("Pole 'Imię i nazwisko' jest wymagane.")
-    if not data.get('email'):
-        errors.append("Pole 'email' jest wymagane.")
-    if not data.get('password') or not data.get('confirmPassword'):
-        errors.append("Hasło i potwierdzenie hasła są wymagane.")
-    if data.get('password') != data.get('confirmPassword'):
-        errors.append("Hasła muszą się zgadzać.")
-
-    # Walidacja unikalności loginu i emaila
-    login = data.get('login')
-    email = data.get('email')
-
-    if any(user['login'] == login for user in existing_users):
-        errors.append(f"Użytkownik z loginem '{login}' już istnieje.")
-    if any(user['email'] == email for user in existing_users):
-        errors.append(f"Użytkownik z emailem '{email}' już istnieje.")
-
-    # Walidacja dla roli pracownika
-    if 'user' in data.getlist('roles[]', []):
-        if not data.get('position'):
-            errors.append("Pole 'Stanowisko' jest wymagane dla pracownika.")
-        if not data.get('qualifications'):
-            errors.append("Pole 'Kwalifikacje' jest wymagane dla pracownika.")
-        if not data.get('experience'):
-            errors.append("Pole 'Doświadczenie zawodowe' jest wymagane dla pracownika.")
-        if not data.get('education'):
-            errors.append("Pole 'Wykształcenie' jest wymagane dla pracownika.")
-        if not data.get('description'):
-            errors.append("Pole 'Opis pracownika' jest wymagane dla pracownika.")
-
-    return errors
-
 def preparoator_team(deaprtment_team='user', highlight=4):
     highlight += 1
     users_atributes = {}
@@ -1478,7 +1474,10 @@ def firstConntactMessage(email_address, procedure):
         return False
 
 
-
+class LoginForm(FlaskForm):
+    username = StringField('Nazwa użytkownika', validators=[DataRequired()])
+    password = PasswordField('Hasło', validators=[DataRequired()])
+    submit = SubmitField('Zaloguj się')
 
 
 
@@ -1522,30 +1521,6 @@ def linebreaksbr(value):
         return value
     return value.replace('\n', '<br />')
 
-@app.route('/robots.txt', methods=['GET'])
-def robots():
-    robots_content = """
-    User-agent: *
-    Disallow: /admin/
-    Disallow: /private/
-    Disallow: /tmp/
-    Allow: /
-
-    Sitemap: https://www.duodentbielany.pl/sitemap.xml
-    """
-    return Response(robots_content, mimetype='text/plain')
-
-@app.route('/sitemap.xml', methods=['GET'])
-def serve_sitemap():
-    return send_from_directory(directory='.', path='sitemap.xml', mimetype='application/xml')
-
-@app.route('/favicon.png')
-def favicon():
-    return send_from_directory(
-        directory='static/img',
-        path='favicon.png',
-        mimetype='image/png'
-    )
 
 # ERROR 404
 @app.errorhandler(404)
@@ -1596,6 +1571,116 @@ def inject_shared_variable():
 #  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
 #  Publicznie dostępne dla użytkowników końcowych.
 # ========================================================================================= #
+
+@app.route('/robots.txt', methods=['GET'])
+def robots():
+    robots_content = """
+    User-agent: *
+    Disallow: /admin/
+    Disallow: /private/
+    Disallow: /tmp/
+    Allow: /
+
+    Sitemap: https://www.duodentbielany.pl/sitemap.xml
+    """
+    return Response(robots_content, mimetype='text/plain')
+
+@app.route('/sitemap.xml', methods=['GET'])
+def serve_sitemap():
+    return send_from_directory(directory='.', path='sitemap.xml', mimetype='application/xml')
+
+@app.route('/favicon.png')
+def favicon():
+    return send_from_directory(
+        directory='static/img',
+        path='favicon.png',
+        mimetype='image/png'
+    )
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# ========================================================================================= #
+#  ENDPOINTY ADMINISTRATORA
+#  
+#  Funkcjonalności dostępne tylko dla administratorów:
+#  - Zarządzanie użytkownikami i danymi.
+#  - Dodawanie, edytowanie i usuwanie zasobów.
+#  - Generowanie raportów.
+#  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+#  Wymagają autoryzacji i podwyższonych uprawnień.
+# ========================================================================================= #
+
+@app.route('/admin/rejestracja')
+def rejestracja():
+    if 'username' not in session:
+        return redirect(url_for('index'))
+    
+    if not (session['userperm']['administrator'] == 1 or session['userperm']['super_user'] == 1):
+        flash('Nie masz uprawnień do zarządzania tymi zasobami. Skontaktuj się z administratorem!', 'danger')
+        return redirect(url_for('index'))
+        
+    session['page'] = 'rejestracja'
+    pageTitle = 'Rejestracja użytkownika'
+    if "username" in session:
+        return render_template(
+            'register.html',
+            pageTitle=pageTitle
+        )
+    else:
+        return redirect(url_for('index'))   
+
+
+@app.route('/admin/team-stomatologia')
+def team_stomatologia():
+    """Strona zespołu stomatologia."""
+    if 'username' not in session:
+        return redirect(url_for('index'))
+    
+    if not (session['userperm']['administrator'] == 1 or session['userperm']['super_user'] == 1):
+        flash('Nie masz uprawnień do zarządzania tymi zasobami. Skontaktuj się z administratorem!', 'danger')
+        return redirect(url_for('index'))
+
+    preparoator_team_dict = preparoator_team('user', 4)
+
+
+    return render_template(
+            "team_management_stomatologia.html", 
+            members=preparoator_team_dict['collections'], 
+            photos_dict=preparoator_team_dict['employee_photo_dict']
+            )
+
+@app.route('/admin/zarzadzanie-zabiegami')
+def treatment_managment():
+    session['page'] = 'for_patients'
+    pageTitle = 'Zarządzanie Zabiegami'
+
+    """Strona plików do pobrania."""
+    if 'username' not in session:
+        return redirect(url_for('index'))
+    
+    if not (session['userperm']['administrator'] == 1 or session['userperm']['super_user'] == 1):
+        flash('Nie masz uprawnień do zarządzania tymi zasobami. Skontaktuj się z administratorem!', 'danger')
+        return redirect(url_for('index'))
+    
+    return render_template(
+        "treatment_management.html", 
+        pageTitle=pageTitle,
+        treatments_items=treatments_db(False)
+    )
 
 @app.route('/admin')
 def admin():
@@ -1666,152 +1751,8 @@ def logout():
     return redirect(url_for('index'))
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# ========================================================================================= #
-#  ENDPOINTY ADMINISTRATORA
-#  
-#  Funkcjonalności dostępne tylko dla administratorów:
-#  - Zarządzanie użytkownikami i danymi.
-#  - Dodawanie, edytowanie i usuwanie zasobów.
-#  - Generowanie raportów.
-#  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
-#  Wymagają autoryzacji i podwyższonych uprawnień.
-# ========================================================================================= #
-
-@app.route('/admin/rejestracja')
-def rejestracja():
-    if 'username' not in session:
-        return redirect(url_for('index'))
-    
-    if not (session['userperm']['administrator'] == 1 or session['userperm']['super_user'] == 1):
-        flash('Nie masz uprawnień do zarządzania tymi zasobami. Skontaktuj się z administratorem!', 'danger')
-        return redirect(url_for('index'))
-        
-    session['page'] = 'rejestracja'
-    pageTitle = 'Rejestracja użytkownika'
-    if "username" in session:
-        return render_template(
-            'register.html',
-            pageTitle=pageTitle
-        )
-    else:
-        return redirect(url_for('index'))   
-
-
-@app.route('/admin/team-stomatologia')
-def team_stomatologia():
-    """Strona zespołu stomatologia."""
-    if 'username' not in session:
-        return redirect(url_for('index'))
-    
-    if not (session['userperm']['administrator'] == 1 or session['userperm']['super_user'] == 1):
-        flash('Nie masz uprawnień do zarządzania tymi zasobami. Skontaktuj się z administratorem!', 'danger')
-        return redirect(url_for('index'))
-
-    preparoator_team_dict = preparoator_team('user', 4)
-
-
-    return render_template(
-            "team_management_stomatologia.html", 
-            members=preparoator_team_dict['collections'], 
-            photos_dict=preparoator_team_dict['employee_photo_dict']
-            )
-
-@app.route('/admin/ustawieni_pracownicy', methods=['POST'])
-def ustawieni_pracownicy():
-    if 'username' not in session:
-        return redirect(url_for('index'))
-    
-    if not (session['userperm']['administrator'] == 1 or session['userperm']['super_user'] == 1):
-        flash('Nie masz uprawnień do zarządzania tymi zasobami. Skontaktuj się z administratorem!', 'danger')
-        return redirect(url_for('index'))
-
-    data = request.get_json()
-    if not data or 'pracownicy' not in data:
-        return jsonify({"error": "Nieprawidłowy format danych, oczekiwano klucza 'pracownicy'."}), 400
-    
-    sequence_data = data['pracownicy']
-    department = str(data['grupa']).strip()
-    
-    sequence = []
-    for s in sequence_data:
-        clear_data = s.strip()
-        sequence.append(clear_data)
-
-    users_atributesByLogin = {}
-    for usr_d in generator_userDataDB():  # [Dostosowane do nowego szablonu]
-        u_login = usr_d['login']
-        users_atributesByLogin[u_login] = usr_d
-
-    ready_exportDB = []
-    for u_login in sequence:
-        set_row = {
-            'EMPLOYEE_PHOTO': users_atributesByLogin[u_login]['avatar'],
-            'EMPLOYEE_LOGIN': users_atributesByLogin[u_login]['login'],
-            'EMPLOYEE_NAME': users_atributesByLogin[u_login]['name'],
-            'EMPLOYEE_ROLE': users_atributesByLogin[u_login]['stanowisko'],
-            'EMPLOYEE_DEPARTMENT': f'{department}',
-            'PHONE': users_atributesByLogin[u_login]['contact']['phone'],
-            'EMAIL': users_atributesByLogin[u_login]['email'],
-            'FACEBOOK': users_atributesByLogin[u_login]['contact']['facebook'],
-            'LINKEDIN': users_atributesByLogin[u_login]['contact']['linkedin'],
-            'STATUS': 1
-        }
-        ready_exportDB.append(set_row)
-
-    if len(ready_exportDB):
-        msq.delete_row_from_database(
-            """
-                DELETE FROM workers_team WHERE EMPLOYEE_DEPARTMENT = %s;
-            """,
-            (f'{department}', )
-        )
-
-        for i, row in enumerate(ready_exportDB):
-            zapytanie_sql = '''
-                    INSERT INTO workers_team (EMPLOYEE_PHOTO, EMPLOYEE_LOGIN, EMPLOYEE_NAME, EMPLOYEE_ROLE, EMPLOYEE_DEPARTMENT, PHONE, EMAIL, FACEBOOK, LINKEDIN, STATUS)
-                    VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s);
-                '''
-            dane = (
-                    row['EMPLOYEE_PHOTO'], 
-                    row['EMPLOYEE_LOGIN'], 
-                    row['EMPLOYEE_NAME'], 
-                    row['EMPLOYEE_ROLE'], 
-                    row['EMPLOYEE_DEPARTMENT'], 
-                    row['PHONE'], 
-                    row['EMAIL'], 
-                    row['FACEBOOK'], 
-                    row['LINKEDIN'], 
-                    row['STATUS'], 
-                )
-            if msq.insert_to_database(zapytanie_sql, dane):  # [Działająca funkcja]
-                print(f'Ustawiono {row["EMPLOYEE_NAME"]} przez {session["username"]}!')
-    else:
-        return jsonify({"status": "Sukces", "pracownicy": sequence_data}), 200
-    
-    return jsonify({"status": "Sukces", "pracownicy": sequence_data}), 200
-
-
-@app.route('/admin/zarzadzanie-zabiegami')
-def treatment_managment():
-    session['page'] = 'for_patients'
-    pageTitle = 'Zarządzanie Zabiegami'
-
+@app.route('/admin/dokumenty')
+def dokumenty():
     """Strona plików do pobrania."""
     if 'username' not in session:
         return redirect(url_for('index'))
@@ -1820,349 +1761,26 @@ def treatment_managment():
         flash('Nie masz uprawnień do zarządzania tymi zasobami. Skontaktuj się z administratorem!', 'danger')
         return redirect(url_for('index'))
     
+    categs = get_categories()
+    categorized_files = []
+    categories_names = []
+    if categs:  # Jeśli istnieją kategorie
+        for category in categs:
+            category_id = category['id']
+            file_list = get_fileBy_categories(category_id, status_aktywnosci=True)
+            
+            # Dodajemy słownik z kategorią i listą plików
+            categorized_files.append({
+                'category': category['name'],
+                'file_list': file_list,
+            })
+            categories_names.append(category['name'])
+
     return render_template(
-        "treatment_management.html", 
-        pageTitle=pageTitle,
-        treatments_items=treatments_db(False)
+        "files_management.html", 
+        categorized_files=categorized_files,  # Lista kategorii z plikami
+        categories=categs  # Pełna lista kategorii z ID i name
     )
-
-
-@app.route('/admin/edytuj-wybrany-element', methods=['POST'])
-def edit_element():
-    # Obsługa JSON
-    if request.is_json:
-        data = request.json
-        element_id = data.get('id')
-        data_type = data.get('type')
-        value = data.get('value')
-    else:
-        if 'file' not in request.files:
-            return jsonify({'error': 'Błąd podczas aktualizacji'}), 500
-        
-        file = request.files['file']
-        element_id = request.form.get('id')
-        data_type = request.form.get('type')
-        value = None
-
-        if not file or not element_id or data_type != 'img':
-            return jsonify({'error': 'Nieprawidłowe dane'}), 400
-        
-        if file and not allowed_img_file(file.filename):
-            return jsonify({'error': 'Nieprawidłowy plik obrazu'}), 400
-
-    if not element_id or not data_type:
-        return jsonify({'error': 'Brak wymaganych danych'}), 400
-
-    # Obsługa typów danych
-    if data_type == 'text':
-        # Walidacja i przypisanie ID z selektora
-        if not isinstance(value, str):
-            return jsonify({'error': 'Nieprawidłowy format dla text'}), 400
-
-    if data_type == 'splx':
-        # Zapis jako string z separatorami w bazie
-        if not isinstance(value, str):
-            return jsonify({'error': 'Nieprawidłowy format dla splx'}), 400
-
-    if data_type == 'picker':
-        try: value=int(value)
-        except: return jsonify({'error': 'Nieprawidłowy format wymagana liczba int'}), 400
-        # Walidacja i przypisanie ID z selektora
-        if not isinstance(value, int):
-            return jsonify({'error': 'Nieprawidłowy format dla int'}), 400
-        
-    if data_type == 'adder':
-        try: value=int(value)
-        except: return jsonify({'error': 'Nieprawidłowy format wymagana liczba int'}), 400
-        # Walidacja i przypisanie ID z selektora
-        if not isinstance(value, int):
-            return jsonify({'error': 'Nieprawidłowy format dla int'}), 400
-
-    # Obsługa różnych typów operacji w zależności od data_type
-    if data_type == 'switch':
-        try:
-            value = int(value)  # Próba konwersji value na liczbę całkowitą
-        except:
-            return jsonify({'error': 'Nieprawidłowy format wymagana liczba int'}), 400
-        
-        # Walidacja typu value (powinno być int)
-        if not isinstance(value, int):
-            return jsonify({'error': 'Nieprawidłowy format dla int'}), 400  
-
-    if data_type == 'remover':
-        # Walidacja typu element_id (powinien być string)
-        if value is not None or not isinstance(element_id, str):
-            return jsonify({'error': 'Nieprawidłowy format dla remover'}), 400
-        
-        TODELETE_INT = [
-            'treatment_remove_page'
-        ]
-        
-        # Sprawdzenie, czy element_id zawiera frazę z listy TODELETE_INT
-        if any(a in element_id for a in TODELETE_INT):
-            # Rozbij element_id na części składowe
-            element_id_split_part = editing_id_updater_reader(element_id)
-            
-            # Walidacja obecności klucza 'status' i jego wartości
-            if 'status' in element_id_split_part:
-                if not element_id_split_part['status']:
-                    return jsonify({'error': 'id error 0'}), 500
-            else:
-                return jsonify({'error': 'id error 1'}), 500
-
-            # Walidacja obecności wymaganych kluczy w element_id_split_part
-            if all(key in element_id_split_part for key in ['strona', 'sekcja', 'id_number', 'index', 'part', 'ofparts']):
-                strona = element_id_split_part['strona']
-                sekcja = element_id_split_part['sekcja']
-                id_number = element_id_split_part['id_number']
-                index = element_id_split_part['index']
-                part = element_id_split_part['part']
-                ofparts = element_id_split_part['ofparts']
-            else:
-                return jsonify({'error': 'id error 2'}), 500
-
-            # Logika usuwania danych, jeśli strona i sekcja są zgodne
-            if strona == 'treatment' and sekcja in TODELETE_INT:
-                # Pobierz dane o zdjęciach z bazy
-                allPhotoKeys = treatments_foto_db_by_id(id_number)
-                if not allPhotoKeys:
-                    return jsonify({'error': 'No photo data found'}), 404
-
-                for key, val in allPhotoKeys.items():
-                    if val:  # Jeśli wartość istnieje, przetwarzaj dalej
-                        file_paths = []
-
-                        # Obsługa różnych formatów danych (pojedynczy plik lub lista)
-                        if isinstance(val, str) and spea_main not in val:
-                            # Pojedynczy plik
-                            file_paths = [val]
-                        elif isinstance(val, list):
-                            # Lista plików
-                            file_paths = val
-
-                        # Ustal katalog docelowy na podstawie klucza z dictitem
-                        if key in ['optional_1']:
-                            folder = app.config['UPLOAD_FOLDER_BANNERS']
-                        else:
-                            folder = app.config['UPLOAD_FOLDER_TREATMENTS']
-
-                        # Usuń każdy plik znajdujący się w file_paths
-                        for file_name in file_paths:
-                            file_path = os.path.join(folder, file_name)
-                            if os.path.exists(file_path):
-                                try:
-                                    os.remove(file_path)
-                                    print(f"Usunięto plik: {file_path}")
-                                except Exception as e:
-                                    print(f"Błąd przy usuwaniu {file_path}: {e}")
-                            else:
-                                print(f"Plik nie istnieje: {file_path}")
-
-    if data_type == 'img':
-        element_id_split_part = editing_id_updater_reader(element_id)
-        if 'status' in element_id_split_part:
-            if not element_id_split_part['status']:
-                return jsonify({'error': 'id error 0'}), 500
-        else:
-            return jsonify({'error': 'id error 1'}), 500
-        
-        if all(key in element_id_split_part for key in ['strona', 'sekcja', 'id_number', 'index', 'part', 'ofparts']):
-            strona=element_id_split_part['strona']
-            sekcja=element_id_split_part['sekcja']
-            id_number=element_id_split_part['id_number']
-            index=element_id_split_part['index']
-            part=element_id_split_part['part']
-            ofparts=element_id_split_part['ofparts']
-        else:
-            return jsonify({'error': 'id error 2'}), 500
-        
-        # Pobieram ostatni dane obrazu
-        thisPhotoData = None
-        file_path_to_delete = None
-        filename = None
-        filepath = None
-        ####################################################
-        # Aktualizacja pliku w UPLOAD_FOLDER_TREATMENTS
-        ####################################################
-        if strona == 'treatment':
-            allPhotoKeys = treatments_foto_db_by_id(id_number)
-            #Usatawiam Katalog zapisu dla treatment
-            expected_folders = ['optional_1']
-            if sekcja in expected_folders:
-                UPLOAD_FOLDER_TREATMENTS_IMG = app.config['UPLOAD_FOLDER_BANNERS']
-            else:
-                UPLOAD_FOLDER_TREATMENTS_IMG = app.config['UPLOAD_FOLDER_TREATMENTS']
-            if str(sekcja).count('splx'):
-                key_sekcja = str(sekcja).replace('splx', 'list')
-                thisPhotoData_list = allPhotoKeys[key_sekcja]
-                thisPhotoData = thisPhotoData_list[index]
-            else:
-                thisPhotoData = allPhotoKeys[sekcja]
-
-        if strona == 'team':
-
-            try:
-                ava_query = f'SELECT {sekcja} FROM admins WHERE id={id_number};'
-                old_fotoNameofAvatar = msq.connect_to_database(ava_query)[0][0]
-            except IndexError:
-                old_fotoNameofAvatar = None
-
-            if isinstance(old_fotoNameofAvatar, str):
-                if old_fotoNameofAvatar.count('/'):
-                    old_fotoNameofAvatar_oryginal = old_fotoNameofAvatar
-                    old_fotoNameofAvatar = old_fotoNameofAvatar.split('/')[-1]
-                    thisPhotoData = None if old_fotoNameofAvatar == 'with-out-face-avatar.jpg' else old_fotoNameofAvatar
-                else:
-                    thisPhotoData = None
-            
-            expected_folders = []
-            if sekcja in expected_folders:
-                "Opcja otworzona w celu skalowania aplikacji! w przypadku innych katalogów"
-                pass
-            else:
-                UPLOAD_FOLDER_TREATMENTS_IMG = app.config['UPLOAD_FOLDER_AVATARS']
-
-        
-        if thisPhotoData:
-            file_path_to_delete = os.path.join(UPLOAD_FOLDER_TREATMENTS_IMG, thisPhotoData) 
-
-        if file:
-            filename = f"{random.randrange(100001, 799999)}_{secure_filename(file.filename)}"
-            filepath = os.path.join(UPLOAD_FOLDER_TREATMENTS_IMG, filename)
-        
-        # jeżli był obraz to kasujemy z serwera
-        if thisPhotoData and file_path_to_delete:
-            print(thisPhotoData)
-            
-            # Sprawdzenie, czy plik istnieje, i usunięcie go
-            if os.path.exists(file_path_to_delete):
-                try:
-                    os.remove(file_path_to_delete)
-                    print(f"Usunięto plik: {file_path_to_delete}")
-                except Exception as e:
-                    print(f"Błąd podczas usuwania pliku: {file_path_to_delete}, {e}")
-
-        # Zapis nowego pliku
-        if filename and filepath:
-            if strona == 'treatment':
-                try:                
-                    # Zapis pliku
-                    file.save(filepath)
-                    value = filename
-                    print(f"Zapisano plik: {filepath}")
-                except Exception as e:
-                    return jsonify({'error': f'Błąd zapisu pliku: {str(e)}'}), 500
-                
-            if strona == 'team':
-                domena_strony_www = 'https://www.duodentbielany.pl/'
-                katalog_zdjecia = 'static/img/doctor/'
-                photo_link = f'{domena_strony_www}{katalog_zdjecia}{filename}'
-
-                # Zapisz zdjęcie
-                try:
-                    if process_photo(file, filepath):
-                        # podmieniam zdjęcie w workers_team
-                        print(old_fotoNameofAvatar_oryginal)
-                        if old_fotoNameofAvatar_oryginal and isinstance(old_fotoNameofAvatar_oryginal, str):
-                            try: 
-                                query_sel_workers_team = f"""
-                                    SELECT id FROM workers_team WHERE EMPLOYEE_PHOTO='{old_fotoNameofAvatar_oryginal}';
-                                """
-                                id_in_workers_team = msq.connect_to_database(query_sel_workers_team)[0][0]
-                            except IndexError: id_in_workers_team = None
-                            if id_in_workers_team:
-                                query_upd_workers_team = """
-                                    UPDATE workers_team
-                                    SET EMPLOYEE_PHOTO = %s
-                                    WHERE id = %s
-                                """
-                                params_upd_workers_team = (photo_link, id_in_workers_team)
-                                if not msq.insert_to_database(query_upd_workers_team, params_upd_workers_team):
-                                    print('Nie znaleziono zdjęcia do podmiany w workers_team')
-                                else:
-                                    print('Zdjęcie zostało podmienione w workers_team!')
-
-                    else: return jsonify({"errors": ["Nie udało się zapisać przesłanego pliku."]}), 500
-                except Exception as e:
-                    return jsonify({"errors": ["Nie udało się zapisać przesłanego pliku."]}), 500
-
-                value = photo_link
-
-    # Aktualizacja w bazie (logika zależna od typu danych)
-    success = update_element_in_db(element_id, data_type, value)
-    if success:
-        return jsonify({'message': 'Aktualizacja zakończona sukcesem!'})
-    else:
-        return jsonify({'error': 'Błąd podczas aktualizacji'}), 500
-
-@app.route('/admin/add-treatment', methods=['POST'])
-def add_treatment():
-    """Dodawanie nowego zabiegu."""
-    if 'username' not in session:
-        return jsonify({'message': 'Musisz być zalogowany!'}), 401
-    
-    if not (session['userperm']['administrator'] == 1 or session['userperm']['super_user'] == 1):
-        return jsonify({'message': 'Nie masz odpowiednich uprawnień!'}), 403
-
-    try:
-        # Pobieranie danych z formularza
-        name = request.form.get('name').strip()
-        route = request.form.get('route').strip().lower()
-        icon = request.form.get('icon')  # Pobieranie wartości ikony
-        descrition = request.form.get('descrition')  # Pobranie opisu
-        file = request.files.get('file')  # Pobranie pliku
-
-        # Generowanie SEO-friendly wersji name i route
-        name_seoroute = slugify(name.lower())
-        route_seoroute = slugify(route)
-
-        # Łączenie w jeden ciąg dla finalnego routa
-        ready_route = f"{name_seoroute}-{route_seoroute}".strip('-')  # Usuwa myślniki z początku i końca
-
-        # Alternatywne podejście, aby zabezpieczyć przed przypadkami pustego `route_seoroute`
-        if not route_seoroute:  # Jeśli route_seoroute jest pusty
-            ready_route = name_seoroute  # Ustaw tylko name_seoroute jako ready_route
-        else:
-            ready_route = f"{name_seoroute}-{route_seoroute}".strip('-')  # Łączy, usuwając końcowe myślniki
-
-        # Walidacja danych
-        if not name or not route or not icon or not descrition or not file:
-            return jsonify({'message': 'Wszystkie pola są wymagane!'}), 400
-
-        if file and allowed_img_file(file.filename):
-            # Generowanie nowej nazwy pliku
-            original_name = file.filename
-            base_name, extension = original_name.lower().rsplit('.', 1)
-            year = time.strftime("%Y")  # Rok
-            unix_suffix = str(int(time.time()))[-6:]  # Ostatnie 6 cyfr czasu Unix
-            new_file_name = f"{base_name}-{year}-{unix_suffix}.{extension}"  # Nowa nazwa pliku
-            
-            # Zapis pliku w folderze static/img/_TREATMENTS
-            filepath = os.path.join(app.config['UPLOAD_FOLDER_TREATMENTS'], new_file_name)
-            file.save(filepath)
-        else:
-            return jsonify({'message': 'Nieprawidłowy format pliku!'}), 400
-
-        # Zapis do bazy danych
-        query = """
-            INSERT INTO tabela_uslug (tytul_glowny, ready_route, foto_home, icon, opis_home, pozycja_kolejnosci, treatment_general_status) 
-            VALUES (%s, %s, %s, %s, %s, 0, 1);
-        """
-        # Wstawianie danych do bazy
-        success = msq.insert_to_database(query, (name, ready_route, new_file_name, icon, descrition))
-
-        if success:
-            return jsonify({
-                'message': 'Zabieg został pomyślnie dodany!',
-                'uploaded_file': new_file_name,
-                'icon': icon  # Wartość wybranej ikony
-            }), 200
-        else:
-            return jsonify({'message': 'Wystąpił błąd zapisu do bazy danych!'}), 500
-
-    except Exception as e:
-        return jsonify({'message': f'Wystąpił błąd: {str(e)}'}), 500
-
 
 
 
@@ -2189,114 +1807,6 @@ def add_treatment():
 #  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
 #  Umożliwiają komunikację z aplikacją z poziomu innych systemów.
 # ========================================================================================= #
-
-
-@app.route('/api/register', methods=['POST'])
-def register():
-    # Pobranie danych z ImmutableMultiDict
-    login = request.form.get('login')
-    full_name = request.form.get('fullName')
-    position = request.form.get('position')
-    qualifications = request.form.get('qualifications')
-    experience = request.form.get('experience')
-    education = request.form.get('education')
-    description = request.form.get('description')
-    email = request.form.get('email')
-    phone = request.form.get('phone')
-    facebook = request.form.get('facebook')
-    instagram = request.form.get('instagram')
-    twitter = request.form.get('twitter')
-    linkedin = request.form.get('linkedin')
-    plain_password = request.form.get('password')
-
-    # Role użytkownika
-    roles = request.form.getlist('roles[]')  # Pobieranie listy ról
-    is_admin = 1 if 'administrator' in roles else 0
-    is_super_user = 1 if 'super_user' in roles else 0
-    is_user = 1 if 'user' in roles else 0
-
-    print(request.form)
-
-    # Walidacja danych
-    errors = validate_register_data(data=request.form, existing_users=generator_userDataDB())
-    if errors:
-        return jsonify({"errors": errors}), 400
-    
-    
-    # Obsługa zdjęcia
-    photo = request.files.get('photo')
-    if photo and imghdr.what(photo) not in ['jpeg', 'png', 'gif']:
-        return jsonify({"errors": ["Przesłany plik nie jest poprawnym obrazem."]}), 400
-    
-    photo_link = None
-    if photo:
-        # Generowanie unikalnego prefixu (5 ostatnich cyfr czasu UNIX)
-        unix_prefix = str(int(time.time()))[-5:]
-
-        # Pobierz nazwę pliku
-        original_filename = secure_filename(photo.filename)
-        extension = os.path.splitext(original_filename)[1]  # Pobierz rozszerzenie (.jpg, .png itp.)
-        base_filename = os.path.splitext(original_filename)[0]  # Pobierz nazwę bez rozszerzenia
-
-        # Połącz prefix z oryginalną nazwą
-        unique_filename = f"{unix_prefix}_{base_filename}{extension}"
-
-        # Ścieżka docelowa
-        save_path = os.path.join("static", "img", "doctor", unique_filename)
-
-        # Zapisz zdjęcie
-        try:
-            process_photo(photo, save_path)
-        except Exception as e:
-            return jsonify({"errors": ["Nie udało się zapisać przesłanego pliku."]}), 500
-
-        domena_strony_www = 'https://www.duodentbielany.pl/'
-        katalog_zdjecia = 'static/img/doctor/'
-        photo_link = f'{domena_strony_www}{katalog_zdjecia}{unique_filename}'
-    
-    if phone:
-        # Usuwamy wszystkie spacje i niepotrzebne znaki (opcjonalnie, np. "-", "(" lub ")")
-        phone = ''.join(filter(str.isdigit, phone))  # Zostawiamy tylko cyfry
-
-        # Dodajemy prefiks +48, jeśli go brakuje
-        if not phone.startswith('48'):
-            phone = f'48{phone}'
-        phone = f'+{phone}'  # Dodajemy "+" przed numerem
-
-    # Generowanie soli i haszowanie hasła
-    salt = hash.generate_salt()
-    hashed_password = hash.hash_password(plain_password, salt)
-
-    # Ustawienie linku do avatara
-    avatar = photo_link if photo_link else 'https://www.duodentbielany.pl/static/img/doctor/with-out-face-avatar.jpg'
-
-    # Status użytkownika - domyślnie aktywny
-    user_status = 1
-
-    # Przygotowanie zapytania SQL
-    zapytanie_sql = """
-        INSERT INTO admins (
-            login, name, stanowisko, kwalifikacje, doswiadczenie, wyksztalcenie, opis,
-            email, password, salt, avatar, administrator, super_user, user,
-            phone, facebook, instagram, twitter, linkedin, status_usera
-        ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
-    """
-
-    # Dane do zapytania
-    dane = (
-        login.strip(), full_name.strip(), position.strip(), qualifications.strip(), experience.strip(), education.strip(), description.strip(),
-        email.strip(), hashed_password, salt, avatar.strip(), is_admin, is_super_user, is_user,
-        phone, facebook, instagram, twitter, linkedin, user_status
-    )
-
-    # Wstawianie danych do bazy
-    if msq.insert_to_database(zapytanie_sql, dane):
-        response = {"status": "success", "message": "Administrator został zapisany do bazy."}
-        return jsonify(response), 200
-    else:
-        response ={"status": "error", "message": "Wystąpił błąd podczas zapisywania danych."}
-        return jsonify(response), 400
-
 
 # API do obsługi formularza i danych JSON
 @app.route('/api/kontakt', methods=['POST'])
@@ -2782,6 +2292,523 @@ def update_category_treatment():
     return jsonify({"status": "success", "message": "Kolejność zaktualizowana"})
 
 
+@app.route('/admin/ustawieni_pracownicy', methods=['POST'])
+def ustawieni_pracownicy():
+    if 'username' not in session:
+        return redirect(url_for('index'))
+    
+    if not (session['userperm']['administrator'] == 1 or session['userperm']['super_user'] == 1):
+        flash('Nie masz uprawnień do zarządzania tymi zasobami. Skontaktuj się z administratorem!', 'danger')
+        return redirect(url_for('index'))
+
+    data = request.get_json()
+    if not data or 'pracownicy' not in data:
+        return jsonify({"error": "Nieprawidłowy format danych, oczekiwano klucza 'pracownicy'."}), 400
+    
+    sequence_data = data['pracownicy']
+    department = str(data['grupa']).strip()
+    
+    sequence = []
+    for s in sequence_data:
+        clear_data = s.strip()
+        sequence.append(clear_data)
+
+    users_atributesByLogin = {}
+    for usr_d in generator_userDataDB():  # [Dostosowane do nowego szablonu]
+        u_login = usr_d['login']
+        users_atributesByLogin[u_login] = usr_d
+
+    ready_exportDB = []
+    for u_login in sequence:
+        set_row = {
+            'EMPLOYEE_PHOTO': users_atributesByLogin[u_login]['avatar'],
+            'EMPLOYEE_LOGIN': users_atributesByLogin[u_login]['login'],
+            'EMPLOYEE_NAME': users_atributesByLogin[u_login]['name'],
+            'EMPLOYEE_ROLE': users_atributesByLogin[u_login]['stanowisko'],
+            'EMPLOYEE_DEPARTMENT': f'{department}',
+            'PHONE': users_atributesByLogin[u_login]['contact']['phone'],
+            'EMAIL': users_atributesByLogin[u_login]['email'],
+            'FACEBOOK': users_atributesByLogin[u_login]['contact']['facebook'],
+            'LINKEDIN': users_atributesByLogin[u_login]['contact']['linkedin'],
+            'STATUS': 1
+        }
+        ready_exportDB.append(set_row)
+
+    if len(ready_exportDB):
+        msq.delete_row_from_database(
+            """
+                DELETE FROM workers_team WHERE EMPLOYEE_DEPARTMENT = %s;
+            """,
+            (f'{department}', )
+        )
+
+        for i, row in enumerate(ready_exportDB):
+            zapytanie_sql = '''
+                    INSERT INTO workers_team (EMPLOYEE_PHOTO, EMPLOYEE_LOGIN, EMPLOYEE_NAME, EMPLOYEE_ROLE, EMPLOYEE_DEPARTMENT, PHONE, EMAIL, FACEBOOK, LINKEDIN, STATUS)
+                    VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s);
+                '''
+            dane = (
+                    row['EMPLOYEE_PHOTO'], 
+                    row['EMPLOYEE_LOGIN'], 
+                    row['EMPLOYEE_NAME'], 
+                    row['EMPLOYEE_ROLE'], 
+                    row['EMPLOYEE_DEPARTMENT'], 
+                    row['PHONE'], 
+                    row['EMAIL'], 
+                    row['FACEBOOK'], 
+                    row['LINKEDIN'], 
+                    row['STATUS'], 
+                )
+            if msq.insert_to_database(zapytanie_sql, dane):  # [Działająca funkcja]
+                print(f'Ustawiono {row["EMPLOYEE_NAME"]} przez {session["username"]}!')
+    else:
+        return jsonify({"status": "Sukces", "pracownicy": sequence_data}), 200
+    
+    return jsonify({"status": "Sukces", "pracownicy": sequence_data}), 200
+
+
+@app.route('/admin/edytuj-wybrany-element', methods=['POST'])
+def edit_element():
+    # Obsługa JSON
+    if request.is_json:
+        data = request.json
+        element_id = data.get('id')
+        data_type = data.get('type')
+        value = data.get('value')
+    else:
+        if 'file' not in request.files:
+            return jsonify({'error': 'Błąd podczas aktualizacji'}), 500
+        
+        file = request.files['file']
+        element_id = request.form.get('id')
+        data_type = request.form.get('type')
+        value = None
+
+        if not file or not element_id or data_type != 'img':
+            return jsonify({'error': 'Nieprawidłowe dane'}), 400
+        
+        if file and not allowed_img_file(file.filename):
+            return jsonify({'error': 'Nieprawidłowy plik obrazu'}), 400
+
+    if not element_id or not data_type:
+        return jsonify({'error': 'Brak wymaganych danych'}), 400
+
+    # Obsługa typów danych
+    if data_type == 'text':
+        # Walidacja i przypisanie ID z selektora
+        if not isinstance(value, str):
+            return jsonify({'error': 'Nieprawidłowy format dla text'}), 400
+
+    if data_type == 'splx':
+        # Zapis jako string z separatorami w bazie
+        if not isinstance(value, str):
+            return jsonify({'error': 'Nieprawidłowy format dla splx'}), 400
+
+    if data_type == 'picker':
+        try: value=int(value)
+        except: return jsonify({'error': 'Nieprawidłowy format wymagana liczba int'}), 400
+        # Walidacja i przypisanie ID z selektora
+        if not isinstance(value, int):
+            return jsonify({'error': 'Nieprawidłowy format dla int'}), 400
+        
+    if data_type == 'adder':
+        try: value=int(value)
+        except: return jsonify({'error': 'Nieprawidłowy format wymagana liczba int'}), 400
+        # Walidacja i przypisanie ID z selektora
+        if not isinstance(value, int):
+            return jsonify({'error': 'Nieprawidłowy format dla int'}), 400
+
+    # Obsługa różnych typów operacji w zależności od data_type
+    if data_type == 'switch':
+        try:
+            value = int(value)  # Próba konwersji value na liczbę całkowitą
+        except:
+            return jsonify({'error': 'Nieprawidłowy format wymagana liczba int'}), 400
+        
+        # Walidacja typu value (powinno być int)
+        if not isinstance(value, int):
+            return jsonify({'error': 'Nieprawidłowy format dla int'}), 400  
+
+    if data_type == 'remover':
+        # Walidacja typu element_id (powinien być string)
+        if value is not None or not isinstance(element_id, str):
+            return jsonify({'error': 'Nieprawidłowy format dla remover'}), 400
+        
+        TODELETE_INT = [
+            'treatment_remove_page'
+        ]
+        
+        # Sprawdzenie, czy element_id zawiera frazę z listy TODELETE_INT
+        if any(a in element_id for a in TODELETE_INT):
+            # Rozbij element_id na części składowe
+            element_id_split_part = editing_id_updater_reader(element_id)
+            
+            # Walidacja obecności klucza 'status' i jego wartości
+            if 'status' in element_id_split_part:
+                if not element_id_split_part['status']:
+                    return jsonify({'error': 'id error 0'}), 500
+            else:
+                return jsonify({'error': 'id error 1'}), 500
+
+            # Walidacja obecności wymaganych kluczy w element_id_split_part
+            if all(key in element_id_split_part for key in ['strona', 'sekcja', 'id_number', 'index', 'part', 'ofparts']):
+                strona = element_id_split_part['strona']
+                sekcja = element_id_split_part['sekcja']
+                id_number = element_id_split_part['id_number']
+                index = element_id_split_part['index']
+                part = element_id_split_part['part']
+                ofparts = element_id_split_part['ofparts']
+            else:
+                return jsonify({'error': 'id error 2'}), 500
+
+            # Logika usuwania danych, jeśli strona i sekcja są zgodne
+            if strona == 'treatment' and sekcja in TODELETE_INT:
+                # Pobierz dane o zdjęciach z bazy
+                allPhotoKeys = treatments_foto_db_by_id(id_number)
+                if not allPhotoKeys:
+                    return jsonify({'error': 'No photo data found'}), 404
+
+                for key, val in allPhotoKeys.items():
+                    if val:  # Jeśli wartość istnieje, przetwarzaj dalej
+                        file_paths = []
+
+                        # Obsługa różnych formatów danych (pojedynczy plik lub lista)
+                        if isinstance(val, str) and spea_main not in val:
+                            # Pojedynczy plik
+                            file_paths = [val]
+                        elif isinstance(val, list):
+                            # Lista plików
+                            file_paths = val
+
+                        # Ustal katalog docelowy na podstawie klucza z dictitem
+                        if key in ['optional_1']:
+                            folder = app.config['UPLOAD_FOLDER_BANNERS']
+                        else:
+                            folder = app.config['UPLOAD_FOLDER_TREATMENTS']
+
+                        # Usuń każdy plik znajdujący się w file_paths
+                        for file_name in file_paths:
+                            file_path = os.path.join(folder, file_name)
+                            if os.path.exists(file_path):
+                                try:
+                                    os.remove(file_path)
+                                    print(f"Usunięto plik: {file_path}")
+                                except Exception as e:
+                                    print(f"Błąd przy usuwaniu {file_path}: {e}")
+                            else:
+                                print(f"Plik nie istnieje: {file_path}")
+
+    if data_type == 'img':
+        element_id_split_part = editing_id_updater_reader(element_id)
+        if 'status' in element_id_split_part:
+            if not element_id_split_part['status']:
+                return jsonify({'error': 'id error 0'}), 500
+        else:
+            return jsonify({'error': 'id error 1'}), 500
+        
+        if all(key in element_id_split_part for key in ['strona', 'sekcja', 'id_number', 'index', 'part', 'ofparts']):
+            strona=element_id_split_part['strona']
+            sekcja=element_id_split_part['sekcja']
+            id_number=element_id_split_part['id_number']
+            index=element_id_split_part['index']
+            part=element_id_split_part['part']
+            ofparts=element_id_split_part['ofparts']
+        else:
+            return jsonify({'error': 'id error 2'}), 500
+        
+        # Pobieram ostatni dane obrazu
+        thisPhotoData = None
+        file_path_to_delete = None
+        filename = None
+        filepath = None
+        ####################################################
+        # Aktualizacja pliku w UPLOAD_FOLDER_TREATMENTS
+        ####################################################
+        if strona == 'treatment':
+            allPhotoKeys = treatments_foto_db_by_id(id_number)
+            #Usatawiam Katalog zapisu dla treatment
+            expected_folders = ['optional_1']
+            if sekcja in expected_folders:
+                UPLOAD_FOLDER_TREATMENTS_IMG = app.config['UPLOAD_FOLDER_BANNERS']
+            else:
+                UPLOAD_FOLDER_TREATMENTS_IMG = app.config['UPLOAD_FOLDER_TREATMENTS']
+            if str(sekcja).count('splx'):
+                key_sekcja = str(sekcja).replace('splx', 'list')
+                thisPhotoData_list = allPhotoKeys[key_sekcja]
+                thisPhotoData = thisPhotoData_list[index]
+            else:
+                thisPhotoData = allPhotoKeys[sekcja]
+
+        if strona == 'team':
+
+            try:
+                ava_query = f'SELECT {sekcja} FROM admins WHERE id={id_number};'
+                old_fotoNameofAvatar = msq.connect_to_database(ava_query)[0][0]
+            except IndexError:
+                old_fotoNameofAvatar = None
+
+            if isinstance(old_fotoNameofAvatar, str):
+                if old_fotoNameofAvatar.count('/'):
+                    old_fotoNameofAvatar_oryginal = old_fotoNameofAvatar
+                    old_fotoNameofAvatar = old_fotoNameofAvatar.split('/')[-1]
+                    thisPhotoData = None if old_fotoNameofAvatar == 'with-out-face-avatar.jpg' else old_fotoNameofAvatar
+                else:
+                    thisPhotoData = None
+            
+            expected_folders = []
+            if sekcja in expected_folders:
+                "Opcja otworzona w celu skalowania aplikacji! w przypadku innych katalogów"
+                pass
+            else:
+                UPLOAD_FOLDER_TREATMENTS_IMG = app.config['UPLOAD_FOLDER_AVATARS']
+
+        
+        if thisPhotoData:
+            file_path_to_delete = os.path.join(UPLOAD_FOLDER_TREATMENTS_IMG, thisPhotoData) 
+
+        if file:
+            filename = f"{random.randrange(100001, 799999)}_{secure_filename(file.filename)}"
+            filepath = os.path.join(UPLOAD_FOLDER_TREATMENTS_IMG, filename)
+        
+        # jeżli był obraz to kasujemy z serwera
+        if thisPhotoData and file_path_to_delete:
+            print(thisPhotoData)
+            
+            # Sprawdzenie, czy plik istnieje, i usunięcie go
+            if os.path.exists(file_path_to_delete):
+                try:
+                    os.remove(file_path_to_delete)
+                    print(f"Usunięto plik: {file_path_to_delete}")
+                except Exception as e:
+                    print(f"Błąd podczas usuwania pliku: {file_path_to_delete}, {e}")
+
+        # Zapis nowego pliku
+        if filename and filepath:
+            if strona == 'treatment':
+                try:                
+                    # Zapis pliku
+                    file.save(filepath)
+                    value = filename
+                    print(f"Zapisano plik: {filepath}")
+                except Exception as e:
+                    return jsonify({'error': f'Błąd zapisu pliku: {str(e)}'}), 500
+                
+            if strona == 'team':
+                domena_strony_www = 'https://www.duodentbielany.pl/'
+                katalog_zdjecia = 'static/img/doctor/'
+                photo_link = f'{domena_strony_www}{katalog_zdjecia}{filename}'
+
+                # Zapisz zdjęcie
+                try:
+                    if process_photo(file, filepath):
+                        # podmieniam zdjęcie w workers_team
+                        print(old_fotoNameofAvatar_oryginal)
+                        if old_fotoNameofAvatar_oryginal and isinstance(old_fotoNameofAvatar_oryginal, str):
+                            try: 
+                                query_sel_workers_team = f"""
+                                    SELECT id FROM workers_team WHERE EMPLOYEE_PHOTO='{old_fotoNameofAvatar_oryginal}';
+                                """
+                                id_in_workers_team = msq.connect_to_database(query_sel_workers_team)[0][0]
+                            except IndexError: id_in_workers_team = None
+                            if id_in_workers_team:
+                                query_upd_workers_team = """
+                                    UPDATE workers_team
+                                    SET EMPLOYEE_PHOTO = %s
+                                    WHERE id = %s
+                                """
+                                params_upd_workers_team = (photo_link, id_in_workers_team)
+                                if not msq.insert_to_database(query_upd_workers_team, params_upd_workers_team):
+                                    print('Nie znaleziono zdjęcia do podmiany w workers_team')
+                                else:
+                                    print('Zdjęcie zostało podmienione w workers_team!')
+
+                    else: return jsonify({"errors": ["Nie udało się zapisać przesłanego pliku."]}), 500
+                except Exception as e:
+                    return jsonify({"errors": ["Nie udało się zapisać przesłanego pliku."]}), 500
+
+                value = photo_link
+
+    # Aktualizacja w bazie (logika zależna od typu danych)
+    success = update_element_in_db(element_id, data_type, value)
+    if success:
+        return jsonify({'message': 'Aktualizacja zakończona sukcesem!'})
+    else:
+        return jsonify({'error': 'Błąd podczas aktualizacji'}), 500
+
+@app.route('/admin/add-treatment', methods=['POST'])
+def add_treatment():
+    """Dodawanie nowego zabiegu."""
+    if 'username' not in session:
+        return jsonify({'message': 'Musisz być zalogowany!'}), 401
+    
+    if not (session['userperm']['administrator'] == 1 or session['userperm']['super_user'] == 1):
+        return jsonify({'message': 'Nie masz odpowiednich uprawnień!'}), 403
+
+    try:
+        # Pobieranie danych z formularza
+        name = request.form.get('name').strip()
+        route = request.form.get('route').strip().lower()
+        icon = request.form.get('icon')  # Pobieranie wartości ikony
+        descrition = request.form.get('descrition')  # Pobranie opisu
+        file = request.files.get('file')  # Pobranie pliku
+
+        # Generowanie SEO-friendly wersji name i route
+        name_seoroute = slugify(name.lower())
+        route_seoroute = slugify(route)
+
+        # Łączenie w jeden ciąg dla finalnego routa
+        ready_route = f"{name_seoroute}-{route_seoroute}".strip('-')  # Usuwa myślniki z początku i końca
+
+        # Alternatywne podejście, aby zabezpieczyć przed przypadkami pustego `route_seoroute`
+        if not route_seoroute:  # Jeśli route_seoroute jest pusty
+            ready_route = name_seoroute  # Ustaw tylko name_seoroute jako ready_route
+        else:
+            ready_route = f"{name_seoroute}-{route_seoroute}".strip('-')  # Łączy, usuwając końcowe myślniki
+
+        # Walidacja danych
+        if not name or not route or not icon or not descrition or not file:
+            return jsonify({'message': 'Wszystkie pola są wymagane!'}), 400
+
+        if file and allowed_img_file(file.filename):
+            # Generowanie nowej nazwy pliku
+            original_name = file.filename
+            base_name, extension = original_name.lower().rsplit('.', 1)
+            year = time.strftime("%Y")  # Rok
+            unix_suffix = str(int(time.time()))[-6:]  # Ostatnie 6 cyfr czasu Unix
+            new_file_name = f"{base_name}-{year}-{unix_suffix}.{extension}"  # Nowa nazwa pliku
+            
+            # Zapis pliku w folderze static/img/_TREATMENTS
+            filepath = os.path.join(app.config['UPLOAD_FOLDER_TREATMENTS'], new_file_name)
+            file.save(filepath)
+        else:
+            return jsonify({'message': 'Nieprawidłowy format pliku!'}), 400
+
+        # Zapis do bazy danych
+        query = """
+            INSERT INTO tabela_uslug (tytul_glowny, ready_route, foto_home, icon, opis_home, pozycja_kolejnosci, treatment_general_status) 
+            VALUES (%s, %s, %s, %s, %s, 0, 1);
+        """
+        # Wstawianie danych do bazy
+        success = msq.insert_to_database(query, (name, ready_route, new_file_name, icon, descrition))
+
+        if success:
+            return jsonify({
+                'message': 'Zabieg został pomyślnie dodany!',
+                'uploaded_file': new_file_name,
+                'icon': icon  # Wartość wybranej ikony
+            }), 200
+        else:
+            return jsonify({'message': 'Wystąpił błąd zapisu do bazy danych!'}), 500
+
+    except Exception as e:
+        return jsonify({'message': f'Wystąpił błąd: {str(e)}'}), 500
+
+
+@app.route('/api/register', methods=['POST'])
+def register():
+    # Pobranie danych z ImmutableMultiDict
+    login = request.form.get('login')
+    full_name = request.form.get('fullName')
+    position = request.form.get('position')
+    qualifications = request.form.get('qualifications')
+    experience = request.form.get('experience')
+    education = request.form.get('education')
+    description = request.form.get('description')
+    email = request.form.get('email')
+    phone = request.form.get('phone')
+    facebook = request.form.get('facebook')
+    instagram = request.form.get('instagram')
+    twitter = request.form.get('twitter')
+    linkedin = request.form.get('linkedin')
+    plain_password = request.form.get('password')
+
+    # Role użytkownika
+    roles = request.form.getlist('roles[]')  # Pobieranie listy ról
+    is_admin = 1 if 'administrator' in roles else 0
+    is_super_user = 1 if 'super_user' in roles else 0
+    is_user = 1 if 'user' in roles else 0
+
+    print(request.form)
+
+    # Walidacja danych
+    errors = validate_register_data(data=request.form, existing_users=generator_userDataDB())
+    if errors:
+        return jsonify({"errors": errors}), 400
+    
+    
+    # Obsługa zdjęcia
+    photo = request.files.get('photo')
+    if photo and imghdr.what(photo) not in ['jpeg', 'png', 'gif']:
+        return jsonify({"errors": ["Przesłany plik nie jest poprawnym obrazem."]}), 400
+    
+    photo_link = None
+    if photo:
+        # Generowanie unikalnego prefixu (5 ostatnich cyfr czasu UNIX)
+        unix_prefix = str(int(time.time()))[-5:]
+
+        # Pobierz nazwę pliku
+        original_filename = secure_filename(photo.filename)
+        extension = os.path.splitext(original_filename)[1]  # Pobierz rozszerzenie (.jpg, .png itp.)
+        base_filename = os.path.splitext(original_filename)[0]  # Pobierz nazwę bez rozszerzenia
+
+        # Połącz prefix z oryginalną nazwą
+        unique_filename = f"{unix_prefix}_{base_filename}{extension}"
+
+        # Ścieżka docelowa
+        save_path = os.path.join("static", "img", "doctor", unique_filename)
+
+        # Zapisz zdjęcie
+        try:
+            process_photo(photo, save_path)
+        except Exception as e:
+            return jsonify({"errors": ["Nie udało się zapisać przesłanego pliku."]}), 500
+
+        domena_strony_www = 'https://www.duodentbielany.pl/'
+        katalog_zdjecia = 'static/img/doctor/'
+        photo_link = f'{domena_strony_www}{katalog_zdjecia}{unique_filename}'
+    
+    if phone:
+        # Usuwamy wszystkie spacje i niepotrzebne znaki (opcjonalnie, np. "-", "(" lub ")")
+        phone = ''.join(filter(str.isdigit, phone))  # Zostawiamy tylko cyfry
+
+        # Dodajemy prefiks +48, jeśli go brakuje
+        if not phone.startswith('48'):
+            phone = f'48{phone}'
+        phone = f'+{phone}'  # Dodajemy "+" przed numerem
+
+    # Generowanie soli i haszowanie hasła
+    salt = hash.generate_salt()
+    hashed_password = hash.hash_password(plain_password, salt)
+
+    # Ustawienie linku do avatara
+    avatar = photo_link if photo_link else 'https://www.duodentbielany.pl/static/img/doctor/with-out-face-avatar.jpg'
+
+    # Status użytkownika - domyślnie aktywny
+    user_status = 1
+
+    # Przygotowanie zapytania SQL
+    zapytanie_sql = """
+        INSERT INTO admins (
+            login, name, stanowisko, kwalifikacje, doswiadczenie, wyksztalcenie, opis,
+            email, password, salt, avatar, administrator, super_user, user,
+            phone, facebook, instagram, twitter, linkedin, status_usera
+        ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+    """
+
+    # Dane do zapytania
+    dane = (
+        login.strip(), full_name.strip(), position.strip(), qualifications.strip(), experience.strip(), education.strip(), description.strip(),
+        email.strip(), hashed_password, salt, avatar.strip(), is_admin, is_super_user, is_user,
+        phone, facebook, instagram, twitter, linkedin, user_status
+    )
+
+    # Wstawianie danych do bazy
+    if msq.insert_to_database(zapytanie_sql, dane):
+        response = {"status": "success", "message": "Administrator został zapisany do bazy."}
+        return jsonify(response), 200
+    else:
+        response ={"status": "error", "message": "Wystąpił błąd podczas zapisywania danych."}
+        return jsonify(response), 400
 
 
 
@@ -2890,39 +2917,6 @@ def team():
         'team.html',
         pageTitle=pageTitle,
         members=generator_teamDB_v
-    )
-
-
-
-@app.route('/admin/dokumenty')
-def dokumenty():
-    """Strona plików do pobrania."""
-    if 'username' not in session:
-        return redirect(url_for('index'))
-    
-    if not (session['userperm']['administrator'] == 1 or session['userperm']['super_user'] == 1):
-        flash('Nie masz uprawnień do zarządzania tymi zasobami. Skontaktuj się z administratorem!', 'danger')
-        return redirect(url_for('index'))
-    
-    categs = get_categories()
-    categorized_files = []
-    categories_names = []
-    if categs:  # Jeśli istnieją kategorie
-        for category in categs:
-            category_id = category['id']
-            file_list = get_fileBy_categories(category_id, status_aktywnosci=True)
-            
-            # Dodajemy słownik z kategorią i listą plików
-            categorized_files.append({
-                'category': category['name'],
-                'file_list': file_list,
-            })
-            categories_names.append(category['name'])
-
-    return render_template(
-        "files_management.html", 
-        categorized_files=categorized_files,  # Lista kategorii z plikami
-        categories=categs  # Pełna lista kategorii z ID i name
     )
 
 
