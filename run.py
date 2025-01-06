@@ -1125,9 +1125,65 @@ def get_fileBy_categories(category_id, route_name="dokumenty/", status_aktywnosc
     return ready_list
 
 
+def calculate_statistics():
+    # Tymczasowe zmienne prototypowe
+    tygodniowa_statystyka_uslug = 120  # Liczba usług wykonanych w tygodniu
+    data_rozpoczecia_dzialalnosci = datetime(1989, 5, 20)  # Data rozpoczęcia działalności
+    liczba_pracownikow = len(generator_teamDB())  # Aktualna liczba pracowników
+    zadeklarowani_pracownicy = 3  # Członkowie zespołu z poza strony www
+    procent_zadowolonych_klientow = 85  # Zadeklarowany procent zadowolonych klientów (w %)
+
+    # Wyliczenia
+    zrealizowane_uslugi = tygodniowa_statystyka_uslug * 52  # Zrealizowane usługi w skali roku
+    lata_doswiadczenia = datetime.now().year - data_rozpoczecia_dzialalnosci.year
+    if datetime.now().month < data_rozpoczecia_dzialalnosci.month or (
+        datetime.now().month == data_rozpoczecia_dzialalnosci.month and datetime.now().day < data_rozpoczecia_dzialalnosci.day
+    ):
+        lata_doswiadczenia -= 1  # Uwzględnienie niepełnego roku
+
+    czlonkowie_zespolu = liczba_pracownikow + zadeklarowani_pracownicy  # Liczba członków zespołu
+    zadowoleni_klienci = int((procent_zadowolonych_klientow / 100) * zrealizowane_uslugi)  # Liczba zadowolonych klientów
+
+    # Tworzenie słownika
+    statystyki = {
+        "zrealizowane_uslugi": zrealizowane_uslugi,
+        "lata_doswiadczenia": lata_doswiadczenia,
+        "czlonkowie_zespolu": czlonkowie_zespolu,
+        "zadowoleni_klienci": zadowoleni_klienci,
+    }
+
+    return statystyki
 
 
+# Szczegóły członka zespołu
+def team_memeber_router():
+    generator_teamDB_v = generator_teamDB()
+    generator_userDataDB_v = generator_userDataDB()
+    theme_id = {}
+    theme_name = {}
+    theme_login = {}
+    for memeber in generator_teamDB_v:
+        user_name=memeber.get('EMPLOYEE_NAME', None)
+        user_role=memeber.get('EMPLOYEE_ROLE', None)
+        user_login=memeber.get('EMPLOYEE_LOGIN', None)
+        if user_name and user_role and user_login:
+            # Zamiana polskich znaków na zwykłe litery
+            pre_name = bez_polskich_znakow(str(user_name).strip().replace(' ', '-').lower())
+            pre_role = bez_polskich_znakow(str(user_role).strip().replace(' ', '-').lower())
 
+            create_route = f'{pre_role}-{pre_name}'
+            for admin in generator_userDataDB_v:
+                if admin.get('login') == user_login:
+                    theme_id[create_route] = admin.get('id')
+                    theme_name[create_route] = admin.get('name')
+                    theme_login[create_route] = admin.get('login')
+                    break
+
+    return {
+            "by_id": theme_id,
+            "by_name": theme_name,
+            "by_login": theme_login
+        }
 
 
 
@@ -1332,36 +1388,6 @@ def format_date(date_input, pl=True):
     return formatted_date
 
 
-# Szczegóły członka zespołu
-def team_memeber_router():
-    generator_teamDB_v = generator_teamDB()
-    generator_userDataDB_v = generator_userDataDB()
-    theme_id = {}
-    theme_name = {}
-    theme_login = {}
-    for memeber in generator_teamDB_v:
-        user_name=memeber.get('EMPLOYEE_NAME', None)
-        user_role=memeber.get('EMPLOYEE_ROLE', None)
-        user_login=memeber.get('EMPLOYEE_LOGIN', None)
-        if user_name and user_role and user_login:
-            # Zamiana polskich znaków na zwykłe litery
-            pre_name = bez_polskich_znakow(str(user_name).strip().replace(' ', '-').lower())
-            pre_role = bez_polskich_znakow(str(user_role).strip().replace(' ', '-').lower())
-
-            create_route = f'{pre_role}-{pre_name}'
-            for admin in generator_userDataDB_v:
-                if admin.get('login') == user_login:
-                    theme_id[create_route] = admin.get('id')
-                    theme_name[create_route] = admin.get('name')
-                    theme_login[create_route] = admin.get('login')
-                    break
-
-    return {
-            "by_id": theme_id,
-            "by_name": theme_name,
-            "by_login": theme_login
-        }
-
 def direct_by_permision(session, permission_sought=None):
     """
     Zwraca poziom uprawnień użytkownika na podstawie sesji.
@@ -1541,7 +1567,8 @@ def inject_shared_variable():
     return {
         'userName': session.get("username", 'NotLogin'),
         'treatmentMenu': {item["ready_route"]: item["tytul_glowny"] for item in treatments_db(True)},
-        'treatmentFooter': treatmentFooter
+        'treatmentFooter': treatmentFooter,
+        'companyStats': calculate_statistics()
     }
 
 
