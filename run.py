@@ -1686,7 +1686,7 @@ def team_stomatologia():
         flash('Nie masz uprawnień do zarządzania tymi zasobami. Skontaktuj się z administratorem!', 'danger')
         return redirect(url_for('index'))
 
-    preparoator_team_dict = preparoator_team('user', 4)
+    preparoator_team_dict = preparoator_team('user', 3)
 
 
     return render_template(
@@ -2897,8 +2897,8 @@ def index():
     pageTitle = 'Strona Główna'
 
     generator_teamDB_v = generator_teamDB()
-    if len(generator_teamDB_v) > 3:
-        generator_teamDB_v = generator_teamDB_v[:4]
+    if len(generator_teamDB_v) > 2:
+        generator_teamDB_v = generator_teamDB_v[:3]
 
     return render_template(
         'index.html',
@@ -2954,8 +2954,8 @@ def about_us():
     pageTitle = 'Poznaj nas bliżej'
 
     generator_teamDB_v = generator_teamDB()
-    if len(generator_teamDB_v) > 3:
-        generator_teamDB_v = generator_teamDB_v[:4]
+    if len(generator_teamDB_v) > 2:
+        generator_teamDB_v = generator_teamDB_v[:3]
 
     return render_template(
         'about_us.html',
