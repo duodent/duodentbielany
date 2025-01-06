@@ -163,7 +163,9 @@
                             <strong>Bank:</strong> Volkswagen Bank Polska S.A.
                         </li>
                         <li class="list-group-item">
-                            <strong>Numer konta:</strong> 92 2130 0004 2001 0217 3680 0003
+                            <strong>Numer konta:</strong> 
+                            <span id="account-number">92 2130 0004 2001 0217 3680 0003</span>
+                            <i class="bi bi-clipboard" id="copy-icon" style="cursor: pointer;" title="Kopiuj do schowka"></i>
                         </li>
                         <li class="list-group-item">
                             <strong>Tytuł przelewu:</strong> „Imię i nazwisko Pacjenta”
@@ -173,6 +175,9 @@
                             <a href="mailto:arkuszowa@duodent.com.pl" class="text-primary">arkuszowa@duodent.com.pl</a>
                         </li>
                     </ul>
+                    <div id="copy-alert" class="alert alert-success d-none mt-3" role="alert">
+                        Numer konta został skopiowany do schowka!
+                    </div>
                 </div>
             </div>
         </div>
@@ -445,6 +450,25 @@
                         $(formMessages).text('Wystąpił błąd! Spróbuj ponownie później.');
                     }
                 });
+        });
+    });
+
+    // Dodanie funkcji kopiowania
+    document.getElementById("copy-icon").addEventListener("click", function () {
+        const accountNumber = document.getElementById("account-number").innerText;
+
+        // Skopiowanie do schowka
+        navigator.clipboard.writeText(accountNumber).then(() => {
+            // Wyświetlenie informacji o skopiowaniu
+            const alertBox = document.getElementById("copy-alert");
+            alertBox.classList.remove("d-none");
+
+            // Ukrycie komunikatu po 3 sekundach
+            setTimeout(() => {
+                alertBox.classList.add("d-none");
+            }, 3000);
+        }).catch(err => {
+            console.error('Błąd podczas kopiowania: ', err);
         });
     });
 </script>
