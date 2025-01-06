@@ -163,11 +163,14 @@
                             Dojazd
                         </h3>
                         <p style="font-weight: 500;">
-                            <span class="transport-icon" style="background-image: url('static/img/autobus-ico.png');"></span>
+                            {% set bg_image_autobus = url_for('static', filename='img/autobus-ico.png') %}
+                            {% set bg_image_tramwaj = url_for('static', filename='img/tramwaj-ico.png') %}
+                            {% set bg_image_metro = url_for('static', filename='img/metro-ico.png') %}
+                            <span class="transport-icon" style="background-image: url('{{bg_image_autobus}}');"></span>
                             <spam class="apple-style-transport">110</spam> <spam class="apple-style-transport">210</spam> 
-                            <span class="transport-icon" style="background-image: url('static/img/tramwaj-ico.png');"></span> 
+                            <span class="transport-icon" style="background-image: url({{bg_image_tramwaj}});"></span> 
                             <spam class="apple-style-transport">26</spam> <spam class="apple-style-transport">33</spam> 
-                            <span class="transport-icon" style="background-image: url('static/img/metro-ico.png');"></span> 
+                            <span class="transport-icon" style="background-image: url({{bg_image_metro}});"></span> 
                             <spam style="color:#0000ff;">M</spam><spam style="color:red;">1</spam> Młociny
                         </p>
                     </div>
