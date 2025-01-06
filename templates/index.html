@@ -271,9 +271,16 @@
                                         </div>
                                     </div>
                                     <div class="col-lg-6">
-                                        <div class="form-group">
-                                            <label>Data urodzenia</label>
-                                            <input type="date" id="birth_date" name="birth_date" required class="form-control">
+                                        Wiek Pacjenta
+                                        <div class="form-seclect-clear">
+                                            <div class="form-floating">
+                                                <select id="patient_type" name="patient_type" class="form-select" aria-label="Pacjent" required>
+                                                    <option selected>- - -</option>
+                                                    <option value="adult">Dorosły</option>
+                                                    <option value="child">Dziecko</option>
+                                                </select>
+                                                <label for="patient_type">Pacjent</label>
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="col-lg-6">
@@ -283,19 +290,20 @@
                                         </div>
                                     </div>
                                     <div class="col-lg-6">
-                                        <div class="form-group">
-                                            <label>Godzina wizyty</label>
-                                            <input type="time" id="visit_time" name="visit_time" required class="form-control">
-                                        </div>
+                                        <p style="font-size: 12px; color: #686d71;">
+                                            <strong style="color:#d60000;">UWAGA!</strong> Ten formularz <strong style="color:#24363f;">nie gwarantuje umówienia terminu</strong>. Uruchamia jedynie proces rejestracji, 
+                                            a recepcja placówki skontaktuje się z Państwem w celu dopełnienia niezbędnych formalności, 
+                                            m.in. ustalenia godziny wizyty we wskazanym dniu.
+                                        </p>
                                     </div>
                                 </div>
                                 <div class="form-check form-switch mb-3">
                                     <input class="form-check-input" type="checkbox" role="switch" id="consent" name="consent" required>
                                     <label class="form-check-label" for="consent" style="font-size: 10px; color:#acacac">
-                                        Wyrażam zgodę na <strong style="color:#243f3f;">przetwarzanie</strong> moich <strong style="color:#243f3f;">danych osobowych</strong> przez Duodent Bielany 
-                                        <strong style="color:#243f3f;">w celu rejestracji wizyty i kontaktu</strong>, zgodnie z obowiązującymi przepisami
+                                        Wyrażam zgodę na <strong style="color:#24363f;">przetwarzanie</strong> moich <strong style="color:#243f3f;">danych osobowych</strong> przez Duodent Bielany 
+                                        <strong style="color:#24363f;">w celu rejestracji wizyty i kontaktu</strong>, zgodnie z obowiązującymi przepisami
                                         Rozporządzenia Parlamentu Europejskiego i Rady (UE) 2016/679 z dnia 27 
-                                        kwietnia 2016 r. <strong style="color:#243f3f;">(RODO)</strong>.
+                                        kwietnia 2016 r. <strong style="color:#24363f;">(RODO)</strong>.
                                     </label>
                                 </div>
                                 <button type="submit" class="default-btn">Wyslij wniosek</button>
@@ -605,15 +613,14 @@
     <script>
         $(document).ready(function () {
             $('#appointmentForm').on('submit', function (event) {
-                event.preventDefault(); // Zapobiegamy standardowemu przesyłaniu formularza
+                event.preventDefault(); // Zapobiegamy standardowemu przesłaniu formularza
 
                 const formData = {
                     name: $('#name').val(),
                     email: $('#email').val(),
                     phone: $('#phone').val(),
-                    birth_date: $('#birth_date').val(),
+                    patient_type: $('#patient_type').val(), // Nowe pole
                     visit_date: $('#visit_date').val(),
-                    visit_time: $('#visit_time').val(),
                     consent: $('#consent').is(':checked')
                 };
 
