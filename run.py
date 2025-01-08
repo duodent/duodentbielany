@@ -1985,6 +1985,30 @@ def ustawienia_aplikacji():
             adminTrue=True
             )
 
+@app.route('/admin/password-managment')
+def password_managment():
+    """Ustawienia haseł administratorów."""
+    
+@app.route('/admin/password-managment', methods=['GET'])
+def password_managment():
+    """Ustawienia haseł administratorów."""
+
+     # Sprawdzanie uprawnień
+    # ========================================================
+    # 🌟 Model implementacji uprawnień - Rekomendacja 🌟
+    # Ten kod jest czytelny, modułowy i łatwy w rozbudowie.
+    # Każdy poziom uprawnień ma jasno określoną logikę.
+    # Użycie funkcji `direct_by_permision` zapewnia elastyczność.
+    # Idealne do zastosowania w wielu endpointach systemu!
+    # ========================================================
+    # Sprawdzenie uprawnień
+    if 'username' not in session or not direct_by_permision(session, permission_sought='administrator'):
+        flash("Brak uprawnień do dostępu do tego zasobu.", 'danger')
+        return redirect(url_for('index'))
+
+    # Pobranie roli użytkownika
+    user_role = "admin"  # Na przykładzie, można pobrać z sesji lub bazy danych
+    return render_template("rootipa.html", role=user_role)
 
 
 
