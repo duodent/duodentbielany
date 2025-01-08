@@ -1,0 +1,190 @@
+{% extends 'base.html' %}
+{% block content %}
+<!-- breadcrumb start -->
+<div id="breadcrumb-small" class="breadcrumb-small mb-5" style="display: none;">
+    <div class="container justify-content-center">
+        <div class="justify-content-center">
+            <ul class="breadcrumb-pages-list">
+                <li><a href="/"><i class="bi bi-houses-fill" style="font-size: 1rem;"></i></a></li>
+                <li>Ustawienia</li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!-- breadcrumb end -->
+ <!-- emergency call -->
+ <section class="overview-area">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <div class="overview-content">
+                    <span class="sub-title">
+                        <i class="flaticon-hashtag-symbol"></i>
+                        Zadzwoń do nas
+                    </span>
+                    <h3>Masz nagły<span> problem?</span> Jesteśmy tu, by Ci pomóc!</h3>
+                    <p><a href="tel:+48790777350">Zadzwoń teraz: <i class="far fa-phone"></i> +48 790 777 350</a></p>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="overview-image">
+                    <img src="static/img/emergency-1-pan-doktor.png" alt="image">
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- emergency call end -->
+
+
+<!-- appointment -->
+<section class="appointment-overview-area pb-100">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-4 col-md-12">
+                <div class="appointment-overview-contact">
+                    <img src="static/img/appointment/pani-1-lookup.jpg" alt="image">
+                    <div class="appointment-info">
+                        <ul class="call-info">
+                            <li>
+                                <i class="flaticon-emergency-call" onClick="window.location.href='tel:+48790777350'"></i>
+                                Zadzwoń teraz:
+                                <span><a href="tel:+48790777350">790 777 350</a></span>
+                            </li>
+                        </ul>
+                        <p>Potrzebujesz szybkiej konsultacji?</p>
+                        <a href="/kontakt-z-przychodnia-stomatologiczna" class="default-btn">Kontakt</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-8">
+                <div class="appointment-overview-box">
+                    <div class="make-appointment-content">
+                        <h4><i class="far fa-key"></i> Zarządzanie hasłem</h4>
+                        <form id="passwordForm">
+                            <div class="row">
+                                <!-- Informacje o użytkowniku (tylko dla administratora) -->
+                                <div class="col-lg-6" id="userSelect" style="display: none;">
+                                    <div class="form-group">
+                                        <label>Wybierz użytkownika</label>
+                                        <select id="user_id" name="user_id" class="form-select" required>
+                                            <option selected>- - -</option>
+                                            <!-- Opcje wypełniane dynamicznie -->
+                                            <option value="1">Użytkownik 1</option>
+                                            <option value="2">Użytkownik 2</option>
+                                            <option value="3">Użytkownik 3</option>
+                                        </select>
+                                    </div>
+                                </div>
+                        
+                                <!-- Nowe hasło (opcjonalne, jeśli admin zmienia ręcznie) -->
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label>Nowe Hasło</label>
+                                        <input type="password" class="form-control" id="new_password" name="new_password" placeholder="Nowe Hasło">
+                                    </div>
+                                </div>
+                        
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label>Powtórz Nowe Hasło</label>
+                                        <input type="password" class="form-control" id="repeat_password" name="repeat_password" placeholder="Powtórz Nowe Hasło">
+                                    </div>
+                                </div>
+                        
+                                <!-- Przełączniki dla administratora -->
+                                <div class="col-lg-12" id="adminOptions" style="display: none;">
+                                    <div class="form-check form-switch mb-3">
+                                        <input class="form-check-input" type="checkbox" role="switch" id="generate_password" name="generate_password">
+                                        <label class="form-check-label" for="generate_password">Wygeneruj hasło automatycznie</label>
+                                    </div>
+                                </div>
+                        
+                                <!-- Informacje -->
+                                <div class="col-lg-12">
+                                    <p style="font-size: 12px; color: #686d71;">
+                                        <strong style="color:#d60000;">UWAGA!</strong> Administrator może zmienić hasło dowolnemu użytkownikowi, super użytkownik 
+                                        i pracownik mogą generować hasła tylko dla siebie.
+                                    </p>
+                                </div>
+                            </div>
+                        
+                            <!-- Przyciski akcji -->
+                            <div class="d-flex justify-content-between">
+                                <!-- Guzik dla administratora i super użytkownika -->
+                                <button type="submit" id="submitButton" class="default-btn">Zmień Hasło</button>
+                        
+                                <!-- Guzik dla pracownika -->
+                                <button type="button" id="generateButton" class="default-btn" style="display: none;">Wygeneruj Hasło</button>
+                            </div>
+                        
+                            <div id="responseMessage" style="margin-top: 20px;"></div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- appointment end -->
+
+{% endblock %}
+{% block bottom_scripts %}
+    <script>
+        $(document).ready(function () {
+            setTimeout(function () {
+                // Pokaż #breadcrumb-small
+                $("#breadcrumb-small")
+                    .css({
+                        display: "block", // Ustaw widoczność
+                        textAlign: "center", // Wyrównanie tekstu do środka
+                        width: "100%", // Rozciągnij na całą szerokość
+                    })
+                    .animate(
+                        {
+                            height: "50px",
+                            paddingTop: "10px"
+                        },
+                        1200 // Czas animacji
+                    );
+            }, 2000); 
+        });
+    </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const role = "{{ role | safe }}"; // Przykład: tutaj pobierasz rzeczywistą rolę użytkownika z backendu
+
+            const userSelect = document.getElementById("userSelect");
+            const adminOptions = document.getElementById("adminOptions");
+            const submitButton = document.getElementById("submitButton");
+            const generateButton = document.getElementById("generateButton");
+
+            if (role === "admin") {
+                userSelect.style.display = "block";
+                adminOptions.style.display = "block";
+            } else if (role === "super_user") {
+                submitButton.textContent = "Zmień swoje hasło";
+            } else if (role === "user") {
+                generateButton.style.display = "block";
+                submitButton.style.display = "none";
+            }
+        });
+
+        // Przykładowa obsługa wysyłania formularza
+        document.getElementById("passwordForm").addEventListener("submit", function (e) {
+            e.preventDefault();
+
+            const formData = new FormData(this);
+
+            fetch("/manage-password", {
+                method: "POST",
+                body: formData,
+            })
+                .then((response) => response.json())
+                .then((data) => {
+                    document.getElementById("responseMessage").textContent = data.message;
+                })
+                .catch((error) => console.error("Błąd:", error));
+        });
+    </script>
+{% endblock %}

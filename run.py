@@ -1194,6 +1194,23 @@ def get_company_setting():
 
 
 
+def insertPassDB(password, salt, user_id):
+    """
+    Aktualizuje hasło i sól użytkownika w bazie danych.
+    
+    :param password: Hasło do zapisania w bazie (już zahashowane).
+    :param salt: Sól do zapisania w bazie.
+    :param user_id: ID użytkownika, którego dane mają być zaktualizowane.
+    :return: True, jeśli aktualizacja powiodła się, False w przeciwnym razie.
+    """
+    zapytanie_sql = '''
+        UPDATE admins 
+        SET PASSWORD_HASH = %s, 
+            SALT = %s
+        WHERE ID = %s;
+    '''
+    dane = (password, salt, user_id)
+    return msq.insert_to_database(zapytanie_sql, dane)
 
 
 
@@ -1218,6 +1235,60 @@ def get_company_setting():
 #  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
 #  Rdzeń działania aplikacji, ściśle powiązany z endpointami.
 # ========================================================================================= #
+# Funkcja pomocnicza do generowania losowego hasła
+def generate_random_password(length=12):
+    """
+    Generuje losowe hasło o podanej długości.
+    Zawiera litery, cyfry i znaki specjalne.
+    """
+    import random
+    import string
+
+    characters = string.ascii_letters + string.digits + '!@#$%^&*()-_=+[]{}|;:\'",.<>/?`~'
+    return ''.join(random.choice(characters) for _ in range(length))
+
+def equalizatorSaltPass(user_id, verification_data, set_password=None):
+    """
+    Weryfikuje i/lub aktualizuje hasło użytkownika z użyciem soli.
+
+    :param user_id: ID użytkownika, którego hasło ma zostać zaktualizowane.
+    :param verification_data: Dane do weryfikacji (np. stare hasło lub inne kryteria).
+    :param set_password: Nowe hasło (jeśli podane), w przeciwnym razie zostanie wygenerowane nowe hasło.
+    :return: Komunikat o sukcesie lub błędzie.
+    """
+    # Pobierz aktualną sól i hasło użytkownika z bazy
+    salt_old = take_data_where_ID('SALT', 'admins', 'ID', user_id)[0][0]
+    password_old = take_data_where_ID('PASSWORD_HASH', 'admins', 'ID', user_id)[0][0]
+    
+    # Weryfikacja starego hasła
+    verificated_old_password = hash.hash_password(verification_data, salt_old)
+    if verificated_old_password != password_old:
+        return {'status': 'error', 'message': 'Nieprawidłowe stare hasło'}
+    
+    # Wygenerowanie nowego hasła i soli (jeśli set_password is None)
+    if set_password is None:
+        new_password = hash.generate_password()  # Funkcja generująca nowe losowe hasło
+    else:
+        new_password = set_password
+    
+    # Hasło musi spełniać określone kryteria
+    if len(new_password) < 8:
+        return {'status': 'error', 'message': 'Hasło musi mieć co najmniej 8 znaków'}
+    if not any(char.isupper() for char in new_password):
+        return {'status': 'error', 'message': 'Hasło musi zawierać co najmniej jedną wielką literę'}
+    if not any(char in '!@#$%^&*()-_=+[]{}|;:\'",.<>/?`~' for char in new_password):
+        return {'status': 'error', 'message': 'Hasło musi zawierać co najmniej jeden znak specjalny'}
+
+    # Generowanie nowej soli i haszowanie nowego hasła
+    salt_new = hash.generate_salt()
+    hashed_password = hash.hash_password(new_password, salt_new)
+    
+    # Aktualizacja w bazie danych
+    if insertPassDB(hashed_password, salt_new, user_id):
+        return {'status': 'success', 'message': 'Hasło zostało pomyślnie zaktualizowane'}
+    else:
+        return {'status': 'error', 'message': 'Nie udało się zaktualizować hasła w bazie danych'}
+
 
 def preparoator_team(deaprtment_team='user', highlight=4):
     highlight += 1
@@ -1674,6 +1745,77 @@ def rejestracja():
         )
     else:
         return redirect(url_for('index'))   
+
+@app.route('/manage-password', methods=['POST'])
+def manage_password():
+    """
+    Endpoint do zarządzania hasłami użytkowników w systemie.
+    Obsługuje role: administrator, super_user i pracownik.
+    """
+    if 'username' not in session:
+        flash("Musisz być zalogowany, aby uzyskać dostęp do tej funkcji.", 'danger')
+        return redirect(url_for('index'))
+
+    form_data = request.form.to_dict()
+    user_id = form_data.get('user_id')
+    new_password = form_data.get('new_password')
+    repeat_password = form_data.get('repeat_password')
+
+    # Sprawdzanie uprawnień
+    if direct_by_permision(session, permission_sought='administrator'):
+        # Administrator może zmieniać hasło dowolnego użytkownika
+        if new_password and new_password == repeat_password:
+            salt = hash.generate_salt()
+            hashed_password = hash.hash_password(new_password, salt)
+            if insertPassDB(user_id, hashed_password, salt):
+                flash(f"Hasło użytkownika o ID {user_id} zostało pomyślnie zmienione.", 'success')
+            else:
+                flash("Nie udało się zmienić hasła. Spróbuj ponownie.", 'danger')
+        else:
+            flash("Hasła nie są identyczne lub nie zostały podane.", 'danger')
+
+    elif direct_by_permision(session, permission_sought='super_user'):
+        # Super użytkownik może zmieniać hasło tylko dla siebie lub generować nowe
+        if str(user_id) == str(session['user_id']):
+            if new_password and new_password == repeat_password:
+                salt = hash.generate_salt()
+                hashed_password = hash.hash_password(new_password, salt)
+                if insertPassDB(user_id, hashed_password, salt):
+                    flash("Hasło zostało pomyślnie zmienione.", 'success')
+                else:
+                    flash("Nie udało się zmienić hasła. Spróbuj ponownie.", 'danger')
+            else:
+                # Generowanie nowego hasła i wysyłka e-mail
+                generated_password = generate_random_password()
+                salt = hash.generate_salt()
+                hashed_password = hash.hash_password(generated_password, salt)
+                if insertPassDB(user_id, hashed_password, salt):
+                    email = form_data.get('email')
+                    firstConntactMessage(email, "general_inquiry")
+                    flash("Wygenerowano nowe hasło i wysłano je na podany adres e-mail.", 'success')
+                else:
+                    flash("Nie udało się wygenerować nowego hasła. Spróbuj ponownie.", 'danger')
+
+    elif direct_by_permision(session, permission_sought='user'):
+        # Pracownik może generować hasło tylko dla siebie
+        if str(user_id) == str(session['user_id']):
+            generated_password = generate_random_password()
+            salt = hash.generate_salt()
+            hashed_password = hash.hash_password(generated_password, salt)
+            if insertPassDB(user_id, hashed_password, salt):
+                email = form_data.get('email')
+                firstConntactMessage(email, "general_inquiry")
+                flash("Wygenerowano nowe hasło i wysłano je na podany adres e-mail.", 'success')
+            else:
+                flash("Nie udało się wygenerować nowego hasła. Spróbuj ponownie.", 'danger')
+        else:
+            flash("Nie masz uprawnień do zmiany hasła innych użytkowników.", 'danger')
+
+    else:
+        # Brak uprawnień
+        flash("Nie masz odpowiednich uprawnień do wykonania tej operacji.", 'danger')
+
+    return redirect(url_for('index'))
 
 
 @app.route('/admin/team-stomatologia')
