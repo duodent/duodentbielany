@@ -1746,7 +1746,7 @@ def rejestracja():
     else:
         return redirect(url_for('index'))   
 
-@app.route('admin/manage-password', methods=['POST'])
+@app.route('/admin/manage-password', methods=['POST'])
 def manage_password():
     """
     Endpoint do zarządzania hasłami użytkowników w systemie.
