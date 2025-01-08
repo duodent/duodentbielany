@@ -1746,7 +1746,7 @@ def rejestracja():
     else:
         return redirect(url_for('index'))   
 
-@app.route('/manage-password', methods=['POST'])
+@app.route('admin/manage-password', methods=['POST'])
 def manage_password():
     """
     Endpoint do zarządzania hasłami użytkowników w systemie.
@@ -1990,24 +1990,29 @@ def ustawienia_aplikacji():
 def password_managment():
     """Ustawienia haseł administratorów."""
 
-     # Sprawdzanie uprawnień
-    # ========================================================
-    # 🌟 Model implementacji uprawnień - Rekomendacja 🌟
-    # Ten kod jest czytelny, modułowy i łatwy w rozbudowie.
-    # Każdy poziom uprawnień ma jasno określoną logikę.
-    # Użycie funkcji `direct_by_permision` zapewnia elastyczność.
-    # Idealne do zastosowania w wielu endpointach systemu!
-    # ========================================================
-    # Sprawdzenie uprawnień
-    if 'username' not in session or not direct_by_permision(session, permission_sought='administrator'):
+    # Sprawdzanie uprawnień
+    if 'username' not in session:
+        flash("Musisz być zalogowany, aby uzyskać dostęp do tego zasobu.", 'danger')
+        return redirect(url_for('index'))
+    
+    user_role = None
+
+    # Pobierz najwyższą rolę użytkownika
+    if direct_by_permision(session, permission_sought='administrator'):
+        user_role = "admin"
+    elif direct_by_permision(session, permission_sought='super_user'):
+        user_role = "super_user"
+    elif direct_by_permision(session, permission_sought='user'):
+        user_role = "user"
+    else:
         flash("Brak uprawnień do dostępu do tego zasobu.", 'danger')
         return redirect(url_for('index'))
 
-    # Pobranie roli użytkownika
-    user_role = "admin"  # Na przykładzie, można pobrać z sesji lub bazy danych
+    # Renderowanie szablonu z rolą użytkownika
     return render_template(
-        "rootipa.html", role=user_role
-        )
+        "rootipa.html",
+        user_role=user_role
+    )
 
 
 
