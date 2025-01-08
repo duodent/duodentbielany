@@ -139,7 +139,7 @@
 
             const formData = new FormData(this);
 
-            fetch("admin/manage-password", {
+            fetch("/admin/manage-password", {
                 method: "POST",
                 body: formData,
             })
