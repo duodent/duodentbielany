@@ -1985,9 +1985,6 @@ def ustawienia_aplikacji():
             adminTrue=True
             )
 
-@app.route('/admin/password-managment')
-def password_managment():
-    """Ustawienia haseł administratorów."""
     
 @app.route('/admin/password-managment', methods=['GET'])
 def password_managment():
@@ -2008,7 +2005,9 @@ def password_managment():
 
     # Pobranie roli użytkownika
     user_role = "admin"  # Na przykładzie, można pobrać z sesji lub bazy danych
-    return render_template("rootipa.html", role=user_role)
+    return render_template(
+        "rootipa.html", role=user_role
+        )
 
 
 
