@@ -248,6 +248,36 @@
                 }
             });
 
+            document.addEventListener('DOMContentLoaded', function () {
+                // Ukryty input
+                const hiddenInput = document.getElementById('user_id');
+                // Link wybranego użytkownika
+                const selectedUserName = document.getElementById('selectedUserName');
+                // Elementy listy użytkowników
+                const userItems = document.querySelectorAll('.user-item');
+
+                userItems.forEach(item => {
+                    item.addEventListener('click', function () {
+                        // Pobierz dane użytkownika z klikniętego elementu
+                        const userId = this.getAttribute('data-user-id');
+                        const userName = this.getAttribute('data-user-name');
+
+                        // Podmień wartość ukrytego inputa
+                        hiddenInput.value = userId;
+
+                        // Podmień tekst wybranego użytkownika
+                        selectedUserName.textContent = userName;
+
+                        // Zamknij collapse
+                        const collapseInstance = bootstrap.Collapse.getInstance(document.getElementById('userListCollapse'));
+                        collapseInstance.hide();
+
+                        // Dodaj styl aktywnego użytkownika
+                        userItems.forEach(user => user.classList.remove('active'));
+                        this.classList.add('active');
+                    });
+                });
+            });
 
 
 

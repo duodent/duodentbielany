@@ -403,3 +403,17 @@
         font-size: 1rem; /* Dla ekranów szerszych niż 992px */
     }
 }
+
+
+.user-item {
+    cursor: pointer;
+    transition: font-weight 0.2s, color 0.2s;
+}
+.user-item:hover {
+    font-weight: bold;
+    color: #007bff;
+}
+.user-item.active {
+    font-weight: bold;
+    color: #0056b3;
+}
