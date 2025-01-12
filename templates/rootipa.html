@@ -181,14 +181,14 @@
 
     {% if userName!='NotLogin' %}
         <script>
+            let role; // Deklaracja globalna
             document.addEventListener("DOMContentLoaded", function () {
                 // Pobierz rolę użytkownika z backendu
                 fetch('/api/get-role')
                     .then(response => response.json())
                     .then(data => {
-                        const role = data.role; // Ustawienie zmiennej role na podstawie odpowiedzi API
-                        console.log("Rola użytkownika:", role); // Debug: Sprawdź, czy rola jest poprawnie pobrana
-                        initializeUI(role); // Inicjalizacja interfejsu użytkownika
+                        role = data.role;
+                        initializeUI(role); // Inicjalizacja UI na podstawie roli
                     })
                     .catch(error => {
                         console.error("Błąd podczas pobierania roli użytkownika:", error);
@@ -196,7 +196,6 @@
 
                 // Funkcja inicjalizująca UI na podstawie roli
                 function initializeUI(role) {
-                    // Pobranie elementów DOM
                     const userSelect = document.getElementById("userSelect");
                     const adminOptions = document.getElementById("adminOptions");
                     const submitButton = document.getElementById("submitButton");
@@ -205,35 +204,43 @@
                     const oldPasswordDiv = document.getElementById("old_password_div");
                     const newPassword = document.getElementById("new_password");
                     const repeatPassword = document.getElementById("repeat_password");
+                    // const employeeSelect = document.getElementById("employeeSelect");
+                    const generatePasswordSwitch = document.getElementById("generate_password");
                     const ownUserId = document.getElementById("own_user_id");
                     const userId = document.getElementById("user_id");
+                    
 
-                    // Sprawdzenie wartości ID na początku
-                    function handleUserIdChange() {
-                        if (ownUserId.value === userId.value) {
-                            oldPasswordDiv.style.display = "block"; // Pokaż div starego hasła
-                        } else {
-                            oldPasswordDiv.style.display = "none"; // Ukryj div starego hasła
-                        }
+                    // Funkcja obsługująca przełącznik generowania hasła
+                    function handlePasswordSwitch(switchElement, newPassword, repeatPassword) {
+                        switchElement.addEventListener("change", function () {
+                            const isGenerate = switchElement.checked;
+                            newPassword.disabled = isGenerate;
+                            repeatPassword.disabled = isGenerate;
+
+                            if (isGenerate) {
+                                newPassword.value = "";
+                                repeatPassword.value = "";
+                            }
+                        });
                     }
 
-                    // Nasłuchuj zmian w polu userId
-                    userId.addEventListener("change", handleUserIdChange);
-
-                    // Wywołaj od razu na starcie
-                    handleUserIdChange();
-
-                    // Dostosowanie interfejsu w zależności od roli
+                    // Dostosowanie widoku w zależności od roli użytkownika
                     if (role === "admin") {
                         userSelect.style.display = "block"; // Admin widzi listę użytkowników
                         adminOptions.style.display = "block"; // Admin widzi przełącznik generowania hasła
                         oldPassword.parentElement.style.display = "none"; // Ukrywamy pole starego hasła
                         oldPasswordDiv.style.display = "none"; // Ukrywamy diva starego hasła
+
+                        // Obsługa przełącznika generowania hasła
+                        handlePasswordSwitch(generatePasswordSwitch, newPassword, repeatPassword);
                     } else if (role === "super_user") {
-                        userSelect.style.display = "block"; // Super user widzi listę użytkowników
+                        userSelect.style.display = "block"; // Super user nie widzi pełnej listy użytkowników
                         adminOptions.style.display = "block"; // Super user widzi przełącznik generowania hasła
                         oldPassword.parentElement.style.display = "block"; // Musi podać stare hasło
-                        oldPasswordDiv.style.display = "block"; // Pokaż div starego hasła
+                        oldPasswordDiv.style.display = "block"; // Pakazujemy diva starego hasła
+
+                        // Obsługa przełącznika generowania hasła
+                        handlePasswordSwitch(generatePasswordSwitch, newPassword, repeatPassword);
                     } else if (role === "user") {
                         userSelect.style.display = "none"; // Pracownik nie widzi listy użytkowników
                         adminOptions.style.display = "none"; // Pracownik nie ma przełącznika
@@ -241,17 +248,17 @@
                         oldPasswordDiv.style.display = "none"; // Ukrywamy diva starego hasła
                         newPassword.parentElement.style.display = "none"; // Ukrywamy nowe hasło
                         repeatPassword.parentElement.style.display = "none"; // Ukrywamy powtórzenie hasła
+
                         generateButton.style.display = "block"; // Pracownik widzi przycisk generowania hasła
                         ownUserId.style.display = "block"; // Pracownik widzi ustawia swoje userId
+                        
                         submitButton.style.display = "none"; // Ukrywamy standardowy przycisk zmiany hasła
                     } else {
                         console.warn("Nieznana rola użytkownika:", role);
+                        // Domyślne zachowanie w przypadku nieznanej roli
                     }
                 }
             });
-
-
-
             
 
             document.addEventListener('DOMContentLoaded', function () {
