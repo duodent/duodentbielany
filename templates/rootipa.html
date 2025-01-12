@@ -31,7 +31,7 @@
                                             <div class="form-group">
                                                 <label>Wybierz użytkownika</label>
                                                 <select id="user_id" name="user_id" class="form-select" required>
-                                                    <option selected>- - -</option>
+                                                    <option value="{{own_user_data.id}}" selected>{{own_user_data.name}}</option>
                                                     {% if superuser_worker_select %}
                                                     <!-- Opcje wypełniane dynamicznie -->
                                                         {% for alloweduser in superuser_worker_select %}
@@ -49,7 +49,7 @@
                                             <div class="form-group">
                                                 <label>Wybierz użytkownika</label>
                                                 <select id="user_id" name="user_id" class="form-select" required>
-                                                    <option selected>- - -</option>
+                                                    <option value="{{own_user_data.id}}" selected>{{own_user_data.name}}</option>
                                                     <!-- Opcje wypełniane dynamicznie -->
                                                     {% if superuser_worker_select %}
                                                     <!-- Opcje wypełniane dynamicznie -->

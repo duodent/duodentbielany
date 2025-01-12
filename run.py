@@ -2079,6 +2079,11 @@ def password_managment():
         },
     ]
 
+    own_user_data = {
+        'id': session.get('user_data',{}).get('id'),
+        'name': session.get('user_data',{}).get('name'),
+        }
+
 
     # Renderowanie szablonu z rolą użytkownika
     return render_template(
