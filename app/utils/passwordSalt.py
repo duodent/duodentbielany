@@ -52,3 +52,14 @@ if __name__ == "__main__":
     # W rzeczywistym przypadku odczytaj 'hashed_password' i 'salt' dla danego użytkownika
     # Następnie porównaj hasło wprowadzone przez użytkownika z zapisanym 'hashed_password'
     # przy użyciu tej samej soli, aby zweryfikować hasło
+
+def generate_random_password(length=12):
+    """
+    Generuje losowe hasło o podanej długości.
+    Zawiera litery, cyfry i znaki specjalne.
+    """
+    import random
+    import string
+
+    characters = string.ascii_letters + string.digits + '!@#$%^&*()-_=+[]{}|;:\'",.<>/?`~'
+    return ''.join(random.choice(characters) for _ in range(length))

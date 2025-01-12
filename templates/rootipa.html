@@ -1,95 +1,127 @@
 {% extends 'base.html' %}
 {% block content %}
-<!-- breadcrumb start -->
-<div id="breadcrumb-small" class="breadcrumb-small mb-5" style="display: none;">
-    <div class="container justify-content-center">
-        <div class="justify-content-center">
-            <ul class="breadcrumb-pages-list">
-                <li><a href="/"><i class="bi bi-houses-fill" style="font-size: 1rem;"></i></a></li>
-                <li>Ustawienia</li>
-            </ul>
+    <!-- breadcrumb start -->
+    <div id="breadcrumb-small" class="breadcrumb-small mb-5" style="display: none;">
+        <div class="container justify-content-center">
+            <div class="justify-content-center">
+                <ul class="breadcrumb-pages-list">
+                    <li><a href="/"><i class="bi bi-houses-fill" style="font-size: 1rem;"></i></a></li>
+                    <li>Ustawienia</li>
+                </ul>
+            </div>
         </div>
     </div>
-</div>
-<!-- breadcrumb end -->
- 
-<!-- appointment -->
-<section class="root-area">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-4 col-md-12">
-                {{user_role}}
-            </div>
-            <div class="col-lg-8">
-                <div class="appointment-overview-box">
-                    <div class="make-appointment-content">
-                        <h4><i class="far fa-key"></i> Zarządzanie hasłem</h4>
-                        <form id="passwordForm">
-                            <div class="row">
-                                <!-- Informacje o użytkowniku (tylko dla administratora) -->
-                                <div class="col-lg-6" id="userSelect" style="display: none;">
-                                    <div class="form-group">
-                                        <label>Wybierz użytkownika</label>
-                                        <select id="user_id" name="user_id" class="form-select" required>
-                                            <option selected>- - -</option>
-                                            <!-- Opcje wypełniane dynamicznie -->
-                                            <option value="1">Użytkownik 1</option>
-                                            <option value="2">Użytkownik 2</option>
-                                            <option value="3">Użytkownik 3</option>
-                                        </select>
+    <!-- breadcrumb end -->
+    {% if userName!='NotLogin' %}
+        <!-- appointment -->
+        <section class="root-area">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-4 col-md-12">
+                        {{user_role}}
+                    </div>
+                    <div class="col-lg-8">
+                        <div class="appointment-overview-box">
+                            <div class="make-appointment-content">
+                                <h4><i class="far fa-key"></i> Zarządzanie hasłem</h4>
+                                <form id="passwordForm">
+                                    <div class="row">
+                                        <!-- Informacje o użytkowniku (tylko dla administratora) -->
+                                        <div class="col-lg-6" id="userSelect" style="display: none;">
+                                            <div class="form-group">
+                                                <label>Wybierz użytkownika</label>
+                                                <select id="user_id" name="user_id" class="form-select" required>
+                                                    <option selected>- - -</option>
+                                                    {% if superuser_worker_select %}
+                                                    <!-- Opcje wypełniane dynamicznie -->
+                                                        {% for alloweduser in superuser_worker_select %}
+                                                            {% if alloweduser.role=="super_user" or alloweduser.role=="user" %}
+                                                                <option value="{{alloweduser.id}}">{{alloweduser.name}}</option>
+                                                            {% endif %}
+                                                        {% endfor %}
+                                                    {% endfi %}
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <!-- Informacje o pracowniku (tylko dla super usera) -->
+                                        <div class="col-lg-6" id="employeeSelect" style="display: none;">
+                                            <div class="form-group">
+                                                <label>Wybierz użytkownika</label>
+                                                <select id="user_id" name="user_id" class="form-select" required>
+                                                    <option selected>- - -</option>
+                                                    <!-- Opcje wypełniane dynamicznie -->
+                                                    {% if superuser_worker_select %}
+                                                    <!-- Opcje wypełniane dynamicznie -->
+                                                        {% for alloweduser in superuser_worker_select %}
+                                                            {% if alloweduser.role=="user" %}
+                                                                <option value="{{alloweduser.id}}">{{alloweduser.name}}</option>
+                                                            {% endif %}
+                                                        {% endfor %}
+                                                    {% endfi %}
+                                                </select>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Stare hasło (wymagane dla super usera zmienia ręcznie) -->
+                                        <div class="col-lg-6">
+                                            <div class="form-group">
+                                                <label>Stare Hasło</label>
+                                                <input type="password" class="form-control" id="old_password" name="old_password" placeholder="Stare Hasło">
+                                            </div>
+                                        </div>
+
+                                        <!-- Nowe hasło (opcjonalne, jeśli admin zmienia ręcznie) -->
+                                        <div class="col-lg-6">
+                                            <div class="form-group">
+                                                <label>Nowe Hasło</label>
+                                                <input type="password" class="form-control" id="new_password" name="new_password" placeholder="Nowe Hasło">
+                                            </div>
+                                        </div>
+                                
+                                        <div class="col-lg-6">
+                                            <div class="form-group">
+                                                <label>Powtórz Nowe Hasło</label>
+                                                <input type="password" class="form-control" id="repeat_password" name="repeat_password" placeholder="Powtórz Nowe Hasło">
+                                            </div>
+                                        </div>
+                                
+                                        <!-- Przełączniki dla administratora -->
+                                        <div class="col-lg-12" id="adminOptions" style="display: none;">
+                                            <div class="form-check form-switch mb-3">
+                                                <input class="form-check-input" type="checkbox" role="switch" id="generate_password" name="generate_password">
+                                                <label class="form-check-label" for="generate_password">Wygeneruj hasło automatycznie</label>
+                                            </div>
+                                        </div>
+                                
+                                        <!-- Informacje -->
+                                        <div class="col-lg-12">
+                                            <p style="font-size: 12px; color: #686d71;">
+                                                <strong style="color:#d60000;">UWAGA!</strong> Administrator może zmienić hasło dowolnemu użytkownikowi, super użytkownik 
+                                                i pracownik mogą generować hasła tylko dla siebie.
+                                            </p>
+                                        </div>
                                     </div>
-                                </div>
-                        
-                                <!-- Nowe hasło (opcjonalne, jeśli admin zmienia ręcznie) -->
-                                <div class="col-lg-6">
-                                    <div class="form-group">
-                                        <label>Nowe Hasło</label>
-                                        <input type="password" class="form-control" id="new_password" name="new_password" placeholder="Nowe Hasło">
+                                
+                                    <!-- Przyciski akcji -->
+                                    <div class="d-flex justify-content-between">
+                                        <!-- Guzik dla administratora i super użytkownika -->
+                                        <button type="submit" id="submitButton" class="default-btn">Zmień Hasło</button>
+                                
+                                        <!-- Guzik dla pracownika -->
+                                        <button type="button" id="generateButton" class="default-btn" style="display: none;">Wygeneruj Hasło</button>
                                     </div>
-                                </div>
-                        
-                                <div class="col-lg-6">
-                                    <div class="form-group">
-                                        <label>Powtórz Nowe Hasło</label>
-                                        <input type="password" class="form-control" id="repeat_password" name="repeat_password" placeholder="Powtórz Nowe Hasło">
-                                    </div>
-                                </div>
-                        
-                                <!-- Przełączniki dla administratora -->
-                                <div class="col-lg-12" id="adminOptions" style="display: none;">
-                                    <div class="form-check form-switch mb-3">
-                                        <input class="form-check-input" type="checkbox" role="switch" id="generate_password" name="generate_password">
-                                        <label class="form-check-label" for="generate_password">Wygeneruj hasło automatycznie</label>
-                                    </div>
-                                </div>
-                        
-                                <!-- Informacje -->
-                                <div class="col-lg-12">
-                                    <p style="font-size: 12px; color: #686d71;">
-                                        <strong style="color:#d60000;">UWAGA!</strong> Administrator może zmienić hasło dowolnemu użytkownikowi, super użytkownik 
-                                        i pracownik mogą generować hasła tylko dla siebie.
-                                    </p>
-                                </div>
+                                
+                                    <div id="responseMessage" style="margin-top: 20px;"></div>
+                                </form>
                             </div>
-                        
-                            <!-- Przyciski akcji -->
-                            <div class="d-flex justify-content-between">
-                                <!-- Guzik dla administratora i super użytkownika -->
-                                <button type="submit" id="submitButton" class="default-btn">Zmień Hasło</button>
-                        
-                                <!-- Guzik dla pracownika -->
-                                <button type="button" id="generateButton" class="default-btn" style="display: none;">Wygeneruj Hasło</button>
-                            </div>
-                        
-                            <div id="responseMessage" style="margin-top: 20px;"></div>
-                        </form>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
-</section>
-<!-- appointment end -->
+        </section>
+        <!-- appointment end -->
+    {% endblock %}
 
 {% endblock %}
 {% block bottom_scripts %}
@@ -113,41 +145,103 @@
             }, 2000); 
         });
     </script>
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            const role = "{{user_role}}"; // Przykład: tutaj pobierasz rzeczywistą rolę użytkownika z backendu
 
-            const userSelect = document.getElementById("userSelect");
-            const adminOptions = document.getElementById("adminOptions");
-            const submitButton = document.getElementById("submitButton");
-            const generateButton = document.getElementById("generateButton");
+    {% if userName!='NotLogin' %}
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                // Pobierz rolę użytkownika z backendu
+                fetch('/api/get-role')
+                    .then(response => response.json())
+                    .then(data => {
+                        const role = data.role;
+                        initializeUI(role); // Inicjalizacja UI na podstawie roli
+                    })
+                    .catch(error => {
+                        console.error("Błąd podczas pobierania roli użytkownika:", error);
+                    });
 
-            if (role === "admin") {
-                userSelect.style.display = "block";
-                adminOptions.style.display = "block";
-            } else if (role === "super_user") {
-                submitButton.textContent = "Zmień swoje hasło";
-            } else if (role === "user") {
-                generateButton.style.display = "block";
-                submitButton.style.display = "none";
-            }
-        });
+                // Funkcja inicjalizująca UI na podstawie roli
+                function initializeUI(role) {
+                    const userSelect = document.getElementById("userSelect");
+                    const adminOptions = document.getElementById("adminOptions");
+                    const submitButton = document.getElementById("submitButton");
+                    const generateButton = document.getElementById("generateButton");
+                    const oldPassword = document.getElementById("old_password");
+                    const newPassword = document.getElementById("new_password");
+                    const repeatPassword = document.getElementById("repeat_password");
+                    const employeeSelect = document.getElementById("employeeSelect");
+                    const generatePasswordSwitch = document.getElementById("generate_password");
 
-        // Przykładowa obsługa wysyłania formularza
-        document.getElementById("passwordForm").addEventListener("submit", function (e) {
-            e.preventDefault();
+                    // Funkcja obsługująca przełącznik generowania hasła
+                    function handlePasswordSwitch(switchElement, newPassword, repeatPassword) {
+                        switchElement.addEventListener("change", function () {
+                            const isGenerate = switchElement.checked;
+                            newPassword.disabled = isGenerate;
+                            repeatPassword.disabled = isGenerate;
 
-            const formData = new FormData(this);
+                            if (isGenerate) {
+                                newPassword.value = "";
+                                repeatPassword.value = "";
+                            }
+                        });
+                    }
 
-            fetch("/admin/manage-password", {
-                method: "POST",
-                body: formData,
-            })
-                .then((response) => response.json())
-                .then((data) => {
-                    document.getElementById("responseMessage").textContent = data.message;
-                })
-                .catch((error) => console.error("Błąd:", error));
-        });
-    </script>
+                    // Dostosowanie widoku w zależności od roli użytkownika
+                    if (role === "admin") {
+                        userSelect.style.display = "block"; // Admin widzi listę użytkowników
+                        adminOptions.style.display = "block"; // Admin widzi przełącznik generowania hasła
+                        oldPassword.parentElement.style.display = "none"; // Ukrywamy pole starego hasła
+
+                        // Obsługa przełącznika generowania hasła
+                        handlePasswordSwitch(generatePasswordSwitch, newPassword, repeatPassword);
+                    } else if (role === "super_user") {
+                        userSelect.style.display = "none"; // Super user nie widzi pełnej listy użytkowników
+                        adminOptions.style.display = "block"; // Super user widzi przełącznik generowania hasła
+                        oldPassword.parentElement.style.display = "block"; // Musi podać stare hasło
+                        employeeSelect.style.display = "block"; // Super user widzi listę pracowników
+
+                        // Obsługa przełącznika generowania hasła
+                        handlePasswordSwitch(generatePasswordSwitch, newPassword, repeatPassword);
+                    } else if (role === "user") {
+                        userSelect.style.display = "none"; // Pracownik nie widzi listy użytkowników
+                        adminOptions.style.display = "none"; // Pracownik nie ma przełącznika
+                        oldPassword.parentElement.style.display = "none"; // Pracownik nie musi podawać starego hasła
+                        newPassword.parentElement.style.display = "none"; // Ukrywamy nowe hasło
+                        repeatPassword.parentElement.style.display = "none"; // Ukrywamy powtórzenie hasła
+
+                        generateButton.style.display = "block"; // Pracownik widzi przycisk generowania hasła
+                        submitButton.style.display = "none"; // Ukrywamy standardowy przycisk zmiany hasła
+                    } else {
+                        console.warn("Nieznana rola użytkownika:", role);
+                        // Domyślne zachowanie w przypadku nieznanej roli
+                    }
+                }
+            });
+
+
+
+
+            // Przykładowa obsługa wysyłania formularza
+            $("#passwordForm").on("submit", function (e) {
+                e.preventDefault();
+
+                const formData = $(this).serialize(); // Serializuj dane formularza
+
+                $.ajax({
+                    url: "/admin/manage-password",
+                    type: "POST",
+                    data: formData,
+                    success: function (response) {
+                        // Wyświetlenie komunikatu o sukcesie
+                        $("#responseMessage").text(response.message);
+                    },
+                    error: function (xhr) {
+                        // Wyświetlenie komunikatu o błędzie
+                        const response = JSON.parse(xhr.responseText);
+                        $("#responseMessage").text(response.message);
+                    },
+                });
+            });
+        </script>
+    {% endblock %}
 {% endblock %}

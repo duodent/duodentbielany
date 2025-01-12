@@ -15,6 +15,7 @@ from datetime import datetime, timedelta
 # from googletrans import Translator
 import time
 import random
+import string
 import re
 import os
 from flask_session import Session
@@ -1205,9 +1206,9 @@ def insertPassDB(password, salt, user_id):
     """
     zapytanie_sql = '''
         UPDATE admins 
-        SET PASSWORD_HASH = %s, 
-            SALT = %s
-        WHERE ID = %s;
+        SET password = %s, 
+            salt = %s
+        WHERE id = %s;
     '''
     dane = (password, salt, user_id)
     return msq.insert_to_database(zapytanie_sql, dane)
@@ -1241,8 +1242,7 @@ def generate_random_password(length=12):
     Generuje losowe hasło o podanej długości.
     Zawiera litery, cyfry i znaki specjalne.
     """
-    import random
-    import string
+    
 
     characters = string.ascii_letters + string.digits + '!@#$%^&*()-_=+[]{}|;:\'",.<>/?`~'
     return ''.join(random.choice(characters) for _ in range(length))
@@ -1257,27 +1257,31 @@ def equalizatorSaltPass(user_id, verification_data, set_password=None):
     :return: Komunikat o sukcesie lub błędzie.
     """
     # Pobierz aktualną sól i hasło użytkownika z bazy
-    salt_old = take_data_where_ID('SALT', 'admins', 'ID', user_id)[0][0]
-    password_old = take_data_where_ID('PASSWORD_HASH', 'admins', 'ID', user_id)[0][0]
+    try:
+        salt_old = take_data_where_ID('salt', 'admins', 'id', user_id)[0][0]
+        password_old = take_data_where_ID('password', 'admins', 'id', user_id)[0][0]
+    except IndexError:
+        return {'status': False, 'message': 'Problem z ID usera'}
     
-    # Weryfikacja starego hasła
-    verificated_old_password = hash.hash_password(verification_data, salt_old)
-    if verificated_old_password != password_old:
-        return {'status': 'error', 'message': 'Nieprawidłowe stare hasło'}
+    if verification_data is not None:
+        # Weryfikacja starego hasła
+        verificated_old_password = hash.hash_password(verification_data, salt_old)
+        if verificated_old_password != password_old:
+            return {'status': False, 'message': 'Nieprawidłowe stare hasło'}
     
     # Wygenerowanie nowego hasła i soli (jeśli set_password is None)
     if set_password is None:
-        new_password = hash.generate_password()  # Funkcja generująca nowe losowe hasło
+        new_password = hash.generate_random_password()  # Funkcja generująca nowe losowe hasło
     else:
         new_password = set_password
     
     # Hasło musi spełniać określone kryteria
     if len(new_password) < 8:
-        return {'status': 'error', 'message': 'Hasło musi mieć co najmniej 8 znaków'}
+        return {'status': False, 'message': 'Hasło musi mieć co najmniej 8 znaków'}
     if not any(char.isupper() for char in new_password):
         return {'status': 'error', 'message': 'Hasło musi zawierać co najmniej jedną wielką literę'}
     if not any(char in '!@#$%^&*()-_=+[]{}|;:\'",.<>/?`~' for char in new_password):
-        return {'status': 'error', 'message': 'Hasło musi zawierać co najmniej jeden znak specjalny'}
+        return {'status': False, 'message': 'Hasło musi zawierać co najmniej jeden znak specjalny'}
 
     # Generowanie nowej soli i haszowanie nowego hasła
     salt_new = hash.generate_salt()
@@ -1285,9 +1289,9 @@ def equalizatorSaltPass(user_id, verification_data, set_password=None):
     
     # Aktualizacja w bazie danych
     if insertPassDB(hashed_password, salt_new, user_id):
-        return {'status': 'success', 'message': 'Hasło zostało pomyślnie zaktualizowane'}
+        return {'status': True, 'message': 'Hasło zostało pomyślnie zaktualizowane'}
     else:
-        return {'status': 'error', 'message': 'Nie udało się zaktualizować hasła w bazie danych'}
+        return {'status': False, 'message': 'Nie udało się zaktualizować hasła w bazie danych'}
 
 
 def preparoator_team(deaprtment_team='user', highlight=4):
@@ -1492,8 +1496,16 @@ def direct_by_permision(session, permission_sought=None):
     else:
         return 0  # Brak dodatkowych uprawnień
 
+def get_user_role(session):
+    if direct_by_permision(session, permission_sought='administrator'):
+        return "admin"
+    elif direct_by_permision(session, permission_sought='super_user'):
+        return "super_user"
+    elif direct_by_permision(session, permission_sought='user'):
+        return "user"
+    return "guest"
 
-def firstConntactMessage(email_address, procedure):
+def firstConntactMessage(email_address, procedure, extra_data=None):
     # Przykładowe dane bazowe
     subject = ""
     html_body = ""
@@ -1558,6 +1570,32 @@ def firstConntactMessage(email_address, procedure):
                 <p style="font-size: 12px; color: #686d71; margin-top: 30px; border-top: 1px solid #ccc; padding-top: 10px;">
                     Ten e-mail został wygenerowany automatycznie ale można odpowiadać na tę wiadomość. W przypadku pytań prosimy o kontakt pod 
                     adresem e-mail <a href="mailto:arkuszowa@duodent.com.pl" style="color: #24363f;">arkuszowa@duodent.com.pl</a>.
+                </p>
+            </body>
+        </html>
+        """
+    elif procedure == "password_is_changed":
+        if extra_data is None:
+            print(f"Procedura: {procedure} wymaga podania wartości extra_data, która obecnie jest ustawiona na: {extra_data}")
+            return False
+        subject = "Zmiana hasła w aplikacji Duodent Bielany"
+        html_body = f"""
+        <html>
+            <body>
+                <div style="text-align: center; margin-bottom: 20px;">
+                    <img src="https://duodentbielany.pl/static/img/logotyp_duodent_bielany_solidfill_light.png" 
+                        alt="Duodent Bielany Logo" style="width: 350px; height: auto;">
+                </div>
+                <h1 style="color: #24363f;">Witaj!</h1>
+                <p>Twoje hasło do aplikacji Duodent Bielany zostało zmienione. Poniżej znajdziesz nowe hasło do logowania:</p>
+                <p><strong>Nowe hasło:</strong> {extra_data}</p>
+                <p style="color: red;">Jeżeli potrzebujesz jeszcze login skontaktuj się z <a href="mailto:admin@duodent.com.pl" style="color: #24363f;">administratorem systemu: admin@duodent.com.pl</a></p>
+                <p>W razie jakichkolwiek problemów z logowaniem skorzystaj z naszego numeru telefonu: <strong>790 777 350</strong></p>
+                <p>Pozdrawiamy,<br>Zespół Duodent</p>
+                <p style="font-size: 12px; color: #686d71; margin-top: 30px; border-top: 1px solid #ccc; padding-top: 10px;">
+                    Ten e-mail został wygenerowany automatycznie, ale można odpowiadać na tę wiadomość. 
+                    W przypadku pytań prosimy o kontakt pod adresem e-mail 
+                    <a href="mailto:admin@duodent.com.pl" style="color: #24363f;">admin@duodent.com.pl</a>.
                 </p>
             </body>
         </html>
@@ -1746,6 +1784,8 @@ def rejestracja():
     else:
         return redirect(url_for('index'))   
 
+
+
 @app.route('/admin/manage-password', methods=['POST'])
 def manage_password():
     """
@@ -1753,69 +1793,82 @@ def manage_password():
     Obsługuje role: administrator, super_user i pracownik.
     """
     if 'username' not in session:
-        flash("Musisz być zalogowany, aby uzyskać dostęp do tej funkcji.", 'danger')
-        return redirect(url_for('index'))
+        return jsonify({'status': 'error', 'message': 'Musisz być zalogowany, aby uzyskać dostęp do tej funkcji.'}), 403
 
     form_data = request.form.to_dict()
-    user_id = form_data.get('user_id')
-    new_password = form_data.get('new_password')
-    repeat_password = form_data.get('repeat_password')
+    user_id = form_data.get('user_id', None)
+    old_password = form_data.get('old_password', None)
+    new_password = form_data.get('new_password', None)
+    repeat_password = form_data.get('repeat_password', None)
+    generate_password = form_data.get('generate_password', 'false').lower() == 'true'
 
-    # Sprawdzanie uprawnień
-    if direct_by_permision(session, permission_sought='administrator'):
-        # Administrator może zmieniać hasło dowolnego użytkownika
-        if new_password and new_password == repeat_password:
-            salt = hash.generate_salt()
-            hashed_password = hash.hash_password(new_password, salt)
-            if insertPassDB(user_id, hashed_password, salt):
-                flash(f"Hasło użytkownika o ID {user_id} zostało pomyślnie zmienione.", 'success')
-            else:
-                flash("Nie udało się zmienić hasła. Spróbuj ponownie.", 'danger')
+    try: email = take_data_where_ID('email', 'admins', 'id', user_id)[0][0]
+    except IndexError: return jsonify({'status': 'error', 'message': 'Id nie przeszło weryfikacji.'}), 400
+    # Pobranie uprawnień
+    user_permissions = {
+        'admin': direct_by_permision(session, permission_sought='administrator'),
+        'super_user': direct_by_permision(session, permission_sought='super_user'),
+        'user': direct_by_permision(session, permission_sought='user'),
+    }
+
+    # Logika dla administratora
+    if user_permissions['admin']:
+        if generate_password:
+            result = equalizatorSaltPass(user_id, old_password=None, set_password=None)
+        elif new_password and new_password == repeat_password:
+            result = equalizatorSaltPass(user_id, old_password=None, set_password=new_password)
         else:
-            flash("Hasła nie są identyczne lub nie zostały podane.", 'danger')
+            return jsonify({'status': 'error', 'message': 'Hasła nie są identyczne lub nie podano danych.'}), 400
 
-    elif direct_by_permision(session, permission_sought='super_user'):
-        # Super użytkownik może zmieniać hasło tylko dla siebie lub generować nowe
-        if str(user_id) == str(session['user_id']):
-            if new_password and new_password == repeat_password:
-                salt = hash.generate_salt()
-                hashed_password = hash.hash_password(new_password, salt)
-                if insertPassDB(user_id, hashed_password, salt):
-                    flash("Hasło zostało pomyślnie zmienione.", 'success')
-                else:
-                    flash("Nie udało się zmienić hasła. Spróbuj ponownie.", 'danger')
+        if result['status']:
+            
+            if firstConntactMessage(email, "password_is_changed", extra_data=result.get('new_password')):
+                return jsonify({'status': 'success', 'message': 'Hasło zmienione i wysłano e-mail.'})
             else:
-                # Generowanie nowego hasła i wysyłka e-mail
-                generated_password = generate_random_password()
-                salt = hash.generate_salt()
-                hashed_password = hash.hash_password(generated_password, salt)
-                if insertPassDB(user_id, hashed_password, salt):
-                    email = form_data.get('email')
-                    firstConntactMessage(email, "general_inquiry")
-                    flash("Wygenerowano nowe hasło i wysłano je na podany adres e-mail.", 'success')
-                else:
-                    flash("Nie udało się wygenerować nowego hasła. Spróbuj ponownie.", 'danger')
-
-    elif direct_by_permision(session, permission_sought='user'):
-        # Pracownik może generować hasło tylko dla siebie
-        if str(user_id) == str(session['user_id']):
-            generated_password = generate_random_password()
-            salt = hash.generate_salt()
-            hashed_password = hash.hash_password(generated_password, salt)
-            if insertPassDB(user_id, hashed_password, salt):
-                email = form_data.get('email')
-                firstConntactMessage(email, "general_inquiry")
-                flash("Wygenerowano nowe hasło i wysłano je na podany adres e-mail.", 'success')
-            else:
-                flash("Nie udało się wygenerować nowego hasła. Spróbuj ponownie.", 'danger')
+                return jsonify({'status': 'error', 'message': 'Hasło zmienione, ale e-mail nie został wysłany.'})
         else:
-            flash("Nie masz uprawnień do zmiany hasła innych użytkowników.", 'danger')
+            return jsonify({'status': 'error', 'message': result['message']}), 400
 
-    else:
-        # Brak uprawnień
-        flash("Nie masz odpowiednich uprawnień do wykonania tej operacji.", 'danger')
+    # Logika dla super użytkownika
+    elif user_permissions['super_user']:
+        if str(user_id) != str(session['user_id']):
+            return jsonify({'status': 'error', 'message': 'Super użytkownik może zmieniać hasło tylko dla siebie.'}), 403
 
-    return redirect(url_for('index'))
+        if generate_password:
+            result = equalizatorSaltPass(user_id, old_password, set_password=None)
+        elif new_password and new_password == repeat_password:
+            result = equalizatorSaltPass(user_id, old_password, set_password=new_password)
+        else:
+            return jsonify({'status': 'error', 'message': 'Hasła nie są identyczne lub nie podano danych.'}), 400
+
+        if result['status']:
+            
+            if firstConntactMessage(email, "password_is_changed", extra_data=result.get('new_password')):
+                return jsonify({'status': 'success', 'message': 'Hasło zmienione i wysłano e-mail.'})
+            else:
+                return jsonify({'status': 'error', 'message': 'Hasło zmienione, ale e-mail nie został wysłany.'})
+        else:
+            return jsonify({'status': 'error', 'message': result['message']}), 400
+
+    # Logika dla pracownika
+    elif user_permissions['user']:
+        if str(user_id) != str(session['user_id']):
+            return jsonify({'status': 'error', 'message': 'Pracownik może zmieniać hasło tylko dla siebie.'}), 403
+
+        result = equalizatorSaltPass(user_id, old_password=None, set_password=None)
+
+        if result['status']:
+            
+            if firstConntactMessage(email, "password_is_changed", extra_data=result.get('new_password')):
+                return jsonify({'status': 'success', 'message': 'Hasło zmienione i wysłano e-mail.'})
+            else:
+                return jsonify({'status': 'error', 'message': 'Hasło zmienione, ale e-mail nie został wysłany.'})
+        else:
+            return jsonify({'status': 'error', 'message': result['message']}), 400
+
+    # Brak uprawnień
+    return jsonify({'status': 'error', 'message': 'Brak odpowiednich uprawnień.'}), 403
+
 
 
 @app.route('/admin/team-stomatologia')
@@ -2007,11 +2060,31 @@ def password_managment():
     else:
         flash("Brak uprawnień do dostępu do tego zasobu.", 'danger')
         return redirect(url_for('index'))
+    
+    superuser_worker_select = [
+        {
+            'id': 1,
+            'name': 'Michał Jankiewicz',
+            'role': 'super_user',
+        },
+        {
+            'id': 2,
+            'name': 'Katarzyna Żmuda',
+            'role': 'administrator',
+        },
+        {
+            'id': 2,
+            'name': 'Elżbieta Fedorowicz',
+            'role': 'user',
+        },
+    ]
+
 
     # Renderowanie szablonu z rolą użytkownika
     return render_template(
         "rootipa.html",
-        user_role=user_role
+        user_role=user_role,
+        superuser_worker_select=superuser_worker_select
     )
 
 
@@ -2248,7 +2321,16 @@ def book_appointment_api():
     else:
         return jsonify({"status": "error", "message": "Nieprawidłowy format danych."}), 400
 
-
+@app.route('/api/get-role', methods=['GET'])
+def get_role_api():
+    try:
+        if session:
+            user_role = get_user_role(session)
+            return jsonify({"role": user_role})
+        else:
+            return jsonify({"role": 'user_alert'}), 401  # Brak autoryzacji
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500  # Błąd serwera
 
 
 
