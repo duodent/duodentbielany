@@ -1801,6 +1801,7 @@ def manage_password():
     new_password = form_data.get('new_password', None)
     repeat_password = form_data.get('repeat_password', None)
     generate_password = form_data.get('generate_password', 'false').lower() == 'true'
+    print(form_data)
 
     try: email = take_data_where_ID('email', 'admins', 'id', user_id)[0][0]
     except IndexError: return jsonify({'status': 'error', 'message': 'Id nie przeszło weryfikacji.'}), 400
