@@ -1817,9 +1817,9 @@ def manage_password():
     # Logika dla administratora
     if user_permissions['admin']:
         if generate_password:
-            result = equalizatorSaltPass(user_id, old_password=None, set_password=None)
+            result = equalizatorSaltPass(user_id, None, set_password=None)
         elif new_password and new_password == repeat_password:
-            result = equalizatorSaltPass(user_id, old_password=None, set_password=new_password)
+            result = equalizatorSaltPass(user_id, None, set_password=new_password)
         else:
             return jsonify({'status': 'error', 'message': 'Hasła nie są identyczne lub nie podano danych.'}), 400
 
