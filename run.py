@@ -1607,7 +1607,7 @@ def firstConntactMessage(email_address, procedure, extra_data=None):
                 <h1 style="color: #24363f;">Witaj!</h1>
                 <p>Twoje hasło do aplikacji Duodent Bielany zostało zmienione. Poniżej znajdziesz nowe hasło do logowania:</p>
                 <p><strong>Nowe hasło:</strong> {extra_data}</p>
-                <p style="color: red;">Jeżeli potrzebujesz jeszcze login skontaktuj się z <a href="mailto:admin@duodent.com.pl" style="color: #24363f;">administratorem systemu: admin@duodent.com.pl</a></p>
+                <p style="color: red;">Jeżeli potrzebujesz swój login skontaktuj się z <a href="mailto:admin@duodent.com.pl" style="color: #24363f;">administratorem systemu: admin@duodent.com.pl</a></p>
                 <p>W razie jakichkolwiek problemów z logowaniem skorzystaj z naszego numeru telefonu: <strong>790 777 350</strong></p>
                 <p>Pozdrawiamy,<br>Zespół Duodent</p>
                 <p style="font-size: 12px; color: #686d71; margin-top: 30px; border-top: 1px solid #ccc; padding-top: 10px;">
