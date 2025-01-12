@@ -89,24 +89,7 @@
                                         </div>
                                         <div class="col-lg-12">
                                             <div class="row">
-                                                <!-- Informacje o pracowniku (tylko dla super usera) -->
-                                                <div class="col-lg-6" id="employeeSelect" style="display: none;">
-                                                    <div class="form-group">
-                                                        <label>Wybierz użytkownika</label>
-                                                        <select id="user_id" name="user_id" class="form-select" required>
-                                                            <option value="{{own_user_data.id}}" selected>{{own_user_data.name}}</option>
-                                                            <!-- Opcje wypełniane dynamicznie -->
-                                                            {% if superuser_worker_select %}
-                                                            <!-- Opcje wypełniane dynamicznie -->
-                                                                {% for alloweduser in superuser_worker_select %}
-                                                                    {% if alloweduser.role=="user" %}
-                                                                        <option value="{{alloweduser.id}}">{{alloweduser.name}}</option>
-                                                                    {% endif %}
-                                                                {% endfor %}
-                                                            {% endif %}
-                                                        </select>
-                                                    </div>
-                                                </div>
+                                                
                                                 
                                                 <!-- Stare hasło (wymagane dla super usera zmienia ręcznie) -->
                                                 <div class="col-lg-6" id="old_password_div">
@@ -248,7 +231,7 @@
                         // Obsługa przełącznika generowania hasła
                         handlePasswordSwitch(generatePasswordSwitch, newPassword, repeatPassword);
                     } else if (role === "super_user") {
-                        userSelect.style.display = "none"; // Super user nie widzi pełnej listy użytkowników
+                        userSelect.style.display = "block"; // Super user nie widzi pełnej listy użytkowników
                         adminOptions.style.display = "block"; // Super user widzi przełącznik generowania hasła
                         oldPassword.parentElement.style.display = "block"; // Musi podać stare hasło
                         oldPasswordDiv.style.display = "block"; // Pakazujemy diva starego hasła
