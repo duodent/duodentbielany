@@ -1802,7 +1802,7 @@ def manage_password():
     repeat_password = form_data.get('repeat_password', None)
     generate_password = form_data.get('generate_password', '').lower() in ['true', 'on']
     own_user_id = form_data.get('own_user_id', None)
-    
+
     if user_id is None and own_user_id is not None:
         user_id = own_user_id
 
@@ -2094,7 +2094,8 @@ def password_managment():
     return render_template(
         "rootipa.html",
         user_role=user_role,
-        superuser_worker_select=superuser_worker_select
+        superuser_worker_select=superuser_worker_select,
+        own_user_data=own_user_data
     )
 
 
