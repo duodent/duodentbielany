@@ -2077,7 +2077,7 @@ def password_managment():
 
     # Pobierz najwyższą rolę użytkownika
     if direct_by_permision(session, permission_sought='administrator'):
-        user_role = "admin"
+        user_role = "administrator"
     elif direct_by_permision(session, permission_sought='super_user'):
         user_role = "super_user"
     elif direct_by_permision(session, permission_sought='user'):
