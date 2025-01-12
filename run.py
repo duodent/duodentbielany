@@ -1858,8 +1858,10 @@ def manage_password():
     # Logika dla super użytkownika
     elif user_permissions['super_user']:
         if generate_password:
-            result = equalizatorSaltPass(user_id, verification_data=old_password, set_password=None)
-        elif new_password and new_password == repeat_password:
+            result = equalizatorSaltPass(user_id, verification_data=None, set_password=None)
+        elif new_password and new_password == repeat_password and own_user_id != user_id:
+            result = equalizatorSaltPass(user_id, verification_data=None, set_password=new_password)
+        elif new_password and new_password == repeat_password and own_user_id == user_id:
             result = equalizatorSaltPass(user_id, verification_data=old_password, set_password=new_password)
         else:
             return jsonify({'status': 'error', 'message': 'Hasła nie są identyczne lub nie podano danych.'}), 400

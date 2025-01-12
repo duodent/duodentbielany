@@ -53,18 +53,19 @@
                                             <!-- Lista użytkowników w collapse -->
                                             <div class="collapse" id="userListCollapse">
                                                 {% if superuser_worker_select %}
-                                                    <!-- Wyświetlanie aktualnie zalogowanego użytkownika -->
-                                                    <div 
-                                                        class="col m-2 user-item text-center border p-2 rounded" 
-                                                        data-user-id="{{ own_user_data.id }}" 
-                                                        data-user-name="{{ own_user_data.name }}"
-                                                        style="cursor: pointer; min-width: max-content;"
-                                                    >
-                                                        {{ own_user_data.name }}
-                                                    </div>
+                                                    
 
                                                     <!-- Wyświetlanie pozostałych użytkowników w zależności od roli -->
                                                     <div class="row">
+                                                        <!-- Wyświetlanie aktualnie zalogowanego użytkownika -->
+                                                            <div 
+                                                            class="col-auto m-2 user-item text-center border p-2 rounded" 
+                                                            data-user-id="{{ own_user_data.id }}" 
+                                                            data-user-name="{{ own_user_data.name }}"
+                                                            style="cursor: pointer; min-width: max-content;"
+                                                        >
+                                                            {{ own_user_data.name }}
+                                                        </div>
                                                         {% for alloweduser in superuser_worker_select %}
                                                             {% if own_user_data.id != alloweduser.id %}
                                                                 {% if 
@@ -205,6 +206,7 @@
                     const employeeSelect = document.getElementById("employeeSelect");
                     const generatePasswordSwitch = document.getElementById("generate_password");
                     const ownUserId = document.getElementById("own_user_id");
+                    const userId = document.getElementById("user_id");
                     
 
                     // Funkcja obsługująca przełącznik generowania hasła
@@ -234,7 +236,9 @@
                         userSelect.style.display = "block"; // Super user nie widzi pełnej listy użytkowników
                         adminOptions.style.display = "block"; // Super user widzi przełącznik generowania hasła
                         oldPassword.parentElement.style.display = "block"; // Musi podać stare hasło
-                        oldPasswordDiv.style.display = "block"; // Pakazujemy diva starego hasła
+                        if (ownUserId === userId) {
+                            oldPasswordDiv.style.display = "block"; // Pakazujemy diva starego hasła
+                        }
                         employeeSelect.style.display = "block"; // Super user widzi listę pracowników
 
                         // Obsługa przełącznika generowania hasła
