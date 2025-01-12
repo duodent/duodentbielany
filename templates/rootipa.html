@@ -228,7 +228,7 @@
                         userSelect.style.display = "block"; // Admin widzi listę użytkowników
                         adminOptions.style.display = "block"; // Admin widzi przełącznik generowania hasła
                         oldPassword.parentElement.style.display = "none"; // Ukrywamy pole starego hasła
-                        oldPasswordDiv.parentElement.style.display = "none"; // Ukrywamy diva starego hasła
+                        oldPasswordDiv.style.display = "none"; // Ukrywamy diva starego hasła
 
                         // Obsługa przełącznika generowania hasła
                         handlePasswordSwitch(generatePasswordSwitch, newPassword, repeatPassword);
@@ -236,7 +236,7 @@
                         userSelect.style.display = "none"; // Super user nie widzi pełnej listy użytkowników
                         adminOptions.style.display = "block"; // Super user widzi przełącznik generowania hasła
                         oldPassword.parentElement.style.display = "block"; // Musi podać stare hasło
-                        oldPasswordDiv.parentElement.style.display = "block"; // Pakazujemy diva starego hasła
+                        oldPasswordDiv.style.display = "block"; // Pakazujemy diva starego hasła
                         employeeSelect.style.display = "block"; // Super user widzi listę pracowników
 
                         // Obsługa przełącznika generowania hasła
@@ -245,7 +245,7 @@
                         userSelect.style.display = "none"; // Pracownik nie widzi listy użytkowników
                         adminOptions.style.display = "none"; // Pracownik nie ma przełącznika
                         oldPassword.parentElement.style.display = "none"; // Pracownik nie musi podawać starego hasła
-                        oldPasswordDiv.parentElement.style.display = "none"; // Ukrywamy diva starego hasła
+                        oldPasswordDiv.style.display = "none"; // Ukrywamy diva starego hasła
                         newPassword.parentElement.style.display = "none"; // Ukrywamy nowe hasło
                         repeatPassword.parentElement.style.display = "none"; // Ukrywamy powtórzenie hasła
 
