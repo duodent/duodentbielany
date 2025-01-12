@@ -30,17 +30,43 @@
                                         <div class="col-lg-6" id="userSelect" style="display: none;">
                                             <div class="form-group">
                                                 <label>Wybierz użytkownika</label>
-                                                <select id="user_id" name="user_id" class="form-select" required>
-                                                    <option value="{{own_user_data.id}}" selected>{{own_user_data.name}}</option>
-                                                    {% if superuser_worker_select %}
-                                                    <!-- Opcje wypełniane dynamicznie -->
-                                                        {% for alloweduser in superuser_worker_select %}
-                                                            {% if alloweduser.role!="administrator" %}
-                                                                <option value="{{alloweduser.id}}">{{alloweduser.name}}</option>
-                                                            {% endif %}
-                                                        {% endfor %}
-                                                    {% endif %}
-                                                </select>
+                                                
+                                                <!-- Ukryte pole input -->
+                                                <input type="hidden" id="user_id" name="user_id" value="{{ own_user_data.id }}">
+                                            
+                                                <!-- Wybrany użytkownik (link otwierający collapse) -->
+                                                <a 
+                                                    class="btn btn-link p-0 mb-2" 
+                                                    data-bs-toggle="collapse" 
+                                                    href="#userListCollapse" 
+                                                    role="button" 
+                                                    aria-expanded="false" 
+                                                    aria-controls="userListCollapse"
+                                                    id="selectedUserName"
+                                                >
+                                                    {{ own_user_data.name }}
+                                                </a>
+                                            
+                                                <!-- Lista użytkowników w collapse -->
+                                                <div class="collapse" id="userListCollapse">
+                                                    <div class="card card-body">
+                                                        {% if superuser_worker_select %}
+                                                            <ul class="list-group">
+                                                                {% for alloweduser in superuser_worker_select %}
+                                                                    {% if alloweduser.role != "administrator" %}
+                                                                        <li 
+                                                                            class="list-group-item user-item" 
+                                                                            data-user-id="{{ alloweduser.id }}" 
+                                                                            data-user-name="{{ alloweduser.name }}"
+                                                                        >
+                                                                            {{ alloweduser.name }}
+                                                                        </li>
+                                                                    {% endif %}
+                                                                {% endfor %}
+                                                            </ul>
+                                                        {% endif %}
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
 
