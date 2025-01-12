@@ -1516,7 +1516,7 @@ def direct_by_permision(session, permission_sought=None):
 
 def get_user_role(session):
     if direct_by_permision(session, permission_sought='administrator'):
-        return "admin"
+        return "administrator"
     elif direct_by_permision(session, permission_sought='super_user'):
         return "super_user"
     elif direct_by_permision(session, permission_sought='user'):
