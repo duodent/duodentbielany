@@ -67,11 +67,14 @@
                                                             {{ own_user_data.name }}
                                                         </div>
                                                         {% for alloweduser in superuser_worker_select %}
-                                                            {% if own_user_data.id != alloweduser.id %}
+                                                            
+
                                                                 {% if 
                                                                     (user_role == 'administrator' and alloweduser.role != 'administrator') or
                                                                     (user_role == 'super_user' and alloweduser.role == 'user')
                                                                 %}
+                                                                    {% if own_user_data.id != alloweduser.id %}
+
                                                                     <div 
                                                                         class="col-auto m-2 user-item text-center border p-2 rounded" 
                                                                         data-user-id="{{ alloweduser.id }}" 
@@ -80,8 +83,12 @@
                                                                     >
                                                                         {{ alloweduser.name }}
                                                                     </div>
+                                                                    {% endif %}
                                                                 {% endif %}
-                                                            {% endif %}
+
+
+
+                                                            
                                                         {% endfor %}
                                                     </div>
                                                 {% endif %}
