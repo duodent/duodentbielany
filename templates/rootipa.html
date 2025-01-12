@@ -52,25 +52,40 @@
                                         <div class="col-lg-12">
                                             <!-- Lista użytkowników w collapse -->
                                             <div class="collapse" id="userListCollapse">
-
                                                 {% if superuser_worker_select %}
-                                                    <div class="row col-auto">
+                                                    <!-- Wyświetlanie aktualnie zalogowanego użytkownika -->
+                                                    <div 
+                                                        class="col m-2 user-item text-center border p-2 rounded" 
+                                                        data-user-id="{{ own_user_data.id }}" 
+                                                        data-user-name="{{ own_user_data.name }}"
+                                                        style="cursor: pointer; min-width: max-content;"
+                                                    >
+                                                        {{ own_user_data.name }}
+                                                    </div>
+
+                                                    <!-- Wyświetlanie pozostałych użytkowników w zależności od roli -->
+                                                    <div class="row">
                                                         {% for alloweduser in superuser_worker_select %}
-                                                            {% if alloweduser.role != "administrator" %}
-                                                                <div 
-                                                                    class="col m-2 user-item text-center border p-2 rounded" 
-                                                                    data-user-id="{{ alloweduser.id }}" 
-                                                                    data-user-name="{{ alloweduser.name }}"
-                                                                    style="cursor: pointer; min-width: max-content;"
-                                                                >
-                                                                    {{ alloweduser.name }}
-                                                                </div>
+                                                            {% if own_user_data.id != alloweduser.id %}
+                                                                {% if 
+                                                                    (user_role == 'administrator' and alloweduser.role != 'administrator') or
+                                                                    (user_role == 'super_user' and alloweduser.role == 'user')
+                                                                %}
+                                                                    <div 
+                                                                        class="col-auto m-2 user-item text-center border p-2 rounded" 
+                                                                        data-user-id="{{ alloweduser.id }}" 
+                                                                        data-user-name="{{ alloweduser.name }}"
+                                                                        style="cursor: pointer; min-width: max-content;"
+                                                                    >
+                                                                        {{ alloweduser.name }}
+                                                                    </div>
+                                                                {% endif %}
                                                             {% endif %}
                                                         {% endfor %}
                                                     </div>
                                                 {% endif %}
-                                                    
                                             </div>
+
                                         </div>
                                         <div class="col-lg-12">
                                             <div class="row">

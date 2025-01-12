@@ -2098,7 +2098,7 @@ def password_managment():
 
     own_user_data = {
         'id': session.get('user_data',{}).get('id'),
-        'name': session.get('user_data',{}).get('name'),
+        'name': session.get('user_data',{}).get('name')
         }
 
 
