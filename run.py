@@ -1825,7 +1825,7 @@ def manage_password():
 
         if result['status']:
             
-            if firstConntactMessage(email, "password_is_changed", extra_data=result.get('new_password')):
+            if firstConntactMessage(email, "password_is_changed", extra_data=new_password):
                 return jsonify({'status': 'success', 'message': 'Hasło zmienione i wysłano e-mail.'})
             else:
                 return jsonify({'status': 'error', 'message': 'Hasło zmienione, ale e-mail nie został wysłany.'})
