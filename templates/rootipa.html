@@ -264,10 +264,13 @@
             document.addEventListener('DOMContentLoaded', function () {
                 // Ukryty input
                 const hiddenInput = document.getElementById('user_id');
+                const hiddenInput_own = document.getElementById('own_user_id');
                 // Link wybranego użytkownika
                 const selectedUserName = document.getElementById('selectedUserName');
                 // Elementy listy użytkowników
                 const userItems = document.querySelectorAll('.user-item');
+                // Pole starego hasła
+                const oldPasswordDiv = document.getElementById('old_password_div');
 
                 userItems.forEach(item => {
                     item.addEventListener('click', function () {
@@ -288,9 +291,19 @@
                         // Dodaj styl aktywnego użytkownika
                         userItems.forEach(user => user.classList.remove('active'));
                         this.classList.add('active');
+
+                        // Jeśli rola to super_user, ukryj pole old_password, gdy hiddenInput.value != hiddenInput_own.value
+                        if (role === 'super_user') {
+                            if (hiddenInput.value !== hiddenInput_own.value) {
+                                oldPasswordDiv.style.display = 'none'; // Ukryj pole
+                            } else {
+                                oldPasswordDiv.style.display = 'block'; // Pokaż pole
+                            }
+                        }
                     });
                 });
             });
+
 
 
 
