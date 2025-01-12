@@ -20,11 +20,9 @@
                     <div class="col-lg-4 col-md-12">
                         <div class="dentist-details-image">
                             <img 
-                                {% if dane_pracownika.uprawnienia %}
-                                    id="team-avatar-{{own_user_data.id}}-1-1"
-                                    data-editable 
-                                    data-type="img"
-                                {% endif %}
+                                id="team-avatar-{{own_user_data.id}}-1-1"
+                                data-editable 
+                                data-type="img"
                                 src="{{own_user_data.avatar}}" alt="image">
                         </div>
                     </div>
