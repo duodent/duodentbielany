@@ -168,6 +168,85 @@
                                 
                                     <div id="responseMessage" style="margin-top: 20px;"></div>
                                 </form>
+                                <div class="row" id="adminPerm" style="display: none;">
+                                    <div class="col-12">
+                                        <h5>Uprawnieina</h5>
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="d-flex align-items-center">
+                                            <!-- Opcje Administratora i Uprawnienia -->
+                                            {% if own_user_data.uprawnienia.administrator %}
+                                                <i  
+                                                    title="Odbierz uprawnienia administratora" 
+                                                    id="team-administrator-{{own_user_data.id}}-1-1" 
+                                                    data-type="switch" 
+                                                    data-state="{{own_user_data.uprawnienia.administrator}}"
+                                                    class="bi-shield-lock-fill icon-size text-info me-1"></i> 
+                                                    <span class="fw-light me-1 ms-1">
+                                                        Administrator <!-- Administrator -->
+                                                    </span>
+                                            {% else %}
+                                                <i 
+                                                    title="Przyznaj uprawnienia administratora" 
+                                                    id="team-administrator-{{own_user_data.id}}-1-1" 
+                                                    data-type="switch" 
+                                                    data-state="{{own_user_data.uprawnienia.administrator}}"
+                                                    class="bi-shield-lock-fill icon-size text-secondary"></i> 
+                                                    <span class="fw-light me-1 ms-1">
+                                                        Administrator <!-- Administrator -->
+                                                    </span><!-- Administrator -->
+                                            {% endif %}
+                                            {% if own_user_data.uprawnienia.super_user %}
+                                                <i 
+                                                    title="Odbierz uprawnienia super użytkownika" 
+                                                    id="team-super_user-{{own_user_data.id}}-1-1" 
+                                                    data-type="switch" 
+                                                    data-state="{{own_user_data.uprawnienia.super_user}}"
+                                                    class="bi-shield-check icon-size text-info"></i>
+                                                    <span class="fw-light me-1 ms-1">
+                                                        Super User <!-- Super User -->
+                                                    </span> <!-- Super User -->
+                                            {% else %}
+                                                <i 
+                                                    title="Przyznaj uprawnienia super użytkownika" 
+                                                    id="team-super_user-{{own_user_data.id}}-1-1" 
+                                                    data-type="switch" 
+                                                    data-state="{{own_user_data.uprawnienia.super_user}}"
+                                                    class="bi-shield-check icon-size text-secondary"></i>
+                                                    <span class="fw-light me-1 ms-1">
+                                                        Super User <!-- Super User -->
+                                                    </span> <!-- Super User -->
+                                                    
+                                            {% endif %}
+                                            {% if own_user_data.uprawnienia.user %}
+                                                <i 
+                                                    title="Odbierz uprawnienia pracownika" 
+                                                    id="team-user-{{own_user_data.id}}-1-1" 
+                                                    data-type="switch" 
+                                                    data-state="{{own_user_data.uprawnienia.user}}"
+                                                    class="bi-person-fill icon-size text-info"></i> <!-- User -->
+                                                    <span class="fw-light me-1 ms-1">
+                                                        Pracownik <!-- Pracownik -->
+                                                    </span> <!-- Pracownik -->
+                                            {% else %}
+                                                <i 
+                                                    title="Przyznaj uprawnienia pracownika" 
+                                                    id="team-user-{{own_user_data.id}}-1-1" 
+                                                    data-type="switch" 
+                                                    data-state="{{own_user_data.uprawnienia.user}}"
+                                                    class="bi-person-fill icon-size text-secondary"></i> <!-- User -->
+                                                    <span class="fw-light me-1 ms-1">
+                                                        Pracownik <!-- Pracownik -->
+                                                    </span> <!-- Pracownik -->
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <h5>Twoje dane kontaktowe</h5>
+                                    </div>
+                                </div>
                                 <div class="row">
                                     <div class="col-auto m-2">
                                         <!-- Email -->
@@ -316,6 +395,7 @@
                     const generatePasswordSwitch = document.getElementById("generate_password");
                     const ownUserId = document.getElementById("own_user_id");
                     const userId = document.getElementById("user_id");
+                    const adminPerm = document.getElementById("adminPerm");
                     
 
                     // Funkcja obsługująca przełącznik generowania hasła
@@ -336,6 +416,7 @@
                     if (role === "administrator") {
                         userSelect.style.display = "block"; // Admin widzi listę użytkowników
                         adminOptions.style.display = "block"; // Admin widzi przełącznik generowania hasła
+                        adminPerm.style.display = "block"; // Admin widzi przełącznik generowania hasła
                         oldPassword.parentElement.style.display = "none"; // Ukrywamy pole starego hasła
                         oldPasswordDiv.style.display = "none"; // Ukrywamy diva starego hasła
 
@@ -346,6 +427,7 @@
                         adminOptions.style.display = "block"; // Super user widzi przełącznik generowania hasła
                         oldPassword.parentElement.style.display = "block"; // Musi podać stare hasło
                         oldPasswordDiv.style.display = "block"; // Pakazujemy diva starego hasła
+                        adminPerm.style.display = "none"; // Admin widzi przełącznik generowania hasła
 
                         // Obsługa przełącznika generowania hasła
                         handlePasswordSwitch(generatePasswordSwitch, newPassword, repeatPassword);
@@ -356,6 +438,8 @@
                         oldPasswordDiv.style.display = "none"; // Ukrywamy diva starego hasła
                         newPassword.parentElement.style.display = "none"; // Ukrywamy nowe hasło
                         repeatPassword.parentElement.style.display = "none"; // Ukrywamy powtórzenie hasła
+                        adminPerm.style.display = "none"; // Admin widzi przełącznik generowania hasła
+
 
                         generateButton.style.display = "block"; // Pracownik widzi przycisk generowania hasła
                         ownUserId.style.display = "block"; // Pracownik widzi ustawia swoje userId
