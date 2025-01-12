@@ -1834,13 +1834,10 @@ def manage_password():
 
     # Logika dla super użytkownika
     elif user_permissions['super_user']:
-        if str(user_id) != str(session['user_id']):
-            return jsonify({'status': 'error', 'message': 'Super użytkownik może zmieniać hasło tylko dla siebie.'}), 403
-
         if generate_password:
-            result = equalizatorSaltPass(user_id, old_password, set_password=None)
+            result = equalizatorSaltPass(user_id, verification_data=old_password, set_password=None)
         elif new_password and new_password == repeat_password:
-            result = equalizatorSaltPass(user_id, old_password, set_password=new_password)
+            result = equalizatorSaltPass(user_id, verification_data=old_password, set_password=new_password)
         else:
             return jsonify({'status': 'error', 'message': 'Hasła nie są identyczne lub nie podano danych.'}), 400
 
@@ -1855,10 +1852,10 @@ def manage_password():
 
     # Logika dla pracownika
     elif user_permissions['user']:
-        if str(user_id) != str(session['user_id']):
+        if str(user_id) != str(session.get('user_data',{}).get('id')):
             return jsonify({'status': 'error', 'message': 'Pracownik może zmieniać hasło tylko dla siebie.'}), 403
 
-        result = equalizatorSaltPass(user_id, old_password=None, set_password=None)
+        result = equalizatorSaltPass(user_id, verification_data=None, set_password=None)
 
         if result['status']:
             
