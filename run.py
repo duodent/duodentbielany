@@ -263,7 +263,25 @@ def validate_register_data(data, existing_users):
 
 
 
+def getuserrole(useroneitem_data_from_generator_userDataDB):
+    # ======================== dane (admins) ============================
+    # Funkcja pomocnicza określająca najwyższy poziom uprawnień użytkownika.
+    # Pobiera dane użytkownika z bazy danych (admins) i zwraca jeden z poziomów:
+    # 'administrator', 'super_user', 'user', lub 'guest' (domyślnie).
+    # Aby funkcja działała poprawnie, należy jako argument podać element z listy 
+    # zwróconej przez generator_userDataDB(). Każdy element powinien być 
+    # usystematyzowany zgodnie ze standardem aplikacji – zawierać odpowiednie 
+    # klucze ('administrator', 'super_user', 'user') z wartościami typu int (0 lub 1).
+    # ===================================================================
 
+    if useroneitem_data_from_generator_userDataDB.get('administrator', 0):
+        return 'administrator'
+    elif useroneitem_data_from_generator_userDataDB.get('super_user', 0):
+        return 'super_user'
+    elif useroneitem_data_from_generator_userDataDB.get('user', 0):
+        return 'user'
+    else:
+        return 'guest'
 
 
 
@@ -2066,23 +2084,17 @@ def password_managment():
         flash("Brak uprawnień do dostępu do tego zasobu.", 'danger')
         return redirect(url_for('index'))
     
-    superuser_worker_select = [
-        {
-            'id': 1,
-            'name': 'Michał Jankiewicz',
-            'role': 'super_user',
-        },
-        {
-            'id': 2,
-            'name': 'Katarzyna Żmuda',
-            'role': 'administrator',
-        },
-        {
-            'id': 2,
-            'name': 'Elżbieta Fedorowicz',
-            'role': 'user',
-        },
-    ]
+    userDataDB = generator_userDataDB()
+
+    superuser_worker_select = []
+    for uData in userDataDB:
+        insertRekord = {
+                'id': uData.get('id'),
+                'name': uData.get('name'),
+                'role': getuserrole(uData),
+            }
+        superuser_worker_select.append(insertRekord)
+
 
     own_user_data = {
         'id': session.get('user_data',{}).get('id'),
