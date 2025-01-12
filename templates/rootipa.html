@@ -109,6 +109,7 @@
                                         <button type="submit" id="submitButton" class="default-btn">Zmień Hasło</button>
                                 
                                         <!-- Guzik dla pracownika -->
+                                        <input type="hidden" id="own_user_id" style="display: none;">
                                         <button type="button" id="generateButton" class="default-btn" style="display: none;">Wygeneruj Hasło</button>
                                     </div>
                                 
@@ -171,6 +172,7 @@
                     const repeatPassword = document.getElementById("repeat_password");
                     const employeeSelect = document.getElementById("employeeSelect");
                     const generatePasswordSwitch = document.getElementById("generate_password");
+                    const ownUserId = document.getElementById("own_user_id");
 
                     // Funkcja obsługująca przełącznik generowania hasła
                     function handlePasswordSwitch(switchElement, newPassword, repeatPassword) {
@@ -210,6 +212,8 @@
                         repeatPassword.parentElement.style.display = "none"; // Ukrywamy powtórzenie hasła
 
                         generateButton.style.display = "block"; // Pracownik widzi przycisk generowania hasła
+                        ownUserId.style.display = "block"; // Pracownik widzi ustawia swoje userId
+                        
                         submitButton.style.display = "none"; // Ukrywamy standardowy przycisk zmiany hasła
                     } else {
                         console.warn("Nieznana rola użytkownika:", role);

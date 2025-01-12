@@ -1801,6 +1801,11 @@ def manage_password():
     new_password = form_data.get('new_password', None)
     repeat_password = form_data.get('repeat_password', None)
     generate_password = form_data.get('generate_password', '').lower() in ['true', 'on']
+    own_user_id = form_data.get('own_user_id', None)
+    
+    if user_id is None and own_user_id is not None:
+        user_id = own_user_id
+
 
     print(form_data)
     print(generate_password)
