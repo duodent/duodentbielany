@@ -2099,11 +2099,12 @@ def password_managment():
 
 
     own_user_data = session.get('user_data',{})
+    own_userperm = session.get('userperm',{})
     {
-        'id': session.get('user_data',{}).get('id'),
-        'name': session.get('user_data',{}).get('name'),
-        'avatar': session.get('user_data',{}).get('avatar')
-        }
+    'id': session.get('user_data',{}).get('id'),
+    'name': session.get('user_data',{}).get('name'),
+    'avatar': session.get('user_data',{}).get('avatar')
+    }
 
 
     # Renderowanie szablonu z rolą użytkownika
@@ -2111,7 +2112,8 @@ def password_managment():
         "rootipa.html",
         user_role=user_role,
         superuser_worker_select=superuser_worker_select,
-        own_user_data=own_user_data
+        own_user_data=own_user_data,
+        own_userperm=own_userperm
     )
 
 

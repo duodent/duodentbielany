@@ -175,12 +175,12 @@
                                     <div class="col-12">
                                         <div class="d-flex align-items-center">
                                             <!-- Opcje Administratora i Uprawnienia -->
-                                            {% if own_user_data.uprawnienia.administrator %}
+                                            {% if own_userperm.administrator %}
                                                 <i  
                                                     title="Odbierz uprawnienia administratora" 
                                                     id="team-administrator-{{own_user_data.id}}-1-1" 
                                                     data-type="switch" 
-                                                    data-state="{{own_user_data.uprawnienia.administrator}}"
+                                                    data-state="{{own_userperm.administrator}}"
                                                     class="bi-shield-lock-fill icon-size text-info me-1"></i> 
                                                     <span class="fw-light me-1 ms-1">
                                                         Administrator <!-- Administrator -->
@@ -190,18 +190,18 @@
                                                     title="Przyznaj uprawnienia administratora" 
                                                     id="team-administrator-{{own_user_data.id}}-1-1" 
                                                     data-type="switch" 
-                                                    data-state="{{own_user_data.uprawnienia.administrator}}"
+                                                    data-state="{{own_userperm.administrator}}"
                                                     class="bi-shield-lock-fill icon-size text-secondary"></i> 
                                                     <span class="fw-light me-1 ms-1">
                                                         Administrator <!-- Administrator -->
                                                     </span><!-- Administrator -->
                                             {% endif %}
-                                            {% if own_user_data.uprawnienia.super_user %}
+                                            {% if own_userperm.super_user %}
                                                 <i 
                                                     title="Odbierz uprawnienia super użytkownika" 
                                                     id="team-super_user-{{own_user_data.id}}-1-1" 
                                                     data-type="switch" 
-                                                    data-state="{{own_user_data.uprawnienia.super_user}}"
+                                                    data-state="{{own_userperm.super_user}}"
                                                     class="bi-shield-check icon-size text-info"></i>
                                                     <span class="fw-light me-1 ms-1">
                                                         Super User <!-- Super User -->
@@ -211,19 +211,19 @@
                                                     title="Przyznaj uprawnienia super użytkownika" 
                                                     id="team-super_user-{{own_user_data.id}}-1-1" 
                                                     data-type="switch" 
-                                                    data-state="{{own_user_data.uprawnienia.super_user}}"
+                                                    data-state="{{own_userperm.super_user}}"
                                                     class="bi-shield-check icon-size text-secondary"></i>
                                                     <span class="fw-light me-1 ms-1">
                                                         Super User <!-- Super User -->
                                                     </span> <!-- Super User -->
                                                     
                                             {% endif %}
-                                            {% if own_user_data.uprawnienia.user %}
+                                            {% if own_userperm.user %}
                                                 <i 
                                                     title="Odbierz uprawnienia pracownika" 
                                                     id="team-user-{{own_user_data.id}}-1-1" 
                                                     data-type="switch" 
-                                                    data-state="{{own_user_data.uprawnienia.user}}"
+                                                    data-state="{{own_userperm.user}}"
                                                     class="bi-person-fill icon-size text-info"></i> <!-- User -->
                                                     <span class="fw-light me-1 ms-1">
                                                         Pracownik <!-- Pracownik -->
@@ -233,7 +233,7 @@
                                                     title="Przyznaj uprawnienia pracownika" 
                                                     id="team-user-{{own_user_data.id}}-1-1" 
                                                     data-type="switch" 
-                                                    data-state="{{own_user_data.uprawnienia.user}}"
+                                                    data-state="{{own_userperm.user}}"
                                                     class="bi-person-fill icon-size text-secondary"></i> <!-- User -->
                                                     <span class="fw-light me-1 ms-1">
                                                         Pracownik <!-- Pracownik -->
