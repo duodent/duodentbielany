@@ -50,11 +50,11 @@
                                                 <div class="collapse" id="userListCollapse">
 
                                                     {% if superuser_worker_select %}
-                                                        <div class="row">
+                                                        <div class="row col-auto">
                                                             {% for alloweduser in superuser_worker_select %}
                                                                 {% if alloweduser.role != "administrator" %}
                                                                     <div 
-                                                                        class="col-sm-6 col-md-4 col-lg-3 mb-2 user-item text-center border p-2 rounded" 
+                                                                        class="col mb-2 user-item text-center border p-2 rounded" 
                                                                         data-user-id="{{ alloweduser.id }}" 
                                                                         data-user-name="{{ alloweduser.name }}"
                                                                         style="cursor: pointer;"
