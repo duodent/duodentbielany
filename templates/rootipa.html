@@ -203,7 +203,7 @@
                     const oldPasswordDiv = document.getElementById("old_password_div");
                     const newPassword = document.getElementById("new_password");
                     const repeatPassword = document.getElementById("repeat_password");
-                    const employeeSelect = document.getElementById("employeeSelect");
+                    // const employeeSelect = document.getElementById("employeeSelect");
                     const generatePasswordSwitch = document.getElementById("generate_password");
                     const ownUserId = document.getElementById("own_user_id");
                     const userId = document.getElementById("user_id");
@@ -248,7 +248,7 @@
                         if (ownUserId === userId) {
                             oldPasswordDiv.style.display = "block"; // Pakazujemy diva starego hasła
                         }
-                        employeeSelect.style.display = "block"; // Super user widzi listę pracowników
+                        // employeeSelect.style.display = "block"; // Super user widzi listę pracowników
 
                         // Obsługa przełącznika generowania hasła
                         handlePasswordSwitch(generatePasswordSwitch, newPassword, repeatPassword);
