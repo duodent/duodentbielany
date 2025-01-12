@@ -274,11 +274,11 @@ def getuserrole(useroneitem_data_from_generator_userDataDB):
     # klucze ('administrator', 'super_user', 'user') z wartościami typu int (0 lub 1).
     # ===================================================================
 
-    if useroneitem_data_from_generator_userDataDB.get('administrator', 0):
+    if useroneitem_data_from_generator_userDataDB.get('uprawnienia',{}).get('administrator', 0):
         return 'administrator'
-    elif useroneitem_data_from_generator_userDataDB.get('super_user', 0):
+    elif useroneitem_data_from_generator_userDataDB.get('uprawnienia',{}).get('super_user', 0):
         return 'super_user'
-    elif useroneitem_data_from_generator_userDataDB.get('user', 0):
+    elif useroneitem_data_from_generator_userDataDB.get('uprawnienia',{}).get('user', 0):
         return 'user'
     else:
         return 'guest'
