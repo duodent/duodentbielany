@@ -1289,7 +1289,7 @@ def equalizatorSaltPass(user_id, verification_data, set_password=None):
     
     # Aktualizacja w bazie danych
     if insertPassDB(hashed_password, salt_new, user_id):
-        return {'status': True, 'message': 'Hasło zostało pomyślnie zaktualizowane'}
+        return {'status': True, 'message': 'Hasło zostało pomyślnie zaktualizowane', 'new_password': new_password}
     else:
         return {'status': False, 'message': 'Nie udało się zaktualizować hasła w bazie danych'}
 
@@ -1825,7 +1825,7 @@ def manage_password():
 
         if result['status']:
             
-            if firstConntactMessage(email, "password_is_changed", extra_data=new_password):
+            if firstConntactMessage(email, "password_is_changed", extra_data=result.get('new_password')):
                 return jsonify({'status': 'success', 'message': 'Hasło zmienione i wysłano e-mail.'})
             else:
                 return jsonify({'status': 'error', 'message': 'Hasło zmienione, ale e-mail nie został wysłany.'})
