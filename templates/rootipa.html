@@ -29,7 +29,7 @@
                                         <!-- Ukryte pole input -->
                                         <input type="hidden" id="user_id" name="user_id" value="{{ own_user_data.id }}">
                                         <!-- Informacje o użytkowniku (tylko dla administratora) -->
-                                        <div class="col-lg-6" id="userSelect" style="display: none;">
+                                        <div class="col-lg-12" id="userSelect" style="display: none;">
                                             <div class="form-group">
                                                 <p>Wybierz użytkownika</p>
 
@@ -48,24 +48,24 @@
                                             
                                                 <!-- Lista użytkowników w collapse -->
                                                 <div class="collapse" id="userListCollapse">
-                                                    <div class="card card-body">
-                                                        {% if superuser_worker_select %}
-                                                            <div class="row">
-                                                                {% for alloweduser in superuser_worker_select %}
-                                                                    {% if alloweduser.role != "administrator" %}
-                                                                        <div 
-                                                                            class="col-12 col-sm-6 col-md-4 col-lg-3 mb-2 user-item text-center border p-2 rounded" 
-                                                                            data-user-id="{{ alloweduser.id }}" 
-                                                                            data-user-name="{{ alloweduser.name }}"
-                                                                            style="cursor: pointer;"
-                                                                        >
-                                                                            {{ alloweduser.name }}
-                                                                        </div>
-                                                                    {% endif %}
-                                                                {% endfor %}
-                                                            </div>
-                                                        {% endif %}
-                                                    </div>
+
+                                                    {% if superuser_worker_select %}
+                                                        <div class="row">
+                                                            {% for alloweduser in superuser_worker_select %}
+                                                                {% if alloweduser.role != "administrator" %}
+                                                                    <div 
+                                                                        class="col-sm-6 col-md-4 col-lg-3 mb-2 user-item text-center border p-2 rounded" 
+                                                                        data-user-id="{{ alloweduser.id }}" 
+                                                                        data-user-name="{{ alloweduser.name }}"
+                                                                        style="cursor: pointer;"
+                                                                    >
+                                                                        {{ alloweduser.name }}
+                                                                    </div>
+                                                                {% endif %}
+                                                            {% endfor %}
+                                                        </div>
+                                                    {% endif %}
+                                                        
                                                 </div>
                                             </div>
                                         </div>
