@@ -18,9 +18,15 @@
             <div class="container">
                 <div class="row">
                     <div class="col-lg-4 col-md-12">
-                        superuser_worker_select: {{superuser_worker_select}}
-                        own_user_data: {{own_user_data}}
-                        user_role: {{user_role}}
+                        <div class="dentist-details-image">
+                            <img 
+                                {% if dane_pracownika.uprawnienia %}
+                                    id="team-avatar-{{own_user_data.id}}-1-1"
+                                    data-editable 
+                                    data-type="img"
+                                {% endif %}
+                                src="{{own_user_data.avatar}}" alt="image">
+                        </div>
                     </div>
                     <div class="col-lg-8">
                         <div class="appointment-overview-box">
