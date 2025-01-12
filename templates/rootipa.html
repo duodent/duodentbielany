@@ -193,6 +193,29 @@
                         console.error("Błąd podczas pobierania roli użytkownika:", error);
                     });
 
+                    if (role === "super_user") {
+                        const ownUserId = document.getElementById("own_user_id");
+                        const userId = document.getElementById("user_id");
+                        const oldPasswordDiv = document.getElementById("old_password_div");
+    
+                        // Sprawdzenie od razu po załadowaniu strony (pierwotny stan)
+                        if (ownUserId.value === userId.value) {
+                            oldPasswordDiv.style.display = "block"; // Pokaż div starego hasła
+                        } else {
+                            oldPasswordDiv.style.display = "none"; // Ukryj div starego hasła
+                        }
+                    }
+                
+
+                    // Obsługa zdarzenia zmiany w polu userId
+                    userId.addEventListener("change", function () {
+                        if (ownUserId.value === userId.value) {
+                            oldPasswordDiv.style.display = "block"; // Pokaż div starego hasła
+                        } else {
+                            oldPasswordDiv.style.display = "none"; // Ukryj div starego hasła
+                        }
+                    });
+
                 // Funkcja inicjalizująca UI na podstawie roli
                 function initializeUI(role) {
                     const userSelect = document.getElementById("userSelect");
@@ -223,15 +246,6 @@
                         });
                     }
 
-                    // Obsługa zmiany użytkownika
-                    userId.addEventListener("change", function () {
-                        if (ownUserId.value === userId.value) {
-                            oldPasswordDiv.style.display = "block"; // Pokaż div starego hasła
-                        } else {
-                            oldPasswordDiv.style.display = "none"; // Ukryj div starego hasła
-                        }
-                    });
-
                     // Dostosowanie widoku w zależności od roli użytkownika
                     if (role === "admin") {
                         userSelect.style.display = "block"; // Admin widzi listę użytkowników
@@ -245,10 +259,7 @@
                         userSelect.style.display = "block"; // Super user nie widzi pełnej listy użytkowników
                         adminOptions.style.display = "block"; // Super user widzi przełącznik generowania hasła
                         oldPassword.parentElement.style.display = "block"; // Musi podać stare hasło
-                        if (ownUserId === userId) {
-                            oldPasswordDiv.style.display = "block"; // Pakazujemy diva starego hasła
-                        }
-                        // employeeSelect.style.display = "block"; // Super user widzi listę pracowników
+                        oldPasswordDiv.style.display = "block"; // Pakazujemy diva starego hasła
 
                         // Obsługa przełącznika generowania hasła
                         handlePasswordSwitch(generatePasswordSwitch, newPassword, repeatPassword);
@@ -269,6 +280,28 @@
                         // Domyślne zachowanie w przypadku nieznanej roli
                     }
                 }
+            });
+
+            document.addEventListener("DOMContentLoaded", function () {
+                const ownUserId = document.getElementById("own_user_id");
+                const userId = document.getElementById("user_id");
+                const oldPasswordDiv = document.getElementById("old_password_div");
+
+                // Sprawdzenie od razu po załadowaniu strony (pierwotny stan)
+                if (ownUserId.value === userId.value) {
+                    oldPasswordDiv.style.display = "block"; // Pokaż div starego hasła
+                } else {
+                    oldPasswordDiv.style.display = "none"; // Ukryj div starego hasła
+                }
+
+                // Obsługa zdarzenia zmiany w polu userId
+                userId.addEventListener("change", function () {
+                    if (ownUserId.value === userId.value) {
+                        oldPasswordDiv.style.display = "block"; // Pokaż div starego hasła
+                    } else {
+                        oldPasswordDiv.style.display = "none"; // Ukryj div starego hasła
+                    }
+                });
             });
 
             document.addEventListener('DOMContentLoaded', function () {
