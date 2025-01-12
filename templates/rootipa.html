@@ -35,7 +35,7 @@
                                                     {% if superuser_worker_select %}
                                                     <!-- Opcje wypełniane dynamicznie -->
                                                         {% for alloweduser in superuser_worker_select %}
-                                                            {% if alloweduser.role=="super_user" or alloweduser.role=="user" %}
+                                                            {% if alloweduser.role!="administrator" %}
                                                                 <option value="{{alloweduser.id}}">{{alloweduser.name}}</option>
                                                             {% endif %}
                                                         {% endfor %}
