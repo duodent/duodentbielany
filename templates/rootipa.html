@@ -204,17 +204,18 @@
                         } else {
                             oldPasswordDiv.style.display = "none"; // Ukryj div starego hasła
                         }
+                        
+                        // Obsługa zdarzenia zmiany w polu userId
+                        userId.addEventListener("change", function () {
+                            if (ownUserId.value === userId.value) {
+                                oldPasswordDiv.style.display = "block"; // Pokaż div starego hasła
+                            } else {
+                                oldPasswordDiv.style.display = "none"; // Ukryj div starego hasła
+                            }
+                        });
                     }
                 
 
-                    // Obsługa zdarzenia zmiany w polu userId
-                    userId.addEventListener("change", function () {
-                        if (ownUserId.value === userId.value) {
-                            oldPasswordDiv.style.display = "block"; // Pokaż div starego hasła
-                        } else {
-                            oldPasswordDiv.style.display = "none"; // Ukryj div starego hasła
-                        }
-                    });
 
                 // Funkcja inicjalizująca UI na podstawie roli
                 function initializeUI(role) {
