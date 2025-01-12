@@ -25,6 +25,87 @@
                                 data-type="img"
                                 src="{{own_user_data.avatar}}" alt="image">
                         </div>
+                        
+                        <h5>Kontakt</h5>
+                        <!-- Email -->
+                        <div class="d-flex">
+                            <i class="bi-envelope-fill icon-size"></i>
+                            <div 
+                                id="team-email-{{own_user_data.id}}-1-1"
+                                data-editable 
+                                data-type="text"
+                                class="border rounded border-secondary p-2 ms-2 mb-2" 
+                                style="min-width: 200px;">
+                                {{ own_user_data.email }}
+                            </div>
+                        </div>
+                    
+                
+                        <!-- Numer telefonu -->
+                        <div class="d-flex">
+                            <i class="bi-telephone-fill icon-size"></i>
+                            <div 
+                                id="team-phone-{{own_user_data.id}}-1-1"
+                                data-editable 
+                                data-type="text"
+                                class="border rounded border-secondary p-2 ms-2 mb-2" 
+                                style="min-width: 200px;">
+                                {{ own_user_data.contact.phone }}
+                            </div>
+                        </div>
+                        
+                        <!-- Facebook -->
+                        <div class="d-flex">
+                            <i class="bi-facebook icon-size"></i>
+                            <div 
+                                id="team-facebook-{{own_user_data.id}}-1-1"
+                                data-editable 
+                                data-type="text"
+                                class="border rounded border-secondary p-2 ms-2 mb-2" 
+                                style="min-width: 200px;">
+                                {{ own_user_data.contact.facebook }}
+                            </div>
+                        </div>
+                        
+                        <!-- Instagram -->
+                        <div class="d-flex">
+                            <i class="bi-instagram icon-size"></i>
+                            <div 
+                                id="team-instagram-{{own_user_data.id}}-1-1"
+                                data-editable 
+                                data-type="text"
+                                class="border rounded border-secondary p-2 ms-2 mb-2" 
+                                style="min-width: 200px;">
+                                {{ own_user_data.contact.instagram }}
+                            </div>
+                        </div>
+                        
+                        <!-- Twitter -->
+                        <div class="d-flex">
+                            <i class="bi-twitter icon-size"></i>
+                            <div 
+                                id="team-twitter-{{own_user_data.id}}-1-1"
+                                data-editable 
+                                data-type="text"
+                                class="border rounded border-secondary p-2 ms-2 mb-2" 
+                                style="min-width: 200px;">
+                                {{ own_user_data.contact.twitter }}
+                            </div>
+                        </div>
+                        
+                        <!-- LinkedIn -->
+                        <div class="d-flex">
+                            <i class="bi-linkedin icon-size"></i>
+                            <div 
+                                id="team-linkedin-{{own_user_data.id}}-1-1"
+                                data-editable 
+                                data-type="text"
+                                class="border rounded border-secondary p-2 ms-2 mb-2" 
+                                style="min-width: 200px;">
+                                {{ own_user_data.contact.linkedin }}
+                            </div>
+                        </div>
+
                     </div>
                     <div class="col-lg-8">
                         <div class="appointment-overview-box">

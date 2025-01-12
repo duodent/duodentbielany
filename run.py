@@ -2098,7 +2098,8 @@ def password_managment():
         superuser_worker_select.append(insertRekord)
 
 
-    own_user_data = {
+    own_user_data = session.get('user_data',{})
+    {
         'id': session.get('user_data',{}).get('id'),
         'name': session.get('user_data',{}).get('name'),
         'avatar': session.get('user_data',{}).get('avatar')
