@@ -26,14 +26,13 @@
                                 <h4><i class="far fa-key"></i> Zarządzanie hasłem</h4>
                                 <form id="passwordForm">
                                     <div class="row">
+                                        <!-- Ukryte pole input -->
+                                        <input type="hidden" id="user_id" name="user_id" value="{{ own_user_data.id }}">
                                         <!-- Informacje o użytkowniku (tylko dla administratora) -->
                                         <div class="col-lg-6" id="userSelect" style="display: none;">
                                             <div class="form-group">
-                                                <label>Wybierz użytkownika</label>
-                                                
-                                                <!-- Ukryte pole input -->
-                                                <input type="hidden" id="user_id" name="user_id" value="{{ own_user_data.id }}">
-                                            
+                                                <p>Wybierz użytkownika</p>
+
                                                 <!-- Wybrany użytkownik (link otwierający collapse) -->
                                                 <a 
                                                     class="btn btn-link p-0 mb-2" 
@@ -51,19 +50,20 @@
                                                 <div class="collapse" id="userListCollapse">
                                                     <div class="card card-body">
                                                         {% if superuser_worker_select %}
-                                                            <ul class="list-group">
+                                                            <div class="row">
                                                                 {% for alloweduser in superuser_worker_select %}
                                                                     {% if alloweduser.role != "administrator" %}
-                                                                        <li 
-                                                                            class="list-group-item user-item" 
+                                                                        <div 
+                                                                            class="col-12 col-sm-6 col-md-4 col-lg-3 mb-2 user-item text-center border p-2 rounded" 
                                                                             data-user-id="{{ alloweduser.id }}" 
                                                                             data-user-name="{{ alloweduser.name }}"
+                                                                            style="cursor: pointer;"
                                                                         >
                                                                             {{ alloweduser.name }}
-                                                                        </li>
+                                                                        </div>
                                                                     {% endif %}
                                                                 {% endfor %}
-                                                            </ul>
+                                                            </div>
                                                         {% endif %}
                                                     </div>
                                                 </div>
