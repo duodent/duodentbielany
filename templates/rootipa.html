@@ -186,37 +186,12 @@
                 fetch('/api/get-role')
                     .then(response => response.json())
                     .then(data => {
-                        const role = data.role;
-                        initializeUI(role); // Inicjalizacja UI na podstawie roli
+                        const role = data.role; // Role jest zdefiniowana tutaj
+                        initializeUI(role); // Przekaż rolę do funkcji inicjalizującej UI
                     })
                     .catch(error => {
                         console.error("Błąd podczas pobierania roli użytkownika:", error);
                     });
-
-                if (role === "super_user") {
-                    const ownUserId = document.getElementById("own_user_id");
-                    const userId = document.getElementById("user_id");
-                    const oldPasswordDiv = document.getElementById("old_password_div");
-
-                    // Sprawdzenie od razu po załadowaniu strony (pierwotny stan)
-                    if (ownUserId.value === userId.value) {
-                        oldPasswordDiv.style.display = "block";
-                    } else {
-                        oldPasswordDiv.style.display = "none";
-                    }
-
-                    // Obsługa zdarzenia zmiany w polu userId
-                    userId.addEventListener("change", function () {
-                        if (ownUserId.value === userId.value) {
-                            oldPasswordDiv.style.display = "block";
-                        } else {
-                            oldPasswordDiv.style.display = "none";
-                        }
-                    });
-                }
-
-                
-
 
                 // Funkcja inicjalizująca UI na podstawie roli
                 function initializeUI(role) {
@@ -228,61 +203,58 @@
                     const oldPasswordDiv = document.getElementById("old_password_div");
                     const newPassword = document.getElementById("new_password");
                     const repeatPassword = document.getElementById("repeat_password");
-                    // const employeeSelect = document.getElementById("employeeSelect");
-                    const generatePasswordSwitch = document.getElementById("generate_password");
                     const ownUserId = document.getElementById("own_user_id");
                     const userId = document.getElementById("user_id");
-                    
 
-                    // Funkcja obsługująca przełącznik generowania hasła
-                    function handlePasswordSwitch(switchElement, newPassword, repeatPassword) {
-                        switchElement.addEventListener("change", function () {
-                            const isGenerate = switchElement.checked;
-                            newPassword.disabled = isGenerate;
-                            repeatPassword.disabled = isGenerate;
-
-                            if (isGenerate) {
-                                newPassword.value = "";
-                                repeatPassword.value = "";
-                            }
-                        });
+                    // Funkcja obsługująca zmianę użytkownika
+                    function handleUserIdChange() {
+                        if (ownUserId.value === userId.value) {
+                            oldPasswordDiv.style.display = "block"; // Pokaż div starego hasła
+                        } else {
+                            oldPasswordDiv.style.display = "none"; // Ukryj div starego hasła
+                        }
                     }
 
+                    // Dodaj nasłuchiwacz zdarzenia `change`
+                    userId.addEventListener("change", handleUserIdChange);
+
+                    // Wywołaj sprawdzenie na start
+                    handleUserIdChange();
+
                     // Dostosowanie widoku w zależności od roli użytkownika
-                    if (role === "admin") {
-                        userSelect.style.display = "block"; // Admin widzi listę użytkowników
-                        adminOptions.style.display = "block"; // Admin widzi przełącznik generowania hasła
-                        oldPassword.parentElement.style.display = "none"; // Ukrywamy pole starego hasła
-                        oldPasswordDiv.style.display = "none"; // Ukrywamy diva starego hasła
+                    switch (role) {
+                        case "admin":
+                            userSelect.style.display = "block";
+                            adminOptions.style.display = "block";
+                            oldPassword.parentElement.style.display = "none";
+                            oldPasswordDiv.style.display = "none";
+                            break;
 
-                        // Obsługa przełącznika generowania hasła
-                        handlePasswordSwitch(generatePasswordSwitch, newPassword, repeatPassword);
-                    } else if (role === "super_user") {
-                        userSelect.style.display = "block"; // Super user nie widzi pełnej listy użytkowników
-                        adminOptions.style.display = "block"; // Super user widzi przełącznik generowania hasła
-                        oldPassword.parentElement.style.display = "block"; // Musi podać stare hasło
-                        oldPasswordDiv.style.display = "block"; // Pakazujemy diva starego hasła
+                        case "super_user":
+                            userSelect.style.display = "block";
+                            adminOptions.style.display = "block";
+                            oldPassword.parentElement.style.display = "block";
+                            oldPasswordDiv.style.display = "block";
+                            break;
 
-                        // Obsługa przełącznika generowania hasła
-                        handlePasswordSwitch(generatePasswordSwitch, newPassword, repeatPassword);
-                    } else if (role === "user") {
-                        userSelect.style.display = "none"; // Pracownik nie widzi listy użytkowników
-                        adminOptions.style.display = "none"; // Pracownik nie ma przełącznika
-                        oldPassword.parentElement.style.display = "none"; // Pracownik nie musi podawać starego hasła
-                        oldPasswordDiv.style.display = "none"; // Ukrywamy diva starego hasła
-                        newPassword.parentElement.style.display = "none"; // Ukrywamy nowe hasło
-                        repeatPassword.parentElement.style.display = "none"; // Ukrywamy powtórzenie hasła
+                        case "user":
+                            userSelect.style.display = "none";
+                            adminOptions.style.display = "none";
+                            oldPassword.parentElement.style.display = "none";
+                            oldPasswordDiv.style.display = "none";
+                            newPassword.parentElement.style.display = "none";
+                            repeatPassword.parentElement.style.display = "none";
+                            generateButton.style.display = "block";
+                            ownUserId.style.display = "block";
+                            submitButton.style.display = "none";
+                            break;
 
-                        generateButton.style.display = "block"; // Pracownik widzi przycisk generowania hasła
-                        ownUserId.style.display = "block"; // Pracownik widzi ustawia swoje userId
-                        
-                        submitButton.style.display = "none"; // Ukrywamy standardowy przycisk zmiany hasła
-                    } else {
-                        console.warn("Nieznana rola użytkownika:", role);
-                        // Domyślne zachowanie w przypadku nieznanej roli
+                        default:
+                            console.warn("Nieznana rola użytkownika:", role);
                     }
                 }
             });
+
 
             
 
