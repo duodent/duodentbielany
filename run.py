@@ -1800,7 +1800,8 @@ def manage_password():
     old_password = form_data.get('old_password', None)
     new_password = form_data.get('new_password', None)
     repeat_password = form_data.get('repeat_password', None)
-    generate_password = form_data.get('generate_password', 'false').lower() == 'true'
+    generate_password = form_data.get('generate_password', '').lower() in ['true', 'on']
+
     print(form_data)
     print(generate_password)
 
