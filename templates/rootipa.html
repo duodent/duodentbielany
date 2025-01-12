@@ -51,15 +51,92 @@
                                                     aria-expanded="false" 
                                                     aria-controls="userListCollapse"
                                                     id="selectedUserName"
-                                                >
+                                                    >
                                                     {{ own_user_data.name }}
                                                 </a>
-                                                <i class="bi-shield-lock-fill text-info ms-1 me-1"></i> 
-                                                <i class="bi-shield-check text-info me-1"></i> 
-                                                <i class="bi-person-fill text-secondary me-1"></i> 
+                                                <a 
+                                                    class="btn btn-link p-0 mb-2" 
+                                                    data-bs-toggle="collapse" 
+                                                    href="#permListCollapse" 
+                                                    role="button" 
+                                                    aria-expanded="false" 
+                                                    aria-controls="permListCollapse"
+                                                    id="selectedPermByName"
+                                                    >
+                                                    <i class="bi-shield-lock-fill text-info ms-1 me-1"></i> 
+                                                    <i class="bi-shield-check text-info me-1"></i> 
+                                                    <i class="bi-person-fill text-secondary me-1"></i> 
+                                                </a> 
 
                                             
                                                 
+                                            </div>
+                                            <div class="collapse" id="permListCollapse">
+                                                <!-- Opcje Administratora i Uprawnienia -->
+                                                {% if own_userperm.administrator %}
+                                                <i  
+                                                    title="Odbierz uprawnienia administratora" 
+                                                    id="team-administrator-{{own_user_data.id}}-1-1" 
+                                                    data-type="switch" 
+                                                    data-state="{{own_userperm.administrator}}"
+                                                    class="bi-shield-lock-fill icon-size text-info me-1"></i> 
+                                                    <span class="fw-light me-1 ms-1">
+                                                        Administrator <!-- Administrator -->
+                                                    </span>
+                                            {% else %}
+                                                <i 
+                                                    title="Przyznaj uprawnienia administratora" 
+                                                    id="team-administrator-{{own_user_data.id}}-1-1" 
+                                                    data-type="switch" 
+                                                    data-state="{{own_userperm.administrator}}"
+                                                    class="bi-shield-lock-fill icon-size text-secondary"></i> 
+                                                    <span class="fw-light me-1 ms-1">
+                                                        Administrator <!-- Administrator -->
+                                                    </span><!-- Administrator -->
+                                            {% endif %}
+                                            {% if own_userperm.super_user %}
+                                                <i 
+                                                    title="Odbierz uprawnienia super użytkownika" 
+                                                    id="team-super_user-{{own_user_data.id}}-1-1" 
+                                                    data-type="switch" 
+                                                    data-state="{{own_userperm.super_user}}"
+                                                    class="bi-shield-check icon-size text-info"></i>
+                                                    <span class="fw-light me-1 ms-1">
+                                                        Super User <!-- Super User -->
+                                                    </span> <!-- Super User -->
+                                            {% else %}
+                                                <i 
+                                                    title="Przyznaj uprawnienia super użytkownika" 
+                                                    id="team-super_user-{{own_user_data.id}}-1-1" 
+                                                    data-type="switch" 
+                                                    data-state="{{own_userperm.super_user}}"
+                                                    class="bi-shield-check icon-size text-secondary"></i>
+                                                    <span class="fw-light me-1 ms-1">
+                                                        Super User <!-- Super User -->
+                                                    </span> <!-- Super User -->
+                                                    
+                                            {% endif %}
+                                            {% if own_userperm.user %}
+                                                <i 
+                                                    title="Odbierz uprawnienia pracownika" 
+                                                    id="team-user-{{own_user_data.id}}-1-1" 
+                                                    data-type="switch" 
+                                                    data-state="{{own_userperm.user}}"
+                                                    class="bi-person-fill icon-size text-info"></i> <!-- User -->
+                                                    <span class="fw-light me-1 ms-1">
+                                                        Pracownik <!-- Pracownik -->
+                                                    </span> <!-- Pracownik -->
+                                            {% else %}
+                                                <i 
+                                                    title="Przyznaj uprawnienia pracownika" 
+                                                    id="team-user-{{own_user_data.id}}-1-1" 
+                                                    data-type="switch" 
+                                                    data-state="{{own_userperm.user}}"
+                                                    class="bi-person-fill icon-size text-secondary"></i> <!-- User -->
+                                                    <span class="fw-light me-1 ms-1">
+                                                        Pracownik <!-- Pracownik -->
+                                                    </span> <!-- Pracownik -->
+                                            {% endif %}
                                             </div>
                                         </div>
                                         <div class="col-lg-12">
