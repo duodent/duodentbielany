@@ -49,8 +49,15 @@
                                                     aria-controls="userListCollapse"
                                                     id="selectedUserName"
                                                     >
-                                                    {{ own_user_data.name }} ({{own_user_data.login}})
+                                                    {{ own_user_data.name }}
                                                 </a>
+                                                <i class="bi bi-person-bounding-box"></i>
+                                                <span  
+                                                    class="text-secondary p-0 mb-2" 
+                                                    id="selectedUserLogin"
+                                                    >
+                                                    {{own_user_data.login}}
+                                                </span>
                                             </div>
                                             {% for permission in superuser_worker_select %}
                                                 <div id="perm-show-{{permission.id}}" style="display: none;">
@@ -526,6 +533,7 @@
                 const hiddenInput_own = document.getElementById('own_user_id');
                 // Link wybranego użytkownika
                 const selectedUserName = document.getElementById('selectedUserName');
+                const selectedUserLogin = document.getElementById('selectedUserLogin');
                 // Elementy listy użytkowników
                 const userItems = document.querySelectorAll('.user-item');
                 // Pole starego hasła
@@ -542,7 +550,8 @@
                         hiddenInput.value = userId;
 
                         // Podmień tekst wybranego użytkownika
-                        selectedUserName.textContent = `${userName} (${userLogin})`;
+                        selectedUserName.textContent = userName;
+                        selectedUserLogin.textContent = userLogin;
 
                         // Zamknij collapse
                         const collapseInstance = bootstrap.Collapse.getInstance(document.getElementById('userListCollapse'));
