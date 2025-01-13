@@ -49,7 +49,7 @@
                                                     aria-controls="userListCollapse"
                                                     id="selectedUserName"
                                                     >
-                                                    {{ own_user_data.name }}
+                                                    {{ own_user_data.name }} ({{own_user_data.login}})
                                                 </a>
                                             </div>
                                             {% for permission in superuser_worker_select %}
@@ -165,6 +165,7 @@
                                                                 class="col-auto m-1 user-item text-center border p-1 rounded active" 
                                                                 data-user-id="{{ own_user_data.id }}" 
                                                                 data-user-name="{{ own_user_data.name }}"
+                                                                data-user-login="{{ own_user_data.login }}"
                                                                 style="cursor: pointer; min-width: max-content;  font-size: 13px;"
                                                             >
                                                             {{ own_user_data.name }}
@@ -179,6 +180,7 @@
                                                                         class="col-auto m-1 user-item text-center border p-1 rounded" 
                                                                         data-user-id="{{ alloweduser.id }}" 
                                                                         data-user-name="{{ alloweduser.name }}"
+                                                                        data-user-login="{{ alloweduser.login }}"
                                                                         style="cursor: pointer; min-width: max-content; font-size: 13px;"
                                                                     >
                                                                         {{ alloweduser.name }}
@@ -534,12 +536,13 @@
                         // Pobierz dane użytkownika z klikniętego elementu
                         const userId = this.getAttribute('data-user-id');
                         const userName = this.getAttribute('data-user-name');
+                        const userLogin = this.getAttribute('data-user-login');
 
                         // Podmień wartość ukrytego inputa
                         hiddenInput.value = userId;
 
                         // Podmień tekst wybranego użytkownika
-                        selectedUserName.textContent = userName;
+                        selectedUserName.textContent = `${userName} (${userLogin})`;
 
                         // Zamknij collapse
                         const collapseInstance = bootstrap.Collapse.getInstance(document.getElementById('userListCollapse'));

@@ -2110,7 +2110,8 @@ def password_managment():
                 'id': uData.get('id'),
                 'name': uData.get('name'),
                 'role': getuserrole(uData),
-                'roles': getUserRoles(uData)
+                'roles': getUserRoles(uData),
+                'login': uData.get('login')
             }
         superuser_worker_select.append(insertRekord)
 
@@ -2128,16 +2129,19 @@ def password_managment():
             'opis': un['opis'],
             'email': un['email'],
             'avatar': un['avatar'],
-            'contact': un['contact']
+            'contact': un['contact'],
+            'login': un['login']
+
         }
 
     own_user_data = users_data.get(session.get('username',''), {})
     own_userperm = permTempDict.get(session.get('username',''), {})
-    session.get('userperm',{})
     {
     'id': session.get('user_data',{}).get('id'),
     'name': session.get('user_data',{}).get('name'),
-    'avatar': session.get('user_data',{}).get('avatar')
+    'avatar': session.get('user_data',{}).get('avatar'),
+    'login': session.get('user_data',{}).get('avatar'),
+    
     }
 
 
