@@ -440,7 +440,7 @@
                         userSelect.style.display = "block"; // Admin widzi listę użytkowników
                         adminOptions.style.display = "block"; // Admin widzi przełącznik generowania hasła
                         adminPerm.style.display = "block"; // Admin widzi przełącznik generowania hasła
-                        oldPassword.parentElement.style.display = "none"; // Ukrywamy pole starego hasła
+                        // oldPassword.parentElement.style.display = "none"; // Ukrywamy pole starego hasła
                         oldPasswordDiv.style.display = "none"; // Ukrywamy diva starego hasła
 
                         // Obsługa przełącznika generowania hasła
@@ -448,7 +448,7 @@
                     } else if (role === "super_user") {
                         userSelect.style.display = "block"; // Super user nie widzi pełnej listy użytkowników
                         adminOptions.style.display = "block"; // Super user widzi przełącznik generowania hasła
-                        oldPassword.parentElement.style.display = "block"; // Musi podać stare hasło
+                        // oldPassword.parentElement.style.display = "block"; // Musi podać stare hasło
                         oldPasswordDiv.style.display = "block"; // Pakazujemy diva starego hasła
                         adminPerm.style.display = "none"; // Admin widzi przełącznik generowania hasła
 
@@ -457,7 +457,7 @@
                     } else if (role === "user") {
                         userSelect.style.display = "none"; // Pracownik nie widzi listy użytkowników
                         adminOptions.style.display = "none"; // Pracownik nie ma przełącznika
-                        oldPassword.parentElement.style.display = "none"; // Pracownik nie musi podawać starego hasła
+                        // oldPassword.parentElement.style.display = "none"; // Pracownik nie musi podawać starego hasła
                         oldPasswordDiv.style.display = "none"; // Ukrywamy diva starego hasła
                         newPassword.parentElement.style.display = "none"; // Ukrywamy nowe hasło
                         repeatPassword.parentElement.style.display = "none"; // Ukrywamy powtórzenie hasła
@@ -475,6 +475,76 @@
                 }
             });
             
+
+            // document.addEventListener('DOMContentLoaded', function () {
+            //     // Ukryty input
+            //     const hiddenInput = document.getElementById('user_id');
+            //     const hiddenInput_own = document.getElementById('own_user_id');
+            //     // Link wybranego użytkownika
+            //     const selectedUserName = document.getElementById('selectedUserName');
+            //     // Elementy listy użytkowników
+            //     const userItems = document.querySelectorAll('.user-item');
+            //     // Pole starego hasła
+            //     const oldPasswordDiv = document.getElementById('old_password_div');
+
+            //     userItems.forEach(item => {
+            //         item.addEventListener('click', function () {
+            //             // Pobierz dane użytkownika z klikniętego elementu
+            //             const userId = this.getAttribute('data-user-id');
+            //             const userName = this.getAttribute('data-user-name');
+
+            //             // Podmień wartość ukrytego inputa
+            //             hiddenInput.value = userId;
+
+            //             // Podmień tekst wybranego użytkownika
+            //             selectedUserName.textContent = userName;
+
+            //             // Zamknij collapse
+            //             const collapseInstance = bootstrap.Collapse.getInstance(document.getElementById('userListCollapse'));
+            //             collapseInstance.hide();
+
+            //             // Dodaj styl aktywnego użytkownika
+            //             userItems.forEach(user => user.classList.remove('active'));
+            //             this.classList.add('active');
+
+            //             // Jeśli rola to super_user, ukryj pole old_password, gdy hiddenInput.value != hiddenInput_own.value
+            //             if (role === 'super_user') {
+            //                 if (hiddenInput.value !== hiddenInput_own.value) {
+            //                     oldPasswordDiv.style.display = 'none'; // Ukryj pole
+            //                 } else {
+            //                     oldPasswordDiv.style.display = 'block'; // Pokaż pole
+            //                 }
+            //             }
+
+            //             // Jeśli rola to administrator, pokaż odpowiedni div
+            //             if (role === 'administrator') {
+            //                 // Znajdź odpowiednie divy po ID
+            //                 const divToShow_B = document.getElementById(`perm-show-${userId}`);
+            //                 const divToShow_C = document.getElementById(`perm-edit-${userId}`);
+
+            //                 if (divToShow_B || divToShow_C) {
+            //                     // Ukryj wszystkie inne divy z prefiksem "perm-edit-"
+            //                     document.querySelectorAll('[id^="perm-edit-"]').forEach(div => {
+            //                         div.style.display = 'none';
+            //                     });
+            //                     // Pokaż odpowiedni div perm-edit
+            //                     if (divToShow_C) {
+            //                         divToShow_C.style.display = 'block';
+            //                     }
+
+            //                     // Ukryj wszystkie inne divy z prefiksem "perm-show-"
+            //                     document.querySelectorAll('[id^="perm-show-"]').forEach(div => {
+            //                         div.style.display = 'none';
+            //                     });
+            //                     // Pokaż odpowiedni div perm-show
+            //                     if (divToShow_B) {
+            //                         divToShow_B.style.display = 'block';
+            //                     }
+            //                 }
+            //             }
+            //         });
+            //     });
+            // });
 
             document.addEventListener('DOMContentLoaded', function () {
                 // Ukryty input
@@ -507,13 +577,15 @@
                         userItems.forEach(user => user.classList.remove('active'));
                         this.classList.add('active');
 
-                        // Jeśli rola to super_user, ukryj pole old_password, gdy hiddenInput.value != hiddenInput_own.value
+                        // Ukrywanie/wyświetlanie oldPasswordDiv dla super_user i administrator
                         if (role === 'super_user') {
                             if (hiddenInput.value !== hiddenInput_own.value) {
-                                oldPasswordDiv.style.display = 'none'; // Ukryj pole
+                                oldPasswordDiv.style.display = 'none'; // Ukryj pole dla innego użytkownika
                             } else {
-                                oldPasswordDiv.style.display = 'block'; // Pokaż pole
+                                oldPasswordDiv.style.display = 'block'; // Pokaż pole dla siebie
                             }
+                        } else if (role === 'administrator') {
+                            oldPasswordDiv.style.display = 'none'; // Administrator nigdy nie widzi tego pola
                         }
 
                         // Jeśli rola to administrator, pokaż odpowiedni div
@@ -545,6 +617,7 @@
                     });
                 });
             });
+
 
 
 
