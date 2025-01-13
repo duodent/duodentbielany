@@ -161,6 +161,26 @@
                                                 </div>
                                             {% endfor %}
                                         </div>
+                                        <div class="col-lg-12" id="workerName" style="display: none;">
+                                            <div>
+                                                <p style="font-size: 10px; margin-bottom: 1px !important; color: #686a6b;">Imię i nazwisko</p>
+
+                                                <!-- Wybrany użytkownik (link otwierający collapse) -->
+                                                <a 
+                                                    class="p-0 mb-2" 
+                                                    style="font-size: 24px;"
+                                                    >
+                                                    {{ own_user_data.name }}
+                                                </a>
+                                                <i class="bi bi-person-bounding-box ms-1 me-1 text-info" style="font-size: 10px;"></i>
+                                                <span  
+                                                    class="text-secondary p-0 mb-2" 
+                                                    style="font-size: 13px;"
+                                                    >
+                                                    {{own_user_data.login}}
+                                                </span>
+                                            </div>
+                                        </div>
                                         <div class="col-lg-12">
                                             <!-- Lista użytkowników w collapse -->
                                             <div class="collapse" id="userListCollapse">
@@ -460,6 +480,7 @@
                 // Funkcja inicjalizująca UI na podstawie roli
                 function initializeUI(role) {
                     const userSelect = document.getElementById("userSelect");
+                    const workerName = document.getElementById("workerName");
                     const adminOptions = document.getElementById("adminOptions");
                     const submitButton = document.getElementById("submitButton");
                     const generateButton = document.getElementById("generateButton");
@@ -491,6 +512,7 @@
                     // Dostosowanie widoku w zależności od roli użytkownika
                     if (role === "administrator") {
                         userSelect.style.display = "block"; // Admin widzi listę użytkowników
+                        workerName.style.display = "none"; // Admin widzi listę użytkowników
                         adminOptions.style.display = "block"; // Admin widzi przełącznik generowania hasła
                         adminPerm.style.display = "block"; // Admin widzi przełącznik generowania hasła
                         // oldPassword.parentElement.style.display = "none"; // Ukrywamy pole starego hasła
@@ -501,6 +523,7 @@
                         handlePasswordSwitch(generatePasswordSwitch, newPassword, repeatPassword);
                     } else if (role === "super_user") {
                         userSelect.style.display = "block"; // Super user nie widzi pełnej listy użytkowników
+                        workerName.style.display = "none"; // Admin widzi listę użytkowników
                         adminOptions.style.display = "block"; // Super user widzi przełącznik generowania hasła
                         // oldPassword.parentElement.style.display = "block"; // Musi podać stare hasło
                         oldPasswordDiv.style.display = "block"; // Pakazujemy diva starego hasła
@@ -510,6 +533,7 @@
                         handlePasswordSwitch(generatePasswordSwitch, newPassword, repeatPassword);
                     } else if (role === "user") {
                         userSelect.style.display = "none"; // Pracownik nie widzi listy użytkowników
+                        workerName.style.display = "block"; // Admin widzi listę użytkowników
                         adminOptions.style.display = "none"; // Pracownik nie ma przełącznika
                         // oldPassword.parentElement.style.display = "none"; // Pracownik nie musi podawać starego hasła
                         oldPasswordDiv.style.display = "none"; // Ukrywamy diva starego hasła
