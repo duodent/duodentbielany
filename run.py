@@ -282,6 +282,22 @@ def getuserrole(useroneitem_data_from_generator_userDataDB):
         return 'user'
     else:
         return 'guest'
+    
+def getUserRoles(useroneitem_data_from_generator_userDataDB):
+    # ======================== dane (admins) ============================
+    # Funkcja pomocnicza określająca najwyższy poziom uprawnień użytkownika.
+    # Pobiera dane użytkownika z bazy danych (admins) i zwraca jeden z poziomów:
+    # 'administrator', 'super_user', 'user', lub 'guest' (domyślnie).
+    # Aby funkcja działała poprawnie, należy jako argument podać element z listy 
+    # zwróconej przez generator_userDataDB(). Każdy element powinien być 
+    # usystematyzowany zgodnie ze standardem aplikacji – zawierać odpowiednie 
+    # klucze ('administrator', 'super_user', 'user') z wartościami typu int (0 lub 1).
+    # ===================================================================
+    return {
+        'administrator': useroneitem_data_from_generator_userDataDB.get('uprawnienia',{}).get('administrator', 0),
+        'super_user': useroneitem_data_from_generator_userDataDB.get('uprawnienia',{}).get('super_user', 0),
+        'user': useroneitem_data_from_generator_userDataDB.get('uprawnienia',{}).get('user', 0)
+    }
 
 
 
@@ -2094,6 +2110,7 @@ def password_managment():
                 'id': uData.get('id'),
                 'name': uData.get('name'),
                 'role': getuserrole(uData),
+                'roles': getUserRoles(uData)
             }
         superuser_worker_select.append(insertRekord)
 
