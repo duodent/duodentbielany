@@ -260,7 +260,7 @@
                                         <button type="submit" id="generateButton" class="default-btn" style="display: none;">Wygeneruj Hasło</button>
                                     </div>
                                 
-                                    <div id="responseMessage" style="margin-top: 20px;"></div>
+                                    <div id="responseMessage" style="margin-top: 20px;" class="alert alert-success" role="alert"></div>
                                 </form>
                                 
                                 <div class="row mt-3">
@@ -474,77 +474,6 @@
                 }
             });
             
-
-            // document.addEventListener('DOMContentLoaded', function () {
-            //     // Ukryty input
-            //     const hiddenInput = document.getElementById('user_id');
-            //     const hiddenInput_own = document.getElementById('own_user_id');
-            //     // Link wybranego użytkownika
-            //     const selectedUserName = document.getElementById('selectedUserName');
-            //     // Elementy listy użytkowników
-            //     const userItems = document.querySelectorAll('.user-item');
-            //     // Pole starego hasła
-            //     const oldPasswordDiv = document.getElementById('old_password_div');
-
-            //     userItems.forEach(item => {
-            //         item.addEventListener('click', function () {
-            //             // Pobierz dane użytkownika z klikniętego elementu
-            //             const userId = this.getAttribute('data-user-id');
-            //             const userName = this.getAttribute('data-user-name');
-
-            //             // Podmień wartość ukrytego inputa
-            //             hiddenInput.value = userId;
-
-            //             // Podmień tekst wybranego użytkownika
-            //             selectedUserName.textContent = userName;
-
-            //             // Zamknij collapse
-            //             const collapseInstance = bootstrap.Collapse.getInstance(document.getElementById('userListCollapse'));
-            //             collapseInstance.hide();
-
-            //             // Dodaj styl aktywnego użytkownika
-            //             userItems.forEach(user => user.classList.remove('active'));
-            //             this.classList.add('active');
-
-            //             // Jeśli rola to super_user, ukryj pole old_password, gdy hiddenInput.value != hiddenInput_own.value
-            //             if (role === 'super_user') {
-            //                 if (hiddenInput.value !== hiddenInput_own.value) {
-            //                     oldPasswordDiv.style.display = 'none'; // Ukryj pole
-            //                 } else {
-            //                     oldPasswordDiv.style.display = 'block'; // Pokaż pole
-            //                 }
-            //             }
-
-            //             // Jeśli rola to administrator, pokaż odpowiedni div
-            //             if (role === 'administrator') {
-            //                 // Znajdź odpowiednie divy po ID
-            //                 const divToShow_B = document.getElementById(`perm-show-${userId}`);
-            //                 const divToShow_C = document.getElementById(`perm-edit-${userId}`);
-
-            //                 if (divToShow_B || divToShow_C) {
-            //                     // Ukryj wszystkie inne divy z prefiksem "perm-edit-"
-            //                     document.querySelectorAll('[id^="perm-edit-"]').forEach(div => {
-            //                         div.style.display = 'none';
-            //                     });
-            //                     // Pokaż odpowiedni div perm-edit
-            //                     if (divToShow_C) {
-            //                         divToShow_C.style.display = 'block';
-            //                     }
-
-            //                     // Ukryj wszystkie inne divy z prefiksem "perm-show-"
-            //                     document.querySelectorAll('[id^="perm-show-"]').forEach(div => {
-            //                         div.style.display = 'none';
-            //                     });
-            //                     // Pokaż odpowiedni div perm-show
-            //                     if (divToShow_B) {
-            //                         divToShow_B.style.display = 'block';
-            //                     }
-            //                 }
-            //             }
-            //         });
-            //     });
-            // });
-
             document.addEventListener('DOMContentLoaded', function () {
                 // Ukryty input
                 const hiddenInput = document.getElementById('user_id');
@@ -619,8 +548,6 @@
 
 
 
-
-
             // Przykładowa obsługa wysyłania formularza
             $("#passwordForm").on("submit", function (e) {
                 e.preventDefault();
@@ -633,13 +560,24 @@
                     data: formData,
                     success: function (response) {
                         // Wyświetlenie komunikatu o sukcesie
-                        $("#responseMessage").text(response.message);
+                        const responseMessage = $("#responseMessage");
+                        responseMessage
+                            .text(response.message) // Ustawienie treści wiadomości
+                            .removeClass("alert-danger") // Usuń klasę błędu (jeśli istnieje)
+                            .addClass("alert-success") // Dodaj klasę sukcesu
+                            .show(); // Upewnij się, że element jest widoczny
                     },
                     error: function (xhr) {
                         // Wyświetlenie komunikatu o błędzie
                         const response = JSON.parse(xhr.responseText);
-                        $("#responseMessage").text(response.message);
+                        const responseMessage = $("#responseMessage");
+                        responseMessage
+                            .text(response.message) // Ustawienie treści wiadomości
+                            .removeClass("alert-success") // Usuń klasę sukcesu (jeśli istnieje)
+                            .addClass("alert-danger") // Dodaj klasę błędu
+                            .show(); // Upewnij się, że element jest widoczny
                     },
+
                 });
             });
         </script>
