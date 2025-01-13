@@ -260,7 +260,7 @@
                                         <button type="submit" id="generateButton" class="default-btn" style="display: none;">Wygeneruj Hasło</button>
                                     </div>
                                 
-                                    <div id="responseMessage" style="margin-top: 20px;" class="alert alert-success" role="alert"></div>
+                                    <div id="responseMessage" style="display: none; margin-top: 20px;" class="alert" role="alert"></div>
                                 </form>
                                 
                                 <div class="row mt-3">
@@ -566,6 +566,11 @@
                             .removeClass("alert-danger") // Usuń klasę błędu (jeśli istnieje)
                             .addClass("alert-success") // Dodaj klasę sukcesu
                             .show(); // Upewnij się, że element jest widoczny
+
+                        // Ukrycie komunikatu po 10 sekundach
+                        setTimeout(() => {
+                            responseMessage.fadeOut(); // Ukryj element z animacją
+                        }, 10000); // 10 sekund
                     },
                     error: function (xhr) {
                         // Wyświetlenie komunikatu o błędzie
@@ -576,6 +581,11 @@
                             .removeClass("alert-success") // Usuń klasę sukcesu (jeśli istnieje)
                             .addClass("alert-danger") // Dodaj klasę błędu
                             .show(); // Upewnij się, że element jest widoczny
+                            
+                        // Ukrycie komunikatu po 10 sekundach
+                        setTimeout(() => {
+                            responseMessage.fadeOut(); // Ukryj element z animacją
+                        }, 10000); // 10 sekund
                     },
 
                 });
