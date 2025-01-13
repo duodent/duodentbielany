@@ -415,11 +415,11 @@
                     const oldPasswordDiv = document.getElementById("old_password_div");
                     const newPassword = document.getElementById("new_password");
                     const repeatPassword = document.getElementById("repeat_password");
-                    // const employeeSelect = document.getElementById("employeeSelect");
                     const generatePasswordSwitch = document.getElementById("generate_password");
                     const ownUserId = document.getElementById("own_user_id");
                     const userId = document.getElementById("user_id");
                     const adminPerm = document.getElementById(`perm-show-${ownUserId.value}`);
+                    const adminPerm_C = document.getElementById(`perm-edit-${ownUserId.value}`);
                     
 
                     // Funkcja obsługująca przełącznik generowania hasła
@@ -443,6 +443,7 @@
                         adminPerm.style.display = "block"; // Admin widzi przełącznik generowania hasła
                         // oldPassword.parentElement.style.display = "none"; // Ukrywamy pole starego hasła
                         oldPasswordDiv.style.display = "none"; // Ukrywamy diva starego hasła
+                        adminPerm_C.style.display = "block";
 
                         // Obsługa przełącznika generowania hasła
                         handlePasswordSwitch(generatePasswordSwitch, newPassword, repeatPassword);
