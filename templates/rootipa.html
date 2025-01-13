@@ -64,8 +64,9 @@
                                                         role="button" 
                                                         aria-expanded="false" 
                                                         aria-controls="permListCollapse-{{permission.id}}"
-                                                        id="adminPerm-{{permission.id}}"
+                                                        
                                                         >
+                                                        <!-- id="adminPerm" -->
                                                         {% if permission.roles.administrator %}
                                                             <i class="bi-shield-lock-fill text-info ms-1 me-1"></i> 
                                                         {% else %}
@@ -418,7 +419,7 @@
                     const generatePasswordSwitch = document.getElementById("generate_password");
                     const ownUserId = document.getElementById("own_user_id");
                     const userId = document.getElementById("user_id");
-                    const adminPerm = document.getElementById(`perm-show-${userId.value}`);
+                    // const adminPerm = document.getElementById(`perm-show-${userId.value}`);
                     
 
                     // Funkcja obsługująca przełącznik generowania hasła
@@ -439,7 +440,7 @@
                     if (role === "administrator") {
                         userSelect.style.display = "block"; // Admin widzi listę użytkowników
                         adminOptions.style.display = "block"; // Admin widzi przełącznik generowania hasła
-                        adminPerm.style.display = "block"; // Admin widzi przełącznik generowania hasła
+                        // adminPerm.style.display = "block"; // Admin widzi przełącznik generowania hasła
                         // oldPassword.parentElement.style.display = "none"; // Ukrywamy pole starego hasła
                         oldPasswordDiv.style.display = "none"; // Ukrywamy diva starego hasła
 
@@ -450,7 +451,7 @@
                         adminOptions.style.display = "block"; // Super user widzi przełącznik generowania hasła
                         // oldPassword.parentElement.style.display = "block"; // Musi podać stare hasło
                         oldPasswordDiv.style.display = "block"; // Pakazujemy diva starego hasła
-                        adminPerm.style.display = "none"; // Admin widzi przełącznik generowania hasła
+                        // adminPerm.style.display = "none"; // Admin widzi przełącznik generowania hasła
 
                         // Obsługa przełącznika generowania hasła
                         handlePasswordSwitch(generatePasswordSwitch, newPassword, repeatPassword);
@@ -461,7 +462,7 @@
                         oldPasswordDiv.style.display = "none"; // Ukrywamy diva starego hasła
                         newPassword.parentElement.style.display = "none"; // Ukrywamy nowe hasło
                         repeatPassword.parentElement.style.display = "none"; // Ukrywamy powtórzenie hasła
-                        adminPerm.style.display = "none"; // Admin widzi przełącznik generowania hasła
+                        // adminPerm.style.display = "none"; // Admin widzi przełącznik generowania hasła
 
 
                         generateButton.style.display = "block"; // Pracownik widzi przycisk generowania hasła
