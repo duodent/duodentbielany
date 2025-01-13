@@ -2115,8 +2115,25 @@ def password_managment():
         superuser_worker_select.append(insertRekord)
 
 
-    own_user_data = session.get('user_data',{})
-    own_userperm = session.get('userperm',{})
+    # Przygotowanie struktur do weryfikacji
+    users_data = {}
+    permTempDict = {}
+
+    for un in userDataDB:        
+        permTempDict[un['login']] = un['uprawnienia']
+        users_data[un['login']] = {
+            'id': un['id'],
+            'name': un['name'],
+            'stanowisko': un['stanowisko'],
+            'opis': un['opis'],
+            'email': un['email'],
+            'avatar': un['avatar'],
+            'contact': un['contact']
+        }
+
+    own_user_data = users_data.get(session.get('username',''), {})
+    own_userperm = permTempDict.get(session.get('username',''), {})
+    session.get('userperm',{})
     {
     'id': session.get('user_data',{}).get('id'),
     'name': session.get('user_data',{}).get('name'),
