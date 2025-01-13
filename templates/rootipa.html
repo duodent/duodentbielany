@@ -419,7 +419,7 @@
                     const generatePasswordSwitch = document.getElementById("generate_password");
                     const ownUserId = document.getElementById("own_user_id");
                     const userId = document.getElementById("user_id");
-                    // const adminPerm = document.getElementById(`perm-show-${userId.value}`);
+                    const adminPerm = document.getElementById(`perm-show-${ownUserId.value}`);
                     
 
                     // Funkcja obsługująca przełącznik generowania hasła
@@ -440,7 +440,7 @@
                     if (role === "administrator") {
                         userSelect.style.display = "block"; // Admin widzi listę użytkowników
                         adminOptions.style.display = "block"; // Admin widzi przełącznik generowania hasła
-                        // adminPerm.style.display = "block"; // Admin widzi przełącznik generowania hasła
+                        adminPerm.style.display = "block"; // Admin widzi przełącznik generowania hasła
                         // oldPassword.parentElement.style.display = "none"; // Ukrywamy pole starego hasła
                         oldPasswordDiv.style.display = "none"; // Ukrywamy diva starego hasła
 
