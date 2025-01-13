@@ -162,11 +162,11 @@
                                                     <div class="row">
                                                         <!-- Wyświetlanie aktualnie zalogowanego użytkownika -->
                                                             <div 
-                                                            class="col-auto m-2 user-item text-center border p-2 rounded active" 
-                                                            data-user-id="{{ own_user_data.id }}" 
-                                                            data-user-name="{{ own_user_data.name }}"
-                                                            style="cursor: pointer; min-width: max-content;"
-                                                        >
+                                                                class="col-auto m-1 user-item text-center border p-1 rounded active" 
+                                                                data-user-id="{{ own_user_data.id }}" 
+                                                                data-user-name="{{ own_user_data.name }}"
+                                                                style="cursor: pointer; min-width: max-content;  font-size: 13px;"
+                                                            >
                                                             {{ own_user_data.name }}
                                                         </div>
                                                         {% for alloweduser in superuser_worker_select %}
@@ -176,10 +176,10 @@
                                                             %}
                                                                 {% if own_user_data.id != alloweduser.id %}
                                                                     <div 
-                                                                        class="col-auto m-2 user-item text-center border p-2 rounded" 
+                                                                        class="col-auto m-1 user-item text-center border p-1 rounded" 
                                                                         data-user-id="{{ alloweduser.id }}" 
                                                                         data-user-name="{{ alloweduser.name }}"
-                                                                        style="cursor: pointer; min-width: max-content;"
+                                                                        style="cursor: pointer; min-width: max-content; font-size: 13px;"
                                                                     >
                                                                         {{ alloweduser.name }}
                                                                     </div>
@@ -195,7 +195,7 @@
                                                 <!-- Stare hasło (wymagane dla super usera zmienia ręcznie) -->
                                                 <div class="col-lg-6" id="old_password_div">
                                                     <div class="form-group">
-                                                        <label>Stare Hasło</label>
+                                                        <!-- <label>Stare Hasło</label> -->
                                                         <input type="password" class="form-control" id="old_password" name="old_password" placeholder="Stare Hasło">
                                                     </div>
                                                 </div>
@@ -203,14 +203,14 @@
                                                 <!-- Nowe hasło (opcjonalne, jeśli admin zmienia ręcznie) -->
                                                 <div class="col-lg-6">
                                                     <div class="form-group">
-                                                        <label>Nowe Hasło</label>
+                                                        <!-- <label>Nowe Hasło</label> -->
                                                         <input type="password" class="form-control" id="new_password" name="new_password" placeholder="Nowe Hasło">
                                                     </div>
                                                 </div>
                                         
                                                 <div class="col-lg-6">
                                                     <div class="form-group">
-                                                        <label>Powtórz Nowe Hasło</label>
+                                                        <!-- <label>Powtórz Nowe Hasło</label> -->
                                                         <input type="password" class="form-control" id="repeat_password" name="repeat_password" placeholder="Powtórz Nowe Hasło">
                                                     </div>
                                                 </div>
