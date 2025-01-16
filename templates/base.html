@@ -612,7 +612,7 @@
                                             // Po zakończeniu animacji pisania przekierowuje na route
                                             setTimeout(() => {
                                                 window.location.href = route;
-                                            }, 500); // 1 sekunda opóźnienia po zakończeniu pisania
+                                            }, 250); // 1 sekunda opóźnienia po zakończeniu pisania
                                         }
                                     );
                                 } else {
@@ -660,7 +660,7 @@
                     progressBar.style.width = progress + '%';
                     progressText.textContent = progress + '%';
 
-                    setTimeout(type, 50); // Prędkość pisania (50 ms na literę)
+                    setTimeout(type, 25); // Prędkość pisania (50 ms na literę)
                 } else {
                     // Po zakończeniu pisania ukryj progress bar
                     progressBar.style.width = '100%';
