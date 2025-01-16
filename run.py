@@ -2433,6 +2433,9 @@ def search_treatment():
         best_match = max(stats, key=stats.get)
         best_score = f"/zabieg-stomatologiczny/{stats[best_match]}"
 
+        from pprint import pprint
+        pprint(stats)
+
         # Jeśli brak trafień, zwróć domyślny route
         if best_score == 0:
             return jsonify("/zabiegi-stomatologiczne-kompleksowa-oferta"), 200
