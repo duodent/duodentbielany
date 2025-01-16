@@ -608,7 +608,7 @@
                                             // Po zakończeniu animacji pisania przekierowuje na route
                                             setTimeout(() => {
                                                 window.location.href = route;
-                                            }, 1000); // 1 sekunda opóźnienia po zakończeniu pisania
+                                            }, 500); // 1 sekunda opóźnienia po zakończeniu pisania
                                         }
                                     );
                                 } else {
@@ -644,7 +644,7 @@
                 if (i < text.length) {
                     resultsContainer.textContent += text.charAt(i);
                     i++;
-                    setTimeout(type, 50); // Prędkość pisania (50 ms na literę)
+                    setTimeout(type, 25); // Prędkość pisania (50 ms na literę)
                 } else {
                     // Po zakończeniu pisania uruchom callback (np. przekierowanie)
                     if (callback) callback();
