@@ -2431,7 +2431,8 @@ def search_treatment():
 
         # Wybór najlepszego wyniku
         best_match = max(stats, key=stats.get)
-        best_score = f"/zabieg-stomatologiczny/{stats[best_match]}"
+        best_score = stats[best_match]
+        best_match_exp = f"/zabieg-stomatologiczny/{best_match}"
 
         from pprint import pprint
         pprint(stats)
@@ -2440,7 +2441,7 @@ def search_treatment():
         if best_score == 0:
             return jsonify("/zabiegi-stomatologiczne-kompleksowa-oferta"), 200
 
-        return jsonify(best_match), 200
+        return jsonify(best_match_exp), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
