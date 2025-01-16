@@ -426,9 +426,6 @@
     display: flex; /* Aby użyć align-items */
     align-items: center;
     justify-content: center; /* Wyśrodkowanie poziome */
-    background-color: #f9f9f9;
-    border: 1px solid #ccc;
-    border-radius: 5px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Delikatny cień */
     text-align: center; /* Wyśrodkowanie tekstu w środku */
     overflow: hidden; /* Ukrycie nadmiarowego tekstu, jeśli za długi */

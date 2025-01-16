@@ -2431,7 +2431,7 @@ def search_treatment():
 
         # Wybór najlepszego wyniku
         best_match = max(stats, key=stats.get)
-        best_score = stats[best_match]
+        best_score = f"/zabieg-stomatologiczny/{stats[best_match]}"
 
         # Jeśli brak trafień, zwróć domyślny route
         if best_score == 0:
