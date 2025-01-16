@@ -640,7 +640,13 @@
             const resultsContainer = document.getElementById('results');
             const progressBar = document.getElementById('progress-bar');
             const progressText = document.getElementById('progress-text');
-            
+
+            // Sprawdzenie istnienia elementów
+            if (!resultsContainer || !progressBar || !progressText) {
+                console.error('Brak wymaganych elementów dla efektu pisania.');
+                return;
+            }
+
             resultsContainer.classList.add('resul-info-search'); // Dodanie klasy stylu
             resultsContainer.innerHTML = ''; // Czyszczenie poprzednich wyników
             progressBar.style.width = '0%'; // Resetowanie paska
@@ -648,6 +654,7 @@
 
             let i = 0;
             const totalLength = text.length;
+            let progress = 0;
 
             // Funkcja animująca pisanie i pasek postępu
             function type() {
@@ -655,14 +662,17 @@
                     resultsContainer.textContent += text.charAt(i);
                     i++;
 
-                    // Aktualizacja paska postępu i procentów
-                    const progress = Math.round((i / totalLength) * 100);
+                    // Losowe zwiększanie paska postępu
+                    const increment = Math.floor(Math.random() * 10) + 1; // Losowy przyrost 1–10%
+                    progress = Math.min(progress + increment, 100); // Nie przekraczaj 100%
                     progressBar.style.width = progress + '%';
                     progressText.textContent = progress + '%';
 
-                    setTimeout(type, 25); // Prędkość pisania (50 ms na literę)
+                    // Losowe opóźnienie (efekt "zacinania się internetu")
+                    const delay = Math.floor(Math.random() * 200) + 50; // Losowe opóźnienie 50–250ms
+                    setTimeout(type, delay);
                 } else {
-                    // Po zakończeniu pisania ukryj progress bar
+                    // Po zakończeniu pisania ustaw 100% na pasku
                     progressBar.style.width = '100%';
                     progressText.textContent = '100%';
 
@@ -676,6 +686,7 @@
 
             type(); // Rozpocznij animację pisania
         }
+
 
 
     </script>
