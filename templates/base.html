@@ -634,20 +634,39 @@
 
         function displayTypingEffect(text, callback) {
             const resultsContainer = document.getElementById('results');
+            const progressBar = document.getElementById('progress-bar');
+            const progressText = document.getElementById('progress-text');
+            
             resultsContainer.classList.add('resul-info-search'); // Dodanie klasy stylu
             resultsContainer.innerHTML = ''; // Czyszczenie poprzednich wyników
+            progressBar.style.width = '0%'; // Resetowanie paska
+            progressText.textContent = '0%'; // Resetowanie procentów
 
             let i = 0;
+            const totalLength = text.length;
 
-            // Funkcja animująca pisanie
+            // Funkcja animująca pisanie i pasek postępu
             function type() {
-                if (i < text.length) {
+                if (i < totalLength) {
                     resultsContainer.textContent += text.charAt(i);
                     i++;
-                    setTimeout(type, 25); // Prędkość pisania (50 ms na literę)
+
+                    // Aktualizacja paska postępu i procentów
+                    const progress = Math.round((i / totalLength) * 100);
+                    progressBar.style.width = progress + '%';
+                    progressText.textContent = progress + '%';
+
+                    setTimeout(type, 50); // Prędkość pisania (50 ms na literę)
                 } else {
-                    // Po zakończeniu pisania uruchom callback (np. przekierowanie)
-                    if (callback) callback();
+                    // Po zakończeniu pisania ukryj progress bar
+                    progressBar.style.width = '100%';
+                    progressText.textContent = '100%';
+
+                    setTimeout(() => {
+                        progressBar.style.width = '0%'; // Ukrycie paska
+                        progressText.textContent = ''; // Ukrycie procentów
+                        if (callback) callback();
+                    }, 500); // Opcjonalne opóźnienie przed zakończeniem
                 }
             }
 
