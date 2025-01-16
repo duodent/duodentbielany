@@ -341,7 +341,7 @@
                                         <a href="/admin/rejestracja" class="nav-link">Rejestracja Pracownika</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a href="/admin/password-managment" class="nav-link">Zarządzanie Hasłem</a>
+                                        <a href="/admin/password-managment" class="nav-link">Zarządzanie Bezpieczeństwem</a>
                                     </li>
                                     <li class="nav-item">
                                         <a href="/admin/team-stomatologia" class="nav-link">Zarządzanie pracownikami</a>
@@ -394,9 +394,10 @@
                 </div>
                 <div class="modal-body">
                     <form class="modal-search-form">
-                        <input type="search" class="search-field" placeholder="Jak możemy pomóc?">
+                        <input type="search" class="search-field" placeholder="Jak możemy pomóc?" name="query">
                         <button type="submit"><i class="bx bx-search"></i></button>
                     </form>
+                    <div id="results"></div>
                 </div>
             </div>
         </div>
@@ -583,6 +584,44 @@
                 return new bootstrap.Tooltip(tooltipTriggerEl);
             });
         });
+    </script>
+    <script>
+        document.querySelector('.modal-search-form').addEventListener('submit', function (event) {
+            event.preventDefault(); // Zapobiega przeładowaniu strony
+    
+            const searchField = document.querySelector('.search-field');
+            const query = searchField.value.trim();
+    
+            if (query) {
+                const xhr = new XMLHttpRequest();
+                xhr.open('POST', '/api/search-treatment', true);
+                xhr.setRequestHeader('Content-Type', 'application/json');
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState === 4 && xhr.status === 200) {
+                        const results = JSON.parse(xhr.responseText);
+                        displayResults(results);
+                    } else if (xhr.readyState === 4) {
+                        console.error('Błąd wyszukiwania:', xhr.status);
+                    }
+                };
+                xhr.send(JSON.stringify({ query }));
+            }
+        });
+    
+        function displayResults(results) {
+            const resultsContainer = document.getElementById('results');
+            resultsContainer.innerHTML = ''; // Czyszczenie poprzednich wyników
+    
+            if (results && results.length > 0) {
+                results.forEach(item => {
+                    const resultItem = document.createElement('div');
+                    resultItem.textContent = item.name || 'Nieznany wynik';
+                    resultsContainer.appendChild(resultItem);
+                });
+            } else {
+                resultsContainer.textContent = 'Brak wyników.';
+            }
+        }
     </script>
     {% endblock %}
     {% block bottom_scripts %}{% endblock %}

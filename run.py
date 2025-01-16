@@ -2120,7 +2120,7 @@ def password_managment():
     users_data = {}
     permTempDict = {}
 
-    for un in userDataDB:        
+    for un in userDataDB:
         permTempDict[un['login']] = un['uprawnienia']
         users_data[un['login']] = {
             'id': un['id'],
@@ -2400,6 +2400,46 @@ def get_role_api():
         return jsonify({"error": str(e)}), 500  # Błąd serwera
 
 
+@app.route('/api/search-treatment', methods=['POST'])
+def search_treatment():
+    try:
+        # Pobranie danych z żądania
+        data = request.get_json()
+
+        # Walidacja danych wejściowych
+        if not data or 'query' not in data:
+            return jsonify({"error": "Brak zapytania w żądaniu"}), 400
+
+        query = data['query'].strip().lower()
+        if not query:
+            return jsonify({"error": "Zapytanie nie może być puste"}), 400
+
+        # Pobranie danych do przeszukania
+        treatments_data = treatments_db_all_by_route_dict(False)
+        if not treatments_data:
+            return jsonify({"error": "Baza danych jest pusta"}), 500
+
+        # Analiza wyników
+        stats = {}
+        for route, details in treatments_data.items():
+            stats[route] = 0
+            for value in details.values():
+                if isinstance(value, str):
+                    for word in query.split():
+                        if word in value.lower():
+                            stats[route] += 1
+
+        # Wybór najlepszego wyniku
+        best_match = max(stats, key=stats.get)
+        best_score = stats[best_match]
+
+        # Jeśli brak trafień, zwróć domyślny route
+        if best_score == 0:
+            return jsonify("/zabiegi-stomatologiczne-kompleksowa-oferta"), 200
+
+        return jsonify(best_match), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 
 
