@@ -397,7 +397,7 @@
                         <input type="search" class="search-field" placeholder="Jak możemy pomóc?" name="query">
                         <button type="submit"><i class="bx bx-search"></i></button>
                     </form>
-                    <div id="results"></div>
+                    <div id="results" class="resul-info-search"></div>
                 </div>
             </div>
         </div>
@@ -588,40 +588,73 @@
     <script>
         document.querySelector('.modal-search-form').addEventListener('submit', function (event) {
             event.preventDefault(); // Zapobiega przeładowaniu strony
-    
+
             const searchField = document.querySelector('.search-field');
             const query = searchField.value.trim();
-    
+
             if (query) {
                 const xhr = new XMLHttpRequest();
                 xhr.open('POST', '/api/search-treatment', true);
                 xhr.setRequestHeader('Content-Type', 'application/json');
                 xhr.onreadystatechange = function () {
-                    if (xhr.readyState === 4 && xhr.status === 200) {
-                        const results = JSON.parse(xhr.responseText);
-                        displayResults(results);
-                    } else if (xhr.readyState === 4) {
-                        console.error('Błąd wyszukiwania:', xhr.status);
+                    if (xhr.readyState === 4) {
+                        if (xhr.status === 200) {
+                            try {
+                                const route = JSON.parse(xhr.responseText); // Zakładamy, że API zwraca string z route
+                                if (typeof route === 'string') {
+                                    displayTypingEffect(
+                                        `Zaraz zostaniesz przeniesiony na stronę zabiegu, gdzie znajdziesz interesujące Cię informacje.`,
+                                        () => {
+                                            // Po zakończeniu animacji pisania przekierowuje na route
+                                            setTimeout(() => {
+                                                window.location.href = route;
+                                            }, 1000); // 1 sekunda opóźnienia po zakończeniu pisania
+                                        }
+                                    );
+                                } else {
+                                    displayTypingEffect('Nieoczekiwany format danych z API.');
+                                    console.error('Oczekiwano stringa, otrzymano:', route);
+                                }
+                            } catch (error) {
+                                displayTypingEffect('Błąd przetwarzania odpowiedzi z serwera.');
+                                console.error('Błąd parsowania JSON:', error);
+                            }
+                        } else {
+                            displayTypingEffect('Błąd serwera. Spróbuj ponownie później.');
+                            console.error('Serwer zwrócił błąd:', xhr.status, xhr.responseText);
+                        }
                     }
                 };
                 xhr.send(JSON.stringify({ query }));
+            } else {
+                const resultsContainer = document.getElementById('results');
+                resultsContainer.textContent = 'Wprowadź tekst przed wyszukiwaniem.';
             }
         });
-    
-        function displayResults(results) {
+
+        function displayTypingEffect(text, callback) {
             const resultsContainer = document.getElementById('results');
+            resultsContainer.classList.add('resul-info-search'); // Dodanie klasy stylu
             resultsContainer.innerHTML = ''; // Czyszczenie poprzednich wyników
-    
-            if (results && results.length > 0) {
-                results.forEach(item => {
-                    const resultItem = document.createElement('div');
-                    resultItem.textContent = item.name || 'Nieznany wynik';
-                    resultsContainer.appendChild(resultItem);
-                });
-            } else {
-                resultsContainer.textContent = 'Brak wyników.';
+
+            let i = 0;
+
+            // Funkcja animująca pisanie
+            function type() {
+                if (i < text.length) {
+                    resultsContainer.textContent += text.charAt(i);
+                    i++;
+                    setTimeout(type, 50); // Prędkość pisania (50 ms na literę)
+                } else {
+                    // Po zakończeniu pisania uruchom callback (np. przekierowanie)
+                    if (callback) callback();
+                }
             }
+
+            type(); // Rozpocznij animację pisania
         }
+
+
     </script>
     {% endblock %}
     {% block bottom_scripts %}{% endblock %}
