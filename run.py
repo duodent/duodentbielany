@@ -2509,21 +2509,21 @@ def add_opinion():
     data = request.get_json()
     
     # Walidacja danych
-    opion = data.get('content', '').strip()
+    opinion = data.get('content', '').strip()
     author = data.get('author', '').strip()
     avatar = data.get('avatar', '').strip()  # Avatar może być pusty
     role = data.get('role', 'Użytkownik').strip()
 
     # Walidacja pól wymaganych
-    if not opion or not author:
+    if not opinion or not author:
         return jsonify({'success': False, 'message': 'Pola "content" i "author" są wymagane.'}), 400
 
     # Zapisywanie do bazy danych
     sql_query = """
-            INSERT INTO opinions (opion, author, avatar, role)
+            INSERT INTO opinions (opinion, author, avatar, role)
             VALUES (%s, %s, %s, %s)
         """
-    params = (opion, author, avatar, role)
+    params = (opinion, author, avatar, role)
     if msq.insert_to_database(sql_query, params):
         return jsonify({'success': True, 'message': 'Opinia została pomyślnie dodana.'}), 201
     else:
