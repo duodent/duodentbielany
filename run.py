@@ -2187,9 +2187,24 @@ def opinion_managment():
     else:
         # Użytkownik niezalogowany
         return redirect(url_for('index'))
+    
+    # Pobieranie opinii z bazy danych
     get_opion_db = opion_db()
+    alphabet = list(string.ascii_uppercase)  # Tworzymy listę liter od A do Z
 
-
+    for opinion in get_opion_db:
+        if not opinion.get('avatar'):
+            variant = random.choice(['dark_on_light', 'light_on_dark'])  # Losowy wybór wariantu
+            author_first_letter = str(opinion.get('author', 'A')[0]).upper()  # Pierwsza litera autora
+            
+            # Sprawdzamy, czy litera jest w alfabecie
+            if author_first_letter in alphabet:
+                avatar_choiced = f"https://duodentbielany.pl/static/img/opion_avatars/{author_first_letter}_{variant}.png"
+            else:
+                avatar_choiced = f"https://duodentbielany.pl/static/img/opion_avatars/X_{variant}.png"
+            
+            # Przypisujemy wygenerowany avatar do opinii
+            opinion['avatar'] = avatar_choiced
 
     return render_template(
         "opion_managment.html",

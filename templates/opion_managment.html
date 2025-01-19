@@ -78,18 +78,7 @@
                             {{ opion.content }}
                         </p>
                         <div class="review-info d-flex justify-content-start">
-                            {% if opion.avatar %}
-                                <img src="{{ opion.avatar }}" alt="Avatar">
-                            {% else %}
-                                {% with variant = ['dark_on_light', 'light_on_dark'] | random,
-                                    filename = 'img/opion_avatars/' + opion.author[0] | upper + '_' + variant + '.png' %}
-                                    {% if os.path.exists(os.path.join(current_app.static_folder, filename)) %}
-                                        <img src="{{ url_for('static', filename=filename) }}" alt="Avatar">
-                                    {% else %}
-                                        <img src="{{ url_for('static', filename='img/opion_avatars/default_avatar.png') }}" alt="Default Avatar">
-                                    {% endif %}
-                                {% endwith %}
-                            {% endif %}
+                            <img src="{{ opion.avatar }}" alt="Avatar">
                             <div class="ms-3">
                                 <h3>{{ opion.author }}</h3>
                                 <span>{{ opion.role }}</span>
