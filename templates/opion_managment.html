@@ -1,0 +1,148 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<!-- breadcrumb start -->
+<div id="breadcrumb-small" class="breadcrumb-small mb-5" style="display: none;">
+    <div class="container justify-content-center">
+        <div class="justify-content-center">
+            <ul class="breadcrumb-pages-list">
+                <li><a href="/"><i class="bi bi-houses-fill" style="font-size: 1rem;"></i></a></li>
+                <li><a href="/zabiegi-stomatologiczne-kompleksowa-oferta">Zabiegi</a></li>
+                <li>Edycja</li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!-- breadcrumb end -->
+
+<section class="review-area ptb-100">
+    <div class="container">
+        <!-- Sekcja tytułu -->
+        <div class="row align-items-center">
+            <div class="col-lg-6 mx-auto">
+                <div class="section-title-warp">
+                    <span class="sub-title">
+                        <i class="flaticon-hashtag-symbol"></i>
+                        Opinie widoczne na stronie
+                    </span>
+                    <h2>Opinie <span>widoczne</span> na stronie <span>www</span> dla Twoich klientów</h2>
+                    <p>
+                        Zarządzaj kolejnością i edytuj opinie opublikowane na stronie www.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Formularz dodawania opinii -->
+        <div class="row mt-4">
+            <div class="col-lg-8 mx-auto">
+                <form id="addOpinionForm">
+                    <div class="form-floating mb-3">
+                        <textarea class="form-control" id="opinion" name="content" placeholder="Podaj swoją opinię" style="height: 100px;" required></textarea>
+                        <label for="opinion">Twoja opinia</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="author" name="author" placeholder="Twoje imię" required>
+                        <label for="author">Imię autora</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input type="url" class="form-control" id="avatar" name="avatar" placeholder="Link do avatara">
+                        <label for="avatar">Avatar (link HTTP, opcjonalny)</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="role" name="role" placeholder="Rola autora (np. klient)">
+                        <label for="role">Rola autora (np. klient)</label>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">Dodaj opinię</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Lista opinii -->
+        <div class="row mt-5" id="opion-list-sort">
+            {% for opion in opions %}
+                <div class="single-review-item">
+                    <div class="icon">
+                        <i class="far fa-quote-left"></i>
+                    </div>
+                    <p>
+                        {{ opion.content }}
+                    </p>
+                    <div class="review-info d-flex align-items-center">
+                        {% if opion.avatar %}
+                            <img src="{{ opion.avatar }}" alt="Avatar" class="rounded-circle" style="width: 75px; height: 75px;">
+                        {% else %}
+                            <div class="placeholder-avatar {{ opion.opion_color }}">
+                                <span>{{ opion.author[0] | upper }}</span>
+                            </div>
+                        {% endif %}
+                        <div class="ms-3">
+                            <h3>{{ opion.author }}</h3>
+                            <span>{{ opion.role }}</span>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+
+{% endblock %}
+{% block bottom_scripts %}
+<script src="https://cdn.jsdelivr.net/npm/sortablejs@1.14.0/Sortable.min.js"></script>
+
+<script>
+
+    $(document).ready(function () {
+        setTimeout(function () {
+            // Pokaż #breadcrumb-small
+            $("#breadcrumb-small")
+                .css({
+                    display: "block", // Ustaw widoczność
+                    textAlign: "center", // Wyrównanie tekstu do środka
+                    width: "100%", // Rozciągnij na całą szerokość
+                })
+                .animate(
+                    {
+                        height: "50px",
+                        paddingTop: "10px"
+                    },
+                    1200 // Czas animacji
+                );
+        }, 2000); 
+    });
+
+</script>
+<script>
+    // Obsługa formularza
+    $('#addOpinionForm').on('submit', function (e) {
+        e.preventDefault();
+
+        const data = {
+            content: $('#opinion').val(),
+            author: $('#author').val(),
+            avatar: $('#avatar').val(),
+            role: $('#role').val()
+        };
+
+        $.ajax({
+            url: '/api/add-opinion',
+            method: 'POST',
+            data: JSON.stringify(data),
+            contentType: 'application/json',
+            success: function (response) {
+                if (response.success) {
+                    alert('Opinia została dodana!');
+                    location.reload(); // Odświeżenie strony
+                } else {
+                    alert('Błąd podczas dodawania opinii.');
+                }
+            },
+            error: function () {
+                alert('Wystąpił błąd podczas połączenia z serwerem.');
+            }
+        });
+    });
+</script>
+{% endblock %}

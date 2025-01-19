@@ -1247,7 +1247,9 @@ def insertPassDB(password, salt, user_id):
     dane = (password, salt, user_id)
     return msq.insert_to_database(zapytanie_sql, dane)
 
+def opion_db():
 
+    return []
 
 
 
@@ -2054,7 +2056,7 @@ def dokumenty():
 def ustawienia_aplikacji():
     """Ustawienia Strony Duodent BIelany."""
     
-     # Sprawdzanie uprawnień
+    # Sprawdzanie uprawnień
     # ========================================================
     # 🌟 Model implementacji uprawnień - Rekomendacja 🌟
     # Ten kod jest czytelny, modułowy i łatwy w rozbudowie.
@@ -2154,9 +2156,37 @@ def password_managment():
         own_userperm=own_userperm
     )
 
+@app.route('/admin/opinie', methods=['GET'])
+def opinion_managment():
+    """Zarządzanie opiniami"""
+    # Sprawdzanie uprawnień
+    # ========================================================
+    # 🌟 Model implementacji uprawnień - Rekomendacja 🌟
+    # Ten kod jest czytelny, modułowy i łatwy w rozbudowie.
+    # Każdy poziom uprawnień ma jasno określoną logikę.
+    # Użycie funkcji `direct_by_permision` zapewnia elastyczność.
+    # Idealne do zastosowania w wielu endpointach systemu!
+    # ========================================================
+    if session.get('username', False):
+        if not (
+                direct_by_permision(session, permission_sought='administrator')\
+                    or direct_by_permision(session, permission_sought='super_user')
+            ):  # Brak uprawnień
+            return redirect(url_for('index'))
+    else:
+        # Użytkownik niezalogowany
+        return redirect(url_for('index'))
+    get_opion_db = opion_db()
+    # Dodajemy dynamiczne klasy w backendzie
+    colors = ['bg-color-1', 'bg-color-2', 'bg-color-3', 'bg-color-4', 'bg-color-5']
+    for opinion in get_opion_db:
+        if not opinion.get('avatar'):
+            opinion['opion_color'] = random.choice(colors)
 
-
-
+    return render_template(
+        "opion-managment.html",
+        opions=get_opion_db
+    )
 
 
 
