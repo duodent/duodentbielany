@@ -2184,7 +2184,7 @@ def opinion_managment():
             opinion['opion_color'] = random.choice(colors)
 
     return render_template(
-        "opion-managment.html",
+        "opion_managment.html",
         opions=get_opion_db
     )
 
