@@ -457,23 +457,4 @@
 }
 
 
-.placeholder-avatar {
-    width: 75px;
-    height: 75px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50%;
-    
-}
-.placeholder-avatar span {
-    color: #fff;
-    font-size: 40px !important;
-    font-weight: bold;
-}
-/* Przykładowe klasy kolorów generowane w backendzie */
-.bg-color-1 { background-color: #b92200; }
-.bg-color-2 { background-color: #083310; }
-.bg-color-3 { background-color: #3357FF; }
-.bg-color-4 { background-color: #013642; }
-.bg-color-5 { background-color: #3f164f; }
+

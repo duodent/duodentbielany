@@ -2188,11 +2188,8 @@ def opinion_managment():
         # Użytkownik niezalogowany
         return redirect(url_for('index'))
     get_opion_db = opion_db()
-    # Dodajemy dynamiczne klasy w backendzie
-    colors = ['bg-color-1', 'bg-color-2', 'bg-color-3', 'bg-color-4', 'bg-color-5']
-    for opinion in get_opion_db:
-        if not opinion.get('avatar'):
-            opinion['opion_color'] = random.choice(colors)
+
+
 
     return render_template(
         "opion_managment.html",
