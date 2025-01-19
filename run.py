@@ -1248,11 +1248,30 @@ def insertPassDB(password, salt, user_id):
     return msq.insert_to_database(zapytanie_sql, dane)
 
 def opion_db():
+    export = []
+    zapytanie_sql = """
+        SELECT 
+            id, 
+            opinion,
+            author,
+            avatar,
+            role,
+            sort_order
+        FROM opinions
+        ORDER BY sort_order ASC
+    """
+    db_dump = msq.connect_to_database(zapytanie_sql)
+    for data in db_dump:
+        theme = {
+            "id": data[0], 
+            "opinion": data[1], 
+            "author": data[3], 
+            "role": data[4], 
+            "avatar": data[5]
+        }
+        export.append(theme)
 
-    return [
-        {"id": 1, "content": "Świetny produkt!", "author": "Jan", "role": "Klient", "avatar": 'https://lh3.googleusercontent.com/a-/ALV-UjXYoVaxEpzSeWOxiUGJqFXdfd7M1MpFaubIr4ytnkGe9UtheBxN=w75-h75-p-rp-mo-ba4-br100'},
-        {"id": 2, "content": "Nie polecam.", "author": "Anna", "role": "Użytkownik", "avatar": None},
-    ]
+    return export
 
 
 
@@ -2513,7 +2532,7 @@ def add_opinion():
     author = data.get('author')
     avatar = data.get('avatar') # Avatar może być pusty
     role = data.get('role')
-    
+
     if not role: role='Użytkownik'
     if not avatar: avatar=None
 
