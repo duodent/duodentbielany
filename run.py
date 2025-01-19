@@ -2195,7 +2195,7 @@ def opinion_managment():
     for opinion in get_opion_db:
         if not opinion.get('avatar'):
             variant = random.choice(['dark_on_light', 'light_on_dark'])  # Losowy wybór wariantu
-            author_first_letter = str(opinion.get('author', 'A')[0]).upper()  # Pierwsza litera autora
+            author_first_letter = str(opinion.get('author', 'X')[0]).upper()  # Pierwsza litera autora
             
             # Sprawdzamy, czy litera jest w alfabecie
             if author_first_letter in alphabet:
@@ -2498,6 +2498,36 @@ def search_treatment():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
+
+@app.route('/api/add-opinion', methods=['POST'])
+def add_opinion():
+    """
+    Endpoint do dodawania opinii.
+    """
+
+    # Pobieranie danych z żądania
+    data = request.get_json()
+    
+    # Walidacja danych
+    content = data.get('content').strip()
+    author = data.get('author').strip()
+    avatar = data.get('avatar').strip()  # Avatar może być pusty
+    role = data.get('role', 'Użytkownik').strip()
+
+    # Walidacja pól wymaganych
+    if not content or not author:
+        return jsonify({'success': False, 'message': 'Pola "content" i "author" są wymagane.'}), 400
+
+    # Zapisywanie do bazy danych
+    sql_query = """
+            INSERT INTO opinions (content, author, avatar, role)
+            VALUES (%s, %s, %s, %s)
+        """
+    params = (content, author, avatar, role)
+    if msq.insert_to_database(sql_query, params):
+        return jsonify({'success': True, 'message': 'Opinia została pomyślnie dodana.'}), 201
+    else:
+        return jsonify({'success': False, 'message': 'Wystąpił błąd podczas dodawania opinii.'}), 500
 
 
 

@@ -100,7 +100,6 @@
 <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.14.0/Sortable.min.js"></script>
 
 <script>
-
     $(document).ready(function () {
         setTimeout(function () {
             // Pokaż #breadcrumb-small
@@ -119,9 +118,28 @@
                 );
         }, 2000); 
     });
-
 </script>
 <script>
+    // Funkcja wyświetlająca modal błędów
+    function showErrorModal(message) {
+        const errorModal = new bootstrap.Modal(document.getElementById('error-modal'));
+        document.getElementById('error-modal-message').textContent = message || 'Wystąpił nieoczekiwany błąd.';
+        errorModal.show();
+    }
+
+    // Funkcja wyświetlająca modal sukcesów
+    function showSuccessModal(message, callback) {
+        const successModal = new bootstrap.Modal(document.getElementById('success-modal'));
+        document.getElementById('success-modal-message').textContent = message || 'Operacja zakończona pomyślnie.';
+        successModal.show();
+
+        const modalElement = document.getElementById('success-modal');
+        modalElement.addEventListener('hidden.bs.modal', function onHidden() {
+            if (callback) callback();
+            modalElement.removeEventListener('hidden.bs.modal', onHidden);
+        });
+    }
+
     // Obsługa formularza
     $('#addOpinionForm').on('submit', function (e) {
         e.preventDefault();
@@ -140,14 +158,15 @@
             contentType: 'application/json',
             success: function (response) {
                 if (response.success) {
-                    alert('Opinia została dodana!');
-                    location.reload(); // Odświeżenie strony
+                    // alert('Opinia została dodana!');
+                    showSuccessModal(response.message, () => location.reload());
+                    // location.reload(); // Odświeżenie strony
                 } else {
-                    alert('Błąd podczas dodawania opinii.');
+                    showErrorModal('Błąd podczas dodawania opinii.');
                 }
             },
             error: function () {
-                alert('Wystąpił błąd podczas połączenia z serwerem.');
+                showErrorModal('Wystąpił błąd podczas połączenia z serwerem.');
             }
         });
     });
