@@ -2509,10 +2509,13 @@ def add_opinion():
     data = request.get_json()
     
     # Walidacja danych
-    opinion = data.get('content', '').strip()
-    author = data.get('author', '').strip()
-    avatar = data.get('avatar', '').strip()  # Avatar może być pusty
-    role = data.get('role', 'Użytkownik').strip()
+    opinion = data.get('content')
+    author = data.get('author')
+    avatar = data.get('avatar') # Avatar może być pusty
+    role = data.get('role')
+    
+    if not role: role='Użytkownik'
+    if not avatar: avatar=None
 
     # Walidacja pól wymaganych
     if not opinion or not author:
