@@ -2214,7 +2214,9 @@ def opinion_managment():
     for opinion in get_opion_db:
         if not opinion.get('avatar'):
             variant = random.choice(['dark_on_light', 'light_on_dark'])  # Losowy wybór wariantu
-            author_first_letter = str(opinion.get('author', 'X')[0]).upper()  # Pierwsza litera autora
+            oprst = opinion.get('author')
+            if not oprst: oprst = 'X'
+            author_first_letter = str(oprst[0]).upper()  # Pierwsza litera autora
             
             # Sprawdzamy, czy litera jest w alfabecie
             if author_first_letter in alphabet:
