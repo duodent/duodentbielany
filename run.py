@@ -1266,8 +1266,9 @@ def opion_db():
             "id": data[0], 
             "opinion": data[1], 
             "author": data[3], 
-            "role": data[4], 
-            "avatar": data[5]
+            "avatar": data[4],
+            "role": data[5],
+            "sort_order": data[6]
         }
         export.append(theme)
 
