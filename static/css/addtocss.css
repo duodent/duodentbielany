@@ -464,11 +464,13 @@
     align-items: center;
     justify-content: center;
     border-radius: 50%;
+    
+}
+.placeholder-avatar span {
     color: #fff;
     font-size: 40px !important;
     font-weight: bold;
 }
-
 /* Przykładowe klasy kolorów generowane w backendzie */
 .bg-color-1 { background-color: #b92200; }
 .bg-color-2 { background-color: #083310; }
