@@ -1265,10 +1265,10 @@ def opion_db():
         theme = {
             "id": data[0], 
             "opinion": data[1], 
-            "author": data[3], 
-            "avatar": data[4],
-            "role": data[5],
-            "sort_order": data[6]
+            "author": data[2], 
+            "avatar": data[3],
+            "role": data[4],
+            "sort_order": data[5]
         }
         export.append(theme)
 
