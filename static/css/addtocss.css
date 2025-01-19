@@ -465,7 +465,7 @@
     justify-content: center;
     border-radius: 50%;
     color: #fff;
-    font-size: 40px;
+    font-size: 40px !important;
     font-weight: bold;
 }
 
