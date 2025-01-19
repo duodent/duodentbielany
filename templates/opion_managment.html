@@ -196,9 +196,10 @@
                 if (response.success) {
                     // alert('Opinia została dodana!');
                     showSuccessModal(response.message, () => location.reload());
-                    // location.reload(); // Odświeżenie strony
+                    document.getElementById('addOpinionForm').reset();
                 } else {
                     showErrorModal('Błąd podczas dodawania opinii.');
+                    
                 }
             },
             error: function () {
