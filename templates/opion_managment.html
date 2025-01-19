@@ -69,24 +69,26 @@
         <!-- Lista opinii -->
         <div class="row mt-5" id="opion-list-sort">
             {% for opion in opions %}
-                <div class="single-review-item">
-                    <div class="icon">
-                        <i class="far fa-quote-left"></i>
-                    </div>
-                    <p>
-                        {{ opion.content }}
-                    </p>
-                    <div class="review-info d-flex align-items-center">
-                        {% if opion.avatar %}
-                            <img src="{{ opion.avatar }}" alt="Avatar" class="rounded-circle" style="width: 75px; height: 75px;">
-                        {% else %}
-                            <div class="placeholder-avatar {{ opion.opion_color }}">
-                                <span>{{ opion.author[0] | upper }}</span>
+                <div class="col-lg-4 col-md-6 col-sm-12">
+                    <div class="single-review-item">
+                        <div class="icon">
+                            <i class="far fa-quote-left"></i>
+                        </div>
+                        <p>
+                            {{ opion.content }}
+                        </p>
+                        <div class="review-info d-flex align-items-center">
+                            {% if opion.avatar %}
+                                <img src="{{ opion.avatar }}" alt="Avatar" class="rounded-circle" style="width: 75px; height: 75px;">
+                            {% else %}
+                                <div class="placeholder-avatar {{ opion.opion_color }}">
+                                    <span>{{ opion.author[0] | upper }}</span>
+                                </div>
+                            {% endif %}
+                            <div class="ms-3">
+                                <h3>{{ opion.author }}</h3>
+                                <span>{{ opion.role }}</span>
                             </div>
-                        {% endif %}
-                        <div class="ms-3">
-                            <h3>{{ opion.author }}</h3>
-                            <span>{{ opion.role }}</span>
                         </div>
                     </div>
                 </div>
