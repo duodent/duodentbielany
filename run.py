@@ -1250,7 +1250,7 @@ def insertPassDB(password, salt, user_id):
 def opion_db():
 
     return [
-        {"id": 1, "content": "Świetny produkt!", "author": "Jan", "role": "Klient", "avatar": None},
+        {"id": 1, "content": "Świetny produkt!", "author": "Jan", "role": "Klient", "avatar": 'https://lh3.googleusercontent.com/a-/ALV-UjXYoVaxEpzSeWOxiUGJqFXdfd7M1MpFaubIr4ytnkGe9UtheBxN=w75-h75-p-rp-mo-ba4-br100'},
         {"id": 2, "content": "Nie polecam.", "author": "Anna", "role": "Użytkownik", "avatar": None},
     ]
 
