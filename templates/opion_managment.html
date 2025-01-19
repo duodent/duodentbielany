@@ -36,22 +36,30 @@
         <div class="row mt-4">
             <div class="col-lg-8 mx-auto">
                 <form id="addOpinionForm">
-                    <div class="form-floating mb-3">
-                        <textarea class="form-control" id="opinion" name="content" placeholder="Podaj swoją opinię" style="height: 100px;" required></textarea>
-                        <label for="opinion">Twoja opinia</label>
+                    <div class="row">
+                        <div class="col-lg-6 col-sm-12">
+                            <div class="form-floating mb-3">
+                                <textarea class="form-control" id="opinion" name="content" placeholder="Podaj swoją opinię" style="height: 100px;" required></textarea>
+                                <label for="opinion">Twoja opinia</label>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-sm-12">
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control" id="author" name="author" placeholder="Twoje imię" required>
+                                <label for="author">Imię autora</label>
+                            </div>
+                            <div class="form-floating mb-3">
+                                <input type="url" class="form-control" id="avatar" name="avatar" placeholder="Link do avatara">
+                                <label for="avatar">Avatar (link HTTP, opcjonalny)</label>
+                            </div>
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control" id="role" name="role" placeholder="Rola autora (np. klient)">
+                                <label for="role">Rola autora (np. klient)</label>
+                            </div>
+                        </div>
                     </div>
-                    <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="author" name="author" placeholder="Twoje imię" required>
-                        <label for="author">Imię autora</label>
-                    </div>
-                    <div class="form-floating mb-3">
-                        <input type="url" class="form-control" id="avatar" name="avatar" placeholder="Link do avatara">
-                        <label for="avatar">Avatar (link HTTP, opcjonalny)</label>
-                    </div>
-                    <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="role" name="role" placeholder="Rola autora (np. klient)">
-                        <label for="role">Rola autora (np. klient)</label>
-                    </div>
+                    
+                    
                     <button type="submit" class="btn btn-primary w-100">Dodaj opinię</button>
                 </form>
             </div>
