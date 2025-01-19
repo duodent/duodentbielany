@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect, url_for, jsonify, session, request, send_from_directory, Response, abort, flash
+from flask import Flask, render_template, redirect, url_for, jsonify, session, request, send_from_directory, Response, abort, flash, current_app
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField
 from wtforms.validators import DataRequired
@@ -1724,7 +1724,15 @@ def inject_shared_variable():
         'companyStats': calculate_statistics()
     }
 
-
+@app.context_processor
+def utility_processor():
+    """
+    Dodaje `os.path.exists` i `current_app.static_folder` do kontekstu Jinja2.
+    """
+    return dict(
+        os=os,
+        current_app=current_app
+    )
 
 
 
