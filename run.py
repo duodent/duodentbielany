@@ -1249,7 +1249,10 @@ def insertPassDB(password, salt, user_id):
 
 def opion_db():
 
-    return []
+    return [
+        {"id": 1, "content": "Świetny produkt!", "author": "Jan", "role": "Klient", "avatar": None},
+        {"id": 2, "content": "Nie polecam.", "author": "Anna", "role": "Użytkownik", "avatar": None},
+    ]
 
 
 
