@@ -1248,7 +1248,7 @@ def insertPassDB(password, salt, user_id):
     return msq.insert_to_database(zapytanie_sql, dane)
 
 def opion_db():
-    export = []
+    # Zapytanie SQL do pobrania danych
     zapytanie_sql = """
         SELECT 
             id, 
@@ -1260,17 +1260,34 @@ def opion_db():
         FROM opinions
         ORDER BY sort_order ASC
     """
+    # Pobranie danych z bazy
     db_dump = msq.connect_to_database(zapytanie_sql)
-    for data in db_dump:
-        theme = {
-            "id": data[0], 
-            "opinion": data[1], 
-            "author": data[2], 
+
+    # Przygotowanie listy wyników
+    export = [
+        {
+            "id": data[0],
+            "opinion": data[1],
+            "author": data[2],
             "avatar": data[3],
             "role": data[4],
-            "sort_order": data[5]
+            "sort_order": data[5],
         }
-        export.append(theme)
+        for data in db_dump
+    ]
+
+    # Lista liter alfabetu (nie jest to konieczne, można użyć `string.ascii_uppercase` bezpośrednio)
+    alphabet = set(string.ascii_uppercase)
+
+    # Generowanie avatarów, jeśli brak danych
+    for opinion in export:
+        if not opinion['avatar']:  # Tylko jeśli avatar jest pusty
+            variant = random.choice(['dark_on_light', 'light_on_dark'])  # Losowy wariant
+            author_first_letter = (opinion['author'] or 'X')[0].upper()  # Pierwsza litera autora lub 'X'
+
+            # Wybór avatara
+            avatar_letter = author_first_letter if author_first_letter in alphabet else 'X'
+            opinion['avatar'] = f"https://duodentbielany.pl/static/img/opion_avatars/{avatar_letter}_{variant}.png"
 
     return export
 
@@ -2210,24 +2227,7 @@ def opinion_managment():
     
     # Pobieranie opinii z bazy danych
     get_opion_db = opion_db()
-    alphabet = list(string.ascii_uppercase)  # Tworzymy listę liter od A do Z
-
-    for opinion in get_opion_db:
-        if not opinion.get('avatar'):
-            variant = random.choice(['dark_on_light', 'light_on_dark'])  # Losowy wybór wariantu
-            oprst = opinion.get('author')
-            if not oprst: oprst = 'X'
-            author_first_letter = str(oprst[0]).upper()  # Pierwsza litera autora
-            
-            # Sprawdzamy, czy litera jest w alfabecie
-            if author_first_letter in alphabet:
-                avatar_choiced = f"https://duodentbielany.pl/static/img/opion_avatars/{author_first_letter}_{variant}.png"
-            else:
-                avatar_choiced = f"https://duodentbielany.pl/static/img/opion_avatars/X_{variant}.png"
-            
-            # Przypisujemy wygenerowany avatar do opinii
-            opinion['avatar'] = avatar_choiced
-
+    
     return render_template(
         "opion_managment.html",
         opinions=get_opion_db
@@ -3401,10 +3401,13 @@ def index():
     if len(generator_teamDB_v) > 2:
         generator_teamDB_v = generator_teamDB_v[:3]
 
+    get_opinion = opion_db()
+
     return render_template(
         'index.html',
         pageTitle=pageTitle,
-        members=generator_teamDB_v
+        members=generator_teamDB_v,
+        opinions=get_opinion
     )
 
 # Dla Pacjenta

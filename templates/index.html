@@ -560,50 +560,26 @@
                     </div>
                 </div>
             </div>
+            
             <div class="review-slides owl-carousel owl-theme">
-                <div class="single-review-item">
-                    <div class="icon">
-                        <i class="far fa-quote-left"></i>
-                    </div>
-                    <p>
-                        Polecam przychodnie Duodent. Cała nasza rodzina chodzi na wizyty do doktora Arkadiusza. 
-                        Przemiły i wyrozumiały człowiek. Dokładnie tłumaczy co będzie wykonywał i jaki proces 
-                        leczenie będzie najlepszy.
-                    </p>
-                    <div class="review-info">
-                        <img src="https://lh3.googleusercontent.com/a/ACg8ocKV6P3fEhISxtciqm4-iSae4aBlPR5tI6BRvbfB5RWuNgZ3MQ=w75-h75-p-rp-mo-br100" alt="image">
-                        <h3>Marzena Gujska</h3>
-                        <span>Pacjent</span>
-                    </div>
-                </div>
-                <div class="single-review-item">
-                    <div class="icon">
-                        <i class="far fa-quote-left"></i>
-                    </div>
-                    <p>
-                        Super dentysta. Wszystko zawsze dobrze zrobione, dzieci też lubią przychodzić.
-                    </p>
-                    <div class="review-info">
-                        <img src="https://lh3.googleusercontent.com/a-/ALV-UjXYoVaxEpzSeWOxiUGJqFXdfd7M1MpFaubIr4ytnkGe9UtheBxN=w75-h75-p-rp-mo-ba4-br100" alt="image">
-                        <h3>Julian Glowniak</h3>
-                        <span>Pacjent</span>
-                    </div>
-                </div>
-                <div class="single-review-item">
-                    <div class="icon">
-                        <i class="far fa-quote-left"></i>
-                    </div>
-                    <p>
-                        Polecam Panią Elżbiete Fedorowicz z czystym sercem! Doktor pełna empatii, 
-                        zrozumienia i wyrozumiałości. Uratowała moje dziąsła, a co za tym idzie również zęby.
-                        Jest Aniołem!
-                    </p>
-                    <div class="review-info">
-                        <img src="https://lh3.googleusercontent.com/a/ACg8ocI_-BcczskfurWubvvjHw2VYpl6qwKCA4a3UX740DpWk59L=w75-h75-p-rp-mo-br100" alt="image">
-                        <h3>Oliwia Piłatowicz</h3>
-                        <span>Pacjent</span>
-                    </div>
-                </div>
+                {% if opinions %}
+                    {% for opinion in opinions %}
+                        <div class="single-review-item">
+                            <div class="icon">
+                                <i class="far fa-quote-left"></i>
+                            </div>
+                            <p>
+                                {{ opinion.opinion }}
+                            </p>
+                            <div class="review-info">
+                                <img src="{{ opinion.avatar }}" alt="Ava">
+                                <h3>{{ opinion.author }}</h3>
+                                <span>{{ opinion.role }}</span>
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+                
             </div>
         </div>
     </section>
