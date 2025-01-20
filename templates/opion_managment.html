@@ -212,6 +212,46 @@
         });
     });
     
+    $(document).ready(function () {
+        // Obsługa kliknięcia przycisku "Usuń"
+        $('.delete-opinion').on('click', function (e) {
+            e.preventDefault(); // Zapobiega domyślnemu działaniu linka
+
+            const opinionId = $(this).data('to-del'); // Pobranie ID opinii
+            if (!opinionId) {
+                showErrorModal('Nie można usunąć: brak ID opinii.');
+                return;
+            }
+
+            // Potwierdzenie usunięcia (opcjonalne)
+            if (!confirm('Czy na pewno chcesz usunąć tę opinię?')) {
+                return;
+            }
+
+            // Wysyłanie AJAX
+            $.ajax({
+                url: '/admin/usun-opinie',
+                method: 'DELETE',
+                contentType: 'application/json',
+                data: JSON.stringify({ id: opinionId }),
+                success: function (response) {
+                    if (response.status === 'success') {
+                        showSuccessModal(response.message);
+
+                        // Usunięcie elementu z DOM
+                        $(`[data-to-del="${opinionId}"]`).closest('.col-lg-4').remove();
+                    } else {
+                        showErrorModal(response.message || 'Wystąpił nieznany błąd.');
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.error('Błąd:', error);
+                    showErrorModal(xhr.responseJSON?.message || 'Nie udało się usunąć opinii.');
+                }
+            });
+        });
+    });
+
     
 
 
