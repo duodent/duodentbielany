@@ -2554,7 +2554,20 @@ def add_opinion():
     else:
         return jsonify({'success': False, 'message': 'Wystąpił błąd podczas dodawania opinii.'}), 500
 
+@app.route('/admin/usun-opinie', methods=['DELETE'])
+def delete_opinion():
+    data = request.get_json()
+    opinion_id = data.get('id')
 
+    if not opinion_id:
+        return jsonify({"status": "error", "message": "Nie podano ID opinii"}), 400
+
+    query = "DELETE FROM opinions WHERE id = %s;"
+    if msq.insert_to_database(query, (opinion_id,)):
+        return jsonify({"status": "success", "message": "Opinia została usunięta"})
+    else:
+        print(f'Błąd podczas usuwania opinii!')
+        return jsonify({"status": "error", "message": "Nie udało się usunąć opinii"}), 500
 
 
 
