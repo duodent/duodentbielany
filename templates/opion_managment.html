@@ -131,6 +131,24 @@
                 </div>
             </div>
         </div>
+        <!-- Modal potwierdzeń -->
+        <div class="modal fade" id="confirm-modal" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header bg-warning text-white">
+                        <h5 class="modal-title" id="confirmModalLabel">Potwierdź Działanie</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p id="confirm-modal-message">Czy na pewno chcesz wykonać tę operację?</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Anuluj</button>
+                        <button type="button" class="btn btn-danger" id="confirm-modal-confirm">Potwierdź</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </section>
 
@@ -180,6 +198,21 @@
         });
     }
 
+    // Funkcja wyświetlająca modal potwierdzeń
+    function showConfirmModal(message, onConfirm) {
+        const confirmModal = new bootstrap.Modal(document.getElementById('confirm-modal'));
+        document.getElementById('confirm-modal-message').textContent = message || 'Czy na pewno chcesz kontynuować?';
+        confirmModal.show();
+
+        const confirmButton = document.getElementById('confirm-modal-confirm');
+        const modalElement = document.getElementById('confirm-modal');
+
+        confirmButton.onclick = function () {
+            if (onConfirm) onConfirm();
+            confirmModal.hide();
+        };
+    }
+
     // Obsługa formularza
     $('#addOpinionForm').on('submit', function (e) {
         e.preventDefault();
@@ -222,33 +255,32 @@
                 showErrorModal('Nie można usunąć: brak ID opinii.');
                 return;
             }
-
             // Potwierdzenie usunięcia (opcjonalne)
-            if (!confirm('Czy na pewno chcesz usunąć tę opinię?')) {
-                return;
-            }
-
-            // Wysyłanie AJAX
-            $.ajax({
-                url: '/admin/usun-opinie',
-                method: 'DELETE',
-                contentType: 'application/json',
-                data: JSON.stringify({ id: opinionId }),
-                success: function (response) {
-                    if (response.status === 'success') {
-                        showSuccessModal(response.message);
-
-                        // Usunięcie elementu z DOM
-                        $(`[data-to-del="${opinionId}"]`).closest('.col-lg-4').remove();
-                    } else {
-                        showErrorModal(response.message || 'Wystąpił nieznany błąd.');
+            showConfirmModal('Czy na pewno chcesz usunąć tę opinię?', function () {
+                // Wysyłanie AJAX
+                $.ajax({
+                    url: '/admin/usun-opinie',
+                    method: 'DELETE',
+                    contentType: 'application/json',
+                    data: JSON.stringify({ id: opinionId }),
+                    success: function (response) {
+                        if (response.status === 'success') {
+                            showSuccessModal(response.message);
+    
+                            // Usunięcie elementu z DOM
+                            $(`[data-to-del="${opinionId}"]`).closest('.col-lg-4').remove();
+                        } else {
+                            showErrorModal(response.message || 'Wystąpił nieznany błąd.');
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        console.error('Błąd:', error);
+                        showErrorModal(xhr.responseJSON?.message || 'Nie udało się usunąć opinii.');
                     }
-                },
-                error: function (xhr, status, error) {
-                    console.error('Błąd:', error);
-                    showErrorModal(xhr.responseJSON?.message || 'Nie udało się usunąć opinii.');
-                }
+                });
             });
+            
+
         });
     });
 
