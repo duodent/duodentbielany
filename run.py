@@ -2230,7 +2230,7 @@ def opinion_managment():
 
     return render_template(
         "opion_managment.html",
-        opions=get_opion_db
+        opinions=get_opion_db
     )
 
 
@@ -2650,6 +2650,23 @@ def update_category_order():
     # Aktualizacja kolejności w bazie
     for index, category_id in enumerate(new_order):
         query = "UPDATE file_categories SET position = %s WHERE id = %s;"
+        params = (index + 1, category_id)
+        msq.insert_to_database(query, params)
+
+    return jsonify({"status": "success", "message": "Kolejność zaktualizowana"})
+
+@app.route('/admin/kolejnosc-opini', methods=['POST'])
+def update_opinion_order():
+    """Aktualizacja kolejności opini."""
+    data = request.get_json()
+    new_order = data.get('order')  # Lista z ID kategorii w nowej kolejności
+    # print(data, new_order)
+    if not new_order or not isinstance(new_order, list):
+        return jsonify({"status": "error", "message": "Nieprawidłowe dane"}), 400
+
+    # Aktualizacja kolejności w bazie
+    for index, category_id in enumerate(new_order):
+        query = "UPDATE opinions SET sort_order = %s WHERE id = %s;"
         params = (index + 1, category_id)
         msq.insert_to_database(query, params)
 

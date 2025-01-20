@@ -67,29 +67,31 @@
         </div>
 
         <!-- Lista opinii -->
-        <div class="row mt-5 review-area" id="opion-list-sort">
-            {% for opion in opions %}
-                <div class="col-lg-4 col-md-6 col-sm-12">
-                    <div class="single-review-item">
-                        <div class="icon">
-                            <i class="far fa-quote-left"></i>
-                        </div>
-                        <p>
-                            {{ opion.opinion }}
-                        </p>
-                        <div class="review-info d-flex justify-content-start">
-                            <img src="{{ opion.avatar }}" alt="Avatar">
-                            <div class="ms-3">
-                                <h3>{{ opion.author }}</h3>
-                                <span>{{ opion.role }}</span>
+        <div class="row mt-5 review-area" id="opinion-list-sort">
+            {% if opinions %}
+                {% for opinion in opinions %}
+                    <div class="col-lg-4 col-md-6 col-sm-12" data-id="{{ opinion.id }}">
+                        <div class="single-review-item">
+                            <div class="icon">
+                                <i class="far fa-quote-left"></i>
+                            </div>
+                            <p>
+                                {{ opinion.opinion }}
+                            </p>
+                            <div class="review-info d-flex justify-content-start">
+                                <img src="{{ opinion.avatar }}" alt="Avatar">
+                                <div class="ms-3">
+                                    <h3>{{ opinion.author }}</h3>
+                                    <span>{{ opinion.role }}</span>
+                                </div>
+                            </div>
+                            <div class="d-flex justify-content-end">
+                                <a id="delete" data-to-del="{{ opinion.id }}"><i class="bi bi-trash3-fill" style="font-size: 15px; color: red;"></i></a>
                             </div>
                         </div>
-                        <div class="d-flex justify-content-end">
-                            <a id="delete" data-to-del="{{ opion.id }}"><i class="bi bi-trash3-fill" style="font-size: 15px; color: red;"></i></a>
-                        </div>
                     </div>
-                </div>
-            {% endfor %}
+                {% endfor %}
+            {% endif %}
         </div>
 
         <!-- Modal błędów -->
@@ -206,6 +208,41 @@
                 showErrorModal('Wystąpił błąd podczas połączenia z serwerem.');
             }
         });
+    });
+    
+    
+
+
+    const categoryList = document.getElementById('opinion-list-sort');
+    new Sortable(categoryList, {
+        animation: 150,
+        onEnd: function () {
+            // Pobranie nowej kolejności ID
+            const newOrder = Array.from(categoryList.children).map(item => item.dataset.id);
+
+            // Debugowanie nowej kolejności
+            console.log('Nowa kolejność:', newOrder);
+
+            // Wysłanie żądania do serwera
+            fetch('/admin/kolejnosc-opini', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ order: newOrder })
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Błąd serwera: ' + response.status);
+                }
+                return response.json();
+            })
+            .then(data => {
+                showSuccessModal(data.message);
+            })
+            .catch(error => {
+                console.error('Błąd:', error);
+                showErrorModal(error.message || 'Nieznany błąd');
+            });
+        }
     });
 </script>
 {% endblock %}
