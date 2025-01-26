@@ -5,9 +5,9 @@ global smtp_config
 # from config_utils import smtp_config
 from mysqlDB import connect_to_database
 from end_1 import decode_integer
-from run import ENDoneslot
 from bin.appslib import handle_error
 table_setting = 'system_setting'
+ENDoneslot = "5875"
 smtp_password_ = decode_integer(connect_to_database(f'SELECT config_smtp_password FROM {table_setting};')[0][0], ENDoneslot)
 
 smtp_config = {
