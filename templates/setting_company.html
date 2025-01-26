@@ -73,7 +73,7 @@
 
 
 <!-- contact info -->
-<section class="features-area-two pb-70">
+<section class="features-area-two ptb-30">
     <div class="container">
         <div class="row">
             <div class="col-lg-4 col-sm-6">
@@ -185,8 +185,14 @@
                             587
                         </p>
                         <form>
-                            <div style="position: relative; display: inline-block;">
-                                <input type="password" class="password-update" placeholder="Podaj hasło maila root!" id="system_setting-config_smtp_password-1-1-1" required/>
+                            <div class="form-floating" style="position: relative;">
+                                <!-- Pole hasła -->
+                                <input type="password" class="form-control" id="system_setting-config_smtp_password-1-1-1" placeholder="Podaj hasło maila root!" required />
+                                
+                                <!-- Etykieta dla floating label -->
+                                <label for="system_setting-config_smtp_password-1-1-1">Podaj hasło maila root!</label>
+                                
+                                <!-- Ikona oka -->
                                 <span onclick="togglePasswordVisibility()" 
                                       style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer;">
                                     👁️
