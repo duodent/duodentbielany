@@ -269,38 +269,40 @@
 <!-- contact info end -->
 
 
-<!-- counter area -->
-<section class="counter-area pb-70">
+<!-- settings counter area -->
+<section class="counter-settings-area pb-70">
     <div class="container">
-        <div class="counter-area-content">
+        <div class="counter-settings-content">
             <div class="row">
                 <div class="col-lg-3">
-                    <div class="counter-single">
+                    <div class="counter-settings-single">
                         <i class="far fa-layer-group"></i>
                         <h3>
-                            <span>{{companyStats.zrealizowane_uslugi}}</span> + 
+                            <span class="counter">{{settingsStats.zrealizowane_uslugi}}</span> + 
                         </h3>
                         <p>Zabiegów w jednym tygodniu</p>
                     </div>
                 </div>
                 <div class="col-lg-3">
-                    <div class="counter-single">
+                    <div class="counter-settings-single">
                         <i class="far fa-gem"></i>
-                        <h3><span class="counter">{{companyStats.lata_doswiadczenia}}</span> + </h3>
-                        <p>Rok rozpoczęcia działaności</p>
+                        <h3><span class="counter">{{settingsStats.lata_doswiadczenia}}</span> + </h3>
+                        <p>Rok rozpoczęcia działalności</p>
+                        <!-- Kalendarz formularza -->
+                        <input type="date" class="form-control" id="start-date" name="start-date" style="margin-top: 10px;" />
                     </div>
                 </div>
                 <div class="col-lg-3">
-                    <div class="counter-single">
+                    <div class="counter-settings-single">
                         <i class="far fa-users"></i>
-                        <h3><span class="counter">{{companyStats.czlonkowie_zespolu}}</span> + </h3>
-                        <p>Członkowie z poza zespołu</p>
+                        <h3><span class="counter">{{settingsStats.czlonkowie_zespolu}}</span> + </h3>
+                        <p>Członkowie spoza zespołu</p>
                     </div>
                 </div>
                 <div class="col-lg-3">
-                    <div class="counter-single">
+                    <div class="counter-settings-single">
                         <i class="far fa-award"></i>
-                        <h3><span class="counter">{{companyStats.zadowoleni_klienci}}</span> % </h3>
+                        <h3><span class="counter">{{settingsStats.zadowoleni_klienci}}</span> % </h3>
                         <p>Procent zadowolonych klientów</p>
                     </div>
                 </div>
@@ -308,7 +310,7 @@
         </div>
     </div>
 </section>
-<!-- counter area end -->
+<!-- settings counter area end -->
 
 <section class="features-area-two pb-70">
     <div class="container">

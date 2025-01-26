@@ -457,4 +457,30 @@
 }
 
 
+.counter-settings-content {
+    background-color: #0f0c32;
+    border-radius: 10px;
+    padding: 20px 0;
+    -webkit-box-shadow: 0 15px 35px rgb(0 0 0 / 10%);
+    box-shadow: 0 15px 35px rgb(0 0 0 / 10%);
+}
+
+.counter-settings-content i {
+    font-size: 45px;
+    margin-bottom: 20px;
+}
+
+.counter-settings-content h3 {
+    color: #fff;
+}
+
+.counter-settings-content p {
+    color: #fff;
+}
+
+.counter-settings-single {
+    text-align: center;
+    color: #fff;
+    margin: 20px 0;
+}
 
