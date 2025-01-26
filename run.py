@@ -621,9 +621,6 @@ def update_element_in_db(element_id, data_type, value):
                 "contact_address_contactpage",
                 "contact_phone_general",
                 "contact_email_general",
-                "contact_transport_bus_splx",
-                "contact_transport_train_splx",
-                "contact_transport_metro_splx",
                 "counter_treatment_per_week",
                 "counter_team_in_employee",
                 "counter_percent_of_satisfacted_consumer",
@@ -1045,6 +1042,36 @@ def update_element_in_db(element_id, data_type, value):
                         cunet_list_db[index] = value
                         ready_string_splx = spea_second.join(cunet_list_db)
 
+
+            # TWORZENIE ZESTAWU ZAPYTANIA MySQL
+            if ready_string_splx is not None and table_db is not None and column_db is not None and isinstance(id_db, int):
+                query = f"""
+                        UPDATE {table_db}
+                        SET {column_db} = %s
+                        WHERE id = %s
+                """
+                params = (ready_string_splx, id_db)
+
+        if strona == 'setting_company':
+            ready_string_splx = None
+            table_db = strona
+            column_db = sekcja
+            id_db = id_number
+            
+            SPLX_SINGLE_ITEM = [
+                "contact_transport_bus_splx",
+                "contact_transport_train_splx",
+                "contact_transport_metro_splx"
+            ]
+            if sekcja in SPLX_SINGLE_ITEM:
+                exactly_what = None
+                for c in SPLX_MULTI_ITEM: 
+                    if c == sekcja: exactly_what = c
+                if exactly_what is None:
+                    print("Problem Klucza")
+                    return False
+                
+                ready_string_splx = value
 
             # TWORZENIE ZESTAWU ZAPYTANIA MySQL
             if ready_string_splx is not None and table_db is not None and column_db is not None and isinstance(id_db, int):
