@@ -85,7 +85,11 @@
                         <h3 class="mb-2">
                             Adres na stronie głównej
                         </h3>
-                        <p>
+                        <p
+                            data-type="text"
+                            data-editable
+                            id="setting_company-contact_address_homepage-1-1-1" 
+                        >
                             ul. Arkuszowa 63, Warszawa
                         </p>
                     </div>
@@ -100,7 +104,11 @@
                         <h3 class="mb-2">
                             Adres w kontakcie
                         </h3>
-                        <p>
+                        <p
+                            data-type="text"
+                            data-editable
+                            id="setting_company-contact_address_contactpage-1-1-1" 
+                        >
                             Warszawa Bielany, ul. Arkuszowa 63
                         </p>
                     </div>
@@ -115,7 +123,11 @@
                         <h3 class="mb-2">
                             Główny telefon 
                         </h3>
-                        <p>
+                        <p
+                            data-type="text"
+                            data-editable
+                            id="setting_company-contact_phone_general-1-1-1" 
+                        >
                             +48 790 777 350
                         </p>
                     </div>
@@ -131,7 +143,11 @@
                         <h3 class="mb-2">
                             Główny E-mail 
                         </h3>
-                        <p>
+                        <p
+                            data-type="text"
+                            data-editable
+                            id="setting_company-contact_email_general-1-1-1" 
+                        >
                             arkuszowa@duodent.com.pl
                         </p>
                     </div>
@@ -147,16 +163,50 @@
                         <h3 class="mb-2">
                             Główny E-mail serwera
                         </h3>
-                        <p>
+                        <p
+                            data-type="text"
+                            data-editable
+                            id="system_setting-config_smtp_username-1-1-1"
+                        >
                             arkuszowa@duodent.com.pl
                         </p>
-                        <p>
+                        <p
+                            data-type="text"
+                            data-editable
+                            id="system_setting-config_smtp_server-1-1-1"
+                        >
                             serwer174343.home.pl
                         </p>
-                        <p>
+                        <p
+                            data-type="text"
+                            data-editable
+                            id="system_setting-config_smtp_port-1-1-1"
+                        >
                             587
                         </p>
-                        <input type="password" class="password-update" placeholder="Podaj hasło maila root!" id="setting-passwoerd_root_mail-1-1-1"/>
+                        <form>
+                            <div style="position: relative; display: inline-block;">
+                                <input type="password" class="password-update" placeholder="Podaj hasło maila root!" id="system_setting-config_smtp_password-1-1-1" required/>
+                                <span onclick="togglePasswordVisibility()" 
+                                      style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer;">
+                                    👁️
+                                </span>
+                            </div>
+                            <button type="submit">Ustaw hasło</button>
+                        </form>
+                        
+                        <script>
+                        function togglePasswordVisibility() {
+                            const passwordField = document.getElementById('system_setting-config_smtp_password-1-1-1');
+                            const passwordFieldType = passwordField.getAttribute('type');
+                            
+                            if (passwordFieldType === 'password') {
+                                passwordField.setAttribute('type', 'text');
+                            } else {
+                                passwordField.setAttribute('type', 'password');
+                            }
+                        }
+                        </script>
                     </div>
                 </div>
             </div>
@@ -175,13 +225,28 @@
                             {% set bg_image_tramwaj = url_for('static', filename='img/tramwaj-ico.png') %}
                             {% set bg_image_metro = url_for('static', filename='img/metro-ico.png') %}
                             <span class="transport-icon" style="background-image: url('{{bg_image_autobus}}');"></span>
-                            <spam class="apple-style-transport">110</spam> <spam class="apple-style-transport">210</spam> 
+                            <spam class="apple-style-transport">110</spam> 
+                            <spam class="apple-style-transport">210</spam> 
                             <span class="transport-icon" style="background-image: url({{bg_image_tramwaj}});"></span> 
-                            <spam class="apple-style-transport">26</spam> <spam class="apple-style-transport">33</spam> 
+                            <spam class="apple-style-transport">26</spam> 
+                            <spam class="apple-style-transport">33</spam> 
                             <span class="transport-icon" style="background-image: url({{bg_image_metro}});"></span> 
                             <spam style="color:#0000ff;">M</spam><spam style="color:red;">1</spam> Młociny
                         </p>
                     </div>
+                    
+                    <div class="mb-3">
+                        <label for="list-container_contact_transport_bus_splx-1-1-1" class="form-label"><span class="transport-icon" style="background-image: url('{{bg_image_autobus}}');"></span></label>
+                        <div id="list-container_contact_transport_bus_splx-1-1-1" class="no-border">
+                            <!-- Dynamicznie dodawane elementy -->
+                        </div>
+                        <div class="text-end mt-3">
+                            <button type="button" class="btn btn-warning btn-sm" onclick="addListItem('contact_transport_bus_splx-1-1-1', template, 'list-container_', 'Nr lini')">
+                                <i class="bi bi-plus-square-dotted"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <button type="button" class="btn btn-success" onclick="exportList('contact_transport_bus_splx-1-1-1', false)">Zapisz Autobusy</button>
                 </div>
             </div>
         </div>
@@ -235,30 +300,22 @@
     <div class="container">
         <div class="row">
             <div class="col-12 contact-area ">
-                <div class="section-title">
-                    <span class="sub-title">
-                        <i class="flaticon-hashtag-symbol"></i>
-                        Dane do płatności
-                    </span>
-                    <h2>Płatności dla <span>Duodent</span></h2>
-                    <p>
-                        Poniżej znajdziesz szczegółowe dane do wykonania przelewu. Jeśli masz pytania, skontaktuj się z nami, a z chęcią pomożemy!
-                    </p>
-                </div>
                 <div class="container mt-4">
                     <ul class="list-group list-group-flush">
                         <li class="list-group-item">
-                            <strong>Bank:</strong> Volkswagen Bank Polska S.A.
+                            <strong>Bank:</strong> 
+                            <span id="xx1">Volkswagen Bank Polska S.A.</span>
                         </li>
                         <li class="list-group-item">
                             <strong>Numer konta:</strong> 
                             <span id="account-number">92 2130 0004 2001 0217 3680 0003</span>
                         </li>
                         <li class="list-group-item">
-                            <strong>Tytuł przelewu:</strong> „Imię i nazwisko Pacjenta”
+                            <strong>Tytuł przelewu:</strong><span id="xx2"> „Imię i nazwisko Pacjenta”</span>
                         </li>
                         <li class="list-group-item">
-                            <strong>Potwierdzenie płatności:</strong> Prosimy o wysłanie potwierdzenia na adres e-mail: 
+                            <strong>Potwierdzenie płatności:</strong> 
+                            <span id="xx3">Prosimy o wysłanie potwierdzenia na adres e-mail: </span>
                             <a href="mailto:arkuszowa@duodent.com.pl" class="text-primary">arkuszowa@duodent.com.pl</a>
                         </li>
                     </ul>
