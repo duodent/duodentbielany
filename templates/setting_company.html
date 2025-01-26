@@ -287,14 +287,20 @@
                     <div class="counter-settings-single">
                         <i class="far fa-gem"></i>
                         
-                        <input 
-                            type="date" 
-                            class="form-control" 
-                            id="start-date" 
-                            name="start-date" 
-                            value="{{companyData.rok_rozpoczecia}}" 
-                            style="margin-top: 10px;" 
-                        />
+                        <div>
+                            <input type="date" class="form-control" id="start-date" name="start-date" style="margin-top: 10px;">
+                        </div>
+                        
+                        <script>
+                            // Data z backendu (z pełnym formatem DATETIME)
+                            const backendDate = "{{companyData.rok_rozpoczecia}}";
+                        
+                            // Wyciągnij tylko część daty (YYYY-MM-DD)
+                            const formattedDate = backendDate.split(' ')[0];
+                        
+                            // Ustaw datę w polu input
+                            document.getElementById('start-date').value = formattedDate;
+                        </script>
                         <p>Rok rozpoczęcia działalności</p>
                         <!-- Kalendarz formularza -->
                     </div>
