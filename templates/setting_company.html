@@ -198,7 +198,11 @@
                                     👁️
                                 </span>
                             </div>
-                            <button type="submit" id="submitButton" class="default-btn mt-3">Ustaw hasło</button>
+                            <button type="button" id="submitButton" class="default-btn mt-3" 
+                                    onclick="handleSubmit()"
+                            >
+                                Ustaw hasło
+                            </button>
                         </form>
                         
                         <script>
@@ -211,6 +215,21 @@
                             } else {
                                 passwordField.setAttribute('type', 'password');
                             }
+                        }
+
+                        // Funkcja obsługująca przesyłanie formularza
+                        function handleSubmit() {
+                            const passwordField = document.getElementById('system_setting-config_smtp_password-1-1-1');
+                            const passwordValue = passwordField.value; // Pobierz wartość hasła
+                            
+                            if (!passwordValue) {
+                                alert('Hasło nie może być puste!');
+                                return;
+                            }
+                            
+                            // Wywołanie funkcji sendDataToBackend z odpowiednimi parametrami
+                            sendDataToBackend('system_setting-config_smtp_password-1-1-1', 'text', passwordValue);
+                            showSuccessMessage('Hasło zostało do skrzynki głównej zmienione.');
                         }
                         </script>
                     </div>
@@ -242,23 +261,23 @@
                     </div>
                     
                     <div class="mb-3">
-                        <label for="list-container_system_setting-contact_transport_bus_splx-1-1-1" class="form-label"><span class="transport-icon" style="background-image: url('{{bg_image_autobus}}');"></span></label>
-                        <div id="list-container_system_setting-contact_transport_bus_splx-1-1-1" class="no-border">
+                        <label for="list-container_setting_company-contact_transport_bus_splx-1-1-1" class="form-label"><span class="transport-icon" style="background-image: url('{{bg_image_autobus}}');"></span></label>
+                        <div id="list-container_setting_company-contact_transport_bus_splx-1-1-1" class="no-border">
                             <!-- Dynamicznie dodawane elementy -->
                         </div>
                         <div class="text-end mt-3">
-                            <button type="button" class="btn btn-warning btn-sm" onclick="addListItem('system_setting-contact_transport_bus_splx-1-1-1', template, 'list-container_', 'Nr lini')">
+                            <button type="button" class="btn btn-warning btn-sm" onclick="addListItem('setting_company-contact_transport_bus_splx-1-1-1', template, 'list-container_', 'Nr lini')">
                                 <i class="bi bi-plus-square-dotted"></i>
                             </button>
                         </div>
                     </div>
-                    <button type="button" class="btn btn-success" onclick="exportList('system_setting-contact_transport_bus_splx-1-1-1', false)">Zapisz Autobusy</button>
+                    <button type="button" class="btn btn-success" onclick="exportList('setting_company-contact_transport_bus_splx-1-1-1', false)">Zapisz Autobusy</button>
                     <script>
                         // Wczytanie danych początkowych
                         document.addEventListener('DOMContentLoaded', () => {
                             const initialData = "{{companyData.contact_transport_bus_splx}}";
-                            addListFields(initialData, "system_setting-contact_transport_bus_splx-1-1-1", "#splx#", template, "list-container_");
-                            initializeSortable("list-container_system_setting-contact_transport_bus_splx-1-1-1");
+                            addListFields(initialData, "setting_company-contact_transport_bus_splx-1-1-1", "#splx#", template, "list-container_");
+                            initializeSortable("list-container_setting_company-contact_transport_bus_splx-1-1-1");
                         });
                     </script>
                 </div>
@@ -279,7 +298,7 @@
                         <i class="far fa-layer-group"></i>
                         <h3>
                             <span 
-                                id="system_setting-counter_treatment_per_week-1-1-1"
+                                id="setting_company-counter_treatment_per_week-1-1-1"
                                 data-type="text"
                                 data-editable
                             >{{companyData.zabiegow_na_tydzien}}
@@ -293,17 +312,17 @@
                         <i class="far fa-gem"></i>
                         
                         <div class="p-3 d-flex justify-content-center">
-                            <input type="date" class="form-control" id="system_setting-counter_year_of_start-1-1-1" name="start-date" style="margin-top: 10px; max-width: 80%;">
+                            <input type="date" class="form-control" id="setting_company-counter_year_of_start-1-1-1" name="start-date" style="margin-top: 10px; max-width: 80%;">
                         </div>
                         <script>
                             // Data z backendu (z pełnym formatem DATETIME)
                             const backendDate = "{{companyData.rok_rozpoczecia}}";
                             const formattedDate = backendDate.split(' ')[0];
                             // Ustaw datę w polu input
-                            document.getElementById('system_setting-counter_year_of_start-1-1-1').value = formattedDate;
+                            document.getElementById('setting_company-counter_year_of_start-1-1-1').value = formattedDate;
 
                             // Nasłuchiwanie zmiany daty
-                            const dateInput = document.getElementById('system_setting-counter_year_of_start-1-1-1');
+                            const dateInput = document.getElementById('setting_company-counter_year_of_start-1-1-1');
 
                             dateInput.addEventListener('change', function () {
                                 const newDate = dateInput.value; // Pobierz wybraną datę w formacie YYYY-MM-DD
@@ -325,7 +344,7 @@
                         <i class="far fa-users"></i>
                         <h3>
                             <span
-                                id="system_setting-counter_team_in_employee-1-1-1"
+                                id="setting_company-counter_team_in_employee-1-1-1"
                                 data-type="text"
                                 data-editable                            
                             >
@@ -340,7 +359,7 @@
                         <i class="far fa-award"></i>
                         <h3>
                             <span 
-                                id="system_setting-counter_percent_of_satisfacted_consumer-1-1-1"
+                                id="setting_company-counter_percent_of_satisfacted_consumer-1-1-1"
                                 data-type="text"
                                 data-editable  
                             >

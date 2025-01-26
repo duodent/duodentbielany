@@ -22,6 +22,7 @@ from flask_session import Session
 import hashlib
 import uuid
 from sendEmailBySmtp import send_html_email
+from end_1 import decode_integer, encode_string
 
 
 
@@ -105,6 +106,7 @@ Session(app)
 # Główne separatatory dzielenia stringów na listy
 spea_main = "#splx#"
 spea_second = "#|||#"
+ENDoneslot = "5875"
 
 # Główne ikony aplikacji
 iconer_changer_by_neme = {
@@ -607,9 +609,9 @@ def update_element_in_db(element_id, data_type, value):
                 """
                 params = (ready_string_splx, id_db)
         
-        if strona == 'system_setting':
+        if strona == 'setting_company':
             ready_string_splx = None
-            table_db = 'setting_company'
+            table_db = strona
             column_db = sekcja
             id_db = id_number
 
@@ -656,6 +658,50 @@ def update_element_in_db(element_id, data_type, value):
                     print(f"Błąd konwersji daty: {e}")
                     return False
 
+
+            # TWORZENIE ZESTAWU ZAPYTANIA MySQL
+            if ready_string_splx is not None and table_db is not None and column_db is not None and isinstance(id_db, int):
+                query = f"""
+                        UPDATE {table_db}
+                        SET {column_db} = %s
+                        WHERE id = %s
+                """
+                params = (ready_string_splx, id_db)
+
+        if strona == 'system_setting':
+            ready_string_splx = None
+            table_db = strona
+            column_db = sekcja
+            id_db = id_number
+
+            # NORMALNY TEXT
+            CLASSIC_TEXT = [
+                "config_smtp_username",
+                "config_smtp_server",
+                "config_smtp_port"                
+            ]
+            if sekcja in CLASSIC_TEXT:
+                exactly_what = None
+                for c in CLASSIC_TEXT: 
+                    if c == sekcja: exactly_what = c
+                if exactly_what is None:
+                    print("Problem Klucza")
+                    return False
+                ready_string_splx = value
+            
+            # NORMALNY TEXT
+            SE_DATA = ["config_smtp_password"]
+            if sekcja in SE_DATA:
+                exactly_what = None
+                for c in SE_DATA: 
+                    if c == sekcja: exactly_what = c
+                if exactly_what is None:
+                    print("Problem Klucza")
+                    return False
+                
+                resultPs = encode_string(value, ENDoneslot)
+                if "TK" in resultPs:
+                    ready_string_splx = resultPs.get("TK", None)
 
             # TWORZENIE ZESTAWU ZAPYTANIA MySQL
             if ready_string_splx is not None and table_db is not None and column_db is not None and isinstance(id_db, int):

@@ -4,15 +4,22 @@ from email.mime.multipart import MIMEMultipart
 global smtp_config
 # from config_utils import smtp_config
 from mysqlDB import connect_to_database
+from end_1 import decode_integer
+from run import ENDoneslot
+from bin.appslib import handle_error
 table_setting = 'system_setting'
+smtp_password_ = decode_integer(connect_to_database(f'SELECT config_smtp_password FROM {table_setting};')[0][0], ENDoneslot)
+
 smtp_config = {
     'smtp_server': connect_to_database(f'SELECT config_smtp_server FROM {table_setting};')[0][0],
     'smtp_port': connect_to_database(f'SELECT config_smtp_port FROM {table_setting};')[0][0],  # Domyślny port dla TLS
     'smtp_username': connect_to_database(f'SELECT config_smtp_username FROM {table_setting};')[0][0],
-    'smtp_password': connect_to_database(f'SELECT config_smtp_password FROM {table_setting};')[0][0]
+    'smtp_password': smtp_password_.get('success', 'NotAuth')
 }
 
-from bin.appslib import handle_error
+print(smtp_config['smtp_password'])
+
+
 
 def send_html_email(subject, html_body, to_email):
     try:
