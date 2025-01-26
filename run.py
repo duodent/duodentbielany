@@ -1225,7 +1225,13 @@ def team_memeber_router():
 def get_company_setting():
     got_data = take_data_where_ID("*", 'table', 'id', 1)
     export = {
-        "contact_transport_bus_splx": "210#splx#125"
+        "contact_transport_bus_splx": "210#splx#125",
+        "zabiegow_na_tydzien": 120,
+        "rok_rozpoczecia": '1989-05-21 18:50:15',
+        "ponad_zespol": 9,
+        "procent_klientow": 85
+
+        
     }
     return export
 
