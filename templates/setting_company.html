@@ -286,10 +286,17 @@
                 <div class="col-lg-3">
                     <div class="counter-settings-single">
                         <i class="far fa-gem"></i>
-                        <h3><span class="counter">{{companyData.rok_rozpoczecia}}</span> + </h3>
+                        
+                        <input 
+                            type="date" 
+                            class="form-control" 
+                            id="start-date" 
+                            name="start-date" 
+                            value="{{companyData.counter_year_of_start}}" 
+                            style="margin-top: 10px;" 
+                        />
                         <p>Rok rozpoczęcia działalności</p>
                         <!-- Kalendarz formularza -->
-                        <input type="date" class="form-control" id="start-date" name="start-date" style="margin-top: 10px;" />
                     </div>
                 </div>
                 <div class="col-lg-3">
