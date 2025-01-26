@@ -259,27 +259,52 @@
                             <spam style="color:#0000ff;">M</spam><spam style="color:red;">1</spam> Młociny
                         </p>
                     </div>
-                    
-                    <div class="mb-3">
-                        <label for="list-container_setting_company-contact_transport_bus_splx-1-1-1" class="form-label"><span class="transport-icon" style="background-image: url('{{bg_image_autobus}}');"></span></label>
-                        <div id="list-container_setting_company-contact_transport_bus_splx-1-1-1" class="no-border">
-                            <!-- Dynamicznie dodawane elementy -->
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="mb-3">
+                                <label for="list-container_setting_company-contact_transport_bus_splx-1-1-1" class="form-label"><span class="transport-icon" style="background-image: url('{{bg_image_autobus}}');"></span></label>
+                                <div id="list-container_setting_company-contact_transport_bus_splx-1-1-1" class="no-border">
+                                    <!-- Dynamicznie dodawane elementy -->
+                                </div>
+                                <div class="text-end mt-3">
+                                    <button type="button" class="btn btn-warning btn-sm" onclick="addListItem('setting_company-contact_transport_bus_splx-1-1-1', template, 'list-container_', 'Nr lini')">
+                                        <i class="bi bi-plus-square-dotted"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <button type="button" class="btn btn-success" onclick="exportList('setting_company-contact_transport_bus_splx-1-1-1', false)">Zapisz Autobusy</button>
+                            <script>
+                                // Wczytanie danych początkowych
+                                document.addEventListener('DOMContentLoaded', () => {
+                                    const initialData = "{{companyData.contact_transport_bus_splx}}";
+                                    addListFields(initialData, "setting_company-contact_transport_bus_splx-1-1-1", "#splx#", template, "list-container_");
+                                    initializeSortable("list-container_setting_company-contact_transport_bus_splx-1-1-1");
+                                });
+                            </script>
                         </div>
-                        <div class="text-end mt-3">
-                            <button type="button" class="btn btn-warning btn-sm" onclick="addListItem('setting_company-contact_transport_bus_splx-1-1-1', template, 'list-container_', 'Nr lini')">
-                                <i class="bi bi-plus-square-dotted"></i>
-                            </button>
+                        <div class="col-6">
+                            <div class="mb-3">
+                                <label for="list-container_setting_company-contact_transport_train_splx-1-1-1" class="form-label"><span class="transport-icon" style="background-image: url('{{bg_image_tramwaj}}');"></span></label>
+                                <div id="list-container_setting_company-contact_transport_train_splx-1-1-1" class="no-border">
+                                    <!-- Dynamicznie dodawane elementy -->
+                                </div>
+                                <div class="text-end mt-3">
+                                    <button type="button" class="btn btn-warning btn-sm" onclick="addListItem('setting_company-contact_transport_train_splx-1-1-1', template, 'list-container_', 'Nr lini')">
+                                        <i class="bi bi-plus-square-dotted"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <button type="button" class="btn btn-success" onclick="exportList('setting_company-contact_transport_train_splx-1-1-1', false)">Zapisz Autobusy</button>
+                            <script>
+                                // Wczytanie danych początkowych
+                                document.addEventListener('DOMContentLoaded', () => {
+                                    const initialData = "{{companyData.contact_transport_train_splx}}";
+                                    addListFields(initialData, "setting_company-contact_transport_train_splx-1-1-1", "#splx#", template, "list-container_");
+                                    initializeSortable("list-container_setting_company-contact_transport_train_splx-1-1-1");
+                                });
+                            </script>
                         </div>
                     </div>
-                    <button type="button" class="btn btn-success" onclick="exportList('setting_company-contact_transport_bus_splx-1-1-1', false)">Zapisz Autobusy</button>
-                    <script>
-                        // Wczytanie danych początkowych
-                        document.addEventListener('DOMContentLoaded', () => {
-                            const initialData = "{{companyData.contact_transport_bus_splx}}";
-                            addListFields(initialData, "setting_company-contact_transport_bus_splx-1-1-1", "#splx#", template, "list-container_");
-                            initializeSortable("list-container_setting_company-contact_transport_bus_splx-1-1-1");
-                        });
-                    </script>
                 </div>
             </div>
         </div>
@@ -383,18 +408,42 @@
                     <ul class="list-group list-group-flush">
                         <li class="list-group-item">
                             <strong>Bank:</strong> 
-                            <span id="xx1">Volkswagen Bank Polska S.A.</span>
+                            <span id="setting_company-contact_bank_name-1-1-1"
+                                data-type="text"
+                                data-editable
+                            >
+                                Volkswagen Bank Polska S.A.
+                            </span>
                         </li>
                         <li class="list-group-item">
                             <strong>Numer konta:</strong> 
-                            <span id="account-number">92 2130 0004 2001 0217 3680 0003</span>
+                            <span 
+                                id="setting_company-contact_bank_account-1-1-1"
+                                data-type="text"
+                                data-editable
+                            >
+                                92 2130 0004 2001 0217 3680 0003
+                            </span>
                         </li>
                         <li class="list-group-item">
-                            <strong>Tytuł przelewu:</strong><span id="xx2"> „Imię i nazwisko Pacjenta”</span>
+                            <strong>Tytuł przelewu: </strong>
+                            <span 
+                                id="setting_company-contact_bank_title-1-1-1"
+                                data-type="text"
+                                data-editable
+                            > 
+                                „Imię i nazwisko Pacjenta”
+                            </span>
                         </li>
                         <li class="list-group-item">
                             <strong>Potwierdzenie płatności:</strong> 
-                            <span id="xx3">Prosimy o wysłanie potwierdzenia na adres e-mail: </span>
+                            <span 
+                                id="setting_company-contact_bank_guidelines_for_email-1-1-1"
+                                data-type="text"
+                                data-editable
+                            >
+                                Prosimy o wysłanie potwierdzenia na adres e-mail: 
+                            </span>
                             <a href="mailto:arkuszowa@duodent.com.pl" class="text-primary">arkuszowa@duodent.com.pl</a>
                         </li>
                     </ul>

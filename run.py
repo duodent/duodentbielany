@@ -1331,12 +1331,11 @@ def get_company_setting():
     got_data = take_data_where_ID("*", 'table', 'id', 1)
     export = {
         "contact_transport_bus_splx": "210#splx#125",
+        "contact_transport_train_splx": "15#splx#25",
         "zabiegow_na_tydzien": 120,
         "rok_rozpoczecia": datetime(1989, 5, 20),
         "ponad_zespol": 9,
-        "procent_klientow": 85
-
-        
+        "procent_klientow": 85       
     }
     return export
 
