@@ -1224,8 +1224,10 @@ def team_memeber_router():
 
 def get_company_setting():
     got_data = take_data_where_ID("*", 'table', 'id', 1)
-
-    return
+    export = {
+        "contact_transport_bus_splx": "210#splx#125"
+    }
+    return export
 
 
 

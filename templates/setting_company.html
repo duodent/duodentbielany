@@ -236,17 +236,25 @@
                     </div>
                     
                     <div class="mb-3">
-                        <label for="list-container_contact_transport_bus_splx-1-1-1" class="form-label"><span class="transport-icon" style="background-image: url('{{bg_image_autobus}}');"></span></label>
-                        <div id="list-container_contact_transport_bus_splx-1-1-1" class="no-border">
+                        <label for="list-container_system_setting-contact_transport_bus_splx-1-1-1" class="form-label"><span class="transport-icon" style="background-image: url('{{bg_image_autobus}}');"></span></label>
+                        <div id="list-container_system_setting-contact_transport_bus_splx-1-1-1" class="no-border">
                             <!-- Dynamicznie dodawane elementy -->
                         </div>
                         <div class="text-end mt-3">
-                            <button type="button" class="btn btn-warning btn-sm" onclick="addListItem('contact_transport_bus_splx-1-1-1', template, 'list-container_', 'Nr lini')">
+                            <button type="button" class="btn btn-warning btn-sm" onclick="addListItem('system_setting-contact_transport_bus_splx-1-1-1', template, 'list-container_', 'Nr lini')">
                                 <i class="bi bi-plus-square-dotted"></i>
                             </button>
                         </div>
                     </div>
-                    <button type="button" class="btn btn-success" onclick="exportList('contact_transport_bus_splx-1-1-1', false)">Zapisz Autobusy</button>
+                    <button type="button" class="btn btn-success" onclick="exportList('system_setting-contact_transport_bus_splx-1-1-1', false)">Zapisz Autobusy</button>
+                    <script>
+                        // Wczytanie danych początkowych
+                        document.addEventListener('DOMContentLoaded', () => {
+                            const initialData = "{{companyData.contact_transport_bus_splx}}";
+                            addListFields(initialData, "system_setting-contact_transport_bus_splx-1-1-1", "#splx#", template, "list-container_");
+                            initializeSortable("list-container_system_setting-contact_transport_bus_splx-1-1-1");
+                        });
+                    </script>
                 </div>
             </div>
         </div>
