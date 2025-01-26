@@ -1227,7 +1227,7 @@ def get_company_setting():
     export = {
         "contact_transport_bus_splx": "210#splx#125",
         "zabiegow_na_tydzien": 120,
-        "rok_rozpoczecia": '1989-05-21 18:50:15',
+        "rok_rozpoczecia": datetime(1989, 5, 20),
         "ponad_zespol": 9,
         "procent_klientow": 85
 
