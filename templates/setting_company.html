@@ -278,7 +278,12 @@
                     <div class="counter-settings-single">
                         <i class="far fa-layer-group"></i>
                         <h3>
-                            <span class="counter">{{companyData.zabiegow_na_tydzien}}</span> + 
+                            <span 
+                                id="system_setting-counter_treatment_per_week-1-1-1"
+                                data-type="text"
+                                data-editable
+                            >{{companyData.zabiegow_na_tydzien}}
+                            </span>
                         </h3>
                         <p>Zabiegów w jednym tygodniu</p>
                     </div>
@@ -288,18 +293,28 @@
                         <i class="far fa-gem"></i>
                         
                         <div class="p-3 d-flex justify-content-center">
-                            <input type="date" class="form-control" id="start-date" name="start-date" style="margin-top: 10px; max-width: 80%;">
+                            <input type="date" class="form-control" id="system_setting-counter_year_of_start-1-1-1" name="start-date" style="margin-top: 10px; max-width: 80%;">
                         </div>
-                        
                         <script>
                             // Data z backendu (z pełnym formatem DATETIME)
                             const backendDate = "{{companyData.rok_rozpoczecia}}";
-                        
-                            // Wyciągnij tylko część daty (YYYY-MM-DD)
                             const formattedDate = backendDate.split(' ')[0];
-                        
                             // Ustaw datę w polu input
-                            document.getElementById('start-date').value = formattedDate;
+                            document.getElementById('system_setting-counter_year_of_start-1-1-1').value = formattedDate;
+
+                            // Nasłuchiwanie zmiany daty
+                            const dateInput = document.getElementById('system_setting-counter_year_of_start-1-1-1');
+
+                            dateInput.addEventListener('change', function () {
+                                const newDate = dateInput.value; // Pobierz wybraną datę w formacie YYYY-MM-DD
+                                const id = dateInput.id;
+                                const type = "text"; // Zgodnie z wymaganiem
+                                const value = `${newDate} 00:00:00`; // Przekształć na format DATETIME dla backendu
+
+                                // Wyślij nowe dane do backendu
+                                sendDataToBackend(id, type, value);
+                                showSuccessMessage(`Data rozpoczęcia działaności, została zmieniona. Poczekaj na przeładowanie aplikacji!`, elementId);
+                            });
                         </script>
                         <p>Rok rozpoczęcia działalności</p>
                         <!-- Kalendarz formularza -->
@@ -308,14 +323,30 @@
                 <div class="col-lg-3">
                     <div class="counter-settings-single">
                         <i class="far fa-users"></i>
-                        <h3><span class="counter">{{companyData.ponad_zespol}}</span> + </h3>
+                        <h3>
+                            <span
+                                id="system_setting-counter_team_in_employee-1-1-1"
+                                data-type="text"
+                                data-editable                            
+                            >
+                                {{companyData.ponad_zespol}}
+                            </span>
+                        </h3>
                         <p>Członkowie spoza zespołu</p>
                     </div>
                 </div>
                 <div class="col-lg-3">
                     <div class="counter-settings-single">
                         <i class="far fa-award"></i>
-                        <h3><span class="counter">{{companyData.procent_klientow}}</span> % </h3>
+                        <h3>
+                            <span 
+                                id="system_setting-counter_percent_of_satisfacted_consumer-1-1-1"
+                                data-type="text"
+                                data-editable  
+                            >
+                                {{companyData.procent_klientow}}
+                            </span> % 
+                        </h3>
                         <p>Procent zadowolonych klientów</p>
                     </div>
                 </div>

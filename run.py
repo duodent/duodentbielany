@@ -606,6 +606,65 @@ def update_element_in_db(element_id, data_type, value):
                         WHERE id = %s
                 """
                 params = (ready_string_splx, id_db)
+        
+        if strona == 'system_setting':
+            ready_string_splx = None
+            table_db = 'setting_company'
+            column_db = sekcja
+            id_db = id_number
+
+            # NORMALNY TEXT
+            CLASSIC_TEXT = [
+                "contact_address_homepage",
+                "contact_address_contactpage",
+                "contact_phone_general",
+                "contact_email_general",
+                "contact_transport_bus_splx",
+                "contact_transport_train_splx",
+                "contact_transport_metro_splx",
+                "counter_treatment_per_week",
+                "counter_team_in_employee",
+                "counter_percent_of_satisfacted_consumer",
+                "contact_bank_name",
+                "contact_bank_account",
+                "contact_bank_title",
+                "contact_bank_guidelines_for_email"
+            ]
+            if sekcja in CLASSIC_TEXT:
+                exactly_what = None
+                for c in CLASSIC_TEXT: 
+                    if c == sekcja: exactly_what = c
+                if exactly_what is None:
+                    print("Problem Klucza")
+                    return False
+                ready_string_splx = value
+
+            DATETIME_STRING = ["counter_year_of_start"]
+            if sekcja in DATETIME_STRING:
+                exactly_what = None
+                for c in DATETIME_STRING: 
+                    if c == sekcja: exactly_what = c
+                if exactly_what is None:
+                    print("Problem Klucza")
+                    return False
+
+                try:
+                    # Konwersja stringa na obiekt datetime
+                    datetime_object = datetime.strptime(value, "%Y-%m-%d %H:%M:%S")
+                    ready_string_splx = datetime_object
+                except ValueError as e:
+                    print(f"Błąd konwersji daty: {e}")
+                    return False
+
+
+            # TWORZENIE ZESTAWU ZAPYTANIA MySQL
+            if ready_string_splx is not None and table_db is not None and column_db is not None and isinstance(id_db, int):
+                query = f"""
+                        UPDATE {table_db}
+                        SET {column_db} = %s
+                        WHERE id = %s
+                """
+                params = (ready_string_splx, id_db)
 
     elif data_type == 'switch':
         ####################################################
