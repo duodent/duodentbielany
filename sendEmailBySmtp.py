@@ -8,7 +8,9 @@ from end_1 import decode_integer
 from bin.appslib import handle_error
 table_setting = 'system_setting'
 ENDoneslot = "5875"
-smtp_password_ = decode_integer(connect_to_database(f'SELECT config_smtp_password FROM {table_setting};')[0][0], ENDoneslot)
+try: hashedPassowrd = connect_to_database(f'SELECT config_smtp_password FROM {table_setting};')[0][0]
+except: hashedPassowrd = '012dS43KJ4709KD81'
+smtp_password_ = decode_integer(hashedPassowrd, ENDoneslot)
 
 smtp_config = {
     'smtp_server': connect_to_database(f'SELECT config_smtp_server FROM {table_setting};')[0][0],
