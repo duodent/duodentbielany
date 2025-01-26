@@ -1355,14 +1355,30 @@ def team_memeber_router():
 
 
 def get_company_setting():
-    got_data = take_data_where_ID("*", 'table', 'id', 1)
+    got_data_setting_company = take_data_where_ID("*", 'setting_company', 'id', 1)[0]
+    got_data_system_setting = take_data_where_ID("config_smtp_username, config_smtp_server, config_smtp_port", 'system_setting', 'id', 1)[0]
+
     export = {
-        "contact_transport_bus_splx": "210#splx#125",
-        "contact_transport_train_splx": "15#splx#25",
-        "zabiegow_na_tydzien": 120,
-        "rok_rozpoczecia": datetime(1989, 5, 20),
-        "ponad_zespol": 9,
-        "procent_klientow": 85       
+        "config_smtp_username": got_data_system_setting[0],
+        "config_smtp_server": got_data_system_setting[1],
+        "config_smtp_port": got_data_system_setting[2],
+
+        "contact_address_homepage": got_data_setting_company[1],
+        "contact_address_contactpage": got_data_setting_company[2],
+        "contact_phone_general": got_data_setting_company[3],
+        "contact_email_general": got_data_setting_company[4],
+        "contact_transport_bus_splx": got_data_setting_company[5],
+        "contact_transport_bus_list": str(got_data_setting_company[5]).split(spea_main),
+        "contact_transport_train_splx": got_data_setting_company[6],
+        "contact_transport_train_list": str(got_data_setting_company[6]).split(spea_main),
+        "zabiegow_na_tydzien": got_data_setting_company[8],
+        "rok_rozpoczecia": got_data_setting_company[9], # datetime(1989, 5, 20),
+        "ponad_zespol": got_data_setting_company[10],
+        "procent_klientow": got_data_setting_company[11],
+        "contact_bank_name": got_data_setting_company[12],
+        "contact_bank_account": got_data_setting_company[13],
+        "contact_bank_title": got_data_setting_company[14],
+        "contact_bank_guidelines_for_email": got_data_setting_company[15]
     }
     return export
 
