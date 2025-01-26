@@ -1005,7 +1005,7 @@ def update_element_in_db(element_id, data_type, value):
             SPLX_SINGLE_ITEM = ['html id tutaj']
             if sekcja in SPLX_SINGLE_ITEM:
                 exactly_what = None
-                for c in SPLX_MULTI_ITEM: 
+                for c in SPLX_SINGLE_ITEM: 
                     if c == sekcja: exactly_what = c
                 if exactly_what is None:
                     print("Problem Klucza")
@@ -1065,7 +1065,7 @@ def update_element_in_db(element_id, data_type, value):
             ]
             if sekcja in SPLX_SINGLE_ITEM:
                 exactly_what = None
-                for c in SPLX_MULTI_ITEM: 
+                for c in SPLX_SINGLE_ITEM: 
                     if c == sekcja: exactly_what = c
                 if exactly_what is None:
                     print("Problem Klucza")
