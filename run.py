@@ -1293,12 +1293,14 @@ def get_fileBy_categories(category_id, route_name="dokumenty/", status_aktywnosc
 
 
 def calculate_statistics():
+    
+    company_setting = get_company_setting()
     # Tymczasowe zmienne prototypowe
-    tygodniowa_statystyka_uslug = 120  # Liczba usług wykonanych w tygodniu
-    data_rozpoczecia_dzialalnosci = datetime(1989, 5, 20)  # Data rozpoczęcia działalności
+    tygodniowa_statystyka_uslug = company_setting.get('zabiegow_na_tydzien', 1) # 120  # Liczba usług wykonanych w tygodniu
+    data_rozpoczecia_dzialalnosci = company_setting.get('rok_rozpoczecia', datetime(1989, 5, 3)) # datetime(1989, 5, 20)  # Data rozpoczęcia działalności
     liczba_pracownikow = len(generator_teamDB())  # Aktualna liczba pracowników
-    zadeklarowani_pracownicy = 10  # Członkowie zespołu z poza strony www
-    procent_zadowolonych_klientow = 75  # Zadeklarowany procent zadowolonych klientów (w %)
+    zadeklarowani_pracownicy = company_setting.get('ponad_zespol', 0) # 10  # Członkowie zespołu z poza strony www
+    procent_zadowolonych_klientow = company_setting.get('procent_klientow', 1) # 75  # Zadeklarowany procent zadowolonych klientów (w %)
 
     # Wyliczenia
     zrealizowane_uslugi = tygodniowa_statystyka_uslug * 52  # Zrealizowane usługi w skali roku
@@ -1907,13 +1909,25 @@ def internal_server_error(e):
 def inject_shared_variable():
 
     treatmentFooter = treatments_db(True)
+    company_setting = get_company_setting()
     if len(treatmentFooter) >= 3:
         treatmentFooter = treatmentFooter[:3]
+
     return {
         'userName': session.get("username", 'NotLogin'),
         'treatmentMenu': {item["ready_route"]: item["tytul_glowny"] for item in treatments_db(True)},
         'treatmentFooter': treatmentFooter,
-        'companyStats': calculate_statistics()
+        'companyStats': calculate_statistics(),
+        'contact_address_homepage': company_setting.get('contact_address_homepage'),
+        'contact_address_contactpage': company_setting.get('contact_address_contactpage'),
+        'contact_phone_general': company_setting.get('contact_phone_general'),
+        'contact_email_general': company_setting.get('contact_email_general'),
+        'contact_transport_bus_list': company_setting.get('contact_transport_bus_list'),
+        'contact_transport_train_list': company_setting.get('contact_transport_train_list'),
+        'contact_bank_name': company_setting.get('contact_bank_name'),
+        'contact_bank_account': company_setting.get('contact_bank_account'),
+        'contact_bank_title': company_setting.get('contact_bank_title'),
+        'contact_bank_guidelines_for_email': company_setting.get('contact_bank_guidelines_for_email')
     }
 
 @app.context_processor
