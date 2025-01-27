@@ -117,7 +117,7 @@
                             Lokalizacja
                         </h3>
                         <p>
-                            Warszawa Bielany, ul. Arkuszowa 63
+                            {{contact_address_contactpage}}
                         </p>
                     </div>
                 </div>
@@ -132,7 +132,7 @@
                             Zadzwoń do nas
                         </h3>
                         <p>
-                            <a href="tel:+48790777350">+48 790 777 350</a>
+                            <a href="tel:{{contact_phone_general_thin}}">{{contact_phone_general}}</a>
                         </p>
                     </div>
                 </div>
@@ -148,8 +148,23 @@
                             Dojazd
                         </h3>
                         <p style="font-weight: 500;">
-                            <span class="transport-icon" style="background-image: url('static/img/autobus-ico.png');"></span> <spam class="apple-style-transport">110</spam> <spam class="apple-style-transport">210</spam> <span class="transport-icon" style="background-image: url('static/img/tramwaj-ico.png');"></span> <spam class="apple-style-transport">26</spam> <spam class="apple-style-transport">33</spam> <span class="transport-icon" style="background-image: url('static/img/metro-ico.png');"></span> <spam style="color:#0000ff;">M</spam><spam style="color:red;">1</spam> Młociny
+                            {% set bg_image_autobus = url_for('static', filename='img/autobus-ico.png') %}
+                            {% set bg_image_tramwaj = url_for('static', filename='img/tramwaj-ico.png') %}
+                            {% set bg_image_metro = url_for('static', filename='img/metro-ico.png') %}
+                            <span class="transport-icon" style="background-image: url('{{bg_image_autobus}}');"></span>
+                            {% for bus_line in contact_transport_bus_list %}
+                                <spam class="apple-style-transport">{{bus_line}}</spam> 
+                            {% endfor %}
+                            <span class="transport-icon" style="background-image: url({{bg_image_tramwaj}});"></span> 
+                            {% for train_line in contact_transport_train_list %}
+                                <spam class="apple-style-transport">{{train_line}}</spam> 
+                            {% endfor %}
+                            <span class="transport-icon" style="background-image: url({{bg_image_metro}});"></span> 
+                            <spam style="color:#0000ff;">M</spam><spam style="color:red;">1</spam> Młociny
                         </p>
+                        <!-- <p style="font-weight: 500;">
+                            <span class="transport-icon" style="background-image: url('static/img/autobus-ico.png');"></span> <spam class="apple-style-transport">110</spam> <spam class="apple-style-transport">210</spam> <span class="transport-icon" style="background-image: url('static/img/tramwaj-ico.png');"></span> <spam class="apple-style-transport">26</spam> <spam class="apple-style-transport">33</spam> <span class="transport-icon" style="background-image: url('static/img/metro-ico.png');"></span> <spam style="color:#0000ff;">M</spam><spam style="color:red;">1</spam> Młociny
+                        </p> -->
                     </div>
                 </div>
             </div>
@@ -169,19 +184,19 @@
                 <div class="container mt-4">
                     <ul class="list-group list-group-flush">
                         <li class="list-group-item">
-                            <strong>Bank:</strong> Volkswagen Bank Polska S.A.
+                            <strong>Bank:</strong> {{contact_bank_name}}
                         </li>
                         <li class="list-group-item">
                             <strong>Numer konta:</strong> 
-                            <span id="account-number">92 2130 0004 2001 0217 3680 0003</span>
+                            <span id="account-number">{{contact_bank_account}}</span>
                             <i class="bi bi-clipboard" id="copy-icon" style="cursor: pointer;" title="Kopiuj do schowka"></i>
                         </li>
                         <li class="list-group-item">
-                            <strong>Tytuł przelewu:</strong> „Imię i nazwisko Pacjenta”
+                            <strong>Tytuł przelewu:</strong> {{contact_bank_title}}
                         </li>
                         <li class="list-group-item">
-                            <strong>Potwierdzenie płatności:</strong> Prosimy o wysłanie potwierdzenia na adres e-mail: 
-                            <a href="mailto:arkuszowa@duodent.com.pl" class="text-primary">arkuszowa@duodent.com.pl</a>
+                            <strong>Potwierdzenie płatności:</strong> {{contact_bank_guidelines_for_email}}
+                            <a href="mailto:{{contact_email_general}}" class="text-primary">{{contact_email_general}}</a>
                         </li>
                     </ul>
                     <div id="copy-alert" class="alert alert-success d-none mt-3" role="alert">
