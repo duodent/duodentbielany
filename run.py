@@ -1913,6 +1913,12 @@ def inject_shared_variable():
     if len(treatmentFooter) >= 3:
         treatmentFooter = treatmentFooter[:3]
 
+    if ',' in company_setting.get('contact_address_contactpage',''):
+        contact_address_contactpage_city = company_setting.get('contact_address_contactpage', ' , ').split(',')[0].strip()
+        contact_address_contactpage_street = company_setting.get('contact_address_contactpage', ' , ').split(',')[1].strip()
+    else:
+        contact_address_contactpage_city = None
+        contact_address_contactpage_street = None
     return {
         'userName': session.get("username", 'NotLogin'),
         'treatmentMenu': {item["ready_route"]: item["tytul_glowny"] for item in treatments_db(True)},
@@ -1920,7 +1926,10 @@ def inject_shared_variable():
         'companyStats': calculate_statistics(),
         'contact_address_homepage': company_setting.get('contact_address_homepage'),
         'contact_address_contactpage': company_setting.get('contact_address_contactpage'),
+        'contact_address_contactpage_city': contact_address_contactpage_city,
+        'contact_address_contactpage_street': contact_address_contactpage_street,
         'contact_phone_general': company_setting.get('contact_phone_general'),
+        'contact_phone_general_thin': company_setting.get('contact_phone_general', '').replace(' ', ''),
         'contact_email_general': company_setting.get('contact_email_general'),
         'contact_transport_bus_list': company_setting.get('contact_transport_bus_list'),
         'contact_transport_train_list': company_setting.get('contact_transport_train_list'),

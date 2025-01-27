@@ -84,7 +84,7 @@
                             <a href="https://www.google.com/maps/search/?api=1&query=52.283455,20.900840" target="_blank"><i class="bi bi-geo-alt icon-size"></i></a>
                         </div>
                         <div class="m-3">
-                            <a href="mailto:arkuszowa@duodent.com.pl"><i class="bi bi-envelope-at icon-size"></i></a>
+                            <a href="mailto:{{contact_email_general}}"><i class="bi bi-envelope-at icon-size"></i></a>
                         </div>
                         <div class="m-3">
                             <a href="https://www.facebook.com/duodent.przychodnia" target="_blank">
@@ -116,7 +116,7 @@
                         </li>
                         <li>
                             <i class="far fa-envelope-open"></i>
-                            <a href="mailto:arkuszowa@duodent.com.pl"><span>arkuszowa@duodent.com.pl</span></a>
+                            <a href="mailto:{{contact_email_general}}"><span>{{contact_email_general}}</span></a>
                         </li>
                     </ul>
                 </div>
@@ -171,7 +171,7 @@
                             <i id="phone-icon" class="flaticon-emergency-call" onClick="window.location.href='tel:+48790777350'"></i>
                             
                             Zadzwoń
-                            <span><a href="tel:+48790777350">790 777 350</a></span>
+                            <span><a href="tel:{{contact_phone_general_thin}}">{{contact_phone_general}}</a></span>
                         </li>
                         <li>
                             <i class="flaticon-wall-clock" onClick="window.location.href='/umow-wizyte-online'"></i>
@@ -501,15 +501,15 @@
                         <ul class="footer-information">
                             <li>
                                 <i class="flaticon-red-cross"></i>
-                                Warszawa Bielany
+                                {{contact_address_contactpage_city}}
                                 <a href="https://www.google.com/maps/search/?api=1&query=52.283455,20.900840" target="_blank">
-                                    <span>ul. Arkuszowa 63</span>
+                                    <span>{{contact_address_contactpage_street}}</span>
                                 </a>
                             </li>
                             <li>
                                 <i class="flaticon-emergency-call"></i>
                                 Telefon
-                                <span><a href="tel:+48790777350">+48 790 777 350</a></span>
+                                <span><a href="tel:{{contact_phone_general_thin}}">{{contact_phone_general}}</a></span>
                             </li>
                             <li>
                                 <i class="flaticon-wall-clock"></i>
@@ -522,14 +522,14 @@
                                 <strong>
                                     Dojazd<br />
                                 </strong>
-                                Autobusy: 110, 210<br />
-                                Tramwaje: 26, 33<br />
+                                Autobusy: {% for bus_line in contact_transport_bus_list %}{{ bus_line }}{% if not loop.last %}, {% endif %}{% endfor %}<br />
+                                Tramwaje: {% for train_line in contact_transport_train_list %}{{ train_line }}{% if not loop.last %}, {% endif %}{% endfor %}<br />
                                 Metro: M1 (Młociny)<br />
                             </li>
                         </ul>
 
                         <div class="footer-social">
-                            <a href="mailto:arkuszowa@duodent.com.pl"><i class="far fa-envelope-open"></i></a>
+                            <a href="mailto:{{contact_email_general}}"><i class="far fa-envelope-open"></i></a>
                             <a href="https://www.facebook.com/duodent.przychodnia" target="_blank"><i class="bx bxl-facebook"></i></a>
                             <a href="https://www.instagram.com/duodentbielany" target="_blank"><i class="bx bxl-instagram"></i></a>
                             <!-- <a href="#"><i class="bx bxl-twitter"></i></a> -->
@@ -549,7 +549,7 @@
             <div class="copyright-area-content">
                 <p>
                     &copy; 
-                    <a href="#">
+                    <a href="mailto:{{contact_email_general}}">
                         Duodent Bielany <span id="date"></span>.
                     </a>
                     Wszelkie prawa zastrzeżone.
