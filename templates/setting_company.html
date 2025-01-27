@@ -90,7 +90,7 @@
                             data-editable
                             id="setting_company-contact_address_homepage-1-1-1" 
                         >
-                            ul. Arkuszowa 63, Warszawa
+                            {{companyData.contact_address_homepage}}
                         </p>
                     </div>
                 </div>
@@ -109,7 +109,7 @@
                             data-editable
                             id="setting_company-contact_address_contactpage-1-1-1" 
                         >
-                            Warszawa Bielany, ul. Arkuszowa 63
+                            {{companyData.contact_address_contactpage}}
                         </p>
                     </div>
                 </div>
@@ -128,7 +128,7 @@
                             data-editable
                             id="setting_company-contact_phone_general-1-1-1" 
                         >
-                            +48 790 777 350
+                            {{companyData.contact_phone_general}}
                         </p>
                     </div>
                 </div>
@@ -148,7 +148,7 @@
                             data-editable
                             id="setting_company-contact_email_general-1-1-1" 
                         >
-                            arkuszowa@duodent.com.pl
+                            {{companyData.contact_email_general}}
                         </p>
                     </div>
                 </div>
@@ -168,21 +168,21 @@
                             data-editable
                             id="system_setting-config_smtp_username-1-1-1"
                         >
-                            arkuszowa@duodent.com.pl
+                            {{companyData.config_smtp_username}}
                         </p>
                         <p
                             data-type="text"
                             data-editable
                             id="system_setting-config_smtp_server-1-1-1"
                         >
-                            serwer174343.home.pl
+                            {{companyData.config_smtp_server}}
                         </p>
                         <p
                             data-type="text"
                             data-editable
                             id="system_setting-config_smtp_port-1-1-1"
                         >
-                            587
+                            {{companyData.config_smtp_port}}
                         </p>
                         <form>
                             <div class="form-floating" style="position: relative;">
@@ -250,9 +250,14 @@
                             {% set bg_image_tramwaj = url_for('static', filename='img/tramwaj-ico.png') %}
                             {% set bg_image_metro = url_for('static', filename='img/metro-ico.png') %}
                             <span class="transport-icon" style="background-image: url('{{bg_image_autobus}}');"></span>
-                            <spam class="apple-style-transport">110</spam> 
+                            {% for bus_line in companyData.contact_transport_bus_list %}
+                                <spam class="apple-style-transport">bus_line</spam> 
+                            {% endfor %}
                             <spam class="apple-style-transport">210</spam> 
                             <span class="transport-icon" style="background-image: url({{bg_image_tramwaj}});"></span> 
+                            {% for train_line in companyData.contact_transport_train_list %}
+                                <spam class="apple-style-transport">train_line</spam> 
+                            {% endfor %}
                             <spam class="apple-style-transport">26</spam> 
                             <spam class="apple-style-transport">33</spam> 
                             <span class="transport-icon" style="background-image: url({{bg_image_metro}});"></span> 
@@ -412,7 +417,7 @@
                                 data-type="text"
                                 data-editable
                             >
-                                Volkswagen Bank Polska S.A.
+                                {{companyData.contact_bank_name}}
                             </span>
                         </li>
                         <li class="list-group-item">
@@ -422,7 +427,7 @@
                                 data-type="text"
                                 data-editable
                             >
-                                92 2130 0004 2001 0217 3680 0003
+                                {{companyData.contact_bank_account}}
                             </span>
                         </li>
                         <li class="list-group-item">
@@ -432,7 +437,7 @@
                                 data-type="text"
                                 data-editable
                             > 
-                                „Imię i nazwisko Pacjenta”
+                                {{companyData.contact_bank_title}}
                             </span>
                         </li>
                         <li class="list-group-item">
@@ -442,7 +447,7 @@
                                 data-type="text"
                                 data-editable
                             >
-                                Prosimy o wysłanie potwierdzenia na adres e-mail: 
+                                {{companyData.contact_bank_guidelines_for_email}}
                             </span>
                             <a href="mailto:arkuszowa@duodent.com.pl" class="text-primary">arkuszowa@duodent.com.pl</a>
                         </li>
