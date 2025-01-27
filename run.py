@@ -1930,6 +1930,7 @@ def inject_shared_variable():
         'contact_address_contactpage_street': contact_address_contactpage_street,
         'contact_phone_general': company_setting.get('contact_phone_general'),
         'contact_phone_general_thin': company_setting.get('contact_phone_general', '').replace(' ', ''),
+        'contact_phone_general_no48': company_setting.get('contact_phone_general', '').replace('+48', '').strip(),
         'contact_email_general': company_setting.get('contact_email_general'),
         'contact_transport_bus_list': company_setting.get('contact_transport_bus_list'),
         'contact_transport_train_list': company_setting.get('contact_transport_train_list'),
