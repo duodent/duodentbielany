@@ -253,13 +253,10 @@
                             {% for bus_line in companyData.contact_transport_bus_list %}
                                 <spam class="apple-style-transport">{{bus_line}}</spam> 
                             {% endfor %}
-                            <spam class="apple-style-transport">210</spam> 
                             <span class="transport-icon" style="background-image: url({{bg_image_tramwaj}});"></span> 
                             {% for train_line in companyData.contact_transport_train_list %}
                                 <spam class="apple-style-transport">{{train_line}}</spam> 
                             {% endfor %}
-                            <spam class="apple-style-transport">26</spam> 
-                            <spam class="apple-style-transport">33</spam> 
                             <span class="transport-icon" style="background-image: url({{bg_image_metro}});"></span> 
                             <spam style="color:#0000ff;">M</spam><spam style="color:red;">1</spam> Młociny
                         </p>
@@ -277,7 +274,7 @@
                                     </button>
                                 </div>
                             </div>
-                            <button type="button" class="btn btn-success" onclick="exportList('setting_company-contact_transport_bus_splx-1-1-1', false)">Zapisz Autobusy</button>
+                            <button type="button" class="btn btn-success" onclick="exportList('setting_company-contact_transport_bus_splx-1-1-1', false)"><i class="bi bi-floppy"></i></button>
                             <script>
                                 // Wczytanie danych początkowych
                                 document.addEventListener('DOMContentLoaded', () => {
@@ -299,7 +296,7 @@
                                     </button>
                                 </div>
                             </div>
-                            <button type="button" class="btn btn-success" onclick="exportList('setting_company-contact_transport_train_splx-1-1-1', false)">Zapisz Tramwaje</button>
+                            <button type="button" class="btn btn-success" onclick="exportList('setting_company-contact_transport_train_splx-1-1-1', false)"><i class="bi bi-floppy"></i></button>
                             <script>
                                 // Wczytanie danych początkowych
                                 document.addEventListener('DOMContentLoaded', () => {
