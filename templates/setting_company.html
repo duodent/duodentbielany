@@ -251,12 +251,12 @@
                             {% set bg_image_metro = url_for('static', filename='img/metro-ico.png') %}
                             <span class="transport-icon" style="background-image: url('{{bg_image_autobus}}');"></span>
                             {% for bus_line in companyData.contact_transport_bus_list %}
-                                <spam class="apple-style-transport">bus_line</spam> 
+                                <spam class="apple-style-transport">{{bus_line}}</spam> 
                             {% endfor %}
                             <spam class="apple-style-transport">210</spam> 
                             <span class="transport-icon" style="background-image: url({{bg_image_tramwaj}});"></span> 
                             {% for train_line in companyData.contact_transport_train_list %}
-                                <spam class="apple-style-transport">train_line</spam> 
+                                <spam class="apple-style-transport">{{train_line}}</spam> 
                             {% endfor %}
                             <spam class="apple-style-transport">26</spam> 
                             <spam class="apple-style-transport">33</spam> 
