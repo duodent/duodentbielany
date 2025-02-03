@@ -3858,7 +3858,7 @@ def team_mambers(name_pracownika):
 def reception_dashboard(link_hash):
 
     visit_data = get_visit_data(link_hash)
-
+    print(visit_data)
     if visit_data:
         return render_template("reception.html", visit=visit_data)
     else:
