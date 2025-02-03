@@ -120,3 +120,19 @@ def send_reception_reminder(visit):
     """
     send_html_email(subject, html_body, email_reception)
     logging.info(f"📩 Wysłano przypomnienie do recepcji ({email_reception}) o wizycie pacjenta {visit['name']}.")
+
+def send_cancellation_email(visit):
+    """ Wysyła e-mail do pacjenta o odwołaniu wizyty """
+    subject = "⚠️ Odwołanie wizyty – DMD"
+    html_body = f"""
+    <html>
+    <body>
+        <h2>Twoja wizyta została odwołana</h2>
+        <p>Drogi {visit['name']},</p>
+        <p>Informujemy, że Twoja wizyta została odwołana przez recepcję.</p>
+        <p>W razie pytań skontaktuj się z nami.</p>
+    </body>
+    </html>
+    """
+    send_html_email(subject, html_body, visit["email"])
+    logging.info(f"📩 Wysłano powiadomienie o odwołaniu wizyty do {visit['name']} ({visit['email']})")

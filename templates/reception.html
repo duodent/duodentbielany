@@ -1,1 +1,35 @@
 {{visit}}
+<script>
+    function confirmVisit() {
+        let visitId = document.getElementById("visit_id").value;
+        let confirmedDate = document.getElementById("confirmed_date").value;
+        let confirmedTime = document.getElementById("confirmed_time").value;
+    
+        fetch("/admin/confirm_visit", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ visit_id: visitId, confirmed_date: confirmedDate, confirmed_time: confirmedTime })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === "success") {
+                alert("✅ Wizyta zatwierdzona!");
+                location.reload(); // Odświeżamy stronę, żeby zobaczyć zmiany
+            } else {
+                alert("⚠️ Błąd: " + data.message);
+            }
+        });
+    }
+</script>
+
+<form onsubmit="event.preventDefault(); confirmVisit();">
+    <input type="hidden" id="visit_id" value="{{ visit.id }}">
+    
+    <label>Data wizyty:</label>
+    <input type="date" id="confirmed_date" required>
+    
+    <label>Godzina wizyty:</label>
+    <input type="time" id="confirmed_time" required>
+
+    <button type="submit">Zatwierdź wizytę</button>
+</form>

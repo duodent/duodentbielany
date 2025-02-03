@@ -4,6 +4,7 @@ import logging
 import threading
 from daemon_heart import Daemon
 from daemon_funk import handle_visit_request, remind_reception, schedule_visit_reminders
+import mysqlDB as msq
 
 # 🔹 Konfiguracja logowania
 DEBUG = True
@@ -21,28 +22,32 @@ daemon = Daemon()
 
 # **NOWE: Funkcja cyklicznie sprawdzająca bazę i aktualizująca zadania**
 def monitor_database():
-    """Cyklicznie sprawdza bazę i aktualizuje zadania w daemonie"""
+    """ Demon sprawdza bazę i wykrywa nowe wizyty do obsługi """
     logging.info("🔄 Sprawdzanie bazy pod kątem nowych zgłoszeń...")
 
-    # 🔹 Pobieramy zgłoszenia z MySQL (lub testowo używamy statycznej listy)
-    visit_requests = [
-        {"id": 1, "name": "Jan Kowalski", "email": "jan.kowalski@example.com", "status": "in_progress", "in_progress_date": None, "in_progress_flag": 0, "reminder_count": 0, "confirmed_date": None},
-        {"id": 2, "name": "Anna Nowak", "email": "anna.nowak@example.com", "status": "confirmed", "in_progress_date": "2025-02-01 10:00:00", "in_progress_flag": 1, "reminder_count": 0, "confirmed_date": "2025-02-05 15:30:00"},
-    ]
+    # 🔹 Pobieramy tylko potwierdzone wizyty, które nie mają jeszcze przypomnień
+    visit_requests = msq.safe_connect_to_database(
+        "SELECT id, name, email, confirmed_date FROM visit_requests WHERE status = 'confirmed' AND confirmed_flag = 0"
+    )
 
     for visit in visit_requests:
-        if visit["status"] == "in_progress" and visit["in_progress_flag"] == 0:
-            daemon.add_task(5, handle_visit_request, visit)  # Wysyłka pierwszego e-maila
+        visit_dict = {
+            "id": visit[0],
+            "name": visit[1],
+            "email": visit[2],
+            "confirmed_date": visit[3]
+        }
 
-        elif visit["status"] == "in_progress" and visit["in_progress_flag"] == 1 and visit["in_progress_date"] is None:
-            if visit["reminder_count"] == 0:
-                daemon.add_task(5, remind_reception, visit, daemon)
+        # 🔹 Planowanie przypomnień
+        schedule_visit_reminders(visit_dict, daemon)
 
-        # 🔹 Nowość: Jeśli status jest "confirmed", planujemy przypomnienia!
-        elif visit["status"] == "confirmed" and visit["confirmed_date"]:
-            schedule_visit_reminders(visit, daemon)
+        # 🔹 Oznaczamy w bazie, że przypomnienia są już zaplanowane
+        msq.safe_connect_to_database(
+            "UPDATE visit_requests SET confirmed_flag = 1 WHERE id = %s", (visit[0],)
+        )
 
-    daemon.add_task(30, monitor_database)  # Sprawdzamy bazę co 30 sekund
+    # 🔄 Demon sprawdza bazę co 30 sekund
+    daemon.add_task(30, monitor_database)
 
 # **Dodajemy pierwsze wywołanie monitorowania**
 daemon.add_task(1, monitor_database)
