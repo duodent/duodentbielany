@@ -327,6 +327,8 @@ def getUserRoles(useroneitem_data_from_generator_userDataDB):
 
 #  Funkcja pobiera dane z bazy danych 
 def take_data_where_ID(key, table, id_name, ID):
+    if isinstance(ID, str):
+        ID = f"'{ID}'"
     dump_key = msq.connect_to_database(f'SELECT {key} FROM {table} WHERE {id_name} = {ID};')
     return dump_key
 
