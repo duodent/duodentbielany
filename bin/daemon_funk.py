@@ -6,8 +6,8 @@ import mysqlDB as msq
 
 def handle_visit_request(visit):
     """Obsługa zgłoszenia wizyty"""
-    if visit["status"] == "in_progress" and not visit["in_progress_date"] and visit["in_progress_flag"] == 0:
-        logging.info(f"📩 Wysyłanie e-maila do recepcji: {visit['email']} (Zgłoszenie ID: {visit['id']})")
+    if visit.status == "in_progress" and not visit.in_progress_date and visit.in_progress_flag == 0:
+        logging.info(f"📩 Wysyłanie e-maila do recepcji: {visit.email} (Zgłoszenie ID: {visit.id})")
 
         # 📌 Treść e-maila
         subject = "Nowe zgłoszenie wizyty"
@@ -15,7 +15,7 @@ def handle_visit_request(visit):
         <html>
         <body>
             <h2>Nowe zgłoszenie wizyty</h2>
-            <p>Pacjent: <strong>{visit['name']}</strong></p>
+            <p>Pacjent: <strong>{visit.name}</strong></p>
             <p>Prosimy o obsługę zgłoszenia.</p>
         </body>
         </html>
@@ -26,22 +26,22 @@ def handle_visit_request(visit):
         if email_reception: send_html_email(subject, html_body, email_reception)
 
         # 🔹 Aktualizacja bazy (zakomentowane – odkomentuj, gdy chcesz używać MySQL)
-        msq.safe_connect_to_database("UPDATE appointment_requests SET in_progress_flag = %s WHERE id = %s", (2, visit["id"]))
+        msq.safe_connect_to_database("UPDATE appointment_requests SET in_progress_flag = %s WHERE id = %s", (2, visit.id))
 
-        logging.info(f"✅ E-mail wysłany do {visit['email']} i zadanie oznaczone jako wykonane (ID: {visit['id']})")
+        logging.info(f"✅ E-mail wysłany do {visit.email} i zadanie oznaczone jako wykonane (ID: {visit.id})")
 
 
 def remind_reception(visit, daemon):
     """Przypomnienie recepcji o nieobsłużonym zgłoszeniu"""
-    if visit["in_progress_flag"] == 1 and visit["in_progress_date"] is None:
+    if visit.in_progress_flag == 1 and visit.in_progress_date is None:
         intervals = [300, 600, 1800, 3600]  # 5 min, 10 min, 30 min, 1 godz.
-        reminder_idx = visit["reminder_count"]
+        reminder_idx = visit.reminder_count
 
         if reminder_idx >= len(intervals):
-            logging.info(f"⚠️ Maksymalna liczba przypomnień wysłana dla zgłoszenia {visit['id']}.")
+            logging.info(f"⚠️ Maksymalna liczba przypomnień wysłana dla zgłoszenia {visit.id}.")
             return
         
-        visit["reminder_count"] += 1
+        visit.reminder_count += 1
         delay = intervals[reminder_idx]
 
         # 📌 Treść przypomnienia
@@ -50,7 +50,7 @@ def remind_reception(visit, daemon):
         <html>
         <body>
             <h2>Przypomnienie o zgłoszeniu</h2>
-            <p>Pacjent: <strong>{visit['name']}</strong></p>
+            <p>Pacjent: <strong>{visit.name}</strong></p>
             <p>To zgłoszenie wymaga obsługi.</p>
         </body>
         </html>
@@ -61,9 +61,9 @@ def remind_reception(visit, daemon):
         if email_reception: send_html_email(subject, html_body, email_reception)
 
         # 📌 Aktualizacja licznika w MySQL (zakomentowane – odkomentuj, gdy chcesz używać MySQL)
-        msq.safe_connect_to_database("UPDATE appointment_requests SET reminder_count = %s WHERE id = %s", (visit["reminder_count"], visit["id"]))
+        msq.safe_connect_to_database("UPDATE appointment_requests SET reminder_count = %s WHERE id = %s", (visit.reminder_count, visit.id))
 
-        logging.info(f"⏳ Przypomnienie #{visit['reminder_count']} wysłane do {visit['email']}. Kolejne za {delay//60} min.")
+        logging.info(f"⏳ Przypomnienie #{visit.reminder_count} wysłane do {visit.email}. Kolejne za {delay//60} min.")
         
         daemon.add_task(delay, remind_reception, visit, daemon)
 
@@ -71,8 +71,8 @@ def remind_reception(visit, daemon):
 def schedule_visit_reminders(visit, daemon):
     """ Tworzy zadania przypomnień dla pacjenta i recepcji """
 
-    if visit["status"] == "confirmed" and visit["confirmed_date"]:
-        confirmed_date = datetime.datetime.strptime(visit["confirmed_date"], "%Y-%m-%d %H:%M:%S")
+    if visit.status == "confirmed" and visit.confirmed_date:
+        confirmed_date = datetime.datetime.strptime(visit.confirmed_date, "%Y-%m-%d %H:%M:%S")
 
         # 🔹 Przypomnienie dla pacjenta – dzień przed wizytą
         reminder_patient_1 = confirmed_date - datetime.timedelta(days=1)
@@ -86,7 +86,7 @@ def schedule_visit_reminders(visit, daemon):
         reminder_reception = confirmed_date.replace(hour=7, minute=0, second=0)
         daemon.add_task((reminder_reception - datetime.datetime.now()).total_seconds(), send_reception_reminder, visit)
 
-        logging.info(f"✅ Zadania przypomnień zaplanowane dla wizyty {visit['id']}.")
+        logging.info(f"✅ Zadania przypomnień zaplanowane dla wizyty {visit.id}.")
 
 def send_patient_reminder(visit):
     """ Wysyła przypomnienie do pacjenta o wizycie """
@@ -95,14 +95,14 @@ def send_patient_reminder(visit):
     <html>
     <body>
         <h2>Przypomnienie o Twojej wizycie</h2>
-        <p>Drogi {visit['name']},</p>
-        <p>Przypominamy, że Twoja wizyta odbędzie się: <strong>{visit['confirmed_date']}</strong></p>
+        <p>Drogi {visit.name},</p>
+        <p>Przypominamy, że Twoja wizyta odbędzie się: <strong>{visit.confirmed_date}</strong></p>
         <p>Jeśli masz pytania, skontaktuj się z naszą recepcją.</p>
     </body>
     </html>
     """
-    send_html_email(subject, html_body, visit["email"])
-    logging.info(f"📩 Wysłano przypomnienie do pacjenta {visit['name']} ({visit['email']})")
+    send_html_email(subject, html_body, visit.email)
+    logging.info(f"📩 Wysłano przypomnienie do pacjenta {visit.name} ({visit.email})")
 
 def send_reception_reminder(visit):
     """ Wysyła przypomnienie do recepcji o wizycie pacjenta """
@@ -113,13 +113,13 @@ def send_reception_reminder(visit):
     <body>
         <h2>Dzisiejsze wizyty</h2>
         <p>Prosimy o sprawdzenie grafiku wizyt na dziś.</p>
-        <p>Pacjent: <strong>{visit['name']}</strong></p>
-        <p>Planowana godzina wizyty: <strong>{visit['confirmed_date']}</strong></p>
+        <p>Pacjent: <strong>{visit.name}</strong></p>
+        <p>Planowana godzina wizyty: <strong>{visit.confirmed_date}</strong></p>
     </body>
     </html>
     """
     send_html_email(subject, html_body, email_reception)
-    logging.info(f"📩 Wysłano przypomnienie do recepcji ({email_reception}) o wizycie pacjenta {visit['name']}.")
+    logging.info(f"📩 Wysłano przypomnienie do recepcji ({email_reception}) o wizycie pacjenta {visit.name}.")
 
 def send_cancellation_email(visit):
     """ Wysyła e-mail do pacjenta o odwołaniu wizyty """
@@ -128,11 +128,11 @@ def send_cancellation_email(visit):
     <html>
     <body>
         <h2>Twoja wizyta została odwołana</h2>
-        <p>Drogi {visit['name']},</p>
+        <p>Drogi {visit.name},</p>
         <p>Informujemy, że Twoja wizyta została odwołana przez recepcję.</p>
         <p>W razie pytań skontaktuj się z nami.</p>
     </body>
     </html>
     """
-    send_html_email(subject, html_body, visit["email"])
-    logging.info(f"📩 Wysłano powiadomienie o odwołaniu wizyty do {visit['name']} ({visit['email']})")
+    send_html_email(subject, html_body, visit.email)
+    logging.info(f"📩 Wysłano powiadomienie o odwołaniu wizyty do {visit.name} ({visit.email})")
