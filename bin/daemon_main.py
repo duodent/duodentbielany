@@ -5,7 +5,7 @@ import threading
 from daemon_heart import Daemon
 from daemon_funk import handle_visit_request, remind_reception, schedule_visit_reminders, send_cancellation_email
 import mysqlDB as msq
-
+from AppointmentRequest import AppointmentRequest
 # 🔹 Konfiguracja logowania
 DEBUG = True
 log_level = logging.DEBUG if DEBUG else logging.INFO
@@ -14,47 +14,7 @@ logging.basicConfig(level=log_level, format="%(asctime)s - %(message)s", datefmt
 # Inicjalizacja daemona
 daemon = Daemon()
 
-class AppointmentRequest:
-    """ Obiekt reprezentujący wizytę pacjenta """
-    def __init__(self, id, name, email, phone, patient_type, visit_date, consent, status, created_at,
-                 in_progress_date, in_progress_description, in_progress_flag, verified_date, verified_description,
-                 verified_flag, confirmed_date, confirmed_description, confirmed_flag, cancelled_date,
-                 cancelled_description, cancelled_flag, error_date, error_description, error_flag, link_hash):
 
-        self.id = id
-        self.name = name
-        self.email = email
-        self.phone = phone
-        self.patient_type = patient_type
-        self.visit_date = visit_date
-        self.consent = consent
-        self.status = status
-        self.created_at = created_at
-        self.in_progress_date = in_progress_date
-        self.in_progress_description = in_progress_description
-        self.in_progress_flag = in_progress_flag
-        self.verified_date = verified_date
-        self.verified_description = verified_description
-        self.verified_flag = verified_flag
-        self.confirmed_date = confirmed_date
-        self.confirmed_description = confirmed_description
-        self.confirmed_flag = confirmed_flag
-        self.cancelled_date = cancelled_date
-        self.cancelled_description = cancelled_description
-        self.cancelled_flag = cancelled_flag
-        self.error_date = error_date
-        self.error_description = error_description
-        self.error_flag = error_flag
-        self.link_hash = link_hash
-
-    @classmethod
-    def from_tuple(cls, data):
-        """ Tworzy obiekt `AppointmentRequest` z krotki (dane z MySQL) """
-        return cls(*data)
-
-    def to_dict(self):
-        """ Konwertuje obiekt na słownik (przydatne do logowania/debugowania) """
-        return self.__dict__
 
 # **NOWE: Funkcja cyklicznie sprawdzająca bazę i aktualizująca zadania**
 def monitor_database():

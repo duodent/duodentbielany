@@ -2,6 +2,7 @@ import time
 import threading
 from queue import PriorityQueue
 import logging
+from AppointmentRequest import AppointmentRequest
 
 # Klasa zadania do wykonania przez daemon
 class Task:
@@ -28,7 +29,8 @@ class Daemon:
             self.task_queue.put(Task(run_time, func, args, kwargs))
         
         # Sprawdzamy, czy zadanie ma argumenty
-        task_info = f"(Zgłoszenie ID: {args[0]['id']})" if args else ""
+        task_info = f"(Zgłoszenie ID: {args[0].id})" if args and isinstance(args[0], AppointmentRequest) else ""
+
         logging.info(f"📌 Zadanie dodane: {func.__name__}, uruchomi się za {delay} sekund {task_info}")
 
     def run(self):
