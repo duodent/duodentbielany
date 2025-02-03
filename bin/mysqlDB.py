@@ -1,6 +1,6 @@
 import mysql.connector
-from bin.config_utils import DBDATA as DB
-from bin.appslib import handle_error
+from config_utils import DBDATA as DB
+from appslib import handle_error
 
 class Database:
     """Klasa obsługująca stałe połączenie z MySQL"""
