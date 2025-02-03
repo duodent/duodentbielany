@@ -3600,8 +3600,8 @@ def confirm_visit():
     full_datetime = f"{confirmed_date} {confirmed_time}:00"
 
     # 🔹 Aktualizacja wizyty w bazie
-    update_query = "UPDATE visit_requests SET status = %s, confirmed_date = %s WHERE id = %s"
-    msq.safe_connect_to_database(update_query, ("confirmed", full_datetime, visit_id))
+    update_query = "UPDATE appointment_requests SET status = %s, confirmed_date = %s WHERE id = %s"
+    msq.insert_to_database(update_query, ("confirmed", full_datetime, visit_id))
 
     return jsonify({"status": "success", "message": "Wizyta zatwierdzona! Demon zajmie się przypomnieniami."})
 
