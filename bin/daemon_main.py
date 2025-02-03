@@ -22,7 +22,7 @@ def monitor_database():
 
     # 🔹 **1. Pobieramy zgłoszenia, które wymagają kontaktu z recepcją**
     visit_requests = msq.connect_to_database(
-        "SELECT id, name, email FROM visit_requests WHERE status = 'in_progress' AND in_progress_flag = 0"
+        "SELECT id, name, email FROM appointment_requests WHERE status = 'in_progress' AND in_progress_flag = 0"
     )
 
     for visit in visit_requests:
@@ -37,13 +37,13 @@ def monitor_database():
 
         # 🔹 Oznaczamy w bazie, że powiadomienie zostało wysłane
         msq.insert_to_database(
-            "UPDATE visit_requests SET in_progress_flag = %s WHERE id = %s",
+            "UPDATE appointment_requests SET in_progress_flag = %s WHERE id = %s",
             (1, visit[0])
         )
 
     # 🔹 **2. Pobieramy zgłoszenia wymagające przypomnienia dla recepcji**
     pending_reception_reminders = msq.connect_to_database(
-        "SELECT id, name, email FROM visit_requests WHERE status = 'in_progress' AND in_progress_flag = 1 AND in_progress_date IS NULL"
+        "SELECT id, name, email FROM appointment_requests WHERE status = 'in_progress' AND in_progress_flag = 1 AND in_progress_date IS NULL"
     )
 
     for visit in pending_reception_reminders:
@@ -56,7 +56,7 @@ def monitor_database():
 
     # 🔹 **3. Pobieramy tylko nowe potwierdzone wizyty z przyszłości**
     confirmed_visits = msq.connect_to_database(
-        "SELECT id, name, email, confirmed_date FROM visit_requests WHERE status = 'confirmed' AND confirmed_flag = 0 AND confirmed_date >= NOW()"
+        "SELECT id, name, email, confirmed_date FROM appointment_requests WHERE status = 'confirmed' AND confirmed_flag = 0 AND confirmed_date >= NOW()"
     )
 
     for visit in confirmed_visits:
@@ -72,13 +72,13 @@ def monitor_database():
 
         # 🔹 Oznaczamy w bazie, że przypomnienia są już zaplanowane
         msq.insert_to_database(
-            "UPDATE visit_requests SET confirmed_flag = 1 WHERE id = %s",
+            "UPDATE appointment_requests SET confirmed_flag = 1 WHERE id = %s",
             (visit[0],)
         )
 
     # 🔹 **4. Pobieramy odwołane wizyty i wysyłamy powiadomienie do pacjenta**
     cancelled_visits = msq.connect_to_database(
-        "SELECT id, name, email FROM visit_requests WHERE status = 'cancelled' AND cancelled_flag = 0"
+        "SELECT id, name, email FROM appointment_requests WHERE status = 'cancelled' AND cancelled_flag = 0"
     )
 
     for visit in cancelled_visits:
@@ -93,7 +93,7 @@ def monitor_database():
 
         # 🔹 Oznaczamy w bazie, że e-mail został wysłany
         msq.insert_to_database(
-            "UPDATE visit_requests SET cancelled_flag = 1 WHERE id = %s",
+            "UPDATE appointment_requests SET cancelled_flag = 1 WHERE id = %s",
             (visit[0],)
         )
 
