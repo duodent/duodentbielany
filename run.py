@@ -3862,7 +3862,7 @@ def reception_dashboard(link_hash):
     if visit_data:
         return render_template("reception.html", visit=visit_data)
     else:
-        abort(404)
+        return redirect(url_for('index'))
 
 
 
