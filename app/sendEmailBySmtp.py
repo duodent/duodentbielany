@@ -5,7 +5,7 @@ global smtp_config
 # from config_utils import smtp_config
 from mysqlDB import connect_to_database
 from end_1 import decode_integer
-from bin.appslib import handle_error
+
 
 
 table_setting = 'system_setting'
@@ -64,7 +64,7 @@ def send_html_email(subject, html_body, to_email):
             server.sendmail(smtp_username, to_email, message.as_string())
             print(f"E-mail sent successfully to {to_email}!")
     except Exception as e:
-        handle_error(f'Wysyłanie  maila do {to_email} nieudane: {e}', log_path='logs/errors.log')
+        print(f'Wysyłanie  maila do {to_email} nieudane: {e}')
 
 if __name__ == "__main__":
     

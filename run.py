@@ -1448,7 +1448,10 @@ def opion_db():
 
     return export
 
-
+def get_visit_data(link_hash):
+    try: data_of_visit = take_data_where_ID("*", 'appointment_requests', 'link_hash', link_hash)[0]
+    except IndentationError: data_of_visit = []
+    return data_of_visit
 
 
 
@@ -3849,7 +3852,15 @@ def team_mambers(name_pracownika):
     else:
         abort(404)
 
+@app.route("/reception/<link_hash>")
+def reception_dashboard(link_hash):
 
+    visit_data = get_visit_data(link_hash)
+
+    if visit_data:
+        return render_template("reception.html", visit=visit_data)
+    else:
+        abort(404)
 
 
 
