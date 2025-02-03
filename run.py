@@ -1451,9 +1451,39 @@ def opion_db():
     return export
 
 def get_visit_data(link_hash):
-    try: data_of_visit = take_data_where_ID("*", 'appointment_requests', 'link_hash', link_hash)[0]
-    except IndexError: data_of_visit = []
-    return data_of_visit
+    try: 
+        data_of_visit = take_data_where_ID("*", 'appointment_requests', 'link_hash', link_hash)[0]
+    
+        formated_visit_dict = {
+            'id': data_of_visit[0],
+            'name': data_of_visit[1],
+            'email': data_of_visit[2],
+            'phone': data_of_visit[3],
+            'patient_type': data_of_visit[4],
+            'visit_date': data_of_visit[5],
+            'consent': data_of_visit[6],
+            'status': data_of_visit[7],
+            'created_at': data_of_visit[8],
+            'in_progress_date': data_of_visit[9],
+            'in_progress_description': data_of_visit[10],
+            'in_progress_flag': data_of_visit[11],
+            'verified_date': data_of_visit[12],
+            'verified_description': data_of_visit[13],
+            'verified_flag': data_of_visit[14],
+            'confirmed_date': data_of_visit[15],
+            'confirmed_description': data_of_visit[16],
+            'confirmed_flag': data_of_visit[17],
+            'cancelled_date': data_of_visit[18],
+            'cancelled_description': data_of_visit[19],
+            'cancelled_flag': data_of_visit[20],
+            'error_date': data_of_visit[21],
+            'error_description': data_of_visit[22],
+            'error_flag': data_of_visit[23],
+            'link_hash': data_of_visit[24]
+        }
+        return formated_visit_dict
+    except IndexError: 
+        return {}
 
 
 
@@ -3858,7 +3888,6 @@ def team_mambers(name_pracownika):
 def reception_dashboard(link_hash):
 
     visit_data = get_visit_data(link_hash)
-    print(visit_data)
     if visit_data:
         return render_template("reception.html", visit=visit_data)
     else:
