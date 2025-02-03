@@ -1452,7 +1452,7 @@ def opion_db():
 
 def get_visit_data(link_hash):
     try: data_of_visit = take_data_where_ID("*", 'appointment_requests', 'link_hash', link_hash)[0]
-    except IndentationError: data_of_visit = []
+    except IndexError: data_of_visit = []
     return data_of_visit
 
 
