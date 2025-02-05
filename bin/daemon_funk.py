@@ -85,7 +85,7 @@ def send_patient_reminder(visit):
     subject = "Przypomnienie o wizycie"
     html_body = html_body_dict.get('send_patient_reminder', '')\
         .replace("{{visit.name}}", visit.name)\
-        .replace("{{visit.confirmed_date}}", visit.confirmed_date)
+        .replace("{{visit.confirmed_date}}", visit.confirmed_date.strftime("%Y-%m-%d %H:%M"))
     f"""
     <html>
     <body>
@@ -105,7 +105,7 @@ def send_reception_reminder(visit):
     subject = "🗓 Przypomnienie o dzisiejszych wizytach"
     html_body = html_body_dict.get('send_reception_reminder', '')\
         .replace("{{visit.name}}", visit.name)\
-        .replace("{{visit.confirmed_date}}", visit.confirmed_date)
+        .replace("{{visit.confirmed_date}}", visit.confirmed_date.strftime("%Y-%m-%d %H:%M"))
     f"""
     <html>
     <body>
