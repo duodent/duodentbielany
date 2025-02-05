@@ -37,7 +37,7 @@ html_body_dict = {
                     Wybierz godzinę wizyty klikając w jeden z przycisków poniżej:
                 </p>
 
-                <div style="margin-top: 20px; text-align: center;">
+                <div style="margin: 20px; text-align: center;">
                     <a href="https://duodentbielany.pl/reception/{{visit.link_hash}}?date={{visit.visit_date}}&time=0800&emailtoconfirmverification={{visit.email}}" style="text-decoration: none; padding: 10px 15px; background-color: #24363f; color: #fff; border-radius: 5px; margin: 5px;">08:00</a>
                     <a href="https://duodentbielany.pl/reception/{{visit.link_hash}}?date={{visit.visit_date}}&time=0830&emailtoconfirmverification={{visit.email}}" style="text-decoration: none; padding: 10px 15px; background-color: #24363f; color: #fff; border-radius: 5px; margin: 5px;">08:30</a>
                     <a href="https://duodentbielany.pl/reception/{{visit.link_hash}}?date={{visit.visit_date}}&time=0900&emailtoconfirmverification={{visit.email}}" style="text-decoration: none; padding: 10px 15px; background-color: #24363f; color: #fff; border-radius: 5px; margin: 5px;">09:00</a>
