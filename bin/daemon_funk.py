@@ -52,8 +52,16 @@ def remind_reception(visit, daemon):
         email_reception = smtp_config.get('smtp_username')
         if email_reception: send_html_email(subject, html_body, email_reception)
 
-        # 📌 Aktualizacja licznika w MySQL (zakomentowane – odkomentuj, gdy chcesz używać MySQL)
-        msq.safe_connect_to_database("UPDATE appointment_requests SET reminder_count = %s WHERE id = %s", (visit.reminder_count, visit.id))
+        # 📌 Aktualizacja licznika w MySQL **ZMIANA - używamy insert_to_database() zamiast safe_connect_to_database()**
+        update_success = msq.insert_to_database(
+            "UPDATE appointment_requests SET reminder_count = %s WHERE id = %s", 
+            (visit.reminder_count, visit.id)
+        )
+
+        if update_success:
+            logging.info(f"✅ reminder_count zaktualizowany do {visit.reminder_count} dla zgłoszenia {visit.id}")
+        else:
+            logging.error(f"❌ Błąd przy aktualizacji reminder_count dla zgłoszenia {visit.id}")
 
         logging.info(f"⏳ Przypomnienie #{visit.reminder_count} wysłane do {email_reception}. Kolejne za {delay//60} min.")
         
