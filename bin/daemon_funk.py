@@ -63,7 +63,7 @@ def remind_reception(visit, daemon):
         # 📌 Aktualizacja licznika w MySQL (zakomentowane – odkomentuj, gdy chcesz używać MySQL)
         msq.safe_connect_to_database("UPDATE appointment_requests SET reminder_count = %s WHERE id = %s", (visit.reminder_count, visit.id))
 
-        logging.info(f"⏳ Przypomnienie #{visit.reminder_count} wysłane do {visit.email}. Kolejne za {delay//60} min.")
+        logging.info(f"⏳ Przypomnienie #{visit.reminder_count} wysłane do {email_reception}. Kolejne za {delay//60} min.")
         
         daemon.add_task(delay, remind_reception, visit, daemon)
 

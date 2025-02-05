@@ -3598,12 +3598,20 @@ def confirm_visit():
         return jsonify({"status": "error", "message": "Brak wymaganych danych"}), 400
 
     full_datetime = f"{confirmed_date} {confirmed_time}:00"
+    
+    print(f"🔄 Aktualizuję wizytę ID {visit_id} na status 'confirmed', data: {full_datetime}")
 
     # 🔹 Aktualizacja wizyty w bazie
     update_query = "UPDATE appointment_requests SET status = %s, confirmed_date = %s WHERE id = %s"
-    msq.insert_to_database(update_query, ("confirmed", full_datetime, visit_id))
+    success = msq.insert_to_database(update_query, ("confirmed", full_datetime, visit_id))
 
-    return jsonify({"status": "success", "message": "Wizyta zatwierdzona! Demon zajmie się przypomnieniami."})
+    if success:
+        print(f"✅ Wizyta {visit_id} została pomyślnie zatwierdzona w bazie.")
+        return jsonify({"status": "success", "message": "Wizyta zatwierdzona! Demon zajmie się przypomnieniami."})
+    else:
+        print(f"❌ Błąd podczas zatwierdzania wizyty {visit_id}.")
+        return jsonify({"status": "error", "message": "Nie udało się zatwierdzić wizyty."}), 500
+
 
 
 
