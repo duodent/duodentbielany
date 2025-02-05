@@ -3910,14 +3910,44 @@ def team_mambers(name_pracownika):
     else:
         abort(404)
 
+
+
 @app.route("/reception/<link_hash>")
 def reception_dashboard(link_hash):
+    """ Widok recepcji do obsługi wizyt pacjentów """
 
     visit_data = get_visit_data(link_hash)
+
+    # Pobranie parametrów GET z URL (data, czas, email)
+    selected_email = request.args.get("emailtoconfirmverification")
+    selected_date = request.args.get("date")
+    selected_time = request.args.get("time")
+
     if visit_data:
+        visit_date_str = str(visit_data.get("visit_date"))  # Konwersja na string dla poprawnego porównania
+
+        if selected_date and selected_time and selected_email:
+            if selected_date == visit_date_str and selected_email == visit_data.get("email"):
+                # Tworzenie pełnego datetime z daty i godziny wizyty
+                confirmed_datetime = f"{selected_date} {selected_time[:2]}:{selected_time[2:]}:00"
+
+                # Aktualizacja statusu wizyty w bazie
+                update_query = """
+                    UPDATE appointment_requests 
+                    SET status = 'confirmed', confirmed_date = %s, confirmed_flag = 1 
+                    WHERE id = %s AND status = 'in_progress' AND confirmed_flag = 0
+                """
+                updated = msq.insert_to_database(update_query, (confirmed_datetime, visit_data["id"]))
+
+                if updated:
+                    return redirect(url_for("reception_dashboard", link_hash=visit_data.get("link_hash")))
+
         return render_template("reception.html", visit=visit_data)
-    else:
-        return redirect(url_for('index'))
+
+    return redirect(url_for('index'))
+
+
+    
 
 
 

@@ -2,6 +2,7 @@ import logging
 import datetime 
 from sendEmailBySmtp import send_html_email, smtp_config
 import mysqlDB as msq
+from HTMLbody import html_body_dict
 
 
 def handle_visit_request(visit):
@@ -11,15 +12,14 @@ def handle_visit_request(visit):
 
         # 📌 Treść e-maila
         subject = "Nowe zgłoszenie wizyty"
-        html_body = f"""
-        <html>
-        <body>
-            <h2>Nowe zgłoszenie wizyty</h2>
-            <p>Pacjent: <strong>{visit.name}</strong></p>
-            <p>Prosimy o obsługę zgłoszenia.</p>
-        </body>
-        </html>
-        """
+        html_body = html_body_dict.get('handle_visit_request', '') \
+            .replace("{{visit.name}}", visit.name) \
+            .replace("{{visit.email}}", visit.email) \
+            .replace("{{visit.phone}}", visit.phone) \
+            .replace("{{visit.confirmed_date}}", str(visit.confirmed_date)) \
+            .replace("{{visit.patient_type}}", visit.patient_type)\
+            .replace("{{visit.link_hash}}", visit.link_hash)
+            
 
         # 🔹 Wysyłamy e-mail
         email_reception = smtp_config.get('smtp_username')
@@ -34,7 +34,7 @@ def handle_visit_request(visit):
 def remind_reception(visit, daemon):
     """Przypomnienie recepcji o nieobsłużonym zgłoszeniu"""
     if visit.in_progress_flag == 1 and visit.in_progress_date is None:
-        intervals = [300, 600, 1800, 3600]  # 5 min, 10 min, 30 min, 1 godz.
+        intervals = [3600, 7200, 9000, 14400] 
         reminder_idx = visit.reminder_count
 
         if reminder_idx >= len(intervals):
@@ -46,15 +46,7 @@ def remind_reception(visit, daemon):
 
         # 📌 Treść przypomnienia
         subject = "Przypomnienie o zgłoszeniu wizyty"
-        html_body = f"""
-        <html>
-        <body>
-            <h2>Przypomnienie o zgłoszeniu</h2>
-            <p>Pacjent: <strong>{visit.name}</strong></p>
-            <p>To zgłoszenie wymaga obsługi.</p>
-        </body>
-        </html>
-        """
+        html_body = html_body_dict.get('remind_reception', '').replace("{{visit.name}}", visit.name)
 
         # 📌 Wysyłamy przypomnienie
         email_reception = smtp_config.get('smtp_username')
@@ -90,8 +82,11 @@ def schedule_visit_reminders(visit, daemon):
 
 def send_patient_reminder(visit):
     """ Wysyła przypomnienie do pacjenta o wizycie """
-    subject = "Przypomnienie o wizycie – DMD"
-    html_body = f"""
+    subject = "Przypomnienie o wizycie"
+    html_body = html_body_dict.get('send_patient_reminder', '')\
+        .replace("{{visit.name}}", visit.name)\
+        .replace("{{visit.confirmed_date}}", visit.confirmed_date)
+    f"""
     <html>
     <body>
         <h2>Przypomnienie o Twojej wizycie</h2>
@@ -108,7 +103,10 @@ def send_reception_reminder(visit):
     """ Wysyła przypomnienie do recepcji o wizycie pacjenta """
     email_reception = smtp_config.get('smtp_username')  # Adres recepcji
     subject = "🗓 Przypomnienie o dzisiejszych wizytach"
-    html_body = f"""
+    html_body = html_body_dict.get('send_reception_reminder', '')\
+        .replace("{{visit.name}}", visit.name)\
+        .replace("{{visit.confirmed_date}}", visit.confirmed_date)
+    f"""
     <html>
     <body>
         <h2>Dzisiejsze wizyty</h2>
@@ -123,8 +121,9 @@ def send_reception_reminder(visit):
 
 def send_cancellation_email(visit):
     """ Wysyła e-mail do pacjenta o odwołaniu wizyty """
-    subject = "⚠️ Odwołanie wizyty – DMD"
-    html_body = f"""
+    subject = "⚠️ Odwołanie wizyty"
+    html_body = html_body_dict.get('send_cancellation_email', '').replace("{{visit.name}}", visit.name)
+    f"""
     <html>
     <body>
         <h2>Twoja wizyta została odwołana</h2>
