@@ -52,7 +52,7 @@ def send_html_email(subject, html_body, to_email):
 
             # Debug: Wyślij polecenie HELO/EHLO do serwera
             response = server.ehlo()
-            print("EHLO Response:", response)
+            # print("EHLO Response:", response)
 
             # Zaloguj się do konta SMTP
             print("Logging in to SMTP server...")
