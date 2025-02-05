@@ -33,10 +33,11 @@ class Database:
                 self.connect()
             
             self.cursor.execute(query, values)
-            return self.cursor.fetchall()
+            result = self.cursor.fetchall()
+            return result if result else []  # ✅ Zawsze zwracamy listę, nawet jeśli jest pusta
         except Exception as e:
             handle_error(e, log_path='./logs/errors.log')
-            return []
+            return []  # ✅ Jeśli jest błąd, też zwracamy pustą listę
 
     def execute_commit(self, query, values=None):
         """Wykonuje zapytanie SQL wymagające commit"""
