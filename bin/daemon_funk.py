@@ -72,7 +72,7 @@ def schedule_visit_reminders(visit, daemon):
     """ Tworzy zadania przypomnień dla pacjenta i recepcji """
 
     if visit.status == "confirmed" and visit.confirmed_date:
-        confirmed_date = datetime.datetime.strptime(visit.confirmed_date, "%Y-%m-%d %H:%M:%S")
+        confirmed_date = visit.confirmed_date  # ✅ Już jest datetime.datetime, nie trzeba parsować!
 
         # 🔹 Przypomnienie dla pacjenta – dzień przed wizytą
         reminder_patient_1 = confirmed_date - datetime.timedelta(days=1)
