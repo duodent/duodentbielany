@@ -65,7 +65,7 @@ def schedule_visit_reminders(visit, daemon):
 
     if visit.status == "confirmed" and visit.confirmed_date:
         confirmed_date = visit.confirmed_date  # ✅ Już jest datetime.datetime, nie trzeba parsować!
-
+        logging.info(f"✅ dane confirmed: {visit}.")
         # 🔹 Przypomnienie dla pacjenta – dzień przed wizytą
         reminder_patient_1 = confirmed_date - datetime.timedelta(days=1)
         daemon.add_task((reminder_patient_1 - datetime.datetime.now()).total_seconds(), send_patient_reminder, visit)
