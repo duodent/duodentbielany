@@ -64,7 +64,7 @@ html_body_dict = {
                     <div style="display: inline-block; background: #24363f; color: #fff; padding: 10px 15px; border-radius: 5px;"><a href="https://duodentbielany.pl/reception/{{visit.link_hash}}?date={{visit.visit_date}}&time=1930&emailtoconfirmverification={{visit.email}}" style="text-decoration: none; padding: 10px 15px; background-color: #24363f; color: #fff; border-radius: 5px; margin: 5px; font-size: 11px;">19:30</a></div>
                 </div>
                 <p style="margin-top: 20px;">
-                    Udiv style="display: inline-block; background: #24363f; color: #fff; padding: 10px 15px; border-radius: 5px;"e klikając w ten link: <a href="https://duodentbielany.pl/reception/{{visit.link_hash}}" style="text-decoration: none; padding: 10px 15px; background-color: #24363f; color: #fff; border-radius: 5px; margin: 5px;">Zarządzaj terminem wizytdiv>
+                    Link do karty wizyty: <a href="https://duodentbielany.pl/reception/{{visit.link_hash}}">Zarządzaj terminem wizyty</a>
                 </p>
 
                 <p style="margin-top: 20px;">
