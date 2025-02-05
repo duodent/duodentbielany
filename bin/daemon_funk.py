@@ -16,7 +16,7 @@ def handle_visit_request(visit):
             .replace("{{visit.name}}", visit.name) \
             .replace("{{visit.email}}", visit.email) \
             .replace("{{visit.phone}}", visit.phone) \
-            .replace("{{visit.confirmed_date}}", str(visit.confirmed_date)) \
+            .replace("{{visit.visit_date}}", visit.visit_date.strftime("%Y-%m-%d"))\
             .replace("{{visit.patient_type}}", visit.patient_type)\
             .replace("{{visit.link_hash}}", visit.link_hash)
             

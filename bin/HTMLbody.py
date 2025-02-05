@@ -25,7 +25,7 @@ html_body_dict = {
                     </tr>
                     <tr style="background-color: #f9f9f9;">
                         <td style="border: 1px solid #ccc; padding: 10px;">Data wizyty</td>
-                        <td style="border: 1px solid #ccc; padding: 10px;">{{visit.confirmed_date}}</td>
+                        <td style="border: 1px solid #ccc; padding: 10px;">{{visit.visit_date}}</td>
                     </tr>
                     <tr>
                         <td style="border: 1px solid #ccc; padding: 10px;">Typ pacjenta</td>
