@@ -3934,7 +3934,7 @@ def reception_dashboard(link_hash):
                 # Aktualizacja statusu wizyty w bazie
                 update_query = """
                     UPDATE appointment_requests 
-                    SET status = 'confirmed', confirmed_date = %s, confirmed_flag = 1 
+                    SET status = 'confirmed', confirmed_date = %s, confirmed_flag = 0 
                     WHERE id = %s AND status = 'in_progress' AND confirmed_flag = 0
                 """
                 updated = msq.insert_to_database(update_query, (confirmed_datetime, visit_data["id"]))
