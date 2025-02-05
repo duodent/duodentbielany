@@ -34,10 +34,11 @@ class Database:
             
             self.cursor.execute(query, values)
             result = self.cursor.fetchall()
-            if not result: handle_error(f"DEV ERROR DATA LOG: {result} ({query}), ({values})", log_path='./logs/errors.log')
+            # if not result: handle_error(f"DEV ERROR DATA LOG: {result} ({query}), ({values})", log_path='./logs/errors.log')
             return result if result else []  # ✅ Zawsze zwracamy listę, nawet jeśli jest pusta
         except Exception as e:
             handle_error(e, log_path='./logs/errors.log')
+            handle_error(f"DEV ERROR DATA LOG: {e} ({query}), ({values})", log_path='./logs/errors.log')
             return []  # ✅ Jeśli jest błąd, też zwracamy pustą listę
 
     def execute_commit(self, query, values=None):
