@@ -26,7 +26,10 @@ def handle_visit_request(visit):
         if email_reception: send_html_email(subject, html_body, email_reception)
 
         # 🔹 Aktualizacja bazy (zakomentowane – odkomentuj, gdy chcesz używać MySQL)
-        msq.safe_connect_to_database("UPDATE appointment_requests SET in_progress_flag = %s WHERE id = %s", (2, visit.id))
+        msq.insert_to_database(
+                "UPDATE appointment_requests SET in_progress_flag = %s WHERE id = %s", 
+                (2, visit.id)
+            )
 
         logging.info(f"✅ E-mail wysłany do {visit.email} i zadanie oznaczone jako wykonane (ID: {visit.id})")
 
