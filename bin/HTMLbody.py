@@ -423,23 +423,95 @@ html_body_dict = {
     
     'send_patient_reminder': """
         <html>
-        <body>
-            <h2>Przypomnienie o Twojej wizycie</h2>
-            <p>Drogi {{visit.name}},</p>
-            <p>Przypominamy, że Twoja wizyta odbędzie się: <strong>{{visit.confirmed_date}}</strong></p>
-            <p>Jeśli masz pytania, skontaktuj się z naszą recepcją.</p>
-        </body>
+            <body style="font-family: Arial, sans-serif; color: #333; line-height: 1.6;">
+
+                <h1 style="color: #24363f;">📅 Przypomnienie o Twojej wizycie</h1>
+
+                <p>Drogi/a <strong>{{visit.name}}</strong>,</p>
+
+                <p>
+                    Chcielibyśmy przypomnieć Ci o zaplanowanej wizycie w naszej przychodni. 
+                </p>
+
+                <p style="font-size: 16px; font-weight: bold; color: #24363f;">
+                    📍 <strong>Data wizyty:</strong> {{visit.confirmed_date}}
+                </p>
+
+                <p>
+                    Jeśli masz pytania lub chciałbyś dokonać zmian w rezerwacji, skontaktuj się z naszą recepcją.
+                </p>
+
+                <p style="margin-top: 20px; font-size: 14px;">
+                    📞 <strong>Kontakt telefoniczny:</strong> 
+                    <a href="tel:790777350" style="color: #24363f; text-decoration: none; font-weight: bold;">790 777 350</a>
+                </p>
+
+                <p style="font-size: 14px;">
+                    ✉️ <strong>Kontakt e-mail:</strong> 
+                    <a href="mailto:arkuszowa@duodent.com.pl" style="color: #24363f; text-decoration: none; font-weight: bold;">arkuszowa@duodent.com.pl</a>
+                </p>
+
+                <p>
+                    Nasz zespół jest do Twojej dyspozycji w godzinach otwarcia przychodni i chętnie udzieli wszelkich informacji.
+                </p>
+
+                <hr style="border: 1px solid #ccc; margin: 20px 0;">
+
+                <p>
+                    ⚠️ <strong>Uwaga:</strong> Ten e-mail został wygenerowany automatycznie, ale możesz na niego odpowiedzieć. 
+                    Wysłanie wniosku o rezerwację <strong>nie gwarantuje</strong> jeszcze potwierdzenia terminu wizyty – jest to etap rejestracji. 
+                    Prosimy czekać na kontakt z naszej strony w celu ostatecznego potwierdzenia.
+                </p>
+
+                <p style="color: red; font-weight: bold;">
+                    ❗ Jeśli to nie Ty rejestrowałeś(-aś) wizytę w naszej przychodni, prosimy o niezwłoczny kontakt telefoniczny 
+                    pod numerem <a href="tel:790777350" style="color: red; text-decoration: none;">790 777 350</a> 
+                    lub mailowy na adres 
+                    <a href="mailto:arkuszowa@duodent.com.pl" style="color: red; text-decoration: none;">arkuszowa@duodent.com.pl</a>.
+                </p>
+
+                <p style="font-size: 12px; color: #686d71; margin-top: 30px; border-top: 1px solid #ccc; padding-top: 10px;">
+                    Zespół Duodent Bielany  
+                </p>
+
+            </body>
         </html>
+
         """,
     'send_reception_reminder': """
         <html>
-        <body>
-            <h2>Dzisiejsze wizyty</h2>
-            <p>Prosimy o sprawdzenie grafiku wizyt na dziś.</p>
-            <p>Pacjent: <strong>{{visit.name}}</strong></p>
-            <p>Planowana godzina wizyty: <strong>{{visit.confirmed_date}}</strong></p>
-        </body>
+            <body style="font-family: Arial, sans-serif; color: #333; line-height: 1.6;">
+
+                <h1 style="color: #24363f;">📅 Dzisiejsze wizyty – przypomnienie</h1>
+
+                <p>
+                    Przypominamy o zaplanowanej wizycie pacjenta, która odbędzie się dzisiaj w naszej przychodni.
+                </p>
+
+                <p style="font-size: 16px; font-weight: bold; color: #24363f;">
+                    👤 <strong>Pacjent:</strong> {{visit.name}} | {{visit.patient_type}}<br>
+                    ⏰ <strong>Godzina wizyty:</strong> {{visit.confirmed_date}}<br>
+                    📅 <strong>Data wizyty:</strong> {{visit.confirmed_date}}<br>
+                    ✉️ <strong>Email:</strong> 
+                    <a href="mailto:{{visit.email}}" style="color: #24363f; text-decoration: none;">{{visit.email}}</a><br>
+                    📞 <strong>Telefon:</strong> 
+                    <a href="tel:{{visit.phone}}" style="color: #24363f; text-decoration: none;">{{visit.phone}}</a>
+                </p>
+
+                <p>
+                    Prosimy o potwierdzenie obecności pacjenta lub ewentualny kontakt telefoniczny w celu przypomnienia o wizycie.
+                </p>
+
+                <p style="margin-top: 20px;">
+                    🔗 <strong>Link do karty wizyty:</strong> 
+                    <a href="https://duodentbielany.pl/reception/{{visit.link_hash}}" style="color: #24363f; text-decoration: none; font-weight: bold;">
+                        Zarządzaj terminem wizyty
+                    </a>
+                </p>
+
+            </body>
         </html>
+
         """,
     'send_cancellation_email': """
         <html>

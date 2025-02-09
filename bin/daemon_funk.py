@@ -121,7 +121,11 @@ def send_reception_reminder(visit):
     email_reception = smtp_config.get('smtp_username')  # Adres recepcji
     subject = "🗓 Przypomnienie o dzisiejszych wizytach"
     html_body = html_body_dict.get('send_reception_reminder', '')\
-        .replace("{{visit.name}}", visit.name)\
+        .replace("{{visit.name}}", visit.name) \
+        .replace("{{visit.email}}", visit.email) \
+        .replace("{{visit.phone}}", visit.phone) \
+        .replace("{{visit.patient_type}}", visit.patient_type)\
+        .replace("{{visit.link_hash}}", visit.link_hash)\
         .replace("{{visit.confirmed_date}}", visit.confirmed_date.strftime("%Y-%m-%d %H:%M") if isinstance(visit.confirmed_date, datetime.datetime) else "")
     f"""
     <html>
