@@ -188,6 +188,7 @@ def send_cancellation_email(visit):
         .replace("{{visit.email}}", visit.email)\
         .replace("{{visit.phone}}", visit.phone)\
         .replace("{{visit.patient_type}}", visit.patient_type)\
+        .replace("{{visit.link_hash}}", visit.link_hash)\
         .replace("{{visit.confirmed_date}}", visit.confirmed_date.strftime("%Y-%m-%d %H:%M") if isinstance(visit.confirmed_date, datetime.datetime) else "")
 
     send_html_email(subject_reception, html_body_reception, email_reception)

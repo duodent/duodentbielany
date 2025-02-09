@@ -588,7 +588,7 @@ html_body_dict = {
                     <h1 style="color: #d9534f;">📢 Odwołanie wizyty pacjenta</h1>
 
                     <p>
-                        Informujemy, że pacjent <strong>{{visit.name}}</strong> odwołał swoją wizytę, która była zaplanowana na <strong>{{visit.confirmed_date}}</strong>.
+                        Informujemy, że wizyta pacjenta <strong>{{visit.name}}</strong>, która była zaplanowana na <strong>{{visit.confirmed_date}}</strong> została odwołana.
                     </p>
 
                     <p>
