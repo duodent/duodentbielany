@@ -15,7 +15,6 @@ logging.basicConfig(level=log_level, format="%(asctime)s - %(message)s", datefmt
 daemon = Daemon()
 
 
-
 # **NOWE: Funkcja cyklicznie sprawdzająca bazę i aktualizująca zadania**
 def monitor_database():
     """ Demon sprawdza bazę i wykrywa nowe wizyty do obsługi """
