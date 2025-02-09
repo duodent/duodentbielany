@@ -3585,6 +3585,34 @@ def register():
         return jsonify(response), 400
 
 
+# @app.route("/admin/confirm_visit", methods=["POST"])
+# def confirm_visit():
+#     """ Zatwierdza wizytę w bazie (daemon ją wykryje i doda przypomnienia) """
+    
+#     data = request.json
+#     visit_id = data.get("visit_id")
+#     confirmed_date = data.get("confirmed_date")
+#     confirmed_time = data.get("confirmed_time")
+
+#     if not all([visit_id, confirmed_date, confirmed_time]):
+#         return jsonify({"status": "error", "message": "Brak wymaganych danych"}), 400
+
+#     full_datetime = f"{confirmed_date} {confirmed_time}:00"
+    
+#     print(f"🔄 Aktualizuję wizytę ID {visit_id} na status 'confirmed', data: {full_datetime}")
+
+#     # 🔹 Aktualizacja wizyty w bazie
+#     update_query = "UPDATE appointment_requests SET status = %s, confirmed_date = %s WHERE id = %s"
+#     success = msq.insert_to_database(update_query, ("confirmed", full_datetime, visit_id))
+
+#     if success:
+#         print(f"✅ Wizyta {visit_id} została pomyślnie zatwierdzona w bazie.")
+#         return jsonify({"status": "success", "message": "Wizyta zatwierdzona! Demon zajmie się przypomnieniami."})
+#     else:
+#         print(f"❌ Błąd podczas zatwierdzania wizyty {visit_id}.")
+#         return jsonify({"status": "error", "message": "Nie udało się zatwierdzić wizyty."}), 500
+
+
 @app.route("/admin/confirm_visit", methods=["POST"])
 def confirm_visit():
     """ Zatwierdza wizytę w bazie (daemon ją wykryje i doda przypomnienia) """
@@ -3602,7 +3630,7 @@ def confirm_visit():
     print(f"🔄 Aktualizuję wizytę ID {visit_id} na status 'confirmed', data: {full_datetime}")
 
     # 🔹 Aktualizacja wizyty w bazie
-    update_query = "UPDATE appointment_requests SET status = %s, confirmed_date = %s WHERE id = %s"
+    update_query = "UPDATE appointment_requests SET status = %s, confirmed_date = %s, confirmed_flag = 0 WHERE id = %s"
     success = msq.insert_to_database(update_query, ("confirmed", full_datetime, visit_id))
 
     if success:
@@ -3611,6 +3639,86 @@ def confirm_visit():
     else:
         print(f"❌ Błąd podczas zatwierdzania wizyty {visit_id}.")
         return jsonify({"status": "error", "message": "Nie udało się zatwierdzić wizyty."}), 500
+
+
+@app.route("/admin/cancel_visit", methods=["POST"])
+def cancel_visit():
+    """ Anuluje wizytę i wymaga adnotacji """
+    
+    data = request.json
+    visit_id = data.get("visit_id")
+    cancel_note = data.get("cancel_note")
+
+    if not all([visit_id, cancel_note]):
+        return jsonify({"status": "error", "message": "Brak wymaganych danych"}), 400
+
+    cancel_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    
+    print(f"❌ Anulowanie wizyty ID {visit_id}. Powód: {cancel_note}")
+
+    # 🔹 Aktualizacja w bazie
+    update_query = """
+        UPDATE appointment_requests 
+        SET status = %s, cancelled_date = %s, cancelled_description = %s, cancelled_flag = 1 
+        WHERE id = %s
+    """
+    success = msq.insert_to_database(update_query, ("cancelled", cancel_time, cancel_note, visit_id))
+
+    if success:
+        print(f"✅ Wizyta {visit_id} została anulowana.")
+        return jsonify({"status": "success", "message": "Wizyta została anulowana."})
+    else:
+        print(f"❌ Błąd podczas anulowania wizyty {visit_id}.")
+        return jsonify({"status": "error", "message": "Nie udało się anulować wizyty."}), 500
+
+
+@app.route("/admin/reschedule_visit", methods=["POST"])
+def reschedule_visit():
+    """ Przenosi wizytę na nowy termin (tworzy nowy wpis i anuluje stary) """
+    
+    data = request.json
+    visit_id = data.get("visit_id")
+    new_date = data.get("new_date")
+    new_time = data.get("new_time")
+
+    if not all([visit_id, new_date, new_time]):
+        return jsonify({"status": "error", "message": "Brak wymaganych danych"}), 400
+
+    new_datetime = f"{new_date} {new_time}:00"
+    
+    print(f"🔄 Przenoszenie wizyty ID {visit_id} na nową datę {new_datetime}")
+
+    # Pobieramy dane starej wizyty
+    select_query = "SELECT name, email, phone, patient_type FROM appointment_requests WHERE id = %s"
+    old_visit_data = msq.connect_to_database(select_query, (visit_id,))
+    
+    if not old_visit_data:
+        return jsonify({"status": "error", "message": "Nie znaleziono wizyty"}), 404
+    
+    name, email, phone, patient_type = old_visit_data[0]
+
+    # Tworzymy nową wizytę w bazie
+    insert_query = """
+        INSERT INTO appointment_requests (name, email, phone, patient_type, visit_date, status, confirmed_date, confirmed_flag) 
+        VALUES (%s, %s, %s, %s, %s, %s, %s, 0)
+    """
+    success = msq.insert_to_database(insert_query, (name, email, phone, patient_type, new_date, "confirmed", new_datetime))
+
+    if success:
+        # Anulujemy starą wizytę
+        cancel_note = f"Przeniesiono na {new_datetime}"
+        cancel_query = """
+            UPDATE appointment_requests 
+            SET status = %s, cancelled_date = %s, cancelled_description = %s, cancelled_flag = 1 
+            WHERE id = %s
+        """
+        msq.insert_to_database(cancel_query, ("cancelled", datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"), cancel_note, visit_id))
+
+        print(f"✅ Wizyta {visit_id} została przeniesiona na {new_datetime}")
+        return jsonify({"status": "success", "message": "Wizyta została przełożona na nowy termin."})
+    else:
+        print(f"❌ Błąd podczas zmiany terminu wizyty {visit_id}.")
+        return jsonify({"status": "error", "message": "Nie udało się przełożyć wizyty."}), 500
 
 
 

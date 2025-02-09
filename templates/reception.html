@@ -1,10 +1,102 @@
-{{visit}}
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Karta Wizyty</title>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        .container { max-width: 500px; margin: 20px auto; padding: 20px; border: 1px solid #ccc; border-radius: 5px; }
+        label { font-weight: bold; display: block; margin-top: 10px; }
+        input, textarea, button { width: 100%; padding: 8px; margin-top: 5px; }
+        .hidden { display: none; }
+        .alert { color: red; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Karta Wizyty</h2>
+
+    <p><strong>Pacjent:</strong> {{ visit.name }}</p>
+    <p><strong>Kontakt:</strong> <a href="mailto:{{ visit.email }}">{{ visit.email }}</a> | <a href="tel:{{ visit.phone }}">{{ visit.phone }}</a></p>
+    <p><strong>Typ pacjenta:</strong> {{ visit.patient_type }}</p>
+    
+    <p><strong>Status wizyty:</strong> 
+        {% if visit.status == 'confirmed' %}
+        <style>
+            .color_style {
+                color:green;
+            }
+        </style>
+        {% elif visit.status == 'cancelled' %}
+        <style>
+            .color_style {
+                color:red;
+            }
+        </style>
+        {% else %}
+        <style>
+            .color_style {
+                color:blue;
+            }
+        </style>
+        {% endif %}
+        
+        <span class="{{color_style}}">
+            {{ visit.status | capitalize }}
+        </span>
+    </p>
+
+    {% if visit.status == 'in_progress' %}
+        <h3>🔹 Ustal termin wizyty</h3>
+        <form id="confirmVisitForm" onsubmit="event.preventDefault(); confirmVisit();">
+            <input type="hidden" id="visit_id" value="{{ visit.id }}">
+            
+            <label>Data wizyty:</label>
+            <input type="date" id="confirmed_date" required>
+            
+            <label>Godzina wizyty:</label>
+            <input type="time" id="confirmed_time" required>
+
+            <button type="submit">✅ Zatwierdź wizytę</button>
+        </form>
+
+        <h3>🚫 Anuluj wizytę</h3>
+        <textarea id="cancel_note" placeholder="Podaj powód anulowania wizyty..." required></textarea>
+        <button onclick="cancelVisit()">❌ Anuluj wizytę</button>
+
+    {% elif visit.status == 'confirmed' %}
+        <h3>✅ Zatwierdzona wizyta</h3>
+        <p><strong>Data i godzina:</strong> {{ visit.confirmed_date.strftime('%Y-%m-%d %H:%M') }}</p>
+
+        <h3>🔄 Przełóż wizytę</h3>
+        <form id="rescheduleForm" onsubmit="event.preventDefault(); rescheduleVisit();">
+            <label>Nowa data:</label>
+            <input type="date" id="new_date" required>
+            
+            <label>Nowa godzina:</label>
+            <input type="time" id="new_time" required>
+
+            <button type="submit">📅 Przełóż wizytę</button>
+        </form>
+
+        <h3>🚫 Anuluj wizytę</h3>
+        <textarea id="cancel_note_confirmed" placeholder="Podaj powód anulowania wizyty..." required></textarea>
+        <button onclick="cancelVisit()">❌ Anuluj wizytę</button>
+
+    {% elif visit.status == 'cancelled' %}
+        <h3>🚫 Wizyta została anulowana</h3>
+        <p><strong>Powód anulowania:</strong> {{ visit.cancelled_description if visit.cancelled_description else 'Brak informacji' }}</p>
+    {% endif %}
+</div>
+
 <script>
     function confirmVisit() {
         let visitId = document.getElementById("visit_id").value;
         let confirmedDate = document.getElementById("confirmed_date").value;
         let confirmedTime = document.getElementById("confirmed_time").value;
-    
+
         fetch("/admin/confirm_visit", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -14,7 +106,53 @@
         .then(data => {
             if (data.status === "success") {
                 alert("✅ Wizyta zatwierdzona!");
-                location.reload(); // Odświeżamy stronę, żeby zobaczyć zmiany
+                location.reload();
+            } else {
+                alert("⚠️ Błąd: " + data.message);
+            }
+        });
+    }
+
+    function cancelVisit() {
+        let visitId = document.getElementById("visit_id").value;
+        let cancelNote = document.getElementById("cancel_note") ? document.getElementById("cancel_note").value : document.getElementById("cancel_note_confirmed").value;
+
+        if (!cancelNote.trim()) {
+            alert("⚠️ Musisz podać powód anulowania wizyty!");
+            return;
+        }
+
+        fetch("/admin/cancel_visit", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ visit_id: visitId, cancel_note: cancelNote })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === "success") {
+                alert("❌ Wizyta anulowana.");
+                location.reload();
+            } else {
+                alert("⚠️ Błąd: " + data.message);
+            }
+        });
+    }
+
+    function rescheduleVisit() {
+        let visitId = document.getElementById("visit_id").value;
+        let newDate = document.getElementById("new_date").value;
+        let newTime = document.getElementById("new_time").value;
+
+        fetch("/admin/reschedule_visit", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ visit_id: visitId, new_date: newDate, new_time: newTime })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === "success") {
+                alert("📅 Wizyta przełożona.");
+                location.reload();
             } else {
                 alert("⚠️ Błąd: " + data.message);
             }
@@ -22,14 +160,5 @@
     }
 </script>
 
-<form onsubmit="event.preventDefault(); confirmVisit();">
-    <input type="hidden" id="visit_id" value="{{ visit.id }}">
-    
-    <label>Data wizyty:</label>
-    <input type="date" id="confirmed_date" required>
-    
-    <label>Godzina wizyty:</label>
-    <input type="time" id="confirmed_time" required>
-
-    <button type="submit">Zatwierdź wizytę</button>
-</form>
+</body>
+</html>
