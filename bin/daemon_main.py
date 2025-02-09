@@ -37,10 +37,6 @@ def monitor_database():
         logging.info(f"📅 Planowanie przypomnień dla wizyty: {visit.to_dict()}")
         schedule_visit_reminders(visit, daemon)
 
-        # msq.insert_to_database(
-        #     "UPDATE appointment_requests SET confirmed_flag = 1 WHERE id = %s",
-        #     (visit.id,)
-        # )
         msq.insert_to_database(
             "UPDATE appointment_requests SET confirmed_flag = 1, last_confirmed_check = NOW() WHERE id = %s",
             (visit.id,)
@@ -69,7 +65,7 @@ def monitor_database():
 
     # 🔹 **2. Pobieramy zgłoszenia wymagające przypomnienia dla recepcji**
     raw_data = msq.connect_to_database(
-        "SELECT * FROM appointment_requests WHERE status = 'in_progress' AND in_progress_flag = 1 AND in_progress_date IS NULL AND visit_date >= CURDATE()"
+        "SELECT * FROM appointment_requests WHERE status = 'in_progress' AND in_progress_flag = 1 AND confirmed_date IS NULL AND visit_date >= CURDATE()"
     )
     pending_reception_reminders = [AppointmentRequest.from_tuple(row) for row in raw_data]
 
