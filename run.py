@@ -3690,7 +3690,7 @@ def reschedule_visit():
         logging.info(f"📅 Przekładanie wizyty ID {visit_id} na {new_datetime}")
 
         # 🔹 Pobranie oryginalnej wizyty
-        original_visit = msq.connect_to_database(
+        original_visit = msq.safe_connect_to_database(
             "SELECT name, email, phone, patient_type, consent, link_hash FROM appointment_requests WHERE id = %s", (visit_id,)
         )
 
