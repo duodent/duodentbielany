@@ -3643,82 +3643,75 @@ def confirm_visit():
 
 @app.route("/admin/cancel_visit", methods=["POST"])
 def cancel_visit():
-    """ Anuluje wizytę i wymaga adnotacji """
-    
-    data = request.json
-    visit_id = data.get("visit_id")
-    cancel_note = data.get("cancel_note")
+    """ Anuluje wizytę w bazie danych """
+    try:
+        data = request.json
+        visit_id = data.get("visit_id")
+        cancel_note = data.get("cancel_note")
 
-    if not all([visit_id, cancel_note]):
-        return jsonify({"status": "error", "message": "Brak wymaganych danych"}), 400
+        if not visit_id or not cancel_note:
+            return jsonify({"status": "error", "message": "Brak wymaganych danych"}), 400
 
-    cancel_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    
-    print(f"❌ Anulowanie wizyty ID {visit_id}. Powód: {cancel_note}")
+        print(f"🚫 Anulowanie wizyty ID {visit_id} z powodem: {cancel_note}")
 
-    # 🔹 Aktualizacja w bazie
-    update_query = """
-        UPDATE appointment_requests 
-        SET status = %s, cancelled_date = %s, cancelled_description = %s, cancelled_flag = 1 
-        WHERE id = %s
-    """
-    success = msq.insert_to_database(update_query, ("cancelled", cancel_time, cancel_note, visit_id))
+        # 🔹 Aktualizacja bazy danych
+        success = msq.insert_to_database(
+            "UPDATE appointment_requests SET status = 'cancelled', cancelled_description = %s, cancelled_flag = 1 WHERE id = %s",
+            (cancel_note, visit_id)
+        )
 
-    if success:
-        print(f"✅ Wizyta {visit_id} została anulowana.")
-        return jsonify({"status": "success", "message": "Wizyta została anulowana."})
-    else:
-        print(f"❌ Błąd podczas anulowania wizyty {visit_id}.")
-        return jsonify({"status": "error", "message": "Nie udało się anulować wizyty."}), 500
+        if success:
+            print(f"✅ Wizyta {visit_id} została anulowana.")
+            return jsonify({"status": "success", "message": "Wizyta została anulowana."})
+        else:
+            print(f"❌ Błąd podczas anulowania wizyty {visit_id}.")
+            return jsonify({"status": "error", "message": "Nie udało się anulować wizyty."}), 500
+
+    except Exception as e:
+        print(f"❌ Błąd w /admin/cancel_visit: {str(e)}")
+        return jsonify({"status": "error", "message": f"Błąd serwera: {str(e)}"}), 500
+
 
 
 @app.route("/admin/reschedule_visit", methods=["POST"])
 def reschedule_visit():
-    """ Przenosi wizytę na nowy termin (tworzy nowy wpis i anuluje stary) """
-    
-    data = request.json
-    visit_id = data.get("visit_id")
-    new_date = data.get("new_date")
-    new_time = data.get("new_time")
+    """ Przekłada wizytę na nowy termin """
+    try:
+        data = request.json
+        visit_id = data.get("visit_id")
+        new_date = data.get("new_date")
+        new_time = data.get("new_time")
 
-    if not all([visit_id, new_date, new_time]):
-        return jsonify({"status": "error", "message": "Brak wymaganych danych"}), 400
+        if not visit_id or not new_date or not new_time:
+            return jsonify({"status": "error", "message": "Brak wymaganych danych"}), 400
 
-    new_datetime = f"{new_date} {new_time}:00"
-    
-    print(f"🔄 Przenoszenie wizyty ID {visit_id} na nową datę {new_datetime}")
+        new_datetime = f"{new_date} {new_time}:00"
+        print(f"📅 Przekładanie wizyty ID {visit_id} na {new_datetime}")
 
-    # Pobieramy dane starej wizyty
-    select_query = "SELECT name, email, phone, patient_type FROM appointment_requests WHERE id = %s"
-    old_visit_data = msq.connect_to_database(select_query, (visit_id,))
-    
-    if not old_visit_data:
-        return jsonify({"status": "error", "message": "Nie znaleziono wizyty"}), 404
-    
-    name, email, phone, patient_type = old_visit_data[0]
+        # 🔹 Przenosimy wizytę na nowy termin (kopiujemy do nowego ID)
+        copy_success = msq.insert_to_database(
+            "INSERT INTO appointment_requests (name, email, phone, patient_type, visit_date, status, confirmed_date) "
+            "SELECT name, email, phone, patient_type, %s, 'confirmed', %s FROM appointment_requests WHERE id = %s",
+            (new_date, new_datetime, visit_id)
+        )
 
-    # Tworzymy nową wizytę w bazie
-    insert_query = """
-        INSERT INTO appointment_requests (name, email, phone, patient_type, visit_date, status, confirmed_date, confirmed_flag) 
-        VALUES (%s, %s, %s, %s, %s, %s, %s, 0)
-    """
-    success = msq.insert_to_database(insert_query, (name, email, phone, patient_type, new_date, "confirmed", new_datetime))
+        # 🔹 Oznaczamy starą wizytę jako anulowaną
+        cancel_success = msq.insert_to_database(
+            "UPDATE appointment_requests SET status = 'cancelled', cancelled_description = 'Wizyta przełożona', cancelled_flag = 1 WHERE id = %s",
+            (visit_id,)
+        )
 
-    if success:
-        # Anulujemy starą wizytę
-        cancel_note = f"Przeniesiono na {new_datetime}"
-        cancel_query = """
-            UPDATE appointment_requests 
-            SET status = %s, cancelled_date = %s, cancelled_description = %s, cancelled_flag = 1 
-            WHERE id = %s
-        """
-        msq.insert_to_database(cancel_query, ("cancelled", datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"), cancel_note, visit_id))
+        if copy_success and cancel_success:
+            print(f"✅ Wizyta ID {visit_id} przełożona na {new_datetime}.")
+            return jsonify({"status": "success", "message": "Wizyta została przełożona."})
+        else:
+            print(f"❌ Błąd przy zmianie terminu wizyty ID {visit_id}.")
+            return jsonify({"status": "error", "message": "Nie udało się zmienić terminu wizyty."}), 500
 
-        print(f"✅ Wizyta {visit_id} została przeniesiona na {new_datetime}")
-        return jsonify({"status": "success", "message": "Wizyta została przełożona na nowy termin."})
-    else:
-        print(f"❌ Błąd podczas zmiany terminu wizyty {visit_id}.")
-        return jsonify({"status": "error", "message": "Nie udało się przełożyć wizyty."}), 500
+    except Exception as e:
+        print(f"❌ Błąd w /admin/reschedule_visit: {str(e)}")
+        return jsonify({"status": "error", "message": f"Błąd serwera: {str(e)}"}), 500
+
 
 
 

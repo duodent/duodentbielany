@@ -112,7 +112,7 @@
         let cancelNote = document.getElementById("cancel_note")?.value.trim();
 
         if (!visitId || !cancelNote) {
-            alert("❌ Wystąpił błąd! Sprawdź, czy wszystkie pola są wypełnione.");
+            alert("❌ Sprawdź, czy wszystkie pola są wypełnione.");
             return;
         }
 
@@ -132,7 +132,7 @@
         })
         .catch(error => {
             console.error("❌ Błąd:", error);
-            alert("⚠️ Wystąpił błąd. Spróbuj ponownie.");
+            alert("⚠️ Wystąpił błąd. Sprawdź konsolę.");
         });
     }
 
@@ -142,7 +142,7 @@
         let newTime = document.getElementById("new_time")?.value;
 
         if (!visitId || !newDate || !newTime) {
-            alert("❌ Wystąpił błąd! Sprawdź, czy wszystkie pola są wypełnione.");
+            alert("❌ Sprawdź, czy wszystkie pola są wypełnione.");
             return;
         }
 
@@ -159,8 +159,13 @@
             } else {
                 alert("⚠️ Błąd: " + data.message);
             }
+        })
+        .catch(error => {
+            console.error("❌ Błąd:", error);
+            alert("⚠️ Wystąpił błąd. Sprawdź konsolę.");
         });
     }
+
 </script>
 
 </body>
