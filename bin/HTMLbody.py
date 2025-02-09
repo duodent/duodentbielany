@@ -5,7 +5,7 @@ html_body_dict = {
                 .time_area {
                     display: flex;
                     flex-wrap: wrap; /* Elementy zawijają się do nowej linii */
-                    gap: 1px; /* Mniejsza przerwa między elementami */
+                    gap: 0.5px; /* Bardzo mała przerwa między elementami */
                     justify-content: flex-start;
                     align-items: center;
                     border-radius: 5px;
@@ -14,21 +14,23 @@ html_body_dict = {
                 .time_box {
                     display: inline-block; /* Kluczowe: pozwala na umieszczanie wielu elementów w linii */
                     color: #fff;
-                    padding: 2px 2px; /* Zmniejszone paddingi, aby więcej się mieściło */
-                    border-radius: 5px;
-                    font-size: 12px; /* Mniejsza czcionka */
-                    margin: 1px; /* Zmniejszone marginesy */
+                    font-size: 11px; /* Trochę mniejsza czcionka */
+                    margin: 0.5px; /* Bardzo małe marginesy */
                     white-space: nowrap; /* Zapobiega łamaniu się tekstu */
                 }
 
                 .time_link {
                     text-decoration: none !important; /* Usunięcie podkreślenia */
-                    color: white !important; /* Ustawienie koloru tekstu na biały */
+                    color: white !important; /* Biały kolor tekstu */
                     background-color: #24363f;
-                    padding: 8px 12px;
-                    border-radius: 5px;
-                    font-size: 12px;
-                    display: inline-block;
+                    padding: 4px 6px; /* Zmniejszona wysokość i szerokość */
+                    border-radius: 4px;
+                    font-size: 11px;
+                    width: 40px; /* Stała szerokość pasująca do 5 znaków */
+                    height: 16px; /* Wysokość 2x mniejsza */
+                    display: inline-flex;
+                    align-items: center;
+                    justify-content: center;
                     transition: color 0.3s ease-in-out, background 0.3s ease-in-out;
                 }
 
@@ -37,13 +39,14 @@ html_body_dict = {
                 }
 
                 .time_link:hover {
-                    color: orange !important; /* Zmiana koloru po najechaniu */
+                    color: orange !important; /* Kolor zmienia się na pomarańczowy */
                     background-color: #1a282f;
                 }
 
                 .time_link:active {
                     color: white !important; /* Kolor linka po kliknięciu */
                 }
+
             </style>
 
 
