@@ -99,7 +99,7 @@ def schedule_visit_reminders(visit, daemon):
 
 def send_patient_reminder(visit):
     """ Wysyła przypomnienie do pacjenta o wizycie """
-    subject = f"🦷 Przypomnienie: Twoja wizyta w Duodent Bielany {visit.confirmed_date.strftime("%Y-%m-%d %H:%M")}"
+    subject = f"🦷 Przypomnienie: Twoja wizyta w Duodent Bielany {visit.confirmed_date.strftime('%Y-%m-%d %H:%M')}"
     html_body = html_body_dict.get('send_patient_reminder', '')\
         .replace("{{visit.name}}", visit.name)\
         .replace("{{visit.confirmed_date}}", visit.confirmed_date.strftime("%Y-%m-%d %H:%M") if isinstance(visit.confirmed_date, datetime.datetime) else "")
