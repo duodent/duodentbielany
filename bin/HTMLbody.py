@@ -582,5 +582,47 @@ html_body_dict = {
         </html>
 
         """,
+        'send_patient_info_visit': """
+            <html>
+                <body style="font-family: Arial, sans-serif; color: #333; line-height: 1.6;">
+                    <h1 style="color: #24363f;">✅ Twoja wizyta została potwierdzona!</h1>
+                    <p>Drogi/a <strong>{{visit.name}}</strong>,</p>
+                    <p>Z radością informujemy, że Twoja wizyta w Duodent Bielany została potwierdzona.</p>
+                    <p style="font-size: 16px; font-weight: bold; color: #24363f;">
+                        📍 <strong>Data i godzina wizyty:</strong> {{visit.confirmed_date}}
+                    </p>
+                    <p>Jeśli masz jakiekolwiek pytania lub chcesz zmienić termin wizyty, skontaktuj się z naszą recepcją.</p>
+                    <p style="font-size: 14px; font-weight: bold;">
+                        📞 Telefon: <a href="tel:790777350" style="color: #24363f;">790 777 350</a><br>
+                        ✉️ E-mail: <a href="mailto:arkuszowa@duodent.com.pl" style="color: #24363f;">arkuszowa@duodent.com.pl</a>
+                    </p>
+                    <hr style="border: 1px solid #ccc; margin: 20px 0;">
+                    <p style="color: gray; font-size: 12px;">
+                        Jeśli to nie Ty rejestrowałeś(-aś) wizytę, prosimy o niezwłoczny kontakt.
+                    </p>
+                </body>
+            </html>
+        """,
+
+        'send_reception_info_visit': """
+            <html>
+                <body style="font-family: Arial, sans-serif; color: #333; line-height: 1.6;">
+                    <h1 style="color: #24363f;">✅ Potwierdzona wizyta pacjenta</h1>
+                    <p>Wizyta pacjenta <strong>{{visit.name}}</strong> została potwierdzona.</p>
+                    <p style="font-size: 16px; font-weight: bold; color: #24363f;">
+                        🕒 <strong>Godzina wizyty:</strong> {{visit.confirmed_date}}
+                    </p>
+                    <p>Proszę sprawdzić szczegóły wizyty w systemie.</p>
+                    <p style="margin-top: 20px;">
+                        📌 Link do karty wizyty: 
+                        <a href="https://duodentbielany.pl/reception/{{visit.link_hash}}" style="color: #24363f;">Zarządzaj wizytą</a>
+                    </p>
+                    <hr style="border: 1px solid #ccc; margin: 20px 0;">
+                    <p style="color: gray; font-size: 12px;">
+                        E-mail wygenerowany automatycznie.
+                    </p>
+                </body>
+            </html>
+        """
     
 }

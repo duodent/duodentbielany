@@ -76,8 +76,47 @@ def remind_reception(visit, daemon):
         
         daemon.add_task(delay, remind_reception, visit, daemon)
 
-
 def schedule_visit_reminders(visit, daemon):
+    """ Tworzy zadania przypomnień dla pacjenta i recepcji """
+
+    if visit.status == "confirmed" and visit.confirmed_date:
+        confirmed_date = visit.confirmed_date  # ✅ Już jest datetime.datetime, nie trzeba parsować!
+        now = datetime.datetime.now()
+
+        logging.info(f"✅ Potwierdzona wizyta dla: {visit.name}, Data: {confirmed_date}")
+
+        # 🔹 Natychmiastowe powiadomienie dla pacjenta o potwierdzeniu wizyty
+        logging.info(f"📩 Wysyłanie natychmiastowego powiadomienia o potwierdzeniu wizyty do pacjenta {visit.email}")
+        send_patient_info_visit(visit)
+
+        # 🔹 Natychmiastowe powiadomienie dla recepcji o potwierdzeniu terminu wizyty
+        logging.info(f"📩 Wysyłanie natychmiastowego powiadomienia do recepcji")
+        send_reception_info_visit(visit)
+
+        # 🔹 Przypomnienie dla pacjenta – dzień przed wizytą o 12:00
+        reminder_patient_1 = confirmed_date.replace(hour=12, minute=0, second=0) - datetime.timedelta(days=1)
+        delay_patient_1 = (reminder_patient_1 - now).total_seconds()
+        if delay_patient_1 > 0:
+            daemon.add_task(delay_patient_1, send_patient_reminder, visit)
+            logging.info(f"📅 Zaplanowano przypomnienie dla pacjenta dzień wcześniej o 12:00 (za {delay_patient_1 / 3600:.2f} godzin)")
+
+        # 🔹 Przypomnienie dla pacjenta – godzinę przed wizytą
+        reminder_patient_2 = confirmed_date - datetime.timedelta(hours=1)
+        delay_patient_2 = (reminder_patient_2 - now).total_seconds()
+        if delay_patient_2 > 0:
+            daemon.add_task(delay_patient_2, send_patient_reminder, visit)
+            logging.info(f"📅 Zaplanowano przypomnienie dla pacjenta godzinę przed wizytą o {reminder_patient_2.strftime('%H:%M')} (za {delay_patient_2 / 60:.2f} minut)")
+
+        # 🔹 Przypomnienie dla recepcji – w dniu wizyty o 7:00 rano
+        reminder_reception = confirmed_date.replace(hour=7, minute=0, second=0)
+        delay_reception = (reminder_reception - now).total_seconds()
+        if delay_reception > 0:
+            daemon.add_task(delay_reception, send_reception_reminder, visit)
+            logging.info(f"📅 Zaplanowano przypomnienie dla recepcji w dniu wizyty o 7:00 rano (za {delay_reception / 3600:.2f} godzin)")
+
+        logging.info(f"✅ Wszystkie przypomnienia zaplanowane dla wizyty {visit.id}.")
+
+def schedule_visit_reminders_old(visit, daemon):
     """ Tworzy zadania przypomnień dla pacjenta i recepcji """
 
     if visit.status == "confirmed" and visit.confirmed_date:
@@ -86,11 +125,11 @@ def schedule_visit_reminders(visit, daemon):
 
         # 🔹 Natychmiastowe powiadomienie dla pacjenta o potwierdzeniu wizyty
         logging.info(f"📩 Wysyłanie powiadomienia o potwierdzeniu wizyty do pacjenta {visit.email}")
-        send_patient_reminder(visit)
+        send_patient_info_visit(visit)
 
         # 🔹 Natychmiastowe powiadomienie dla recepcji o potwierdzeniu terminu wizyty
         logging.info(f"📩 Wysyłanie powiadomienia o potwierdzeniu terminu do recepcji")
-        send_reception_reminder(visit)
+        send_reception_info_visit(visit)
 
         # 🔹 Przypomnienie dla pacjenta – dzień przed wizytą
         reminder_patient_1 = confirmed_date - datetime.timedelta(days=1)
@@ -140,3 +179,29 @@ def send_cancellation_email(visit):
 
     send_html_email(subject, html_body, visit.email)
     logging.info(f"📩 Wysłano powiadomienie o odwołaniu wizyty do {visit.name} ({visit.email})")
+
+def send_patient_info_visit(visit):
+    """ Wysyła powiadomienie do pacjenta o potwierdzeniu wizyty """
+    subject = f"✅ Twoja wizyta w Duodent Bielany została potwierdzona – {visit.confirmed_date.strftime('%Y-%m-%d %H:%M')}"
+    html_body = html_body_dict.get('send_patient_info_visit', '')\
+        .replace("{{visit.name}}", visit.name)\
+        .replace("{{visit.confirmed_date}}", visit.confirmed_date.strftime("%Y-%m-%d %H:%M") if isinstance(visit.confirmed_date, datetime.datetime) else "")
+
+    send_html_email(subject, html_body, visit.email)
+    logging.info(f"📩 Wysłano powiadomienie o potwierdzeniu wizyty do pacjenta {visit.name} ({visit.email})")
+
+
+def send_reception_info_visit(visit):
+    """ Wysyła powiadomienie do recepcji o potwierdzeniu terminu wizyty """
+    email_reception = smtp_config.get('smtp_username')  # Adres recepcji
+    subject = f"✅ Wizyta pacjenta {visit.name} została potwierdzona na {visit.confirmed_date.strftime('%H:%M')}"
+    html_body = html_body_dict.get('send_reception_info_visit', '')\
+        .replace("{{visit.name}}", visit.name) \
+        .replace("{{visit.email}}", visit.email) \
+        .replace("{{visit.phone}}", visit.phone) \
+        .replace("{{visit.patient_type}}", visit.patient_type)\
+        .replace("{{visit.link_hash}}", visit.link_hash)\
+        .replace("{{visit.confirmed_date}}", visit.confirmed_date.strftime("%Y-%m-%d %H:%M") if isinstance(visit.confirmed_date, datetime.datetime) else "")
+
+    send_html_email(subject, html_body, email_reception)
+    logging.info(f"📩 Wysłano powiadomienie do recepcji ({email_reception}) o potwierdzeniu wizyty pacjenta {visit.name}.")
