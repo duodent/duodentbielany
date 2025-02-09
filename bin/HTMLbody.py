@@ -564,7 +564,7 @@ html_body_dict = {
                         📞 Zadzwoń do recepcji
                     </a>
                     
-                    <a href="https://duodentbielany.pl/umow-wizyte-online" style="text-decoration: none; background: #c0392b; color: white; padding: 10px 15px; border-radius: 5px; font-weight: bold;">
+                    <a href="https://duodentbielany.pl/umow-wizyte-online" style="text-decoration: none; background: #c0392b; color: white; padding: 10px 15px; border-radius: 5px; font-weight: bold; margin-left: 20px;">
                         📅 Umów wizytę online
                     </a>
                 </p>
