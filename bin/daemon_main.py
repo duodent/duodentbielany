@@ -54,9 +54,12 @@ def monitor_database():
 
     # 🔹 **3. Pobieramy tylko nowe potwierdzone wizyty z przyszłości**
     raw_data = msq.connect_to_database(
-        "SELECT * FROM appointment_requests WHERE status = 'confirmed' "
-        "AND (confirmed_flag = 0 OR confirmed_date > last_confirmed_check) "
-        "AND confirmed_date >= NOW()"
+        """
+            SELECT * FROM appointment_requests 
+            WHERE status = 'confirmed' 
+            AND (confirmed_flag = 0 
+            AND confirmed_date >= NOW();
+        """
     )
     confirmed_visits = [AppointmentRequest.from_tuple(row) for row in raw_data]
 
