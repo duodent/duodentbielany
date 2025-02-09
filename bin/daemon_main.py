@@ -57,7 +57,7 @@ def monitor_database():
         """
             SELECT * FROM appointment_requests 
             WHERE status = 'confirmed' 
-            AND (confirmed_flag = 0 
+            AND confirmed_flag = 0 
             AND confirmed_date >= NOW();
         """
     )
