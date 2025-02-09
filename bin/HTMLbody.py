@@ -5,19 +5,17 @@ html_body_dict = {
                 .time_area {
                     display: flex;
                     flex-wrap: wrap; /* Elementy zawijają się do nowej linii */
-                    gap: 5px; /* Mniejsza przerwa między elementami */
+                    gap: 2px; /* Mniejsza przerwa między elementami */
                     justify-content: flex-start;
                     align-items: center;
-                    padding: 10px;
-                    background: #24363f;
+                    padding: 2px;
                     border-radius: 5px;
                 }
 
                 .time_box {
                     display: inline-block; /* Kluczowe: pozwala na umieszczanie wielu elementów w linii */
-                    background: #24363f;
                     color: #fff;
-                    padding: 8px 12px; /* Zmniejszone paddingi, aby więcej się mieściło */
+                    padding: 2px 2px; /* Zmniejszone paddingi, aby więcej się mieściło */
                     border-radius: 5px;
                     font-size: 12px; /* Mniejsza czcionka */
                     margin: 2px; /* Zmniejszone marginesy */
@@ -31,7 +29,6 @@ html_body_dict = {
                     color: #fff;
                     border-radius: 5px;
                     font-size: 12px;
-                    margin: 2px;
                     display: inline-block;
                     transition: color 0.3s ease-in-out, background 0.3s ease-in-out;
                 }
