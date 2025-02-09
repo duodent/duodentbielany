@@ -563,7 +563,12 @@ html_body_dict = {
                     <a href="tel:790777350" style="text-decoration: none; background: #c0392b; color: white; padding: 10px 15px; border-radius: 5px; font-weight: bold;">
                         📞 Zadzwoń do recepcji
                     </a>
+                    |
+                    <a href="https://duodentbielany.pl/umow-wizyte-online" style="text-decoration: none; background: #c0392b; color: white; padding: 10px 15px; border-radius: 5px; font-weight: bold;">
+                        📅 Umów wizytę online
+                    </a>
                 </p>
+
 
                 <hr style="border: 1px solid #ccc; margin: 20px 0;">
 
