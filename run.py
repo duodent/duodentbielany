@@ -3657,7 +3657,7 @@ def cancel_visit():
 
         # 🔹 Aktualizacja bazy danych
         success = msq.insert_to_database(
-            "UPDATE appointment_requests SET status = 'cancelled', cancelled_description = %s, cancelled_flag = 1 WHERE id = %s",
+            "UPDATE appointment_requests SET status = 'cancelled', cancelled_description = %s, cancelled_flag = 0 WHERE id = %s",
             (cancel_note, visit_id)
         )
 
