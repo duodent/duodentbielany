@@ -54,7 +54,9 @@ def monitor_database():
 
     # 🔹 **3. Pobieramy tylko nowe potwierdzone wizyty z przyszłości**
     raw_data = msq.connect_to_database(
-        "SELECT * FROM appointment_requests WHERE status = 'confirmed' AND confirmed_flag = 0 AND confirmed_date >= NOW()"
+        "SELECT * FROM appointment_requests WHERE status = 'confirmed' "
+        "AND (confirmed_flag = 0 OR TIMESTAMPDIFF(SECOND, confirmed_date, NOW()) < 5) "
+        "AND confirmed_date >= NOW()"
     )
     confirmed_visits = [AppointmentRequest.from_tuple(row) for row in raw_data]
 
@@ -85,7 +87,7 @@ def monitor_database():
     # 🔄 Demon sprawdza bazę co 30 sekund
     daemon.add_task(30, monitor_database)
 
-    
+
 def monitor_database_old_2():
     """ Demon sprawdza bazę i wykrywa nowe wizyty do obsługi """
     logging.info("🔄 Sprawdzanie bazy pod kątem nowych zgłoszeń...")

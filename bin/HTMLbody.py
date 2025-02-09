@@ -582,6 +582,42 @@ html_body_dict = {
         </html>
 
         """,
+        'send_cancellation_reception': """
+            <html>
+                <body style="font-family: Arial, sans-serif; color: #333; line-height: 1.6;">
+                    <h1 style="color: #d9534f;">📢 Odwołanie wizyty pacjenta</h1>
+
+                    <p>
+                        Informujemy, że pacjent <strong>{{visit.name}}</strong> odwołał swoją wizytę, która była zaplanowana na <strong>{{visit.confirmed_date}}</strong>.
+                    </p>
+
+                    <p>
+                        Dane pacjenta:
+                    </p>
+
+                    <p style="font-size: 14px;">
+                        👤 <strong>Imię i nazwisko:</strong> {{visit.name}} <br>
+                        📧 <strong>Email:</strong> <a href="mailto:{{visit.email}}" style="color: #24363f; text-decoration: none;">{{visit.email}}</a> <br>
+                        📞 <strong>Telefon:</strong> <a href="tel:{{visit.phone}}" style="color: #24363f; text-decoration: none;">{{visit.phone}}</a> <br>
+                        🏷 <strong>Typ pacjenta:</strong> {{visit.patient_type}}
+                    </p>
+
+                    <hr style="border: 1px solid #ccc; margin: 20px 0;">
+
+                    <p>
+                        Możesz zarządzać wizytami pacjentów w systemie recepcji:
+                    </p>
+
+                    <p>
+                        🔗 <a href="https://duodentbielany.pl/reception/{{visit.link_hash}}" style="color: #d9534f; font-weight: bold; text-decoration: none;">Zarządzaj wizytami</a>
+                    </p>
+
+                    <p style="font-size: 12px; color: #686d71; margin-top: 30px; border-top: 1px solid #ccc; padding-top: 10px;">
+                        Zespół Duodent Bielany
+                    </p>
+                </body>
+            </html>
+        """,
         'send_patient_info_visit': """
             <html>
                 <body style="font-family: Arial, sans-serif; color: #333; line-height: 1.6;">
