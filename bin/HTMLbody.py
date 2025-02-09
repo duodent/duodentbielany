@@ -23,19 +23,27 @@ html_body_dict = {
                 }
 
                 .time_link {
-                    text-decoration: none;
-                    padding: 8px 12px; /* Dopasowane do .time_box */
+                    text-decoration: none !important; /* Usunięcie podkreślenia */
+                    color: white !important; /* Ustawienie koloru tekstu na biały */
                     background-color: #24363f;
-                    color: #fff;
+                    padding: 8px 12px;
                     border-radius: 5px;
                     font-size: 12px;
                     display: inline-block;
                     transition: color 0.3s ease-in-out, background 0.3s ease-in-out;
                 }
 
+                .time_link:visited {
+                    color: white !important; /* Kolor linka po kliknięciu */
+                }
+
                 .time_link:hover {
-                    color: orange;
+                    color: orange !important; /* Zmiana koloru po najechaniu */
                     background-color: #1a282f;
+                }
+
+                .time_link:active {
+                    color: white !important; /* Kolor linka po kliknięciu */
                 }
             </style>
 
