@@ -85,6 +85,10 @@ def schedule_visit_reminders(visit, daemon):
 
         logging.info(f"✅ Potwierdzona wizyta dla: {visit.name}, Data: {confirmed_date}")
 
+        # 🔹 Usunięcie zaplanowanych przypomnień dla recepcji o ustaleniu terminu
+        daemon.remove_tasks_for_function(remind_reception, visit, arg_key="id")
+        logging.info(f"🗑 Usunięto przypomnienia `remind_reception` dla wizyty ID {visit.id} – termin już ustalony.")
+        
         # 🔹 Natychmiastowe powiadomienie dla pacjenta o potwierdzeniu wizyty
         logging.info(f"📩 Wysyłanie natychmiastowego powiadomienia o potwierdzeniu wizyty do pacjenta {visit.email}")
         send_patient_info_visit(visit)

@@ -33,6 +33,40 @@ class Daemon:
 
         logging.info(f"📌 Zadanie dodane: {func.__name__}, uruchomi się za {delay} sekund {task_info}")
 
+    def remove_tasks_for_function(self, func, *args, arg_key="id"):
+        """
+        Usuwa wszystkie zaplanowane zadania dla danej funkcji (func), opcjonalnie filtrując po wartości w `arg_key`.
+        
+        :param func: Funkcja, której zadania mają zostać usunięte.
+        :param args: Argumenty do sprawdzenia (np. obiekt visit).
+        :param arg_key: Klucz do identyfikacji obiektu (np. "id" dla `visit.id`).
+        """
+        with self.lock:
+            updated_queue = PriorityQueue()
+
+            while not self.task_queue.empty():
+                task = self.task_queue.get()
+
+                # 1️⃣ Sprawdź, czy funkcja pasuje
+                if task.func == func:
+                    # 2️⃣ Jeśli przekazano `args`, próbujemy znaleźć klucz `arg_key` w argumentach zadania
+                    if args:
+                        for arg in args:
+                            # Obsługa zarówno obiektów (np. `visit.id`), jak i słowników (np. `{"id": 50}`)
+                            task_values = [getattr(a, arg_key, None) if hasattr(a, arg_key) else a.get(arg_key, None) for a in task.args]
+
+                            if getattr(arg, arg_key, None) in task_values or arg.get(arg_key, None) in task_values:
+                                logging.info(f"🗑 Usunięto zadanie {task.func.__name__} dla {arg_key} = {getattr(arg, arg_key, None) or arg.get(arg_key, None)}")
+                                break  # Pomijamy to zadanie (nie dodajemy go z powrotem)
+                    else:
+                        logging.info(f"🗑 Usunięto WSZYSTKIE zadania {task.func.__name__}")
+                        continue  # Usuwamy zadanie, jeśli `args` nie zostały przekazane (czyli usuwamy wszystkie instancje danej funkcji)
+
+                # Jeśli zadanie nie pasuje do warunków, dodajemy je z powrotem do kolejki
+                updated_queue.put(task)
+
+            self.task_queue = updated_queue
+
     def run(self):
         """Główna pętla daemona, wykonuje zadania w odpowiednim czasie."""
         logging.info("🚀 Daemon uruchomiony!")
