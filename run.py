@@ -3689,22 +3689,44 @@ def reschedule_visit():
         new_datetime = f"{new_date} {new_time}:00"
         logging.info(f"📅 Przekładanie wizyty ID {visit_id} na {new_datetime}")
 
-        # 🔹 Pobranie oryginalnej wizyty, aby sprawdzić, czy istnieje
+        # 🔹 Pobranie oryginalnej wizyty
         original_visit = msq.connect_to_database(
-            "SELECT name, email, phone, patient_type FROM appointment_requests WHERE id = %s", (visit_id,)
+            "SELECT name, email, phone, patient_type, consent, link_hash FROM appointment_requests WHERE id = %s", (visit_id,)
         )
 
         if not original_visit:
             logging.error(f"❌ Nie znaleziono wizyty ID {visit_id}.")
             return jsonify({"status": "error", "message": "Nie znaleziono wizyty w bazie."}), 404
 
-        original_visit = original_visit[0]  # Pobieramy pierwszy wynik (powinien być jeden)
+        original_visit = original_visit[0]  # Pobieramy pierwszy rekord
 
-        # 🔹 Przenosimy wizytę na nowy termin (kopiujemy do nowego ID)
+        logging.info(f"🔎 Znaleziono wizytę ID {visit_id}: {original_visit}")
+
+        # 🔹 Sprawdzenie poprawności danych
+        valid_patient_types = ["adult", "child", "senior"]  # Dostosuj do bazy
+        if original_visit[3] not in valid_patient_types:
+            logging.error(f"❌ Niepoprawny `patient_type`: {original_visit[3]}")
+            return jsonify({"status": "error", "message": "Niepoprawny typ pacjenta."}), 400
+
+        consent_value = original_visit[4] if original_visit[4] is not None else 1  # Domyślnie 1
+
+        # 🔹 Przenosimy wizytę na nowy termin (kopiujemy dane)
         copy_success = msq.insert_to_database(
-            "INSERT INTO appointment_requests (name, email, phone, patient_type, visit_date, status, confirmed_date) "
-            "VALUES (%s, %s, %s, %s, %s, 'confirmed', %s)",
-            (original_visit[0], original_visit[1], original_visit[2], original_visit[3], new_date, new_datetime)
+            """
+            INSERT INTO appointment_requests 
+            (name, email, phone, patient_type, visit_date, consent, status, confirmed_date, link_hash) 
+            VALUES (%s, %s, %s, %s, %s, %s, 'confirmed', %s, %s)
+            """,
+            (
+                original_visit[0],  # name
+                original_visit[1],  # email
+                original_visit[2],  # phone
+                original_visit[3],  # patient_type
+                new_date,
+                consent_value,
+                new_datetime,
+                original_visit[5],  # link_hash
+            )
         )
 
         if not copy_success:
@@ -3712,9 +3734,14 @@ def reschedule_visit():
             return jsonify({"status": "error", "message": "Nie udało się utworzyć nowej wizyty."}), 500
 
         # 🔹 Oznaczamy starą wizytę jako anulowaną
+        cancel_note = data.get("cancel_note")
+        if cancel_note is None:
+            cancel_note = "Wizyta przełożona"
+        cancel_note = str(cancel_note).strip()
+
         cancel_success = msq.insert_to_database(
-            "UPDATE appointment_requests SET status = 'cancelled', cancelled_description = 'Wizyta przełożona', cancelled_flag = 0 WHERE id = %s",
-            (visit_id,)
+            "UPDATE appointment_requests SET status = 'cancelled', cancelled_description = %s, cancelled_flag = 0 WHERE id = %s",
+            (cancel_note, visit_id)
         )
 
         if cancel_success:
@@ -3727,6 +3754,7 @@ def reschedule_visit():
     except Exception as e:
         logging.error(f"❌ Błąd w /admin/reschedule_visit: {str(e)}")
         return jsonify({"status": "error", "message": f"Błąd serwera: {str(e)}"}), 500
+
 
 
 
