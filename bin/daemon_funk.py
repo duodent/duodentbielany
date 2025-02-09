@@ -120,34 +120,6 @@ def schedule_visit_reminders(visit, daemon):
 
         logging.info(f"✅ Wszystkie przypomnienia zaplanowane dla wizyty {visit.id}.")
 
-def schedule_visit_reminders_old(visit, daemon):
-    """ Tworzy zadania przypomnień dla pacjenta i recepcji """
-
-    if visit.status == "confirmed" and visit.confirmed_date:
-        confirmed_date = visit.confirmed_date  # ✅ Już jest datetime.datetime, nie trzeba parsować!
-        logging.info(f"✅ dane confirmed: {visit}.")
-
-        # 🔹 Natychmiastowe powiadomienie dla pacjenta o potwierdzeniu wizyty
-        logging.info(f"📩 Wysyłanie powiadomienia o potwierdzeniu wizyty do pacjenta {visit.email}")
-        send_patient_info_visit(visit)
-
-        # 🔹 Natychmiastowe powiadomienie dla recepcji o potwierdzeniu terminu wizyty
-        logging.info(f"📩 Wysyłanie powiadomienia o potwierdzeniu terminu do recepcji")
-        send_reception_info_visit(visit)
-
-        # 🔹 Przypomnienie dla pacjenta – dzień przed wizytą
-        reminder_patient_1 = confirmed_date - datetime.timedelta(days=1)
-        daemon.add_task((reminder_patient_1 - datetime.datetime.now()).total_seconds(), send_patient_reminder, visit)
-
-        # 🔹 Przypomnienie dla pacjenta – w dniu wizyty
-        reminder_patient_2 = confirmed_date.replace(hour=8, minute=0, second=0)  # 8:00 rano w dniu wizyty
-        daemon.add_task((reminder_patient_2 - datetime.datetime.now()).total_seconds(), send_patient_reminder, visit)
-
-        # 🔹 Przypomnienie dla recepcji – o 7:00 rano w dniu wizyty
-        reminder_reception = confirmed_date.replace(hour=7, minute=0, second=0)
-        daemon.add_task((reminder_reception - datetime.datetime.now()).total_seconds(), send_reception_reminder, visit)
-
-        logging.info(f"✅ Zadania przypomnień zaplanowane dla wizyty {visit.id}.")
 
 def send_patient_reminder(visit):
     """ Wysyła przypomnienie do pacjenta o wizycie """
