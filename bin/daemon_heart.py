@@ -35,27 +35,42 @@ class Daemon:
 
     def remove_tasks_for_function(self, func, *args, arg_key="id"):
         """Usuwa wszystkie zadania związane z daną funkcją i danym identyfikatorem."""
+
+        # Pobieramy identyfikatory z przekazanych argumentów
+        arg_values = [getattr(a, arg_key, None) if hasattr(a, arg_key) else a for a in args]
+        
+        logging.info(f"🛠 Usuwam `{func.__name__}` dla ID: {arg_values}")
+
         with self.lock:
             updated_queue = PriorityQueue()
+            removed_count = 0
 
             while not self.task_queue.empty():
                 task = self.task_queue.get()
 
-                # Pobieramy wartość identyfikującą (np. `visit.id`)
-                task_values = []
-                for a in task.args:
-                    if isinstance(a, dict):
-                        task_values.append(a.get(arg_key, None))  # Jeśli to słownik, pobierz klucz
-                    elif hasattr(a, arg_key):  
-                        task_values.append(getattr(a, arg_key))  # Jeśli to obiekt, pobierz atrybut
+                # Pobieramy ID dla aktualnego zadania (obsługa różnych typów argumentów)
+                try:
+                    task_values = [
+                        getattr(a, arg_key, None) if hasattr(a, arg_key) else a.get(arg_key, None)
+                        for a in task.args
+                        if isinstance(a, (dict, AppointmentRequest))
+                    ]
+                except AttributeError:
+                    logging.warning(f"⚠️ Problem z pobieraniem wartości dla `{func.__name__}`. Pominięto zadanie.")
+                    updated_queue.put(task)
+                    continue
 
-                # Jeśli funkcja i argumenty pasują, usuwamy zadanie
-                if task.func == func and any(value in task_values for value in args):
-                    logging.info(f"🗑 Usunięto zadanie {task.func.__name__} dla ID {args}")
+                # **Usuwamy tylko jeśli ID pasuje**
+                if task.func == func and any(task_value in arg_values for task_value in task_values):
+                    logging.info(f"🗑 Usunięto `{task.func.__name__}` dla ID {task_values}")
+                    removed_count += 1
                 else:
-                    updated_queue.put(task)  # Przekładamy do nowej kolejki
+                    updated_queue.put(task)  # Przenosimy do nowej kolejki
 
             self.task_queue = updated_queue
+            logging.info(f"✅ Usunięto {removed_count} zadań `{func.__name__}`")
+
+
 
     def run(self):
         """Główna pętla daemona, wykonuje zadania w odpowiednim czasie."""
