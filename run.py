@@ -3725,7 +3725,7 @@ def reschedule_visit():
                 new_date,
                 consent_value,
                 new_datetime,
-                original_visit[5],  # link_hash
+                generate_hash(),  # link_hash
             )
         )
 
