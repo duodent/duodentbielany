@@ -4,7 +4,7 @@ class AppointmentRequest:
                  in_progress_date, in_progress_description, in_progress_flag, verified_date, verified_description,
                  verified_flag, confirmed_date, confirmed_description, confirmed_flag, cancelled_date,
                  cancelled_description, cancelled_flag, error_date, error_description, error_flag, link_hash,
-                 reminder_count=0):
+                 reminder_count, last_confirmed_check):
 
         self.id = id
         self.name = name
@@ -32,6 +32,7 @@ class AppointmentRequest:
         self.error_flag = error_flag
         self.link_hash = link_hash
         self.reminder_count = reminder_count  # ✅ Nowe pole
+        self.last_confirmed_check = last_confirmed_check
 
     @classmethod
     def from_tuple(cls, data):
