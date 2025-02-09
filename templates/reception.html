@@ -24,28 +24,12 @@
     
     <p><strong>Status wizyty:</strong> 
         {% if visit.status == 'confirmed' %}
-        <style>
-            .color_style {
-                color:green;
-            }
-        </style>
+            <span style="color:green;">✔️ {{ visit.status | capitalize }}</span>
         {% elif visit.status == 'cancelled' %}
-        <style>
-            .color_style {
-                color:red;
-            }
-        </style>
+            <span style="color:red;">❌ {{ visit.status | capitalize }}</span>
         {% else %}
-        <style>
-            .color_style {
-                color:blue;
-            }
-        </style>
+            <span style="color:blue;">⏳ {{ visit.status | capitalize }}</span>
         {% endif %}
-        
-        <span class="{{color_style}}">
-            {{ visit.status | capitalize }}
-        </span>
     </p>
 
     {% if visit.status == 'in_progress' %}
@@ -72,6 +56,7 @@
 
         <h3>🔄 Przełóż wizytę</h3>
         <form id="rescheduleForm" onsubmit="event.preventDefault(); rescheduleVisit();">
+            <input type="hidden" id="visit_id" value="{{ visit.id }}">
             <label>Nowa data:</label>
             <input type="date" id="new_date" required>
             
@@ -82,8 +67,12 @@
         </form>
 
         <h3>🚫 Anuluj wizytę</h3>
-        <textarea id="cancel_note_confirmed" placeholder="Podaj powód anulowania wizyty..." required></textarea>
-        <button onclick="cancelVisit()">❌ Anuluj wizytę</button>
+        <form onsubmit="event.preventDefault(); cancelVisit();">
+            <input type="hidden" id="visit_id" value="{{ visit.id }}">
+            <label>Powód anulowania:</label>
+            <textarea id="cancel_note" required></textarea>
+            <button type="submit">❌ Anuluj wizytę</button>
+        </form>
 
     {% elif visit.status == 'cancelled' %}
         <h3>🚫 Wizyta została anulowana</h3>
@@ -93,9 +82,14 @@
 
 <script>
     function confirmVisit() {
-        let visitId = document.getElementById("visit_id").value;
-        let confirmedDate = document.getElementById("confirmed_date").value;
-        let confirmedTime = document.getElementById("confirmed_time").value;
+        let visitId = document.getElementById("visit_id")?.value;
+        let confirmedDate = document.getElementById("confirmed_date")?.value;
+        let confirmedTime = document.getElementById("confirmed_time")?.value;
+
+        if (!visitId || !confirmedDate || !confirmedTime) {
+            alert("❌ Wystąpił błąd! Sprawdź, czy wszystkie pola są wypełnione.");
+            return;
+        }
 
         fetch("/admin/confirm_visit", {
             method: "POST",
@@ -114,11 +108,11 @@
     }
 
     function cancelVisit() {
-        let visitId = document.getElementById("visit_id").value;
-        let cancelNote = document.getElementById("cancel_note") ? document.getElementById("cancel_note").value : document.getElementById("cancel_note_confirmed").value;
+        let visitId = document.getElementById("visit_id")?.value;
+        let cancelNote = document.getElementById("cancel_note")?.value.trim();
 
-        if (!cancelNote.trim()) {
-            alert("⚠️ Musisz podać powód anulowania wizyty!");
+        if (!visitId || !cancelNote) {
+            alert("❌ Wystąpił błąd! Sprawdź, czy wszystkie pola są wypełnione.");
             return;
         }
 
@@ -130,18 +124,27 @@
         .then(response => response.json())
         .then(data => {
             if (data.status === "success") {
-                alert("❌ Wizyta anulowana.");
+                alert("✅ Wizyta została anulowana!");
                 location.reload();
             } else {
                 alert("⚠️ Błąd: " + data.message);
             }
+        })
+        .catch(error => {
+            console.error("❌ Błąd:", error);
+            alert("⚠️ Wystąpił błąd. Spróbuj ponownie.");
         });
     }
 
     function rescheduleVisit() {
-        let visitId = document.getElementById("visit_id").value;
-        let newDate = document.getElementById("new_date").value;
-        let newTime = document.getElementById("new_time").value;
+        let visitId = document.getElementById("visit_id")?.value;
+        let newDate = document.getElementById("new_date")?.value;
+        let newTime = document.getElementById("new_time")?.value;
+
+        if (!visitId || !newDate || !newTime) {
+            alert("❌ Wystąpił błąd! Sprawdź, czy wszystkie pola są wypełnione.");
+            return;
+        }
 
         fetch("/admin/reschedule_visit", {
             method: "POST",
