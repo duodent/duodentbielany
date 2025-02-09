@@ -11,7 +11,7 @@ def handle_visit_request(visit):
         logging.info(f"📩 Wysyłanie e-maila do recepcji: {visit.email} (Zgłoszenie ID: {visit.id})")
 
         # 📌 Treść e-maila
-        subject = "📌 Nowe zgłoszenie wizyty"
+        subject = f"⏳ Potwierdzenie rezerwacji wizyty – wymagana godzina dla pacjenta: {visit.name}"
         html_body = html_body_dict.get('handle_visit_request', '') \
             .replace("{{visit.name}}", visit.name) \
             .replace("{{visit.email}}", visit.email) \
@@ -48,7 +48,7 @@ def remind_reception(visit, daemon):
         delay = intervals[reminder_idx]
 
         # 📌 Treść przypomnienia
-        subject = "📌 Przypomnienie o zgłoszeniu wizyty"
+        subject = f"⚠️ Pilne: wybierz godzinę dla zgłoszonej wizyty dla pacjenta: {visit.name}"
         html_body = html_body_dict.get('remind_reception', '')\
             .replace("{{visit.name}}", visit.name) \
             .replace("{{visit.email}}", visit.email) \
@@ -99,7 +99,7 @@ def schedule_visit_reminders(visit, daemon):
 
 def send_patient_reminder(visit):
     """ Wysyła przypomnienie do pacjenta o wizycie """
-    subject = "Przypomnienie o wizycie"
+    subject = f"🦷 Przypomnienie: Twoja wizyta w Duodent Bielany {visit.confirmed_date.strftime("%Y-%m-%d %H:%M")}"
     html_body = html_body_dict.get('send_patient_reminder', '')\
         .replace("{{visit.name}}", visit.name)\
         .replace("{{visit.confirmed_date}}", visit.confirmed_date.strftime("%Y-%m-%d %H:%M") if isinstance(visit.confirmed_date, datetime.datetime) else "")
@@ -110,7 +110,7 @@ def send_patient_reminder(visit):
 def send_reception_reminder(visit):
     """ Wysyła przypomnienie do recepcji o wizycie pacjenta """
     email_reception = smtp_config.get('smtp_username')  # Adres recepcji
-    subject = "🗓 Przypomnienie o dzisiejszych wizytach"
+    subject = f"📅 Przypomnienie: Wizyta pacjenta {visit.name} o {visit.confirmed_date.strftime('%H:%M')}"
     html_body = html_body_dict.get('send_reception_reminder', '')\
         .replace("{{visit.name}}", visit.name) \
         .replace("{{visit.email}}", visit.email) \
@@ -124,7 +124,7 @@ def send_reception_reminder(visit):
 
 def send_cancellation_email(visit):
     """ Wysyła e-mail do pacjenta o odwołaniu wizyty """
-    subject = "⚠️ Odwołanie wizyty"
+    subject = f"⚠️ Ważne: Twoja wizyta w Duodent Bielany została odwołana!"
     html_body = html_body_dict.get('send_cancellation_email', '')\
         .replace("{{visit.name}}", visit.name)\
         .replace("{{visit.confirmed_date}}", visit.confirmed_date.strftime("%Y-%m-%d %H:%M") if isinstance(visit.confirmed_date, datetime.datetime) else "")
