@@ -55,7 +55,7 @@ def monitor_database():
     # 🔹 **3. Pobieramy tylko nowe potwierdzone wizyty z przyszłości**
     raw_data = msq.connect_to_database(
         "SELECT * FROM appointment_requests WHERE status = 'confirmed' "
-        "AND (confirmed_flag = 0 OR TIMESTAMPDIFF(SECOND, confirmed_date, NOW()) < 5) "
+        "AND (confirmed_flag = 0 OR confirmed_date > last_confirmed_check) "
         "AND confirmed_date >= NOW()"
     )
     confirmed_visits = [AppointmentRequest.from_tuple(row) for row in raw_data]
@@ -64,8 +64,12 @@ def monitor_database():
         logging.info(f"📅 Planowanie przypomnień dla wizyty: {visit.to_dict()}")
         schedule_visit_reminders(visit, daemon)
 
+        # msq.insert_to_database(
+        #     "UPDATE appointment_requests SET confirmed_flag = 1 WHERE id = %s",
+        #     (visit.id,)
+        # )
         msq.insert_to_database(
-            "UPDATE appointment_requests SET confirmed_flag = 1 WHERE id = %s",
+            "UPDATE appointment_requests SET confirmed_flag = 1, last_confirmed_check = NOW() WHERE id = %s",
             (visit.id,)
         )
 
