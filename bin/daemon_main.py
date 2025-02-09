@@ -34,7 +34,7 @@ def monitor_database():
     confirmed_visits = [AppointmentRequest.from_tuple(row) for row in raw_data]
 
     for visit in confirmed_visits:
-        logging.info(f"📅 Planowanie przypomnień dla wizyty: {visit.to_dict()}")
+        logging.info(f"📅 Planowanie przypomnień dla wizyty!")
         schedule_visit_reminders(visit, daemon)
 
         msq.insert_to_database(
@@ -49,7 +49,7 @@ def monitor_database():
     cancelled_visits = [AppointmentRequest.from_tuple(row) for row in raw_data]
 
     for visit in cancelled_visits:
-        logging.info(f"⚠️ Odwołana wizyta – powiadomienie do pacjenta: {visit.to_dict()}")
+        logging.info(f"⚠️ Odwołana wizyta – powiadomienie do pacjenta!")
 
         # 🔹 Najpierw usuwamy zaplanowane zadania dla recepcji
         daemon.remove_tasks_for_function(remind_reception, visit, arg_key="id")
@@ -71,7 +71,7 @@ def monitor_database():
     visit_requests = [AppointmentRequest.from_tuple(row) for row in raw_data]
 
     for visit in visit_requests:
-        logging.info(f"📩 Znaleziono nowe zgłoszenie: {visit.to_dict()}")
+        logging.info(f"📩 Znaleziono nowe zgłoszenie!")
 
         # ✅ Natychmiastowa wysyłka e-maila do recepcji
         daemon.add_task(5, handle_visit_request, visit)
