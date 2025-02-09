@@ -1,6 +1,48 @@
 html_body_dict = {
     'handle_visit_request': """
         <html>
+            <style>
+                .time_area {
+                    display: flex;
+                    flex-wrap: wrap; /* Elementy zawijają się do nowej linii */
+                    gap: 5px; /* Mniejsza przerwa między elementami */
+                    justify-content: flex-start;
+                    align-items: center;
+                    padding: 10px;
+                    background: #24363f;
+                    border-radius: 5px;
+                }
+
+                .time_box {
+                    display: inline-block; /* Kluczowe: pozwala na umieszczanie wielu elementów w linii */
+                    background: #24363f;
+                    color: #fff;
+                    padding: 8px 12px; /* Zmniejszone paddingi, aby więcej się mieściło */
+                    border-radius: 5px;
+                    font-size: 12px; /* Mniejsza czcionka */
+                    margin: 2px; /* Zmniejszone marginesy */
+                    white-space: nowrap; /* Zapobiega łamaniu się tekstu */
+                }
+
+                .time_link {
+                    text-decoration: none;
+                    padding: 8px 12px; /* Dopasowane do .time_box */
+                    background-color: #24363f;
+                    color: #fff;
+                    border-radius: 5px;
+                    font-size: 12px;
+                    margin: 2px;
+                    display: inline-block;
+                    transition: color 0.3s ease-in-out, background 0.3s ease-in-out;
+                }
+
+                .time_link:hover {
+                    color: orange;
+                    background-color: #1a282f;
+                }
+            </style>
+
+
             <body style="font-family: Arial, sans-serif; color: #333; line-height: 1.6;">
                 <h1 style="color: #24363f;">Nowe zgłoszenie wizyty</h1>
                 <p>
@@ -37,31 +79,127 @@ html_body_dict = {
                     Wybierz godzinę wizyty klikając w jeden z przycisków poniżej:
                 </p>
 
-                <div style="margin-top: 20px; display: flex; flex-wrap: wrap; gap: 10px;">
-                    <div style="display: inline-block; background: #24363f; color: #fff; padding: 10px 15px; border-radius: 5px;"><a href="https://duodentbielany.pl/reception/{{visit.link_hash}}?date={{visit.visit_date}}&time=0800&emailtoconfirmverification={{visit.email}}" style="text-decoration: none; padding: 10px 15px; background-color: #24363f; color: #fff; border-radius: 5px; margin: 5px; font-size: 11px;">08:00</a></div>
-                    <div style="display: inline-block; background: #24363f; color: #fff; padding: 10px 15px; border-radius: 5px;"><a href="https://duodentbielany.pl/reception/{{visit.link_hash}}?date={{visit.visit_date}}&time=0830&emailtoconfirmverification={{visit.email}}" style="text-decoration: none; padding: 10px 15px; background-color: #24363f; color: #fff; border-radius: 5px; margin: 5px; font-size: 11px;">08:30</a></div>
-                    <div style="display: inline-block; background: #24363f; color: #fff; padding: 10px 15px; border-radius: 5px;"><a href="https://duodentbielany.pl/reception/{{visit.link_hash}}?date={{visit.visit_date}}&time=0900&emailtoconfirmverification={{visit.email}}" style="text-decoration: none; padding: 10px 15px; background-color: #24363f; color: #fff; border-radius: 5px; margin: 5px; font-size: 11px;">09:00</a></div>
-                    <div style="display: inline-block; background: #24363f; color: #fff; padding: 10px 15px; border-radius: 5px;"><a href="https://duodentbielany.pl/reception/{{visit.link_hash}}?date={{visit.visit_date}}&time=0930&emailtoconfirmverification={{visit.email}}" style="text-decoration: none; padding: 10px 15px; background-color: #24363f; color: #fff; border-radius: 5px; margin: 5px; font-size: 11px;">09:30</a></div>
-                    <div style="display: inline-block; background: #24363f; color: #fff; padding: 10px 15px; border-radius: 5px;"><a href="https://duodentbielany.pl/reception/{{visit.link_hash}}?date={{visit.visit_date}}&time=1000&emailtoconfirmverification={{visit.email}}" style="text-decoration: none; padding: 10px 15px; background-color: #24363f; color: #fff; border-radius: 5px; margin: 5px; font-size: 11px;">10:00</a></div>
-                    <div style="display: inline-block; background: #24363f; color: #fff; padding: 10px 15px; border-radius: 5px;"><a href="https://duodentbielany.pl/reception/{{visit.link_hash}}?date={{visit.visit_date}}&time=1030&emailtoconfirmverification={{visit.email}}" style="text-decoration: none; padding: 10px 15px; background-color: #24363f; color: #fff; border-radius: 5px; margin: 5px; font-size: 11px;">10:30</a></div>
-                    <div style="display: inline-block; background: #24363f; color: #fff; padding: 10px 15px; border-radius: 5px;"><a href="https://duodentbielany.pl/reception/{{visit.link_hash}}?date={{visit.visit_date}}&time=1100&emailtoconfirmverification={{visit.email}}" style="text-decoration: none; padding: 10px 15px; background-color: #24363f; color: #fff; border-radius: 5px; margin: 5px; font-size: 11px;">11:00</a></div>
-                    <div style="display: inline-block; background: #24363f; color: #fff; padding: 10px 15px; border-radius: 5px;"><a href="https://duodentbielany.pl/reception/{{visit.link_hash}}?date={{visit.visit_date}}&time=1130&emailtoconfirmverification={{visit.email}}" style="text-decoration: none; padding: 10px 15px; background-color: #24363f; color: #fff; border-radius: 5px; margin: 5px; font-size: 11px;">11:30</a></div>
-                    <div style="display: inline-block; background: #24363f; color: #fff; padding: 10px 15px; border-radius: 5px;"><a href="https://duodentbielany.pl/reception/{{visit.link_hash}}?date={{visit.visit_date}}&time=1200&emailtoconfirmverification={{visit.email}}" style="text-decoration: none; padding: 10px 15px; background-color: #24363f; color: #fff; border-radius: 5px; margin: 5px; font-size: 11px;">12:00</a></div>
-                    <div style="display: inline-block; background: #24363f; color: #fff; padding: 10px 15px; border-radius: 5px;"><a href="https://duodentbielany.pl/reception/{{visit.link_hash}}?date={{visit.visit_date}}&time=1230&emailtoconfirmverification={{visit.email}}" style="text-decoration: none; padding: 10px 15px; background-color: #24363f; color: #fff; border-radius: 5px; margin: 5px; font-size: 11px;">12:30</a></div>
-                    <div style="display: inline-block; background: #24363f; color: #fff; padding: 10px 15px; border-radius: 5px;"><a href="https://duodentbielany.pl/reception/{{visit.link_hash}}?date={{visit.visit_date}}&time=1300&emailtoconfirmverification={{visit.email}}" style="text-decoration: none; padding: 10px 15px; background-color: #24363f; color: #fff; border-radius: 5px; margin: 5px; font-size: 11px;">13:00</a></div>
-                    <div style="display: inline-block; background: #24363f; color: #fff; padding: 10px 15px; border-radius: 5px;"><a href="https://duodentbielany.pl/reception/{{visit.link_hash}}?date={{visit.visit_date}}&time=1330&emailtoconfirmverification={{visit.email}}" style="text-decoration: none; padding: 10px 15px; background-color: #24363f; color: #fff; border-radius: 5px; margin: 5px; font-size: 11px;">13:30</a></div>
-                    <div style="display: inline-block; background: #24363f; color: #fff; padding: 10px 15px; border-radius: 5px;"><a href="https://duodentbielany.pl/reception/{{visit.link_hash}}?date={{visit.visit_date}}&time=1400&emailtoconfirmverification={{visit.email}}" style="text-decoration: none; padding: 10px 15px; background-color: #24363f; color: #fff; border-radius: 5px; margin: 5px; font-size: 11px;">14:00</a></div>
-                    <div style="display: inline-block; background: #24363f; color: #fff; padding: 10px 15px; border-radius: 5px;"><a href="https://duodentbielany.pl/reception/{{visit.link_hash}}?date={{visit.visit_date}}&time=1430&emailtoconfirmverification={{visit.email}}" style="text-decoration: none; padding: 10px 15px; background-color: #24363f; color: #fff; border-radius: 5px; margin: 5px; font-size: 11px;">14:30</a></div>
-                    <div style="display: inline-block; background: #24363f; color: #fff; padding: 10px 15px; border-radius: 5px;"><a href="https://duodentbielany.pl/reception/{{visit.link_hash}}?date={{visit.visit_date}}&time=1500&emailtoconfirmverification={{visit.email}}" style="text-decoration: none; padding: 10px 15px; background-color: #24363f; color: #fff; border-radius: 5px; margin: 5px; font-size: 11px;">15:00</a></div>
-                    <div style="display: inline-block; background: #24363f; color: #fff; padding: 10px 15px; border-radius: 5px;"><a href="https://duodentbielany.pl/reception/{{visit.link_hash}}?date={{visit.visit_date}}&time=1530&emailtoconfirmverification={{visit.email}}" style="text-decoration: none; padding: 10px 15px; background-color: #24363f; color: #fff; border-radius: 5px; margin: 5px; font-size: 11px;">15:30</a></div>
-                    <div style="display: inline-block; background: #24363f; color: #fff; padding: 10px 15px; border-radius: 5px;"><a href="https://duodentbielany.pl/reception/{{visit.link_hash}}?date={{visit.visit_date}}&time=1600&emailtoconfirmverification={{visit.email}}" style="text-decoration: none; padding: 10px 15px; background-color: #24363f; color: #fff; border-radius: 5px; margin: 5px; font-size: 11px;">16:00</a></div>
-                    <div style="display: inline-block; background: #24363f; color: #fff; padding: 10px 15px; border-radius: 5px;"><a href="https://duodentbielany.pl/reception/{{visit.link_hash}}?date={{visit.visit_date}}&time=1630&emailtoconfirmverification={{visit.email}}" style="text-decoration: none; padding: 10px 15px; background-color: #24363f; color: #fff; border-radius: 5px; margin: 5px; font-size: 11px;">16:30</a></div>
-                    <div style="display: inline-block; background: #24363f; color: #fff; padding: 10px 15px; border-radius: 5px;"><a href="https://duodentbielany.pl/reception/{{visit.link_hash}}?date={{visit.visit_date}}&time=1700&emailtoconfirmverification={{visit.email}}" style="text-decoration: none; padding: 10px 15px; background-color: #24363f; color: #fff; border-radius: 5px; margin: 5px; font-size: 11px;">17:00</a></div>
-                    <div style="display: inline-block; background: #24363f; color: #fff; padding: 10px 15px; border-radius: 5px;"><a href="https://duodentbielany.pl/reception/{{visit.link_hash}}?date={{visit.visit_date}}&time=1730&emailtoconfirmverification={{visit.email}}" style="text-decoration: none; padding: 10px 15px; background-color: #24363f; color: #fff; border-radius: 5px; margin: 5px; font-size: 11px;">17:30</a></div>
-                    <div style="display: inline-block; background: #24363f; color: #fff; padding: 10px 15px; border-radius: 5px;"><a href="https://duodentbielany.pl/reception/{{visit.link_hash}}?date={{visit.visit_date}}&time=1800&emailtoconfirmverification={{visit.email}}" style="text-decoration: none; padding: 10px 15px; background-color: #24363f; color: #fff; border-radius: 5px; margin: 5px; font-size: 11px;">18:00</a></div>
-                    <div style="display: inline-block; background: #24363f; color: #fff; padding: 10px 15px; border-radius: 5px;"><a href="https://duodentbielany.pl/reception/{{visit.link_hash}}?date={{visit.visit_date}}&time=1830&emailtoconfirmverification={{visit.email}}" style="text-decoration: none; padding: 10px 15px; background-color: #24363f; color: #fff; border-radius: 5px; margin: 5px; font-size: 11px;">18:30</a></div>
-                    <div style="display: inline-block; background: #24363f; color: #fff; padding: 10px 15px; border-radius: 5px;"><a href="https://duodentbielany.pl/reception/{{visit.link_hash}}?date={{visit.visit_date}}&time=1900&emailtoconfirmverification={{visit.email}}" style="text-decoration: none; padding: 10px 15px; background-color: #24363f; color: #fff; border-radius: 5px; margin: 5px; font-size: 11px;">19:00</a></div>
-                    <div style="display: inline-block; background: #24363f; color: #fff; padding: 10px 15px; border-radius: 5px;"><a href="https://duodentbielany.pl/reception/{{visit.link_hash}}?date={{visit.visit_date}}&time=1930&emailtoconfirmverification={{visit.email}}" style="text-decoration: none; padding: 10px 15px; background-color: #24363f; color: #fff; border-radius: 5px; margin: 5px; font-size: 11px;">19:30</a></div>
+                <div class="time_area">
+                    <div class="time_box">
+                        <a href="https://duodentbielany.pl/reception/{{visit.link_hash}}?date={{visit.visit_date}}&time=0800&emailtoconfirmverification={{visit.email}}" class="time_link">
+                            08:00
+                        </a>
+                    </div>
+                    <div class="time_box">
+                        <a href="https://duodentbielany.pl/reception/{{visit.link_hash}}?date={{visit.visit_date}}&time=0830&emailtoconfirmverification={{visit.email}}" class="time_link">
+                            08:30
+                        </a>
+                    </div>
+                    <div class="time_box">
+                        <a href="https://duodentbielany.pl/reception/{{visit.link_hash}}?date={{visit.visit_date}}&time=0900&emailtoconfirmverification={{visit.email}}" class="time_link">
+                            09:00
+                        </a>
+                    </div>
+                    <div class="time_box">
+                        <a href="https://duodentbielany.pl/reception/{{visit.link_hash}}?date={{visit.visit_date}}&time=0930&emailtoconfirmverification={{visit.email}}" class="time_link">
+                            09:30
+                        </a>
+                    </div>
+                    <div class="time_box">
+                        <a href="https://duodentbielany.pl/reception/{{visit.link_hash}}?date={{visit.visit_date}}&time=1000&emailtoconfirmverification={{visit.email}}" class="time_link">
+                            10:00
+                        </a>
+                    </div>
+                    <div class="time_box">
+                        <a href="https://duodentbielany.pl/reception/{{visit.link_hash}}?date={{visit.visit_date}}&time=1030&emailtoconfirmverification={{visit.email}}" class="time_link">
+                            10:30
+                        </a>
+                    </div>
+                    <div class="time_box">
+                        <a href="https://duodentbielany.pl/reception/{{visit.link_hash}}?date={{visit.visit_date}}&time=1100&emailtoconfirmverification={{visit.email}}" class="time_link">
+                            11:00
+                        </a>
+                    </div>
+                    <div class="time_box">
+                        <a href="https://duodentbielany.pl/reception/{{visit.link_hash}}?date={{visit.visit_date}}&time=1130&emailtoconfirmverification={{visit.email}}" class="time_link">
+                            11:30
+                        </a>
+                    </div>
+                    <div class="time_box">
+                        <a href="https://duodentbielany.pl/reception/{{visit.link_hash}}?date={{visit.visit_date}}&time=1200&emailtoconfirmverification={{visit.email}}" class="time_link">
+                            12:00
+                        </a>
+                    </div>
+                    <div class="time_box">
+                        <a href="https://duodentbielany.pl/reception/{{visit.link_hash}}?date={{visit.visit_date}}&time=1230&emailtoconfirmverification={{visit.email}}" class="time_link">
+                            12:30
+                        </a>
+                    </div>
+                    <div class="time_box">
+                        <a href="https://duodentbielany.pl/reception/{{visit.link_hash}}?date={{visit.visit_date}}&time=1300&emailtoconfirmverification={{visit.email}}" class="time_link">
+                            13:00
+                        </a>
+                    </div>
+                    <div class="time_box">
+                        <a href="https://duodentbielany.pl/reception/{{visit.link_hash}}?date={{visit.visit_date}}&time=1330&emailtoconfirmverification={{visit.email}}" class="time_link">
+                            13:30
+                        </a>
+                    </div>
+                    <div class="time_box">
+                        <a href="https://duodentbielany.pl/reception/{{visit.link_hash}}?date={{visit.visit_date}}&time=1400&emailtoconfirmverification={{visit.email}}" class="time_link">
+                            14:00
+                        </a>
+                    </div>
+                    <div class="time_box">
+                        <a href="https://duodentbielany.pl/reception/{{visit.link_hash}}?date={{visit.visit_date}}&time=1430&emailtoconfirmverification={{visit.email}}" class="time_link">
+                            14:30
+                        </a>
+                    </div>
+                    <div class="time_box">
+                        <a href="https://duodentbielany.pl/reception/{{visit.link_hash}}?date={{visit.visit_date}}&time=1500&emailtoconfirmverification={{visit.email}}" class="time_link">
+                            15:00
+                        </a>
+                    </div>
+                    <div class="time_box">
+                        <a href="https://duodentbielany.pl/reception/{{visit.link_hash}}?date={{visit.visit_date}}&time=1530&emailtoconfirmverification={{visit.email}}" class="time_link">
+                            15:30
+                        </a>
+                    </div>
+                    <div class="time_box">
+                        <a href="https://duodentbielany.pl/reception/{{visit.link_hash}}?date={{visit.visit_date}}&time=1600&emailtoconfirmverification={{visit.email}}" class="time_link">
+                            16:00
+                        </a>
+                    </div>
+                    <div class="time_box">
+                        <a href="https://duodentbielany.pl/reception/{{visit.link_hash}}?date={{visit.visit_date}}&time=1630&emailtoconfirmverification={{visit.email}}" class="time_link">
+                            16:30
+                        </a>
+                    </div>
+                    <div class="time_box">
+                        <a href="https://duodentbielany.pl/reception/{{visit.link_hash}}?date={{visit.visit_date}}&time=1700&emailtoconfirmverification={{visit.email}}" class="time_link">
+                            17:00
+                        </a>
+                    </div>
+                    <div class="time_box">
+                        <a href="https://duodentbielany.pl/reception/{{visit.link_hash}}?date={{visit.visit_date}}&time=1730&emailtoconfirmverification={{visit.email}}" class="time_link">
+                            17:30
+                        </a>
+                    </div>
+                    <div class="time_box">
+                        <a href="https://duodentbielany.pl/reception/{{visit.link_hash}}?date={{visit.visit_date}}&time=1800&emailtoconfirmverification={{visit.email}}" class="time_link">
+                            18:00
+                        </a>
+                    </div>
+                    <div class="time_box">
+                        <a href="https://duodentbielany.pl/reception/{{visit.link_hash}}?date={{visit.visit_date}}&time=1830&emailtoconfirmverification={{visit.email}}" class="time_link">
+                            18:30
+                        </a>
+                    </div>
+                    <div class="time_box">
+                        <a href="https://duodentbielany.pl/reception/{{visit.link_hash}}?date={{visit.visit_date}}&time=1900&emailtoconfirmverification={{visit.email}}" class="time_link">
+                            19:00
+                        </a>
+                    </div>
+                    <div class="time_box">
+                        <a href="https://duodentbielany.pl/reception/{{visit.link_hash}}?date={{visit.visit_date}}&time=1930&emailtoconfirmverification={{visit.email}}" class="time_link">
+                            19:30
+                        </a>
+                    </div>
                 </div>
                 <p style="margin-top: 20px;">
                     Link do karty wizyty: <a href="https://duodentbielany.pl/reception/{{visit.link_hash}}">Zarządzaj terminem wizyty</a>
