@@ -11,7 +11,7 @@ def handle_visit_request(visit):
         logging.info(f"📩 Wysyłanie e-maila do recepcji: {visit.email} (Zgłoszenie ID: {visit.id})")
 
         # 📌 Treść e-maila
-        subject = "Nowe zgłoszenie wizyty"
+        subject = "📌 Nowe zgłoszenie wizyty"
         html_body = html_body_dict.get('handle_visit_request', '') \
             .replace("{{visit.name}}", visit.name) \
             .replace("{{visit.email}}", visit.email) \
@@ -48,8 +48,14 @@ def remind_reception(visit, daemon):
         delay = intervals[reminder_idx]
 
         # 📌 Treść przypomnienia
-        subject = "Przypomnienie o zgłoszeniu wizyty"
-        html_body = html_body_dict.get('remind_reception', '').replace("{{visit.name}}", visit.name)
+        subject = "📌 Przypomnienie o zgłoszeniu wizyty"
+        html_body = html_body_dict.get('remind_reception', '')\
+            .replace("{{visit.name}}", visit.name) \
+            .replace("{{visit.email}}", visit.email) \
+            .replace("{{visit.phone}}", visit.phone) \
+            .replace("{{visit.visit_date}}", visit.visit_date.strftime("%Y-%m-%d"))\
+            .replace("{{visit.patient_type}}", visit.patient_type)\
+            .replace("{{visit.link_hash}}", visit.link_hash)
 
         # 📌 Wysyłamy przypomnienie
         email_reception = smtp_config.get('smtp_username')
