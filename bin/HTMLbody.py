@@ -53,34 +53,22 @@ html_body_dict = {
             <body style="font-family: Arial, sans-serif; color: #333; line-height: 1.6;">
                 <h1 style="color: #24363f;">Nowe zgłoszenie wizyty</h1>
                 <p>
-                    Otrzymaliśmy nowe zgłoszenie wizyty w placówce Duodent Bielany. Szczegóły zgłoszenia znajdują się poniżej:
+                    Otrzymaliśmy nowy wniosek o rezerwację wizyty.
                 </p>
-                <table style="border-collapse: collapse; width: 100%; margin-top: 20px;">
-                    <tr style="background-color: #f9f9f9;">
-                        <th style="border: 1px solid #ccc; padding: 10px; text-align: left;">Opis</th>
-                        <th style="border: 1px solid #ccc; padding: 10px; text-align: left;">Dane</th>
-                    </tr>
-                    <tr>
-                        <td style="border: 1px solid #ccc; padding: 10px;">Imię i nazwisko</td>
-                        <td style="border: 1px solid #ccc; padding: 10px;">{{visit.name}}</td>
-                    </tr>
-                    <tr style="background-color: #f9f9f9;">
-                        <td style="border: 1px solid #ccc; padding: 10px;">Adres e-mail</td>
-                        <td style="border: 1px solid #ccc; padding: 10px;">{{visit.email}}</td>
-                    </tr>
-                    <tr>
-                        <td style="border: 1px solid #ccc; padding: 10px;">Numer telefonu</td>
-                        <td style="border: 1px solid #ccc; padding: 10px;">{{visit.phone}}</td>
-                    </tr>
-                    <tr style="background-color: #f9f9f9;">
-                        <td style="border: 1px solid #ccc; padding: 10px;">Data wizyty</td>
-                        <td style="border: 1px solid #ccc; padding: 10px;">{{visit.visit_date}}</td>
-                    </tr>
-                    <tr>
-                        <td style="border: 1px solid #ccc; padding: 10px;">Typ pacjenta</td>
-                        <td style="border: 1px solid #ccc; padding: 10px;">{{visit.patient_type}}</td>
-                    </tr>
-                </table>
+
+                <p style="font-size: 16px; font-weight: bold; color: #24363f;">
+                    Pacjent: <strong>{{visit.name}}</strong> | {{visit.patient_type}} | 
+                    <a href="mailto:{{visit.email}}" style="color: #24363f; text-decoration: none;">{{visit.email}}</a> | 
+                    <a href="tel:{{visit.phone}}" style="color: #24363f; text-decoration: none;">{{visit.phone}}</a>
+                </p>
+
+                <p>
+                    Chce zarezerwować wizytę w dniu <strong>{{visit.visit_date}}</strong>.
+                </p>
+
+                <p style="margin-top: 20px;">
+                    Należy ustalić godzinę z pacjentem.
+                </p>
 
                 <p style="margin-top: 20px;">
                     Wybierz godzinę wizyty klikając w jeden z przycisków poniżej:
