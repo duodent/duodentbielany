@@ -37,7 +37,7 @@ class Daemon:
         """Usuwa wszystkie zadania związane z daną funkcją i danym identyfikatorem."""
 
         # Pobieramy identyfikatory z przekazanych argumentów
-        arg_values = [getattr(a, arg_key, None) if hasattr(a, arg_key) else a for a in args]
+        arg_values = set(getattr(a, arg_key, None) if hasattr(a, arg_key) else a for a in args)
         
         logging.info(f"🛠 Usuwam `{func.__name__}` dla ID: {arg_values}")
 
@@ -49,19 +49,15 @@ class Daemon:
                 task = self.task_queue.get()
 
                 # Pobieramy ID dla aktualnego zadania (obsługa różnych typów argumentów)
-                try:
-                    task_values = [
-                        getattr(a, arg_key, None) if hasattr(a, arg_key) else a.get(arg_key, None)
-                        for a in task.args
-                        if isinstance(a, (dict, AppointmentRequest))
-                    ]
-                except AttributeError:
-                    logging.warning(f"⚠️ Problem z pobieraniem wartości dla `{func.__name__}`. Pominięto zadanie.")
-                    updated_queue.put(task)
-                    continue
+                task_values = set()
+                for a in task.args:
+                    if isinstance(a, (dict, AppointmentRequest)):
+                        task_values.add(getattr(a, arg_key, None) if hasattr(a, arg_key) else a.get(arg_key, None))
+                    elif isinstance(a, (int, str)):  # Obsługa ID podanych jako liczby lub stringi
+                        task_values.add(a)
 
                 # **Usuwamy tylko jeśli ID pasuje**
-                if task.func == func and any(task_value in arg_values for task_value in task_values):
+                if task.func == func and arg_values & task_values:
                     logging.info(f"🗑 Usunięto `{task.func.__name__}` dla ID {task_values}")
                     removed_count += 1
                 else:
@@ -69,6 +65,11 @@ class Daemon:
 
             self.task_queue = updated_queue
             logging.info(f"✅ Usunięto {removed_count} zadań `{func.__name__}`")
+
+            # 🔹 **Logowanie pozostałych zadań w kolejce**
+            remaining_tasks = [f"{t.func.__name__} (ID: {getattr(t.args[0], arg_key, None) if t.args else 'Brak ID'})" for t in list(self.task_queue.queue)]
+            logging.info(f"📌 Pozostałe zadania w kolejce: {remaining_tasks if remaining_tasks else 'Brak'}")
+
 
 
 
