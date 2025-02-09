@@ -37,13 +37,13 @@ def send_html_email(subject, html_body, to_email):
         message.attach(MIMEText(html_body, "html"))
 
         # Debug: Wyświetl szczegóły wiadomości i konfiguracji
-        print("SMTP Config:", smtp_server, smtp_port, smtp_username)
-        print("Message Info:", {
-            "From": message['From'],
-            "To": message['To'],
-            "Subject": message['Subject'],
-            "Body": html_body
-        })
+        # print("SMTP Config:", smtp_server, smtp_port, smtp_username)
+        # print("Message Info:", {
+        #     "From": message['From'],
+        #     "To": message['To'],
+        #     "Subject": message['Subject'],
+        #     "Body": html_body
+        # })
 
         # Utwórz połączenie z serwerem SMTP
         print("Connecting to SMTP server...")
