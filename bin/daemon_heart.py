@@ -34,36 +34,26 @@ class Daemon:
         logging.info(f"📌 Zadanie dodane: {func.__name__}, uruchomi się za {delay} sekund {task_info}")
 
     def remove_tasks_for_function(self, func, *args, arg_key="id"):
-        """
-        Usuwa wszystkie zaplanowane zadania dla danej funkcji (func), opcjonalnie filtrując po wartości w `arg_key`.
-        
-        :param func: Funkcja, której zadania mają zostać usunięte.
-        :param args: Argumenty do sprawdzenia (np. obiekt visit).
-        :param arg_key: Klucz do identyfikacji obiektu (np. "id" dla `visit.id`).
-        """
+        """Usuwa wszystkie zadania związane z daną funkcją i danym identyfikatorem."""
         with self.lock:
             updated_queue = PriorityQueue()
 
             while not self.task_queue.empty():
                 task = self.task_queue.get()
 
-                # 1️⃣ Sprawdź, czy funkcja pasuje
-                if task.func == func:
-                    # 2️⃣ Jeśli przekazano `args`, próbujemy znaleźć klucz `arg_key` w argumentach zadania
-                    if args:
-                        for arg in args:
-                            # Obsługa zarówno obiektów (np. `visit.id`), jak i słowników (np. `{"id": 50}`)
-                            task_values = [getattr(a, arg_key, None) if hasattr(a, arg_key) else a.get(arg_key, None) for a in task.args]
+                # Pobieramy wartość identyfikującą (np. `visit.id`)
+                task_values = []
+                for a in task.args:
+                    if isinstance(a, dict):
+                        task_values.append(a.get(arg_key, None))  # Jeśli to słownik, pobierz klucz
+                    elif hasattr(a, arg_key):  
+                        task_values.append(getattr(a, arg_key))  # Jeśli to obiekt, pobierz atrybut
 
-                            if getattr(arg, arg_key, None) in task_values or arg.get(arg_key, None) in task_values:
-                                logging.info(f"🗑 Usunięto zadanie {task.func.__name__} dla {arg_key} = {getattr(arg, arg_key, None) or arg.get(arg_key, None)}")
-                                break  # Pomijamy to zadanie (nie dodajemy go z powrotem)
-                    else:
-                        logging.info(f"🗑 Usunięto WSZYSTKIE zadania {task.func.__name__}")
-                        continue  # Usuwamy zadanie, jeśli `args` nie zostały przekazane (czyli usuwamy wszystkie instancje danej funkcji)
-
-                # Jeśli zadanie nie pasuje do warunków, dodajemy je z powrotem do kolejki
-                updated_queue.put(task)
+                # Jeśli funkcja i argumenty pasują, usuwamy zadanie
+                if task.func == func and any(value in task_values for value in args):
+                    logging.info(f"🗑 Usunięto zadanie {task.func.__name__} dla ID {args}")
+                else:
+                    updated_queue.put(task)  # Przekładamy do nowej kolejki
 
             self.task_queue = updated_queue
 
