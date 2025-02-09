@@ -423,7 +423,7 @@ html_body_dict = {
     
     'send_patient_reminder': """
         <html>
-            <body style="font-family: Arial, sans-serif; color: #333; line-height: 1.6; max-width: 600px; margin: auto;">
+            <body style="font-family: Arial, sans-serif; color: #333; line-height: 1.6; max-width: 600px; margin: 15px;">
 
                 <h1 style="color: #24363f; text-align: center;">📅 Przypomnienie o Twojej wizycie</h1>
 
@@ -434,8 +434,7 @@ html_body_dict = {
                 </p>
 
                 <p style="font-size: 16px; font-weight: bold; color: #24363f;">
-                    📍 <strong>Data wizyty:</strong> {{visit.confirmed_date}}<br>
-                    ⏰ <strong>Godzina wizyty:</strong> {{visit.confirmed_date}}
+                    ⏰ <strong>Data wizyty:</strong> {{visit.confirmed_date}}
                 </p>
 
                 <p>
@@ -462,8 +461,7 @@ html_body_dict = {
 
                 <p>
                     ✅ <strong>Twoja wizyta została potwierdzona!</strong> 
-                    Oczekujemy Cię w naszej placówce w dniu <strong>{{visit.confirmed_date}}</strong> 
-                    o godzinie <strong>{{visit.confirmed_date}}</strong>.
+                    Oczekujemy Cię w naszej placówce w dniu <strong>{{visit.confirmed_date}}</strong> .
                 </p>
 
                 <p>
@@ -507,8 +505,7 @@ html_body_dict = {
 
                 <p style="font-size: 16px; font-weight: bold; color: #24363f;">
                     👤 <strong>Pacjent:</strong> {{visit.name}} | {{visit.patient_type}}<br>
-                    ⏰ <strong>Godzina wizyty:</strong> {{visit.confirmed_date}}<br>
-                    📅 <strong>Data wizyty:</strong> {{visit.confirmed_date}}<br>
+                    ⏰ <strong>Data wizyty:</strong> {{visit.confirmed_date}}<br>
                     ✉️ <strong>Email:</strong> 
                     <a href="mailto:{{visit.email}}" style="color: #24363f; text-decoration: none;">{{visit.email}}</a><br>
                     📞 <strong>Telefon:</strong> 
@@ -532,13 +529,58 @@ html_body_dict = {
         """,
     'send_cancellation_email': """
         <html>
-        <body>
-            <h2>Twoja wizyta została odwołana</h2>
-            <p>Drogi {{visit.name}},</p>
-            <p>Informujemy, że Twoja wizyta została odwołana przez recepcję.</p>
-            <p>W razie pytań skontaktuj się z nami.</p>
-        </body>
+            <body style="font-family: Arial, sans-serif; color: #333; line-height: 1.6; max-width: 600px; margin: auto;">
+
+                <h1 style="color: #c0392b; text-align: center;">❌ Twoja wizyta została odwołana</h1>
+
+                <p>Drogi/a <strong>{{visit.name}}</strong>,</p>
+
+                <p>
+                    Informujemy, że Twoja wizyta zaplanowana na dzień <strong>{{visit.confirmed_date}}</strong> została odwołana przez recepcję.
+                </p>
+
+                <p>
+                    Jeśli chcesz umówić się na nowy termin, skontaktuj się z nami.
+                </p>
+
+                <div style="margin: 20px 0; padding: 15px; background: #f9f9f9; border-radius: 5px;">
+                    <p style="font-size: 14px; font-weight: bold; color: #24363f;">
+                        📞 Kontakt telefoniczny: 
+                        <a href="tel:790777350" style="color: #24363f; text-decoration: none;">790 777 350</a>
+                    </p>
+
+                    <p style="font-size: 14px;">
+                        ✉️ Kontakt e-mail: 
+                        <a href="mailto:arkuszowa@duodent.com.pl" style="color: #24363f; text-decoration: none;">arkuszowa@duodent.com.pl</a>
+                    </p>
+
+                    <p>
+                        Nasz zespół chętnie pomoże w znalezieniu nowego dogodnego terminu wizyty.
+                    </p>
+                </div>
+
+                <p style="text-align: center; margin-top: 20px;">
+                    <a href="tel:790777350" style="text-decoration: none; background: #c0392b; color: white; padding: 10px 15px; border-radius: 5px; font-weight: bold;">
+                        📞 Zadzwoń do recepcji
+                    </a>
+                </p>
+
+                <hr style="border: 1px solid #ccc; margin: 20px 0;">
+
+                <p style="color: gray; font-size: 12px; font-weight: 300;">
+                    ❗ Jeśli to nie Ty rejestrowałeś(-aś) wizytę, prosimy o niezwłoczny kontakt telefoniczny pod numerem 
+                    <a href="tel:790777350" style="color: red; text-decoration: none;">790 777 350</a> 
+                    lub mailowy na adres 
+                    <a href="mailto:arkuszowa@duodent.com.pl" style="color: red; text-decoration: none;">arkuszowa@duodent.com.pl</a>.
+                </p>
+
+                <p style="font-size: 12px; color: #686d71; margin-top: 30px; border-top: 1px solid #ccc; padding-top: 10px; text-align: center;">
+                    Zespół Duodent Bielany  
+                </p>
+
+            </body>
         </html>
+
         """,
     
 }

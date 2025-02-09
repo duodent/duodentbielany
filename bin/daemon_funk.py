@@ -103,16 +103,7 @@ def send_patient_reminder(visit):
     html_body = html_body_dict.get('send_patient_reminder', '')\
         .replace("{{visit.name}}", visit.name)\
         .replace("{{visit.confirmed_date}}", visit.confirmed_date.strftime("%Y-%m-%d %H:%M") if isinstance(visit.confirmed_date, datetime.datetime) else "")
-    f"""
-    <html>
-    <body>
-        <h2>Przypomnienie o Twojej wizycie</h2>
-        <p>Drogi {visit.name},</p>
-        <p>Przypominamy, że Twoja wizyta odbędzie się: <strong>{visit.confirmed_date}</strong></p>
-        <p>Jeśli masz pytania, skontaktuj się z naszą recepcją.</p>
-    </body>
-    </html>
-    """
+
     send_html_email(subject, html_body, visit.email)
     logging.info(f"📩 Wysłano przypomnienie do pacjenta {visit.name} ({visit.email})")
 
@@ -127,32 +118,16 @@ def send_reception_reminder(visit):
         .replace("{{visit.patient_type}}", visit.patient_type)\
         .replace("{{visit.link_hash}}", visit.link_hash)\
         .replace("{{visit.confirmed_date}}", visit.confirmed_date.strftime("%Y-%m-%d %H:%M") if isinstance(visit.confirmed_date, datetime.datetime) else "")
-    f"""
-    <html>
-    <body>
-        <h2>Dzisiejsze wizyty</h2>
-        <p>Prosimy o sprawdzenie grafiku wizyt na dziś.</p>
-        <p>Pacjent: <strong>{visit.name}</strong></p>
-        <p>Planowana godzina wizyty: <strong>{visit.confirmed_date}</strong></p>
-    </body>
-    </html>
-    """
+
     send_html_email(subject, html_body, email_reception)
     logging.info(f"📩 Wysłano przypomnienie do recepcji ({email_reception}) o wizycie pacjenta {visit.name}.")
 
 def send_cancellation_email(visit):
     """ Wysyła e-mail do pacjenta o odwołaniu wizyty """
     subject = "⚠️ Odwołanie wizyty"
-    html_body = html_body_dict.get('send_cancellation_email', '').replace("{{visit.name}}", visit.name)
-    f"""
-    <html>
-    <body>
-        <h2>Twoja wizyta została odwołana</h2>
-        <p>Drogi {visit.name},</p>
-        <p>Informujemy, że Twoja wizyta została odwołana przez recepcję.</p>
-        <p>W razie pytań skontaktuj się z nami.</p>
-    </body>
-    </html>
-    """
+    html_body = html_body_dict.get('send_cancellation_email', '')\
+        .replace("{{visit.name}}", visit.name)\
+        .replace("{{visit.confirmed_date}}", visit.confirmed_date.strftime("%Y-%m-%d %H:%M") if isinstance(visit.confirmed_date, datetime.datetime) else "")
+
     send_html_email(subject, html_body, visit.email)
     logging.info(f"📩 Wysłano powiadomienie o odwołaniu wizyty do {visit.name} ({visit.email})")
