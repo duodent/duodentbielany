@@ -3586,34 +3586,6 @@ def register():
         return jsonify(response), 400
 
 
-# @app.route("/admin/confirm_visit", methods=["POST"])
-# def confirm_visit():
-#     """ Zatwierdza wizytę w bazie (daemon ją wykryje i doda przypomnienia) """
-    
-#     data = request.json
-#     visit_id = data.get("visit_id")
-#     confirmed_date = data.get("confirmed_date")
-#     confirmed_time = data.get("confirmed_time")
-
-#     if not all([visit_id, confirmed_date, confirmed_time]):
-#         return jsonify({"status": "error", "message": "Brak wymaganych danych"}), 400
-
-#     full_datetime = f"{confirmed_date} {confirmed_time}:00"
-    
-#     print(f"🔄 Aktualizuję wizytę ID {visit_id} na status 'confirmed', data: {full_datetime}")
-
-#     # 🔹 Aktualizacja wizyty w bazie
-#     update_query = "UPDATE appointment_requests SET status = %s, confirmed_date = %s WHERE id = %s"
-#     success = msq.insert_to_database(update_query, ("confirmed", full_datetime, visit_id))
-
-#     if success:
-#         print(f"✅ Wizyta {visit_id} została pomyślnie zatwierdzona w bazie.")
-#         return jsonify({"status": "success", "message": "Wizyta zatwierdzona! Demon zajmie się przypomnieniami."})
-#     else:
-#         print(f"❌ Błąd podczas zatwierdzania wizyty {visit_id}.")
-#         return jsonify({"status": "error", "message": "Nie udało się zatwierdzić wizyty."}), 500
-
-
 @app.route("/admin/confirm_visit", methods=["POST"])
 def confirm_visit():
     """ Zatwierdza wizytę w bazie (daemon ją wykryje i doda przypomnienia) """
@@ -4058,6 +4030,42 @@ def team_mambers(name_pracownika):
 
 
 
+# @app.route("/reception/<link_hash>")
+# def reception_dashboard(link_hash):
+#     """ Widok recepcji do obsługi wizyt pacjentów """
+
+#     visit_data = get_visit_data(link_hash)
+
+#     # Pobranie parametrów GET z URL (data, czas, email)
+#     selected_email = request.args.get("emailtoconfirmverification")
+#     selected_date = request.args.get("date")
+#     selected_time = request.args.get("time")
+
+#     if visit_data:
+#         visit_date_str = str(visit_data.get("visit_date"))  # Konwersja na string dla poprawnego porównania
+
+#         if selected_date and selected_time and selected_email:
+#             if selected_date == visit_date_str and selected_email == visit_data.get("email"):
+#                 # Tworzenie pełnego datetime z daty i godziny wizyty
+#                 confirmed_datetime = f"{selected_date} {selected_time[:2]}:{selected_time[2:]}:00"
+
+#                 # Aktualizacja statusu wizyty w bazie
+#                 update_query = """
+#                     UPDATE appointment_requests 
+#                     SET status = 'confirmed', confirmed_date = %s, confirmed_flag = 0 
+#                     WHERE id = %s AND status = 'in_progress' AND confirmed_flag = 0
+#                 """
+#                 updated = msq.insert_to_database(update_query, (confirmed_datetime, visit_data["id"]))
+
+#                 if updated:
+#                     return redirect(url_for("reception_dashboard", link_hash=visit_data.get("link_hash")))
+
+#         return render_template("reception.html", visit=visit_data)
+
+#     return redirect(url_for('index'))
+
+from datetime import datetime
+
 @app.route("/reception/<link_hash>")
 def reception_dashboard(link_hash):
     """ Widok recepcji do obsługi wizyt pacjentów """
@@ -4075,7 +4083,14 @@ def reception_dashboard(link_hash):
         if selected_date and selected_time and selected_email:
             if selected_date == visit_date_str and selected_email == visit_data.get("email"):
                 # Tworzenie pełnego datetime z daty i godziny wizyty
-                confirmed_datetime = f"{selected_date} {selected_time[:2]}:{selected_time[2:]}:00"
+                confirmed_datetime_str = f"{selected_date} {selected_time[:2]}:{selected_time[2:]}:00"
+                confirmed_datetime = datetime.strptime(confirmed_datetime_str, "%Y-%m-%d %H:%M:%S")
+                now = datetime.now()
+
+                # 🔹 Sprawdzamy, czy data i godzina nie są w przeszłości
+                if confirmed_datetime < now:
+                    flash("❌ Nie można ustawić terminu wstecznego!", "error")
+                    return redirect(url_for("reception_dashboard", link_hash=visit_data.get("link_hash")))
 
                 # Aktualizacja statusu wizyty w bazie
                 update_query = """
@@ -4083,7 +4098,7 @@ def reception_dashboard(link_hash):
                     SET status = 'confirmed', confirmed_date = %s, confirmed_flag = 0 
                     WHERE id = %s AND status = 'in_progress' AND confirmed_flag = 0
                 """
-                updated = msq.insert_to_database(update_query, (confirmed_datetime, visit_data["id"]))
+                updated = msq.insert_to_database(update_query, (confirmed_datetime_str, visit_data["id"]))
 
                 if updated:
                     return redirect(url_for("reception_dashboard", link_hash=visit_data.get("link_hash")))
@@ -4091,7 +4106,6 @@ def reception_dashboard(link_hash):
         return render_template("reception.html", visit=visit_data)
 
     return redirect(url_for('index'))
-
 
     
 
