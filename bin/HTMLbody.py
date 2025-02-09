@@ -5,10 +5,9 @@ html_body_dict = {
                 .time_area {
                     display: flex;
                     flex-wrap: wrap; /* Elementy zawijają się do nowej linii */
-                    gap: 2px; /* Mniejsza przerwa między elementami */
+                    gap: 1px; /* Mniejsza przerwa między elementami */
                     justify-content: flex-start;
                     align-items: center;
-                    padding: 2px;
                     border-radius: 5px;
                 }
 
@@ -18,7 +17,7 @@ html_body_dict = {
                     padding: 2px 2px; /* Zmniejszone paddingi, aby więcej się mieściło */
                     border-radius: 5px;
                     font-size: 12px; /* Mniejsza czcionka */
-                    margin: 2px; /* Zmniejszone marginesy */
+                    margin: 1px; /* Zmniejszone marginesy */
                     white-space: nowrap; /* Zapobiega łamaniu się tekstu */
                 }
 
