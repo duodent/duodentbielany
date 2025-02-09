@@ -21,6 +21,31 @@ def monitor_database():
     """ Demon sprawdza bazę i wykrywa nowe wizyty do obsługi """
     logging.info("🔄 Sprawdzanie bazy pod kątem nowych zgłoszeń...")
 
+
+    # 🔹 **3. Pobieramy tylko nowe potwierdzone wizyty z przyszłości**
+    raw_data = msq.connect_to_database(
+        """
+            SELECT * FROM appointment_requests 
+            WHERE status = 'confirmed' 
+            AND confirmed_flag = 0 
+            AND confirmed_date >= NOW();
+        """
+    )
+    confirmed_visits = [AppointmentRequest.from_tuple(row) for row in raw_data]
+
+    for visit in confirmed_visits:
+        logging.info(f"📅 Planowanie przypomnień dla wizyty: {visit.to_dict()}")
+        schedule_visit_reminders(visit, daemon)
+
+        # msq.insert_to_database(
+        #     "UPDATE appointment_requests SET confirmed_flag = 1 WHERE id = %s",
+        #     (visit.id,)
+        # )
+        msq.insert_to_database(
+            "UPDATE appointment_requests SET confirmed_flag = 1, last_confirmed_check = NOW() WHERE id = %s",
+            (visit.id,)
+        )
+
     # 🔹 **1. Pobieramy zgłoszenia wymagające kontaktu z recepcją (TYLKO PRZYSZŁE WIZYTY)**
     raw_data = msq.connect_to_database(
         "SELECT * FROM appointment_requests WHERE status = 'in_progress' AND in_progress_flag = 0 AND visit_date >= CURDATE()"
@@ -51,30 +76,6 @@ def monitor_database():
     for visit in pending_reception_reminders:
         logging.info(f"⏳ Przypomnienie dla recepcji: {visit.to_dict()}")
         daemon.add_task(300, remind_reception, visit, daemon)
-
-    # 🔹 **3. Pobieramy tylko nowe potwierdzone wizyty z przyszłości**
-    raw_data = msq.connect_to_database(
-        """
-            SELECT * FROM appointment_requests 
-            WHERE status = 'confirmed' 
-            AND confirmed_flag = 0 
-            AND confirmed_date >= NOW();
-        """
-    )
-    confirmed_visits = [AppointmentRequest.from_tuple(row) for row in raw_data]
-
-    for visit in confirmed_visits:
-        logging.info(f"📅 Planowanie przypomnień dla wizyty: {visit.to_dict()}")
-        schedule_visit_reminders(visit, daemon)
-
-        # msq.insert_to_database(
-        #     "UPDATE appointment_requests SET confirmed_flag = 1 WHERE id = %s",
-        #     (visit.id,)
-        # )
-        msq.insert_to_database(
-            "UPDATE appointment_requests SET confirmed_flag = 1, last_confirmed_check = NOW() WHERE id = %s",
-            (visit.id,)
-        )
 
     # 🔹 **4. Pobieramy odwołane wizyty i wysyłamy powiadomienie do pacjenta**
     raw_data = msq.connect_to_database(
