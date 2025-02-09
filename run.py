@@ -23,6 +23,7 @@ import hashlib
 import uuid
 from sendEmailBySmtp import send_html_email
 from end_1 import decode_integer, encode_string
+import logging
 
 
 
@@ -3686,31 +3687,47 @@ def reschedule_visit():
             return jsonify({"status": "error", "message": "Brak wymaganych danych"}), 400
 
         new_datetime = f"{new_date} {new_time}:00"
-        print(f"📅 Przekładanie wizyty ID {visit_id} na {new_datetime}")
+        logging.info(f"📅 Przekładanie wizyty ID {visit_id} na {new_datetime}")
+
+        # 🔹 Pobranie oryginalnej wizyty, aby sprawdzić, czy istnieje
+        original_visit = msq.connect_to_database(
+            "SELECT name, email, phone, patient_type FROM appointment_requests WHERE id = %s", (visit_id,)
+        )
+
+        if not original_visit:
+            logging.error(f"❌ Nie znaleziono wizyty ID {visit_id}.")
+            return jsonify({"status": "error", "message": "Nie znaleziono wizyty w bazie."}), 404
+
+        original_visit = original_visit[0]  # Pobieramy pierwszy wynik (powinien być jeden)
 
         # 🔹 Przenosimy wizytę na nowy termin (kopiujemy do nowego ID)
         copy_success = msq.insert_to_database(
             "INSERT INTO appointment_requests (name, email, phone, patient_type, visit_date, status, confirmed_date) "
-            "SELECT name, email, phone, patient_type, %s, 'confirmed', %s FROM appointment_requests WHERE id = %s",
-            (new_date, new_datetime, visit_id)
+            "VALUES (%s, %s, %s, %s, %s, 'confirmed', %s)",
+            (original_visit[0], original_visit[1], original_visit[2], original_visit[3], new_date, new_datetime)
         )
+
+        if not copy_success:
+            logging.error(f"❌ Błąd przy kopiowaniu wizyty ID {visit_id}.")
+            return jsonify({"status": "error", "message": "Nie udało się utworzyć nowej wizyty."}), 500
 
         # 🔹 Oznaczamy starą wizytę jako anulowaną
         cancel_success = msq.insert_to_database(
-            "UPDATE appointment_requests SET status = 'cancelled', cancelled_description = 'Wizyta przełożona', cancelled_flag = 1 WHERE id = %s",
+            "UPDATE appointment_requests SET status = 'cancelled', cancelled_description = 'Wizyta przełożona', cancelled_flag = 0 WHERE id = %s",
             (visit_id,)
         )
 
-        if copy_success and cancel_success:
-            print(f"✅ Wizyta ID {visit_id} przełożona na {new_datetime}.")
+        if cancel_success:
+            logging.info(f"✅ Wizyta ID {visit_id} przełożona na {new_datetime}.")
             return jsonify({"status": "success", "message": "Wizyta została przełożona."})
         else:
-            print(f"❌ Błąd przy zmianie terminu wizyty ID {visit_id}.")
-            return jsonify({"status": "error", "message": "Nie udało się zmienić terminu wizyty."}), 500
+            logging.error(f"❌ Błąd przy anulowaniu starej wizyty ID {visit_id}.")
+            return jsonify({"status": "error", "message": "Nowa wizyta została utworzona, ale nie udało się anulować starej."}), 500
 
     except Exception as e:
-        print(f"❌ Błąd w /admin/reschedule_visit: {str(e)}")
+        logging.error(f"❌ Błąd w /admin/reschedule_visit: {str(e)}")
         return jsonify({"status": "error", "message": f"Błąd serwera: {str(e)}"}), 500
+
 
 
 
