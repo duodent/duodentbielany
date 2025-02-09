@@ -91,7 +91,7 @@ def monitor_database():
     pending_reception_reminders = [AppointmentRequest.from_tuple(row) for row in raw_data]
 
     for visit in pending_reception_reminders:
-        logging.info(f"⏳ Przypomnienie dla recepcji: {visit.to_dict()}")
+        logging.info(f"⏳ Przypomnienie dla recepcji!")
         daemon.add_task(300, remind_reception, visit, daemon)
 
 
