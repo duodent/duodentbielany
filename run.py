@@ -3872,6 +3872,15 @@ def site_rules():
         pageTitle=pageTitle
     )
 
+@app.route('/regulamin-konkursu-walentynkowego')
+def contest_valentain_rules():
+    session['page'] = 'contest_valentain_rules'
+    pageTitle = 'Zasady konkursu walentynkowego'
+    return render_template(
+        'valentine_rules.html',
+        pageTitle=pageTitle
+    )
+
 # Kontakt
 # Strona kontaktu
 @app.route('/kontakt-z-przychodnia-stomatologiczna', methods=['GET'])
