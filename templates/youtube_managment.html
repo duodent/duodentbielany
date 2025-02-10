@@ -1,0 +1,203 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<!-- breadcrumb start -->
+<div id="breadcrumb-small" class="breadcrumb-small mb-0" style="display: none;">
+    <div class="container justify-content-center">
+        <div class="justify-content-center">
+            <ul class="breadcrumb-pages-list">
+                <li><a href="/"><i class="bi bi-houses-fill" style="font-size: 1rem;"></i></a></li>
+                <li>Filmy</li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!-- breadcrumb end -->
+
+<section class="video-area ptb-100">
+    <div class="container">
+        <!-- Sekcja tytułu -->
+        <div class="row align-items-center">
+            <div class="col-lg-6 mx-auto">
+                <div class="section-title-warp">
+                    <span class="sub-title">
+                        <i class="flaticon-hashtag-symbol"></i>
+                        Filmy na stronie
+                    </span>
+                    <h2>Zarządzaj <span>filmami</span> na stronie <span>www</span></h2>
+                    <p>Dodaj, zmieniaj kolejność, usuwaj i zarządzaj aktywnym filmem dla każdego koloru „oka”.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Formularz dodawania filmu -->
+        <div class="row mt-4">
+            <div class="col-lg-12 mx-auto">
+                <form id="addVideoForm">
+                    <div class="row">
+                        <div class="col-lg-6 col-sm-12">
+                            <div class="form-floating mb-3">
+                                <input type="url" class="form-control" id="videoUrl" name="videoUrl" placeholder="Link do filmu" required>
+                                <label for="videoUrl">Link do filmu YouTube</label>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-sm-12">
+                            <div class="form-floating mb-3">
+                                <select class="form-control" id="eyeColor" name="eyeColor" required>
+                                    <option value="blue">Niebieskie</option>
+                                    <option value="green">Zielone</option>
+                                    <option value="red">Czerwone</option>
+                                </select>
+                                <label for="eyeColor">Kolor oka</label>
+                            </div>
+                            <button type="submit" class="default-btn mb-3 w-100">Dodaj film</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Lista filmów -->
+        <div class="row mt-5 video-area" id="video-list-sort">
+            {% if videos %}
+                {% for video in videos %}
+                    <div class="col-lg-4 col-md-6 col-sm-12" data-id="{{ video.id }}" data-color="{{ video.color }}">
+                        <div class="single-video-item">
+                            <iframe width="100%" height="200" src="https://www.youtube.com/embed/{{ video.video_id }}" frameborder="0" allowfullscreen></iframe>
+                            <div class="video-info d-flex justify-content-between align-items-center">
+                                <span>Kolor oka: <strong>{{ video.color }}</strong></span>
+                                <input type="checkbox" class="eye-toggle" data-id="{{ video.id }}" data-color="{{ video.color }}" {% if video.active %}checked{% endif %}>
+                            </div>
+                            <div class="d-flex justify-content-end">
+                                <a class="delete-video" data-to-del="{{ video.id }}">
+                                    <i class="bi bi-trash3-fill" style="font-size: 1rem; color: red;"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        </div>
+
+    </div>
+</section>
+
+{% endblock %}
+{% block bottom_scripts %}
+<script src="https://cdn.jsdelivr.net/npm/sortablejs@1.14.0/Sortable.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        setTimeout(function () {
+            $("#breadcrumb-small")
+                .css({
+                    display: "block",
+                    textAlign: "center",
+                    width: "100%",
+                })
+                .animate(
+                    {
+                        height: "50px",
+                        paddingTop: "10px"
+                    },
+                    1200
+                );
+        }, 2000); 
+    });
+
+    // Obsługa formularza dodawania filmu
+    $('#addVideoForm').on('submit', function (e) {
+        e.preventDefault();
+
+        const data = {
+            videoUrl: $('#videoUrl').val(),
+            eyeColor: $('#eyeColor').val()
+        };
+
+        $.ajax({
+            url: '/api/add-video',
+            method: 'POST',
+            data: JSON.stringify(data),
+            contentType: 'application/json',
+            success: function (response) {
+                if (response.success) {
+                    location.reload();
+                } else {
+                    alert('Błąd podczas dodawania filmu.');
+                }
+            },
+            error: function () {
+                alert('Wystąpił błąd podczas połączenia z serwerem.');
+            }
+        });
+    });
+
+    // Obsługa usuwania filmu
+    $(document).on('click', '.delete-video', function (e) {
+        e.preventDefault();
+
+        const videoId = $(this).data('to-del');
+        if (!videoId) return;
+
+        $.ajax({
+            url: '/api/delete-video',
+            method: 'DELETE',
+            data: JSON.stringify({ id: videoId }),
+            contentType: 'application/json',
+            success: function (response) {
+                if (response.success) {
+                    location.reload();
+                } else {
+                    alert('Nie udało się usunąć filmu.');
+                }
+            },
+            error: function () {
+                alert('Błąd podczas usuwania filmu.');
+            }
+        });
+    });
+
+    // Obsługa wyboru aktywnego filmu (tylko jeden na kolor)
+    $(document).on('change', '.eye-toggle', function () {
+        const videoId = $(this).data('id');
+        const color = $(this).data('color');
+
+        if (!videoId || !color) return;
+
+        $.ajax({
+            url: '/api/set-active-video',
+            method: 'POST',
+            data: JSON.stringify({ id: videoId, color: color }),
+            contentType: 'application/json',
+            success: function (response) {
+                if (response.success) {
+                    $('.eye-toggle[data-color="' + color + '"]').prop('checked', false);
+                    $(this).prop('checked', true);
+                } else {
+                    alert('Nie udało się ustawić aktywnego filmu.');
+                }
+            },
+            error: function () {
+                alert('Błąd podczas ustawiania aktywnego filmu.');
+            }
+        });
+    });
+
+    // Obsługa sortowania filmów
+    const videoList = document.getElementById('video-list-sort');
+    new Sortable(videoList, {
+        animation: 150,
+        onEnd: function () {
+            const newOrder = Array.from(videoList.children).map(item => item.dataset.id);
+
+            fetch('/api/update-video-order', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ order: newOrder })
+            }).then(response => response.json()).then(data => {
+                if (!data.success) alert('Błąd podczas aktualizacji kolejności.');
+            }).catch(error => console.error('Błąd:', error));
+        }
+    });
+</script>
+{% endblock %}
