@@ -2519,14 +2519,14 @@ def delete_video():
         return jsonify({"success": False, "message": "Brak wymaganych uprawnień!"}), 403
 
     data = request.json
-    video_id = data.get("id")
+    video_url = data.get("videoUrl")  # Oczekujemy `videoUrl`, nie `id`
 
-    if not video_id:
-        return jsonify({"success": False, "message": "Brak ID filmu!"}), 400
+    if not video_url:
+        return jsonify({"success": False, "message": "Brak URL filmu!"}), 400
 
     try:
-        query = "DELETE FROM videos WHERE id = %s"
-        msq.insert_to_database(query, (video_id,))
+        query = "DELETE FROM videos WHERE video_url = %s"
+        msq.safe_connect_to_database(query, (video_url,))
         return jsonify({"success": True, "message": "Film usunięty!"})
     except Exception as e:
         return jsonify({"success": False, "message": f"Błąd bazy danych: {str(e)}"}), 500
