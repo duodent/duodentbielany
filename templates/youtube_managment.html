@@ -97,19 +97,21 @@
                             <div class="video-info d-flex justify-content-between align-items-center mt-3">
                                 <div class="eye-icons">
                                     {% if video.color == 'blue' %}
-                                        <i class="bi bi-eye-fill eye-toggle blue-eye" data-url="{{ video.video_url }}" data-color="blue" style="color: #007bff;"></i>
+                                        <i class="bi bi-eye-fill eye-toggle blue-eye" data-url="{{ video.video_url }}" data-color="blue" style="color:#007bff;"></i>
                                     {% else %}
-                                        <i class="bi bi-eye-fill eye-toggle blue-eye" data-url="{{ video.video_url }}" data-color="blue" style="color: #a6c8ff;"></i>
+                                        <i class="bi bi-eye-fill eye-toggle blue-eye" data-url="{{ video.video_url }}" data-color="blue" style="color:#a6c8ff;"></i>
                                     {% endif %}
+
                                     {% if video.color == 'green' %}
-                                        <i class="bi bi-eye-fill eye-toggle green-eye" data-url="{{ video.video_url }}" data-color="green" style="color: #28a745;"></i>
+                                        <i class="bi bi-eye-fill eye-toggle green-eye" data-url="{{ video.video_url }}" data-color="green" style="color:#28a745;"></i>
                                     {% else %}
-                                        <i class="bi bi-eye-fill eye-toggle green-eye" data-url="{{ video.video_url }}" data-color="green" style="color: #a6d3a0;"></i>
+                                        <i class="bi bi-eye-fill eye-toggle green-eye" data-url="{{ video.video_url }}" data-color="green" style="color:#a6d3a0;"></i>
                                     {% endif %}
+
                                     {% if video.color == 'red' %}
-                                        <i class="bi bi-eye-fill eye-toggle red-eye" data-url="{{ video.video_url }}" data-color="red"  style="color: #dc3545"></i>
+                                        <i class="bi bi-eye-fill eye-toggle red-eye" data-url="{{ video.video_url }}" data-color="red" style="color:#dc3545;"></i>
                                     {% else %}
-                                        <i class="bi bi-eye-fill eye-toggle red-eye" data-url="{{ video.video_url }}" data-color="red"  style="color: #f5a6a6;"></i>
+                                        <i class="bi bi-eye-fill eye-toggle red-eye" data-url="{{ video.video_url }}" data-color="red" style="color:#f5a6a6;"></i>
                                     {% endif %}
                                 </div>
                                 <a class="delete-video" data-to-del="{{ video.video_url }}">
@@ -188,6 +190,13 @@
                 const videoUrl = this.getAttribute('data-url');
                 const color = this.getAttribute('data-color');
 
+                console.log("Kliknięto oko:", { videoUrl, color });
+
+                if (!videoUrl || !color) {
+                    alert("Błąd: Brak wymaganych danych! Sprawdź atrybuty data-url i data-color.");
+                    return;
+                }
+
                 fetch('/api/set-active-video', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -196,12 +205,10 @@
                 .then(response => response.json())
                 .then(data => {
                     if (data.success) {
-                        // Resetujemy wszystkie oczy w tym kolorze do bladego koloru
                         document.querySelectorAll(`.eye-toggle[data-color="${color}"]`).forEach(icon => {
                             icon.style.color = '#a6c8ff';
                         });
 
-                        // Ustawiamy aktywny kolor
                         this.style.color = color === 'blue' ? '#007bff' : color === 'green' ? '#28a745' : '#dc3545';
                     } else {
                         alert("Błąd: " + data.message);
@@ -210,6 +217,7 @@
                 .catch(error => alert("Błąd podczas zmiany aktywnego filmu."));
             });
         });
+
 
         // Obsługa usuwania filmu (fetch zamiast $.ajax)
         document.querySelectorAll('.delete-video').forEach(button => {
