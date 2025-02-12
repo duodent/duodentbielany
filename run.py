@@ -302,7 +302,15 @@ def getUserRoles(useroneitem_data_from_generator_userDataDB):
         'user': useroneitem_data_from_generator_userDataDB.get('uprawnienia',{}).get('user', 0)
     }
 
-
+def get_videos():
+    # Pobiera `video_url` zamiast `video_id`
+    query = "SELECT id, video_url, color, active FROM videos ORDER BY id ASC"
+    videos_ = msq.connect_to_database(query)
+    # Konwersja listy krotek na listę słowników
+    return [
+        {"id": video[0], "video_url": video[1], "color": video[2], "active": video[3]}
+        for video in videos_
+    ]
 
 
 
@@ -2465,11 +2473,7 @@ def admin_manage_videos():
     else:
         return redirect(url_for('index'))
     
-    # NOWA kwerenda: Pobiera `video_url` zamiast `video_id`
-    query = "SELECT id, video_url, color, active FROM videos ORDER BY id ASC"
-    videos = msq.connect_to_database(query)
-
-    return render_template('youtube_managment.html', videos=videos)
+    return render_template('youtube_managment.html', videos=get_videos())
 
 
 
