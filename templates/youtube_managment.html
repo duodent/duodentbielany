@@ -1,5 +1,19 @@
 {% extends 'base.html' %}
 {% block content %}
+<!-- Modal dla podglądu filmu -->
+<div class="modal fade" id="videoModal" tabindex="-1" aria-labelledby="videoModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="videoModalLabel">Podgląd filmu</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center">
+                <iframe id="videoFrame" width="100%" height="315" src="" frameborder="0" allowfullscreen></iframe>
+            </div>
+        </div>
+    </div>
+</div>
 
 <!-- breadcrumb start -->
 <div id="breadcrumb-small" class="breadcrumb-small mb-0" style="display: none;">
@@ -36,11 +50,18 @@
                 <form id="addVideoForm">
                     <div class="row">
                         <div class="col-lg-6 col-sm-12">
+                            <!-- Podgląd filmu -->
+                            <div id="videoPreviewContainer" class="mb-3 text-center" style="display: none;">
+                                <iframe id="videoPreview" width="100%" height="250" frameborder="0" allowfullscreen></iframe>
+                                <p id="videoErrorMessage" class="text-danger mt-2" style="display: none;">Nie można wyświetlić podglądu filmu. Sprawdź link.</p>
+                            </div>
+
                             <div class="form-floating mb-3">
                                 <input type="url" class="form-control" id="videoUrl" name="videoUrl" placeholder="Link do filmu" required>
                                 <label for="videoUrl">Link do filmu YouTube</label>
                             </div>
                         </div>
+
                         <div class="col-lg-6 col-sm-12">
                             <div class="form-floating mb-3">
                                 <select class="form-control" id="eyeColor" name="eyeColor" required>
@@ -50,26 +71,48 @@
                                 </select>
                                 <label for="eyeColor">Kolor oka</label>
                             </div>
-                            <button type="submit" class="default-btn mb-3 w-100">Dodaj film</button>
+                            <button type="submit" id="submitVideo" class="default-btn mb-3 w-100" disabled>Dodaj film</button>
                         </div>
                     </div>
                 </form>
             </div>
         </div>
 
+
         <!-- Lista filmów -->
         <div class="row mt-5 video-area" id="video-list-sort">
             {% if videos %}
-                {% for video in videos %}
-                    <div class="col-lg-4 col-md-6 col-sm-12" data-id="{{ video.id }}" data-color="{{ video.color }}">
+                {% for video in videos|reverse %}  <!-- Ostatnie dodane pierwsze -->
+                    <div class="col-lg-4 col-md-6 col-sm-12" data-url="{{ video.video_url }}" data-color="{{ video.color }}">
                         <div class="single-video-item">
-                            <iframe width="100%" height="200" src="https://www.youtube.com/embed/{{ video.video_id }}" frameborder="0" allowfullscreen></iframe>
-                            <div class="video-info d-flex justify-content-between align-items-center">
-                                <span>Kolor oka: <strong>{{ video.color }}</strong></span>
-                                <input type="checkbox" class="eye-toggle" data-id="{{ video.id }}" data-color="{{ video.color }}" {% if video.active %}checked{% endif %}>
+                            <!-- Podgląd filmu w modalu -->
+                            <div class="checkup-content text-center">
+                                <a href="#" class="icon popup-youtube open-video" data-bs-toggle="modal" data-bs-target="#videoModal" data-url="{{ video.video_url }}">
+                                    <i class="far fa-play"></i>
+                                </a>
+                                <span>Zobacz film</span>
                             </div>
-                            <div class="d-flex justify-content-end">
-                                <a class="delete-video" data-to-del="{{ video.id }}">
+
+                            <!-- Ikony oczu + kosz -->
+                            <div class="video-info d-flex justify-content-between align-items-center mt-3">
+                                <div class="eye-icons">
+                                    {% if video.color == 'blue' %}
+                                        <i class="bi bi-eye-fill eye-toggle blue-eye" data-url="{{ video.video_url }}" data-color="blue" style="color: #007bff;"></i>
+                                    {% else %}
+                                        <i class="bi bi-eye-fill eye-toggle blue-eye" data-url="{{ video.video_url }}" data-color="blue" style="color: #a6c8ff;"></i>
+                                    {% endif %}
+                                    {% if video.color == 'green' %}
+                                        <i class="bi bi-eye-fill eye-toggle green-eye" data-url="{{ video.video_url }}" data-color="green" style="color: #28a745;"></i>
+                                    {% else %}
+                                        <i class="bi bi-eye-fill eye-toggle green-eye" data-url="{{ video.video_url }}" data-color="green" style="color: #a6d3a0;"></i>
+                                    {% endif %}
+                                    {% if video.color == 'red' %}
+                                        <i class="bi bi-eye-fill eye-toggle red-eye" data-url="{{ video.video_url }}" data-color="red"  style="color: #dc3545"></i>
+                                    {% else %}
+                                        <i class="bi bi-eye-fill eye-toggle red-eye" data-url="{{ video.video_url }}" data-color="red"  style="color: #f5a6a6;"></i>
+                                    {% endif %}
+                                </div>
+                                <a class="delete-video" data-to-del="{{ video.video_url }}">
                                     <i class="bi bi-trash3-fill" style="font-size: 1rem; color: red;"></i>
                                 </a>
                             </div>
@@ -84,8 +127,6 @@
 
 {% endblock %}
 {% block bottom_scripts %}
-<script src="https://cdn.jsdelivr.net/npm/sortablejs@1.14.0/Sortable.min.js"></script>
-
 <script>
     $(document).ready(function () {
         setTimeout(function () {
@@ -132,72 +173,149 @@
         });
     });
 
-    // Obsługa usuwania filmu
-    $(document).on('click', '.delete-video', function (e) {
-        e.preventDefault();
-
-        const videoId = $(this).data('to-del');
-        if (!videoId) return;
-
-        $.ajax({
-            url: '/api/delete-video',
-            method: 'DELETE',
-            data: JSON.stringify({ id: videoId }),
-            contentType: 'application/json',
-            success: function (response) {
-                if (response.success) {
-                    location.reload();
-                } else {
-                    alert('Nie udało się usunąć filmu.');
-                }
-            },
-            error: function () {
-                alert('Błąd podczas usuwania filmu.');
-            }
+    // Obsługa otwierania filmu w modalu
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('.open-video').forEach(button => {
+            button.addEventListener('click', function() {
+                const videoUrl = this.getAttribute('data-url');
+                document.getElementById('videoFrame').src = videoUrl;
+            });
         });
-    });
 
-    // Obsługa wyboru aktywnego filmu (tylko jeden na kolor)
-    $(document).on('change', '.eye-toggle', function () {
-        const videoId = $(this).data('id');
-        const color = $(this).data('color');
+        // Obsługa zmiany aktywnego filmu dla danego koloru (fetch zamiast $.ajax)
+        document.querySelectorAll('.eye-toggle').forEach(button => {
+            button.addEventListener('click', function() {
+                const videoUrl = this.getAttribute('data-url');
+                const color = this.getAttribute('data-color');
 
-        if (!videoId || !color) return;
+                fetch('/api/set-active-video', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ videoUrl: videoUrl, color: color })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // Resetujemy wszystkie oczy w tym kolorze do bladego koloru
+                        document.querySelectorAll(`.eye-toggle[data-color="${color}"]`).forEach(icon => {
+                            icon.style.color = '#a6c8ff';
+                        });
 
-        $.ajax({
-            url: '/api/set-active-video',
-            method: 'POST',
-            data: JSON.stringify({ id: videoId, color: color }),
-            contentType: 'application/json',
-            success: function (response) {
-                if (response.success) {
-                    $('.eye-toggle[data-color="' + color + '"]').prop('checked', false);
-                    $(this).prop('checked', true);
-                } else {
-                    alert('Nie udało się ustawić aktywnego filmu.');
-                }
-            },
-            error: function () {
-                alert('Błąd podczas ustawiania aktywnego filmu.');
-            }
+                        // Ustawiamy aktywny kolor
+                        this.style.color = color === 'blue' ? '#007bff' : color === 'green' ? '#28a745' : '#dc3545';
+                    } else {
+                        alert("Błąd: " + data.message);
+                    }
+                })
+                .catch(error => alert("Błąd podczas zmiany aktywnego filmu."));
+            });
         });
-    });
 
-    // Obsługa sortowania filmów
-    const videoList = document.getElementById('video-list-sort');
-    new Sortable(videoList, {
-        animation: 150,
-        onEnd: function () {
-            const newOrder = Array.from(videoList.children).map(item => item.dataset.id);
+        // Obsługa usuwania filmu (fetch zamiast $.ajax)
+        document.querySelectorAll('.delete-video').forEach(button => {
+            button.addEventListener('click', function() {
+                const videoUrl = this.getAttribute('data-to-del');
 
-            fetch('/api/update-video-order', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ order: newOrder })
-            }).then(response => response.json()).then(data => {
-                if (!data.success) alert('Błąd podczas aktualizacji kolejności.');
-            }).catch(error => console.error('Błąd:', error));
-        }
+                if (!confirm("Czy na pewno chcesz usunąć ten film?")) return;
+
+                fetch('/api/delete-video', {
+                    method: 'DELETE',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ videoUrl: videoUrl })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        location.reload();
+                    } else {
+                        alert("Błąd: " + data.message);
+                    }
+                })
+                .catch(error => alert("Błąd podczas usuwania filmu."));
+            });
+        });
     });
 </script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const videoUrlInput = document.getElementById('videoUrl');
+        const videoPreviewContainer = document.getElementById('videoPreviewContainer');
+        const videoPreview = document.getElementById('videoPreview');
+        const videoErrorMessage = document.getElementById('videoErrorMessage');
+        const submitButton = document.getElementById('submitVideo');
+    
+        function updatePreview() {
+            const url = videoUrlInput.value.trim();
+            if (!url) {
+                videoPreviewContainer.style.display = "none";
+                submitButton.disabled = true;
+                return;
+            }
+    
+            // Tworzymy link do `embed` YouTube
+            let videoId = extractYouTubeID(url);
+            if (!videoId) {
+                showError();
+                return;
+            }
+    
+            let embedUrl = `https://www.youtube.com/embed/${videoId}`;
+    
+            // Sprawdzamy, czy wideo jest dostępne
+            checkYouTubeVideo(videoId, function(isValid) {
+                if (isValid) {
+                    showPreview(embedUrl);
+                } else {
+                    showError();
+                }
+            });
+        }
+    
+        function showPreview(embedUrl) {
+            videoPreview.src = embedUrl;
+            videoPreviewContainer.style.display = "block";
+            videoErrorMessage.style.display = "none";
+            submitButton.disabled = false;
+        }
+    
+        function showError() {
+            videoPreviewContainer.style.display = "block";
+            videoPreview.src = "";
+            videoErrorMessage.style.display = "block";
+            submitButton.disabled = true;
+        }
+    
+        function extractYouTubeID(url) {
+            const patterns = [
+                /(?:youtube\.com\/.*[?&]v=|youtu\.be\/|youtube\.com\/embed\/|youtube\.com\/shorts\/)([A-Za-z0-9_-]{11})/,
+                /^([A-Za-z0-9_-]{11})$/ // Jeśli użytkownik wklei tylko ID filmu
+            ];
+
+            for (let pattern of patterns) {
+                const match = url.match(pattern);
+                if (match) return match[1];
+            }
+            return null;
+        }
+
+    
+        function checkYouTubeVideo(videoId, callback) {
+            const img = new Image();
+            img.src = `https://img.youtube.com/vi/${videoId}/mqdefault.jpg`;
+            img.onload = function () {
+                if (img.width === 120) { // Jeśli miniatura 120px szerokości, to wideo nie istnieje
+                    callback(false);
+                } else {
+                    callback(true);
+                }
+            };
+            img.onerror = function () {
+                callback(false);
+            };
+        }
+    
+        videoUrlInput.addEventListener('input', updatePreview);
+    });
+</script>
+
 {% endblock %}

@@ -302,10 +302,6 @@ def getUserRoles(useroneitem_data_from_generator_userDataDB):
         'user': useroneitem_data_from_generator_userDataDB.get('uprawnienia',{}).get('user', 0)
     }
 
-# Funkcja do wyciągania ID z linku YouTube (obsługuje różne formaty)
-def extract_youtube_id(url):
-    match = re.search(r"(?:v=|youtu\.be/)([A-Za-z0-9_-]{11})", url)
-    return match.group(1) if match else None
 
 
 
@@ -2463,42 +2459,31 @@ def admin_manage_videos():
     # Idealne do zastosowania w wielu endpointach systemu!
     # ========================================================
     if session.get('username', False):
-        if not (
-                direct_by_permision(session, permission_sought='administrator')\
-                    or direct_by_permision(session, permission_sought='super_user')
-            ):  # Brak uprawnień
+        if not (direct_by_permision(session, permission_sought='administrator')
+                or direct_by_permision(session, permission_sought='super_user')):
             return redirect(url_for('index'))
     else:
-        # Użytkownik niezalogowany
         return redirect(url_for('index'))
     
-    query = "SELECT id, video_id, color, active, position FROM videos ORDER BY position ASC"
+    # NOWA kwerenda: Pobiera `video_url` zamiast `video_id`
+    query = "SELECT id, video_url, color, active FROM videos ORDER BY id ASC"
     videos = msq.connect_to_database(query)
 
     return render_template('youtube_managment.html', videos=videos)
 
 
 
+
 @app.route('/api/add-video', methods=['POST'])
 def add_video():
     # Sprawdzanie uprawnień
-    # ========================================================
-    # 🌟 Model implementacji uprawnień - Rekomendacja 🌟
-    # Ten kod jest czytelny, modułowy i łatwy w rozbudowie.
-    # Każdy poziom uprawnień ma jasno określoną logikę.
-    # Użycie funkcji `direct_by_permision` zapewnia elastyczność.
-    # Idealne do zastosowania w wielu endpointach systemu!
-    # ========================================================
     if session.get('username', False):
-        if not (
-                direct_by_permision(session, permission_sought='administrator')\
-                    or direct_by_permision(session, permission_sought='super_user')
-            ):  # Brak uprawnień
-            return jsonify({"success": False, "message": "Brak wymaganych uprawnień!"}), 400
+        if not (direct_by_permision(session, permission_sought='administrator')
+                or direct_by_permision(session, permission_sought='super_user')):
+            return jsonify({"success": False, "message": "Brak wymaganych uprawnień!"}), 403
     else:
-        # Użytkownik niezalogowany
-        return jsonify({"success": False, "message": "Brak wymaganych uprawnień!"}), 400
-    
+        return jsonify({"success": False, "message": "Brak wymaganych uprawnień!"}), 403
+
     data = request.json
     video_url = data.get("videoUrl")
     eye_color = data.get("eyeColor")
@@ -2506,119 +2491,75 @@ def add_video():
     if not video_url or not eye_color:
         return jsonify({"success": False, "message": "Brak wymaganych danych!"}), 400
 
-    video_id = extract_youtube_id(video_url)
-    if not video_id:
-        return jsonify({"success": False, "message": "Nieprawidłowy link do YouTube!"}), 400
+    try:
+        # Usuwamy wcześniejszy film przypisany do tego koloru
+        query_reset = "DELETE FROM videos WHERE color = %s"
+        msq.insert_to_database(query_reset, (eye_color,))
 
-    query = "INSERT INTO videos (video_id, color, active) VALUES (%s, %s, %s)"
-    if msq.insert_to_database(query, (video_id, eye_color, False)):
+        # Wstawiamy nowy film
+        query_insert = "INSERT INTO videos (video_url, color, active) VALUES (%s, %s, %s)"
+        msq.insert_to_database(query_insert, (video_url, eye_color, True))
+
         return jsonify({"success": True, "message": "Film dodany pomyślnie!"})
-    else:
-        return jsonify({"success": False, "message": f"Błąd bazy danych"}), 500
+    except Exception as e:
+        return jsonify({"success": False, "message": f"Błąd bazy danych: {str(e)}"}), 500
 
 @app.route('/api/delete-video', methods=['DELETE'])
 def delete_video():
     # Sprawdzanie uprawnień
-    # ========================================================
-    # 🌟 Model implementacji uprawnień - Rekomendacja 🌟
-    # Ten kod jest czytelny, modułowy i łatwy w rozbudowie.
-    # Każdy poziom uprawnień ma jasno określoną logikę.
-    # Użycie funkcji `direct_by_permision` zapewnia elastyczność.
-    # Idealne do zastosowania w wielu endpointach systemu!
-    # ========================================================
     if session.get('username', False):
-        if not (
-                direct_by_permision(session, permission_sought='administrator')\
-                    or direct_by_permision(session, permission_sought='super_user')
-            ):  # Brak uprawnień
-            return jsonify({"success": False, "message": "Brak wymaganych uprawnień!"}), 400
+        if not (direct_by_permision(session, permission_sought='administrator')
+                or direct_by_permision(session, permission_sought='super_user')):
+            return jsonify({"success": False, "message": "Brak wymaganych uprawnień!"}), 403
     else:
-        # Użytkownik niezalogowany
-        return jsonify({"success": False, "message": "Brak wymaganych uprawnień!"}), 400
+        return jsonify({"success": False, "message": "Brak wymaganych uprawnień!"}), 403
+
     data = request.json
     video_id = data.get("id")
 
     if not video_id:
         return jsonify({"success": False, "message": "Brak ID filmu!"}), 400
 
-    query = "DELETE FROM videos WHERE id = %s"
-    if msq.insert_to_database(query, (video_id,)):
+    try:
+        query = "DELETE FROM videos WHERE id = %s"
+        msq.insert_to_database(query, (video_id,))
         return jsonify({"success": True, "message": "Film usunięty!"})
-    else:
-        return jsonify({"success": False, "message": f"Błąd bazy danych"}), 500
+    except Exception as e:
+        return jsonify({"success": False, "message": f"Błąd bazy danych: {str(e)}"}), 500
 
     
 
 @app.route('/api/set-active-video', methods=['POST'])
 def set_active_video():
     # Sprawdzanie uprawnień
-    # ========================================================
-    # 🌟 Model implementacji uprawnień - Rekomendacja 🌟
-    # Ten kod jest czytelny, modułowy i łatwy w rozbudowie.
-    # Każdy poziom uprawnień ma jasno określoną logikę.
-    # Użycie funkcji `direct_by_permision` zapewnia elastyczność.
-    # Idealne do zastosowania w wielu endpointach systemu!
-    # ========================================================
     if session.get('username', False):
-        if not (
-                direct_by_permision(session, permission_sought='administrator')\
-                    or direct_by_permision(session, permission_sought='super_user')
-            ):  # Brak uprawnień
-            return jsonify({"success": False, "message": "Brak wymaganych uprawnień!"}), 400
+        if not (direct_by_permision(session, permission_sought='administrator')
+                or direct_by_permision(session, permission_sought='super_user')):
+            return jsonify({"success": False, "message": "Brak wymaganych uprawnień!"}), 403
     else:
-        # Użytkownik niezalogowany
-        return jsonify({"success": False, "message": "Brak wymaganych uprawnień!"}), 400
+        return jsonify({"success": False, "message": "Brak wymaganych uprawnień!"}), 403
+
     data = request.json
-    video_id = data.get("id")
+    video_url = data.get("videoUrl")  # Zmieniamy na `videoUrl`
     color = data.get("color")
 
-    if not video_id or not color:
+    if not video_url or not color:
         return jsonify({"success": False, "message": "Brak wymaganych danych!"}), 400
 
-    # Wyłącz wszystkie aktywne filmy dla danego koloru
-    query_reset = "UPDATE videos SET active = FALSE WHERE color = %s"
-    if msq.insert_to_database(query_reset, (color,)):
-        # Włącz nowy aktywny film
-        query_activate = "UPDATE videos SET active = TRUE WHERE id = %s"
-        if msq.insert_to_database(query_activate, (video_id,)):
-            return jsonify({"success": True, "message": "Aktywny film został zmieniony!"})
+    try:
+        # Wyłącz wszystkie aktywne filmy dla danego koloru
+        query_reset = "UPDATE videos SET active = FALSE WHERE color = %s"
+        msq.insert_to_database(query_reset, (color,))
 
-    return jsonify({"success": False, "message": f"Błąd bazy danych"}), 500
+        # Włącz nowy aktywny film na podstawie `video_url`
+        query_activate = "UPDATE videos SET active = TRUE WHERE video_url = %s AND color = %s"
+        msq.insert_to_database(query_activate, (video_url, color))
 
-    
+        return jsonify({"success": True, "message": "Aktywny film został zmieniony!"})
+    except Exception as e:
+        return jsonify({"success": False, "message": f"Błąd bazy danych: {str(e)}"}), 500
 
-    
 
-@app.route('/api/update-video-order', methods=['POST'])
-def update_video_order():
-    # Sprawdzanie uprawnień
-    # ========================================================
-    # 🌟 Model implementacji uprawnień - Rekomendacja 🌟
-    # Ten kod jest czytelny, modułowy i łatwy w rozbudowie.
-    # Każdy poziom uprawnień ma jasno określoną logikę.
-    # Użycie funkcji `direct_by_permision` zapewnia elastyczność.
-    # Idealne do zastosowania w wielu endpointach systemu!
-    # ========================================================
-    if session.get('username', False):
-        if not (
-                direct_by_permision(session, permission_sought='administrator')\
-                    or direct_by_permision(session, permission_sought='super_user')
-            ):  # Brak uprawnień
-            return jsonify({"success": False, "message": "Brak wymaganych uprawnień!"}), 400
-    else:
-        # Użytkownik niezalogowany
-        return jsonify({"success": False, "message": "Brak wymaganych uprawnień!"}), 400
-    data = request.json
-    order = data.get("order")
-
-    if not order or not isinstance(order, list):
-        return jsonify({"success": False, "message": "Brak danych!"}), 400
-
-    for index, video_id in enumerate(order):
-        query = "UPDATE videos SET position = %s WHERE id = %s"
-        msq.insert_to_database(query, (index + 1, video_id))
-
-    return jsonify({"success": True, "message": "Kolejność zaktualizowana!"})
 
 
 
