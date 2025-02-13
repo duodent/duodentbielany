@@ -303,15 +303,37 @@ def getUserRoles(useroneitem_data_from_generator_userDataDB):
     }
 
 def get_videos():
-    # Pobiera `video_url` zamiast `video_id`
+    # Pobieramy `video_url`, `color`, `active` – filmy mogą nie mieć przypisanego oka
     query = "SELECT id, video_url, color, active FROM videos ORDER BY id ASC"
-    videos_ = msq.connect_to_database(query)
+    videos = msq.connect_to_database(query)
+
     # Konwersja listy krotek na listę słowników
     return [
-        {"id": video[0], "video_url": video[1], "color": video[2], "active": video[3]}
-        for video in videos_
+        {"id": video[0], "video_url": video[1], "color": video[2] if video[2] else "none", "active": video[3]}
+        for video in videos
     ]
 
+def extract_youtube_id(video_url):
+    """
+    Pobiera ID filmu YouTube z różnych formatów linków.
+    Obsługuje:
+    - https://www.youtube.com/watch?v=VIDEO_ID
+    - https://youtu.be/VIDEO_ID
+    - https://www.youtube.com/embed/VIDEO_ID
+    - https://www.youtube.com/shorts/VIDEO_ID
+    - iframe: <iframe src="https://www.youtube.com/embed/VIDEO_ID" ...></iframe>
+    """
+    regex_patterns = [
+        r"(?:v=|youtu\.be\/|embed\/|shorts\/)([A-Za-z0-9_-]{11})",
+        r'src="https:\/\/www\.youtube\.com\/embed\/([A-Za-z0-9_-]{11})"'  # Dla iframe
+    ]
+
+    for pattern in regex_patterns:
+        match = re.search(pattern, video_url)
+        if match:
+            return match.group(1)
+
+    return None  # Jeśli ID nie zostało znalezione
 
 
 
@@ -2489,24 +2511,39 @@ def add_video():
         return jsonify({"success": False, "message": "Brak wymaganych uprawnień!"}), 403
 
     data = request.json
-    video_url = data.get("videoUrl")
-    eye_color = data.get("eyeColor")
+    iframe_code = data.get("iframeCode")
 
-    if not video_url or not eye_color:
-        return jsonify({"success": False, "message": "Brak wymaganych danych!"}), 400
+    if not iframe_code:
+        return jsonify({"success": False, "message": "Brak kodu iframe!"}), 400
 
     try:
-        # Usuwamy wcześniejszy film przypisany do tego koloru
-        query_reset = "DELETE FROM videos WHERE color = %s"
-        msq.insert_to_database(query_reset, (eye_color,))
+        # Wyciągamy `src` z `iframe`
+        match = re.search(r'src="([^"]+)"', iframe_code)
+        if not match:
+            return jsonify({"success": False, "message": "Nieprawidłowy kod iframe!"}), 400
 
-        # Wstawiamy nowy film
-        query_insert = "INSERT INTO videos (video_url, color, active) VALUES (%s, %s, %s)"
-        msq.insert_to_database(query_insert, (video_url, eye_color, True))
+        video_url = match.group(1)
+        video_id = extract_youtube_id(video_url)
+        if not video_id:
+            return jsonify({"success": False, "message": "Nieprawidłowy link do YouTube!"}), 400
+
+        thumbnail_url = f"https://img.youtube.com/vi/{video_id}/mqdefault.jpg"
+
+        # Sprawdzamy, czy film już istnieje
+        query_check = "SELECT COUNT(*) FROM videos WHERE video_url = %s"
+        result = msq.safe_connect_to_database(query_check, (video_url,))
+
+        if result[0][0] > 0:
+            return jsonify({"success": False, "message": "Film już istnieje w bazie!"}), 400
+
+        # Dodajemy film do bazy
+        query_insert = "INSERT INTO videos (video_url, iframe_code, thumbnail_url, color, active) VALUES (%s, %s, %s, NULL, FALSE)"
+        msq.safe_connect_to_database(query_insert, (video_url, iframe_code, thumbnail_url))
 
         return jsonify({"success": True, "message": "Film dodany pomyślnie!"})
     except Exception as e:
         return jsonify({"success": False, "message": f"Błąd bazy danych: {str(e)}"}), 500
+
 
 @app.route('/api/delete-video', methods=['DELETE'])
 def delete_video():
@@ -2544,22 +2581,22 @@ def set_active_video():
         return jsonify({"success": False, "message": "Brak wymaganych uprawnień!"}), 403
 
     data = request.json
-    video_url = data.get("videoUrl")  # Zmieniamy na `videoUrl`
+    video_url = data.get("videoUrl")
     color = data.get("color")
 
     if not video_url or not color:
         return jsonify({"success": False, "message": "Brak wymaganych danych!"}), 400
 
     try:
-        # Wyłącz wszystkie aktywne filmy dla danego koloru
+        # Usuwamy wcześniejsze przypisanie do tego oka (czyli zwalniamy miejsce)
         query_reset = "UPDATE videos SET active = FALSE WHERE color = %s"
-        msq.insert_to_database(query_reset, (color,))
+        msq.safe_connect_to_database(query_reset, (color,))
 
-        # Włącz nowy aktywny film na podstawie `video_url`
-        query_activate = "UPDATE videos SET active = TRUE WHERE video_url = %s AND color = %s"
-        msq.insert_to_database(query_activate, (video_url, color))
+        # Przypisujemy nowy film do oka
+        query_activate = "UPDATE videos SET color = %s, active = TRUE WHERE video_url = %s"
+        msq.safe_connect_to_database(query_activate, (color, video_url))
 
-        return jsonify({"success": True, "message": "Aktywny film został zmieniony!"})
+        return jsonify({"success": True, "message": "Film przypisany do oka!"})
     except Exception as e:
         return jsonify({"success": False, "message": f"Błąd bazy danych: {str(e)}"}), 500
 

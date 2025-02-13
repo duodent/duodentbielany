@@ -50,33 +50,27 @@
                 <form id="addVideoForm">
                     <div class="row">
                         <div class="col-lg-6 col-sm-12">
-                            <!-- Podgląd filmu -->
-                            <div id="videoPreviewContainer" class="mb-3 text-center" style="display: none;">
-                                <iframe id="videoPreview" width="100%" height="250" frameborder="0" allowfullscreen></iframe>
-                                <p id="videoErrorMessage" class="text-danger mt-2" style="display: none;">Nie można wyświetlić podglądu filmu. Sprawdź link.</p>
+                            <!-- Pole do wklejenia `iframe` -->
+                            <div class="form-floating mb-3">
+                                <textarea class="form-control" id="iframeCode" name="iframeCode" placeholder="Wklej kod iframe z YouTube" required></textarea>
+                                <label for="iframeCode">Kod iframe z YouTube</label>
                             </div>
 
-                            <div class="form-floating mb-3">
-                                <input type="url" class="form-control" id="videoUrl" name="videoUrl" placeholder="Link do filmu" required>
-                                <label for="videoUrl">Link do filmu YouTube</label>
+                            <!-- Podgląd miniatury -->
+                            <div id="thumbnailPreviewContainer" class="mb-3 text-center" style="display: none;">
+                                <img id="thumbnailPreview" src="" alt="Miniatura filmu" style="width: 100%; max-width: 300px; border-radius: 8px;">
+                                <p id="thumbnailErrorMessage" class="text-danger mt-2" style="display: none;">Nie można pobrać miniatury.</p>
                             </div>
                         </div>
 
                         <div class="col-lg-6 col-sm-12">
-                            <div class="form-floating mb-3">
-                                <select class="form-control" id="eyeColor" name="eyeColor" required>
-                                    <option value="blue">Niebieskie</option>
-                                    <option value="green">Zielone</option>
-                                    <option value="red">Czerwone</option>
-                                </select>
-                                <label for="eyeColor">Kolor oka</label>
-                            </div>
                             <button type="submit" id="submitVideo" class="default-btn mb-3 w-100" disabled>Dodaj film</button>
                         </div>
                     </div>
                 </form>
             </div>
         </div>
+
 
 
         <!-- Lista filmów -->
@@ -152,10 +146,19 @@
     $('#addVideoForm').on('submit', function (e) {
         e.preventDefault();
 
-        const data = {
-            videoUrl: $('#videoUrl').val(),
-            eyeColor: $('#eyeColor').val()
-        };
+        // const data = {
+        //     videoUrl: $('#videoUrl').val(),
+        //     eyeColor: $('#eyeColor').val()
+        // };
+
+        const iframeCode = $('#iframeCode').val().trim();
+        if (!iframeCode.includes("<iframe") || !iframeCode.includes("youtube.com")) {
+            alert("Błąd: Wklej prawidłowy kod iframe z YouTube!");
+            return;
+        }
+
+        const data = { iframeCode: iframeCode };
+
 
         $.ajax({
             url: '/api/add-video',
@@ -190,10 +193,8 @@
                 const videoUrl = this.getAttribute('data-url');
                 const color = this.getAttribute('data-color');
 
-                console.log("Kliknięto oko:", { videoUrl, color });
-
                 if (!videoUrl || !color) {
-                    alert("Błąd: Brak wymaganych danych! Sprawdź atrybuty data-url i data-color.");
+                    alert("Błąd: Brak wymaganych danych!");
                     return;
                 }
 
@@ -206,7 +207,7 @@
                 .then(data => {
                     if (data.success) {
                         document.querySelectorAll(`.eye-toggle[data-color="${color}"]`).forEach(icon => {
-                            icon.style.color = '#a6c8ff';
+                            icon.style.color = '#a6c8ff'; // Przyciemniony
                         });
 
                         this.style.color = color === 'blue' ? '#007bff' : color === 'green' ? '#28a745' : '#dc3545';
@@ -214,15 +215,18 @@
                         alert("Błąd: " + data.message);
                     }
                 })
-                .catch(error => alert("Błąd podczas zmiany aktywnego filmu."));
+                .catch(error => alert("Błąd podczas przypisywania filmu."));
             });
         });
+
+
 
 
         // Obsługa usuwania filmu (fetch zamiast $.ajax)
         document.querySelectorAll('.delete-video').forEach(button => {
             button.addEventListener('click', function() {
                 const videoUrl = this.getAttribute('data-to-del');
+                const videoItem = this.closest('.col-lg-4');
 
                 if (!videoUrl) {
                     alert("Błąd: Brak adresu URL filmu!");
@@ -234,12 +238,12 @@
                 fetch('/api/delete-video', {
                     method: 'DELETE',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ videoUrl: videoUrl })  // Używamy `videoUrl`
+                    body: JSON.stringify({ videoUrl: videoUrl })
                 })
                 .then(response => response.json())
                 .then(data => {
                     if (data.success) {
-                        location.reload();
+                        videoItem.remove();  // Usuwamy element bez odświeżania strony
                     } else {
                         alert("Błąd: " + data.message);
                     }
@@ -247,9 +251,10 @@
                 .catch(error => alert("Błąd podczas usuwania filmu."));
             });
         });
+
     });
 </script>
-<script>
+<!-- <script>
     document.addEventListener('DOMContentLoaded', function () {
         const videoUrlInput = document.getElementById('videoUrl');
         const videoPreviewContainer = document.getElementById('videoPreviewContainer');
@@ -329,6 +334,90 @@
     
         videoUrlInput.addEventListener('input', updatePreview);
     });
+</script> -->
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const iframeCodeInput = document.getElementById('iframeCode');
+        const thumbnailPreviewContainer = document.getElementById('thumbnailPreviewContainer');
+        const thumbnailPreview = document.getElementById('thumbnailPreview');
+        const thumbnailErrorMessage = document.getElementById('thumbnailErrorMessage');
+        const submitButton = document.getElementById('submitVideo');
+
+        function updatePreview() {
+            const iframeCode = iframeCodeInput.value.trim();
+            if (!iframeCode) {
+                resetPreview();
+                return;
+            }
+
+            // Parsujemy `src` z `iframe`
+            let videoUrl = extractSrcFromIframe(iframeCode);
+            let videoId = extractYouTubeID(videoUrl);
+
+            if (!videoUrl || !videoId) {
+                showError();
+                return;
+            }
+
+            let thumbnailUrl = `https://img.youtube.com/vi/${videoId}/mqdefault.jpg`;
+
+            // Sprawdzamy, czy miniatura istnieje
+            checkYouTubeThumbnail(videoId, function (isValid) {
+                if (isValid) {
+                    showPreview(thumbnailUrl);
+                } else {
+                    showError();
+                }
+            });
+        }
+
+        function extractSrcFromIframe(iframeCode) {
+            const match = iframeCode.match(/src="([^"]+)"/);
+            return match ? match[1] : null;
+        }
+
+        function extractYouTubeID(url) {
+            const regex = /(?:youtube\.com\/embed\/|youtube\.com\/watch\?v=|youtu\.be\/)([A-Za-z0-9_-]{11})/;
+            const match = url.match(regex);
+            return match ? match[1] : null;
+        }
+
+
+        function checkYouTubeThumbnail(videoId, callback) {
+            const img = new Image();
+            img.src = `https://img.youtube.com/vi/${videoId}/mqdefault.jpg`;
+            img.onload = function () {
+                callback(img.width !== 120); // Miniatura 120px oznacza brak filmu
+            };
+            img.onerror = function () {
+                callback(false);
+            };
+        }
+
+        function showPreview(thumbnailUrl) {
+            thumbnailPreview.src = thumbnailUrl;
+            thumbnailPreviewContainer.style.display = "block";
+            thumbnailErrorMessage.style.display = "none";
+            submitButton.disabled = false;
+        }
+
+        function showError() {
+            thumbnailPreviewContainer.style.display = "block";
+            thumbnailPreview.src = "";
+            thumbnailErrorMessage.style.display = "block";
+            submitButton.disabled = true;
+        }
+
+        function resetPreview() {
+            thumbnailPreviewContainer.style.display = "none";
+            thumbnailPreview.src = "";
+            thumbnailErrorMessage.style.display = "none";
+            submitButton.disabled = true;
+        }
+
+        iframeCodeInput.addEventListener('input', updatePreview);
+    });
 </script>
+
 
 {% endblock %}
