@@ -185,7 +185,7 @@
                 const videoId = this.getAttribute('data-id');
                 const color = this.getAttribute('data-color');
 
-                console.log("Kliknięto oko: ", { videoId, color });
+                console.log("Kliknięto oko:", { videoId, color });
 
                 if (!videoId || !color) {
                     alert("Błąd: Brak wymaganych danych!");
@@ -195,20 +195,21 @@
                 fetch('/api/set-active-video', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ videoId, color })
+                    body: JSON.stringify({ videoId: videoId, color: color })
                 })
                 .then(response => response.json())
                 .then(data => {
                     if (data.success) {
-                        console.log("Ustawiono nowe aktywne oko!", data);
+                        console.log("Sukces:", data.message);
                         location.reload();
                     } else {
                         alert("Błąd: " + data.message);
                     }
                 })
-                .catch(error => console.error("Błąd podczas zmiany aktywnego filmu:", error));
+                .catch(error => console.error("Błąd podczas przypisywania filmu:", error));
             });
         });
+
 
 
 

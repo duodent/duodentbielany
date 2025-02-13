@@ -2582,31 +2582,35 @@ def delete_video():
 
 @app.route('/api/set-active-video', methods=['POST'])
 def set_active_video():
-    # Sprawdzanie uprawnień
     if session.get('username', False):
         if not (direct_by_permision(session, permission_sought='administrator')
                 or direct_by_permision(session, permission_sought='super_user')):
             return jsonify({"success": False, "message": "Brak wymaganych uprawnień!"}), 403
     else:
         return jsonify({"success": False, "message": "Brak wymaganych uprawnień!"}), 403
-    
+
     data = request.json
     video_id = data.get("videoId")
     color = data.get("color")
 
+    print(f"🔍 Otrzymano żądanie: videoId={video_id}, color={color}")
+
     if not video_id or not color:
+        print("⚠️ Błąd: Brak wymaganych danych!")
         return jsonify({"success": False, "message": "Brak wymaganych danych!"}), 400
 
-    try:
-        # Usuwamy poprzednie przypisanie koloru do innego filmu
-        msq.safe_connect_to_database("DELETE FROM video_eye_color WHERE color = %s", (color,))
+    # Usuwamy aktywne przypisanie dla danego koloru
+    query_reset = "UPDATE video_eye_color SET video_id = NULL WHERE color = %s"
+    msq.safe_connect_to_database(query_reset, (color,))
 
-        # Przypisujemy nowy film do koloru oka
-        msq.safe_connect_to_database("INSERT INTO video_eye_color (video_id, color) VALUES (%s, %s)", (video_id, color))
+    # Przypisujemy nowy aktywny film do tego koloru
+    query_activate = "UPDATE video_eye_color SET video_id = %s WHERE color = %s"
+    msq.safe_connect_to_database(query_activate, (video_id, color))
 
-        return jsonify({"success": True, "message": "Aktywny film został zmieniony!"})
-    except Exception as e:
-        return jsonify({"success": False, "message": f"Błąd bazy danych: {str(e)}"}), 500
+    print(f"✅ Ustawiono film {video_id} jako aktywny dla {color}")
+
+    return jsonify({"success": True, "message": "Aktywny film został zmieniony!"})
+
 
 
 
