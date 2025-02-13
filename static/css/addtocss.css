@@ -531,3 +531,10 @@
     padding: 4px 8px;
     display: inline-block;
 }
+
+.legend-eye {
+    background: #f8f9fa; 
+    border-radius: 6px; 
+    font-size: 14px; 
+    color: #333;
+}
