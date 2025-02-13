@@ -1538,7 +1538,29 @@ def get_visit_data(link_hash):
     except IndexError: 
         return {}
 
+def set_youtube_links(mode='by_color', yt_color='green'):
+    # Pobranie filmów przypisanych do poszczególnych kolorów
+    query = """
+        SELECT color, video_url FROM video_eye_colors
+        INNER JOIN videos ON video_eye_colors.video_id = videos.id
+    """
+    color_videos = msq.connect_to_database(query)
 
+    # Przypisanie linków do słownika
+    youtube_links = {'green': None, 'red': None, 'blue': None}
+
+    for color, video_url in color_videos:
+        if color in youtube_links:
+            youtube_links[color] = video_url
+
+    # Obsługa różnych trybów zwracania danych
+    if mode == 'by_color':
+        return youtube_links.get(yt_color, None)
+    elif mode in ['tuple', 'by_tuple']:
+        return tuple(youtube_links[color] for color in ['green', 'red', 'blue'])
+    elif mode == 'by_dict':
+        return youtube_links
+    return None
 
 
 
@@ -1992,31 +2014,6 @@ def page_not_found(e):
 @app.errorhandler(500)
 def internal_server_error(e):
     return render_template('500.html', pageTitle='Błąd serwera'), 500
-
-def set_youtube_links(mode='by_color', yt_color='green'):
-    # Pobranie filmów przypisanych do poszczególnych kolorów
-    query = """
-        SELECT color, video_url FROM video_eye_colors
-        INNER JOIN videos ON video_eye_colors.video_id = videos.id
-    """
-    color_videos = msq.connect_to_database(query)
-
-    # Przypisanie linków do słownika
-    youtube_links = {'green': None, 'red': None, 'blue': None}
-
-    for color, video_url in color_videos:
-        if color in youtube_links:
-            youtube_links[color] = video_url
-
-    # Obsługa różnych trybów zwracania danych
-    if mode == 'by_color':
-        return youtube_links.get(yt_color, None)
-    elif mode in ['tuple', 'by_tuple']:
-        return tuple(youtube_links[color] for color in ['green', 'red', 'blue'])
-    elif mode == 'by_dict':
-        return youtube_links
-    return None
-
 
 @app.context_processor
 def inject_shared_variable():
@@ -2565,7 +2562,7 @@ def add_video():
     data = request.json
     iframe_code = data.get("iframeCode")
 
-    print("Odebrany iframe:", iframe_code)  # 🔍 Debug w konsoli serwera
+    # print("Odebrany iframe:", iframe_code)  # 🔍 Debug w konsoli serwera
 
     if not iframe_code:
         return jsonify({"success": False, "message": "Brak kodu iframe!"}), 400
@@ -2577,6 +2574,14 @@ def add_video():
         return jsonify({"success": False, "message": "Nie udało się wyodrębnić linku z iframe!"}), 400
 
     try:
+        # Sprawdzamy, czy film już istnieje w bazie
+        query_check = "SELECT COUNT(*) FROM videos WHERE video_url = %s"
+        result = msq.connect_to_database(query_check, (video_url,))
+        
+        if result and result[0][0] > 0:  # Jeśli w bazie istnieje co najmniej jeden taki sam link
+            return jsonify({"success": False, "message": "Film już istnieje w bazie!"}), 409
+
+        # Jeśli link nie istnieje, dodajemy go do bazy
         query_insert = "INSERT INTO videos (video_url) VALUES (%s)"
         msq.insert_to_database(query_insert, (video_url,))
 
@@ -2609,7 +2614,6 @@ def delete_video():
     except Exception as e:
         return jsonify({"success": False, "message": f"Błąd bazy danych: {str(e)}"}), 500
 
-    
 
 @app.route('/api/set-active-video', methods=['POST'])
 def set_active_video():
