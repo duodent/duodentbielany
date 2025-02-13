@@ -1993,6 +1993,31 @@ def page_not_found(e):
 def internal_server_error(e):
     return render_template('500.html', pageTitle='Błąd serwera'), 500
 
+def set_youtube_links(mode='by_color', yt_color='green'):
+    # Pobranie filmów przypisanych do poszczególnych kolorów
+    query = """
+        SELECT color, video_url FROM video_eye_colors
+        INNER JOIN videos ON video_eye_colors.video_id = videos.id
+    """
+    color_videos = msq.connect_to_database(query)
+
+    # Przypisanie linków do słownika
+    youtube_links = {'green': None, 'red': None, 'blue': None}
+
+    for color, video_url in color_videos:
+        if color in youtube_links:
+            youtube_links[color] = video_url
+
+    # Obsługa różnych trybów zwracania danych
+    if mode == 'by_color':
+        return youtube_links.get(yt_color, None)
+    elif mode in ['tuple', 'by_tuple']:
+        return tuple(youtube_links[color] for color in ['green', 'red', 'blue'])
+    elif mode == 'by_dict':
+        return youtube_links
+    return None
+
+
 @app.context_processor
 def inject_shared_variable():
 
@@ -2007,6 +2032,8 @@ def inject_shared_variable():
     else:
         contact_address_contactpage_city = None
         contact_address_contactpage_street = None
+
+    youtube_links = set_youtube_links('by_dict')  # Pobieramy wszystko na raz
     return {
         'userName': session.get("username", 'NotLogin'),
         'treatmentMenu': {item["ready_route"]: item["tytul_glowny"] for item in treatments_db(True)},
@@ -2025,7 +2052,11 @@ def inject_shared_variable():
         'contact_bank_name': company_setting.get('contact_bank_name'),
         'contact_bank_account': company_setting.get('contact_bank_account'),
         'contact_bank_title': company_setting.get('contact_bank_title'),
-        'contact_bank_guidelines_for_email': company_setting.get('contact_bank_guidelines_for_email')
+        'contact_bank_guidelines_for_email': company_setting.get('contact_bank_guidelines_for_email'),
+        # Nowe zmienne z filmami przypisanymi do kolorów
+        'youtube_green': youtube_links.get('green', ''),
+        'youtube_red': youtube_links.get('red', ''),
+        'youtube_blue': youtube_links.get('blue', '')
     }
 
 @app.context_processor
@@ -4212,43 +4243,6 @@ def team_mambers(name_pracownika):
     else:
         abort(404)
 
-
-
-# @app.route("/reception/<link_hash>")
-# def reception_dashboard(link_hash):
-#     """ Widok recepcji do obsługi wizyt pacjentów """
-
-#     visit_data = get_visit_data(link_hash)
-
-#     # Pobranie parametrów GET z URL (data, czas, email)
-#     selected_email = request.args.get("emailtoconfirmverification")
-#     selected_date = request.args.get("date")
-#     selected_time = request.args.get("time")
-
-#     if visit_data:
-#         visit_date_str = str(visit_data.get("visit_date"))  # Konwersja na string dla poprawnego porównania
-
-#         if selected_date and selected_time and selected_email:
-#             if selected_date == visit_date_str and selected_email == visit_data.get("email"):
-#                 # Tworzenie pełnego datetime z daty i godziny wizyty
-#                 confirmed_datetime = f"{selected_date} {selected_time[:2]}:{selected_time[2:]}:00"
-
-#                 # Aktualizacja statusu wizyty w bazie
-#                 update_query = """
-#                     UPDATE appointment_requests 
-#                     SET status = 'confirmed', confirmed_date = %s, confirmed_flag = 0 
-#                     WHERE id = %s AND status = 'in_progress' AND confirmed_flag = 0
-#                 """
-#                 updated = msq.insert_to_database(update_query, (confirmed_datetime, visit_data["id"]))
-
-#                 if updated:
-#                     return redirect(url_for("reception_dashboard", link_hash=visit_data.get("link_hash")))
-
-#         return render_template("reception.html", visit=visit_data)
-
-#     return redirect(url_for('index'))
-
-from datetime import datetime
 
 @app.route("/reception/<link_hash>")
 def reception_dashboard(link_hash):
