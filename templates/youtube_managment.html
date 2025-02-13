@@ -190,8 +190,11 @@
                 }
             },
             error: function (xhr) {
-                console.error("Błąd AJAX:", xhr.responseText); // 🔍 Debug
-                alert('Wystąpił błąd podczas połączenia z serwerem.');
+                if (xhr.status === 409) {
+                alert('⚠️ Ten film już istnieje w bazie! Nie można dodać go ponownie.');
+            } else {
+                alert('❌ Wystąpił błąd podczas dodawania filmu. Spróbuj ponownie.');
+            }
             }
         });
     });
