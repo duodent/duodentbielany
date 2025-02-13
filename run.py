@@ -2582,6 +2582,7 @@ def delete_video():
 
 @app.route('/api/set-active-video', methods=['POST'])
 def set_active_video():
+    # Sprawdzanie uprawnień
     if session.get('username', False):
         if not (direct_by_permision(session, permission_sought='administrator')
                 or direct_by_permision(session, permission_sought='super_user')):
@@ -2590,34 +2591,25 @@ def set_active_video():
         return jsonify({"success": False, "message": "Brak wymaganych uprawnień!"}), 403
 
     data = request.json
-    video_url = data.get("videoUrl")
+    video_id = data.get("videoId")  # <-- zmieniamy na `videoId` bo `videoUrl` nie jest unikalne
     color = data.get("color")
 
-    if not video_url or not color:
+    if not video_id or not color:
         return jsonify({"success": False, "message": "Brak wymaganych danych!"}), 400
 
-    # Pobieramy ID filmu na podstawie URL
-    query_video = "SELECT id FROM videos WHERE video_url = %s"
-    video = msq.safe_connect_to_database(query_video, (video_url,))
-    if not video:
-        return jsonify({"success": False, "message": "Film nie istnieje!"}), 404
-    
-    video_id = video[0][0]
+    try:
+        # Najpierw usuwamy wszystkie przypisania tego koloru do innych filmów
+        query_reset = "DELETE FROM video_eye_color WHERE eye_color = %s"
+        msq.insert_to_database(query_reset, (color,))
 
-    # Sprawdzamy, czy dany kolor już jest przypisany do filmu
-    query_check = "SELECT id FROM video_eye_colors WHERE video_id = %s AND color = %s"
-    existing_color = msq.safe_connect_to_database(query_check, (video_id, color))
+        # Teraz przypisujemy nowy film do tego koloru
+        query_insert = "INSERT INTO video_eye_color (video_id, eye_color) VALUES (%s, %s)"
+        msq.insert_to_database(query_insert, (video_id, color))
 
-    if existing_color:
-        # Jeśli istnieje, to usuwamy (toggle wyłącza kolor)
-        query_delete = "DELETE FROM video_eye_colors WHERE video_id = %s AND color = %s"
-        msq.safe_connect_to_database(query_delete, (video_id, color))
-        return jsonify({"success": True, "message": f"Kolor {color} usunięty z filmu!"})
-    else:
-        # Jeśli nie istnieje, to dodajemy
-        query_insert = "INSERT INTO video_eye_colors (video_id, color) VALUES (%s, %s)"
-        msq.safe_connect_to_database(query_insert, (video_id, color))
-        return jsonify({"success": True, "message": f"Kolor {color} przypisany do filmu!"})
+        return jsonify({"success": True, "message": "Aktywny film został zmieniony!"})
+    except Exception as e:
+        return jsonify({"success": False, "message": f"Błąd bazy danych: {str(e)}"}), 500
+
 
 
 
