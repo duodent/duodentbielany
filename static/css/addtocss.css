@@ -507,3 +507,15 @@
 .red-eye.inactive-eye {
     color: #f5a6a6; /* Czerwone nieaktywne */
 }
+
+.single-video-item {
+    max-width: 320px; /* Szerokość miniatury */
+    margin: 0 auto;  /* Wyśrodkowanie */
+}
+
+.video-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
