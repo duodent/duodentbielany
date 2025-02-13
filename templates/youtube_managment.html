@@ -206,11 +206,15 @@
                 .then(response => response.json())
                 .then(data => {
                     if (data.success) {
-                        document.querySelectorAll(`.eye-toggle[data-color="${color}"]`).forEach(icon => {
-                            icon.style.color = '#a6c8ff'; // Przyciemniony
-                        });
+                        // Toggle koloru oka na froncie (bez przeładowania strony)
+                        const icon = this;
+                        const isActive = icon.style.color !== "rgb(166, 200, 255)"; // Sprawdzamy czy oko jest aktywne
+                        
+                        icon.style.color = isActive ? "#a6c8ff" : 
+                                        (color === "blue" ? "#007bff" :
+                                        color === "green" ? "#28a745" : "#dc3545");
 
-                        this.style.color = color === 'blue' ? '#007bff' : color === 'green' ? '#28a745' : '#dc3545';
+                        alert(data.message);
                     } else {
                         alert("Błąd: " + data.message);
                     }
@@ -218,6 +222,7 @@
                 .catch(error => alert("Błąd podczas przypisywania filmu."));
             });
         });
+
 
 
 
