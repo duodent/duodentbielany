@@ -179,9 +179,8 @@
             });
         });
 
-        // Obsługa zmiany aktywnego filmu dla danego koloru (fetch zamiast $.ajax)
         document.querySelectorAll('.eye-toggle').forEach(button => {
-            button.addEventListener('click', function() {
+            button.addEventListener('click', function () {
                 const videoId = this.getAttribute('data-id');
                 const color = this.getAttribute('data-color');
 
@@ -200,15 +199,26 @@
                 .then(response => response.json())
                 .then(data => {
                     if (data.success) {
-                        console.log("Sukces:", data.message);
-                        location.reload();
+                        console.log("✅ Film przypisany do koloru:", color);
+
+                        // Zmieniamy klasy na froncie BEZ ODŚWIEŻANIA STRONY
+                        document.querySelectorAll(`.eye-toggle[data-color="${color}"]`).forEach(icon => {
+                            icon.classList.remove("active-eye");
+                            icon.classList.add("inactive-eye");
+                        });
+
+                        // Aktywujemy kliknięte oko
+                        this.classList.remove("inactive-eye");
+                        this.classList.add("active-eye");
+
                     } else {
                         alert("Błąd: " + data.message);
                     }
                 })
-                .catch(error => console.error("Błąd podczas przypisywania filmu:", error));
+                .catch(error => console.error("❌ Błąd podczas przypisywania filmu:", error));
             });
         });
+
 
 
 

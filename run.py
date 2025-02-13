@@ -2599,17 +2599,23 @@ def set_active_video():
         print("⚠️ Błąd: Brak wymaganych danych!")
         return jsonify({"success": False, "message": "Brak wymaganych danych!"}), 400
 
-    # Usuwamy aktywne przypisanie dla danego koloru
-    query_reset = "UPDATE video_eye_color SET video_id = NULL WHERE color = %s"
-    msq.safe_connect_to_database(query_reset, (color,))
+    try:
+        # 1️⃣ Usuń wcześniejsze przypisanie koloru
+        query_reset = "DELETE FROM video_eye_color WHERE color = %s"
+        msq.safe_connect_to_database(query_reset, (color,))
 
-    # Przypisujemy nowy aktywny film do tego koloru
-    query_activate = "UPDATE video_eye_color SET video_id = %s WHERE color = %s"
-    msq.safe_connect_to_database(query_activate, (video_id, color))
+        # 2️⃣ Przypisz nowy film do koloru
+        query_activate = "INSERT INTO video_eye_color (video_id, color) VALUES (%s, %s)"
+        msq.safe_connect_to_database(query_activate, (video_id, color))
 
-    print(f"✅ Ustawiono film {video_id} jako aktywny dla {color}")
+        print(f"✅ Przypisano film {video_id} do {color}")
 
-    return jsonify({"success": True, "message": "Aktywny film został zmieniony!"})
+        return jsonify({"success": True, "message": "Aktywny film został zmieniony!"})
+
+    except Exception as e:
+        print(f"❌ Błąd bazy danych: {e}")
+        return jsonify({"success": False, "message": f"Błąd bazy danych: {e}"}), 500
+
 
 
 
