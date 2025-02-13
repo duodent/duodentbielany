@@ -91,13 +91,13 @@
                             <div class="video-info d-flex justify-content-between align-items-center mt-3">
                                 <div class="eye-icons">
                                     <i class="bi bi-eye-fill eye-toggle blue-eye {{ 'active-eye' if 'blue' in video.colors else 'inactive-eye' }}" 
-                                       data-url="{{ video.video_url }}" data-color="blue"></i>
+                                       data-url="{{ video.video_url }}" data-id="{{ video.id }}" data-color="blue"></i>
                                 
                                     <i class="bi bi-eye-fill eye-toggle green-eye {{ 'active-eye' if 'green' in video.colors else 'inactive-eye' }}" 
-                                       data-url="{{ video.video_url }}" data-color="green"></i>
+                                       data-url="{{ video.video_url }}" data-id="{{ video.id }}" data-color="green"></i>
                                 
                                     <i class="bi bi-eye-fill eye-toggle red-eye {{ 'active-eye' if 'red' in video.colors else 'inactive-eye' }}" 
-                                       data-url="{{ video.video_url }}" data-color="red"></i>
+                                       data-url="{{ video.video_url }}" data-id="{{ video.id }}" data-color="red"></i>
                                 </div>
                                 <a class="delete-video" data-to-del="{{ video.video_url }}">
                                     <i class="bi bi-trash3-fill" style="font-size: 1rem; color: red;"></i>
@@ -180,42 +180,46 @@
         });
 
         // Obsługa zmiany aktywnego filmu dla danego koloru (fetch zamiast $.ajax)
-        document.querySelectorAll('.eye-toggle').forEach(button => {
-            button.addEventListener('click', function() {
-                const videoId = this.getAttribute('data-id');  // Pobieramy `data-id`, a nie `data-url`
-                const color = this.getAttribute('data-color');
+        document.addEventListener('DOMContentLoaded', function () {
+            document.querySelectorAll('.eye-toggle').forEach(button => {
+                button.addEventListener('click', function() {
+                    const videoId = this.getAttribute('data-id');  // Pobieramy poprawnie ID filmu
+                    const color = this.getAttribute('data-color'); // Pobieramy poprawnie kolor
 
-                if (!videoId || !color) {
-                    alert("Błąd: Brak wymaganych danych!");
-                    return;
-                }
-
-                fetch('/api/set-active-video', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ videoId: videoId, color: color })  // Wysyłamy ID filmu, a nie URL
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        // Resetujemy wszystkie oczy tego koloru
-                        document.querySelectorAll(`.eye-toggle[data-color="${color}"]`).forEach(icon => {
-                            icon.style.color = '#a6c8ff'; // Przyciemniony
-                        });
-
-                        // Włączamy nowe aktywne oko
-                        this.style.color = color === 'blue' ? '#007bff' : color === 'green' ? '#28a745' : '#dc3545';
-
-                        setTimeout(() => {
-                            location.reload();
-                        }, 500);
-                    } else {
-                        alert("Błąd: " + data.message);
+                    if (!videoId || !color) {
+                        alert("Błąd: Brak wymaganych danych! Sprawdź atrybuty data-id i data-color.");
+                        console.error("Kliknięto oko:", { videoId, color }); // Debug w konsoli
+                        return;
                     }
-                })
-                .catch(error => alert("Błąd podczas przypisywania filmu."));
+
+                    fetch('/api/set-active-video', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ videoId: videoId, color: color })  // Wysyłamy poprawne dane
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            // Resetujemy wszystkie oczy dla tego koloru
+                            document.querySelectorAll(`.eye-toggle[data-color="${color}"]`).forEach(icon => {
+                                icon.style.color = '#a6c8ff'; // Przyciemniony
+                            });
+
+                            // Ustawiamy aktywne oko
+                            this.style.color = color === 'blue' ? '#007bff' : color === 'green' ? '#28a745' : '#dc3545';
+
+                            setTimeout(() => {
+                                location.reload();
+                            }, 500);
+                        } else {
+                            alert("Błąd: " + data.message);
+                        }
+                    })
+                    .catch(error => alert("Błąd podczas przypisywania filmu."));
+                });
             });
         });
+
 
 
 
