@@ -484,3 +484,26 @@
     margin: 20px 0;
 }
 
+.active-eye {
+    color: #007bff; /* Niebieskie oko aktywne */
+}
+
+.inactive-eye {
+    color: #a6c8ff; /* Niebieskie oko nieaktywne */
+}
+
+.green-eye.active-eye {
+    color: #28a745; /* Zielone aktywne */
+}
+
+.green-eye.inactive-eye {
+    color: #a6d3a0; /* Zielone nieaktywne */
+}
+
+.red-eye.active-eye {
+    color: #dc3545; /* Czerwone aktywne */
+}
+
+.red-eye.inactive-eye {
+    color: #f5a6a6; /* Czerwone nieaktywne */
+}

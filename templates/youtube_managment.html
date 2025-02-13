@@ -90,28 +90,20 @@
                             <!-- Ikony oczu + kosz -->
                             <div class="video-info d-flex justify-content-between align-items-center mt-3">
                                 <div class="eye-icons">
-                                    {% if video.color == 'blue' %}
-                                        <i class="bi bi-eye-fill eye-toggle blue-eye" data-url="{{ video.video_url }}" data-color="blue" style="color:#007bff;"></i>
-                                    {% else %}
-                                        <i class="bi bi-eye-fill eye-toggle blue-eye" data-url="{{ video.video_url }}" data-color="blue" style="color:#a6c8ff;"></i>
-                                    {% endif %}
-
-                                    {% if video.color == 'green' %}
-                                        <i class="bi bi-eye-fill eye-toggle green-eye" data-url="{{ video.video_url }}" data-color="green" style="color:#28a745;"></i>
-                                    {% else %}
-                                        <i class="bi bi-eye-fill eye-toggle green-eye" data-url="{{ video.video_url }}" data-color="green" style="color:#a6d3a0;"></i>
-                                    {% endif %}
-
-                                    {% if video.color == 'red' %}
-                                        <i class="bi bi-eye-fill eye-toggle red-eye" data-url="{{ video.video_url }}" data-color="red" style="color:#dc3545;"></i>
-                                    {% else %}
-                                        <i class="bi bi-eye-fill eye-toggle red-eye" data-url="{{ video.video_url }}" data-color="red" style="color:#f5a6a6;"></i>
-                                    {% endif %}
+                                    <i class="bi bi-eye-fill eye-toggle blue-eye {{ 'active-eye' if 'blue' in video.colors else 'inactive-eye' }}" 
+                                       data-url="{{ video.video_url }}" data-color="blue"></i>
+                                
+                                    <i class="bi bi-eye-fill eye-toggle green-eye {{ 'active-eye' if 'green' in video.colors else 'inactive-eye' }}" 
+                                       data-url="{{ video.video_url }}" data-color="green"></i>
+                                
+                                    <i class="bi bi-eye-fill eye-toggle red-eye {{ 'active-eye' if 'red' in video.colors else 'inactive-eye' }}" 
+                                       data-url="{{ video.video_url }}" data-color="red"></i>
                                 </div>
                                 <a class="delete-video" data-to-del="{{ video.video_url }}">
                                     <i class="bi bi-trash3-fill" style="font-size: 1rem; color: red;"></i>
                                 </a>
                             </div>
+                            
                         </div>
                     </div>
                 {% endfor %}
@@ -206,13 +198,17 @@
                 .then(response => response.json())
                 .then(data => {
                     if (data.success) {
-                        // Toggle koloru oka na froncie (bez przeładowania strony)
+                        // Znajdujemy kliknięte oko
                         const icon = this;
-                        const isActive = icon.style.color !== "rgb(166, 200, 255)"; // Sprawdzamy czy oko jest aktywne
-                        
-                        icon.style.color = isActive ? "#a6c8ff" : 
-                                        (color === "blue" ? "#007bff" :
-                                        color === "green" ? "#28a745" : "#dc3545");
+
+                        // Przełączamy klasy `active-eye` / `inactive-eye`
+                        if (icon.classList.contains("active-eye")) {
+                            icon.classList.remove("active-eye");
+                            icon.classList.add("inactive-eye");
+                        } else {
+                            icon.classList.remove("inactive-eye");
+                            icon.classList.add("active-eye");
+                        }
 
                         alert(data.message);
                     } else {
@@ -222,6 +218,7 @@
                 .catch(error => alert("Błąd podczas przypisywania filmu."));
             });
         });
+
 
 
 
@@ -259,87 +256,7 @@
 
     });
 </script>
-<!-- <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const videoUrlInput = document.getElementById('videoUrl');
-        const videoPreviewContainer = document.getElementById('videoPreviewContainer');
-        const videoPreview = document.getElementById('videoPreview');
-        const videoErrorMessage = document.getElementById('videoErrorMessage');
-        const submitButton = document.getElementById('submitVideo');
-    
-        function updatePreview() {
-            const url = videoUrlInput.value.trim();
-            if (!url) {
-                videoPreviewContainer.style.display = "none";
-                submitButton.disabled = true;
-                return;
-            }
-    
-            // Tworzymy link do `embed` YouTube
-            let videoId = extractYouTubeID(url);
-            if (!videoId) {
-                showError();
-                return;
-            }
-    
-            let embedUrl = `https://www.youtube.com/embed/${videoId}`;
-    
-            // Sprawdzamy, czy wideo jest dostępne
-            checkYouTubeVideo(videoId, function(isValid) {
-                if (isValid) {
-                    showPreview(embedUrl);
-                } else {
-                    showError();
-                }
-            });
-        }
-    
-        function showPreview(embedUrl) {
-            videoPreview.src = embedUrl;
-            videoPreviewContainer.style.display = "block";
-            videoErrorMessage.style.display = "none";
-            submitButton.disabled = false;
-        }
-    
-        function showError() {
-            videoPreviewContainer.style.display = "block";
-            videoPreview.src = "";
-            videoErrorMessage.style.display = "block";
-            submitButton.disabled = true;
-        }
-    
-        function extractYouTubeID(url) {
-            const patterns = [
-                /(?:youtube\.com\/.*[?&]v=|youtu\.be\/|youtube\.com\/embed\/|youtube\.com\/shorts\/)([A-Za-z0-9_-]{11})/,
-                /^([A-Za-z0-9_-]{11})$/ // Jeśli użytkownik wklei tylko ID filmu
-            ];
 
-            for (let pattern of patterns) {
-                const match = url.match(pattern);
-                if (match) return match[1];
-            }
-            return null;
-        }
-
-    
-        function checkYouTubeVideo(videoId, callback) {
-            const img = new Image();
-            img.src = `https://img.youtube.com/vi/${videoId}/mqdefault.jpg`;
-            img.onload = function () {
-                if (img.width === 120) { // Jeśli miniatura 120px szerokości, to wideo nie istnieje
-                    callback(false);
-                } else {
-                    callback(true);
-                }
-            };
-            img.onerror = function () {
-                callback(false);
-            };
-        }
-    
-        videoUrlInput.addEventListener('input', updatePreview);
-    });
-</script> -->
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         const iframeCodeInput = document.getElementById('iframeCode');

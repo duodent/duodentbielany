@@ -303,15 +303,35 @@ def getUserRoles(useroneitem_data_from_generator_userDataDB):
     }
 
 def get_videos():
-    # Pobieramy `video_url`, `color`, `active` – filmy mogą nie mieć przypisanego oka
-    query = "SELECT id, video_url, color, active FROM videos ORDER BY id ASC"
-    videos = msq.connect_to_database(query)
+    # Pobieramy wszystkie filmy
+    query_videos = "SELECT id, video_url, active FROM videos ORDER BY id ASC"
+    videos = msq.connect_to_database(query_videos)
 
-    # Konwersja listy krotek na listę słowników
-    return [
-        {"id": video[0], "video_url": video[1], "color": video[2] if video[2] else "none", "active": video[3]}
-        for video in videos
-    ]
+    # Pobieramy przypisane kolory do filmów
+    query_colors = "SELECT video_id, color FROM video_eye_colors"
+    video_colors = msq.connect_to_database(query_colors)
+
+    # Tworzymy słownik przypisanych kolorów {video_id: [lista kolorów]}
+    color_map = {}
+    for color in video_colors:
+        video_id, color_name = color
+        if video_id not in color_map:
+            color_map[video_id] = []
+        color_map[video_id].append(color_name)
+
+    # Konstruujemy finalną listę filmów z ich przypisanymi kolorami
+    result = []
+    for video in videos:
+        video_id, video_url, active = video
+        result.append({
+            "id": video_id,
+            "video_url": video_url,
+            "colors": color_map.get(video_id, []),  # Jeśli film nie ma przypisanych kolorów, zwracamy pustą listę
+            "active": active
+        })
+
+    return result
+
 
 def extract_youtube_id(video_url):
     """
