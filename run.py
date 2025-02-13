@@ -335,6 +335,9 @@ def extract_youtube_id(video_url):
 
     return None  # Jeśli ID nie zostało znalezione
 
+def extract_src_from_iframe(iframe_code):
+    match = re.search(r'src="([^"]+)"', iframe_code)
+    return match.group(1) if match else None
 
 
 
@@ -2502,10 +2505,8 @@ def admin_manage_videos():
 
 @app.route('/api/add-video', methods=['POST'])
 def add_video():
-    # Sprawdzanie uprawnień
     if session.get('username', False):
-        if not (direct_by_permision(session, permission_sought='administrator')
-                or direct_by_permision(session, permission_sought='super_user')):
+        if not direct_by_permision(session, permission_sought='administrator') and not direct_by_permision(session, permission_sought='super_user'):
             return jsonify({"success": False, "message": "Brak wymaganych uprawnień!"}), 403
     else:
         return jsonify({"success": False, "message": "Brak wymaganych uprawnień!"}), 403
@@ -2513,36 +2514,25 @@ def add_video():
     data = request.json
     iframe_code = data.get("iframeCode")
 
+    print("Odebrany iframe:", iframe_code)  # 🔍 Debug w konsoli serwera
+
     if not iframe_code:
         return jsonify({"success": False, "message": "Brak kodu iframe!"}), 400
 
+    # Wyciągamy `src` z iframe
+    video_url = extract_src_from_iframe(iframe_code)
+
+    if not video_url:
+        return jsonify({"success": False, "message": "Nie udało się wyodrębnić linku z iframe!"}), 400
+
     try:
-        # Wyciągamy `src` z `iframe`
-        match = re.search(r'src="([^"]+)"', iframe_code)
-        if not match:
-            return jsonify({"success": False, "message": "Nieprawidłowy kod iframe!"}), 400
-
-        video_url = match.group(1)
-        video_id = extract_youtube_id(video_url)
-        if not video_id:
-            return jsonify({"success": False, "message": "Nieprawidłowy link do YouTube!"}), 400
-
-        thumbnail_url = f"https://img.youtube.com/vi/{video_id}/mqdefault.jpg"
-
-        # Sprawdzamy, czy film już istnieje
-        query_check = "SELECT COUNT(*) FROM videos WHERE video_url = %s"
-        result = msq.safe_connect_to_database(query_check, (video_url,))
-
-        if result[0][0] > 0:
-            return jsonify({"success": False, "message": "Film już istnieje w bazie!"}), 400
-
-        # Dodajemy film do bazy
-        query_insert = "INSERT INTO videos (video_url, iframe_code, thumbnail_url, color, active) VALUES (%s, %s, %s, NULL, FALSE)"
-        msq.safe_connect_to_database(query_insert, (video_url, iframe_code, thumbnail_url))
+        query_insert = "INSERT INTO videos (video_url) VALUES (%s)"
+        msq.insert_to_database(query_insert, (video_url,))
 
         return jsonify({"success": True, "message": "Film dodany pomyślnie!"})
     except Exception as e:
         return jsonify({"success": False, "message": f"Błąd bazy danych: {str(e)}"}), 500
+
 
 
 @app.route('/api/delete-video', methods=['DELETE'])

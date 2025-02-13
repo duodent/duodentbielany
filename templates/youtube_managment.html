@@ -146,12 +146,8 @@
     $('#addVideoForm').on('submit', function (e) {
         e.preventDefault();
 
-        // const data = {
-        //     videoUrl: $('#videoUrl').val(),
-        //     eyeColor: $('#eyeColor').val()
-        // };
-
         const iframeCode = $('#iframeCode').val().trim();
+
         if (!iframeCode.includes("<iframe") || !iframeCode.includes("youtube.com")) {
             alert("Błąd: Wklej prawidłowy kod iframe z YouTube!");
             return;
@@ -159,6 +155,7 @@
 
         const data = { iframeCode: iframeCode };
 
+        console.log("Wysyłane dane do API:", data); // 🔍 Debug
 
         $.ajax({
             url: '/api/add-video',
@@ -166,17 +163,20 @@
             data: JSON.stringify(data),
             contentType: 'application/json',
             success: function (response) {
+                console.log("Odpowiedź API:", response); // 🔍 Debug
                 if (response.success) {
                     location.reload();
                 } else {
-                    alert('Błąd podczas dodawania filmu.');
+                    alert('Błąd podczas dodawania filmu: ' + response.message);
                 }
             },
-            error: function () {
+            error: function (xhr) {
+                console.error("Błąd AJAX:", xhr.responseText); // 🔍 Debug
                 alert('Wystąpił błąd podczas połączenia z serwerem.');
             }
         });
     });
+
 
     // Obsługa otwierania filmu w modalu
     document.addEventListener('DOMContentLoaded', function() {
