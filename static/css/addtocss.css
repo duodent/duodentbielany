@@ -519,3 +519,8 @@
     align-items: center;
     width: 100%;
 }
+
+.instruction-box {
+    color:#333;
+    font-size: 13px;
+}
