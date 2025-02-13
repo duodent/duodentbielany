@@ -2601,12 +2601,12 @@ def set_active_video():
 
     try:
         # **1️⃣ Usuwamy wcześniejsze przypisanie dla tego koloru**
-        query_reset = "DELETE FROM video_eye_color WHERE color = %s"
+        query_reset = "DELETE FROM video_eye_colors WHERE color = %s"
         result_reset = msq.safe_connect_to_database(query_reset, (color,))
         print(f"🗑 Usunięto stare przypisanie dla koloru {color}. Wynik: {result_reset}")
 
         # **2️⃣ Przypisujemy nowy film do koloru**
-        query_insert = "INSERT INTO video_eye_color (video_id, color) VALUES (%s, %s)"
+        query_insert = "INSERT INTO video_eye_colors (video_id, color) VALUES (%s, %s)"
         result_insert = msq.safe_connect_to_database(query_insert, (video_id, color))
         print(f"✅ Przypisano film {video_id} do {color}. Wynik: {result_insert}")
 
