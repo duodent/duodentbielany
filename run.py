@@ -2577,7 +2577,7 @@ def add_video():
         # Sprawdzamy, czy film już istnieje w bazie
         query_check = "SELECT COUNT(*) FROM videos WHERE video_url = %s"
         result = msq.connect_to_database(query_check, (video_url,))
-        
+        print(result)
         if result and result[0][0] > 0:  # Jeśli w bazie istnieje co najmniej jeden taki sam link
             return jsonify({"success": False, "message": "Film już istnieje w bazie!"}), 409
 
