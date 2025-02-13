@@ -2589,22 +2589,20 @@ def set_active_video():
             return jsonify({"success": False, "message": "Brak wymaganych uprawnień!"}), 403
     else:
         return jsonify({"success": False, "message": "Brak wymaganych uprawnień!"}), 403
-
+    
     data = request.json
-    video_id = data.get("videoId")  # <-- zmieniamy na `videoId` bo `videoUrl` nie jest unikalne
+    video_id = data.get("videoId")
     color = data.get("color")
 
     if not video_id or not color:
         return jsonify({"success": False, "message": "Brak wymaganych danych!"}), 400
 
     try:
-        # Najpierw usuwamy wszystkie przypisania tego koloru do innych filmów
-        query_reset = "DELETE FROM video_eye_color WHERE eye_color = %s"
-        msq.insert_to_database(query_reset, (color,))
+        # Usuwamy poprzednie przypisanie koloru do innego filmu
+        msq.safe_connect_to_database("DELETE FROM video_eye_color WHERE color = %s", (color,))
 
-        # Teraz przypisujemy nowy film do tego koloru
-        query_insert = "INSERT INTO video_eye_color (video_id, eye_color) VALUES (%s, %s)"
-        msq.insert_to_database(query_insert, (video_id, color))
+        # Przypisujemy nowy film do koloru oka
+        msq.safe_connect_to_database("INSERT INTO video_eye_color (video_id, color) VALUES (%s, %s)", (video_id, color))
 
         return jsonify({"success": True, "message": "Aktywny film został zmieniony!"})
     except Exception as e:
