@@ -85,12 +85,11 @@
                                     <img src="https://img.youtube.com/vi/{{ video.video_url.split('embed/')[1].split('?')[0] }}/mqdefault.jpg" 
                                          alt="Miniatura filmu" style="width: 100%; max-width: 300px; border-radius: 8px;">
                                 </a>
-                                <span>Zobacz film</span>
                             </div>
                             
 
                             <!-- Ikony oczu + kosz -->
-                            <div class="video-info d-flex justify-content-between align-items-center mt-3">
+                            <div class="video-info d-flex justify-content-between align-items-center mb-3 mt-1">
                                 <div class="eye-icons">
                                     <i class="bi bi-eye-fill eye-toggle blue-eye {{ 'active-eye' if 'blue' in video.colors else 'inactive-eye' }}" 
                                        data-url="{{ video.video_url }}" data-id="{{ video.id }}" data-color="blue"></i>
