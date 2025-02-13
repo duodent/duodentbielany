@@ -524,3 +524,10 @@
     color:#333;
     font-size: 13px;
 }
+
+.shareyt-button {
+    border-radius: 30px;
+    background: #e0e0e0;
+    padding: 4px 8px;
+    display: inline-block;
+}
