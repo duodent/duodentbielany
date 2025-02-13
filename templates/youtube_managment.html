@@ -52,7 +52,7 @@
                         <div class="col-lg-6 col-sm-12">
                             <!-- Pole do wklejenia `iframe` -->
                             <div class="form-floating mb-3">
-                                <textarea class="form-control" id="iframeCode" name="iframeCode" placeholder="Wklej kod iframe z YouTube" required></textarea>
+                                <textarea class="form-control" id="iframeCode" name="iframeCode" rows="5" placeholder="Wklej kod iframe z YouTube" required></textarea>
                                 <label for="iframeCode">Kod iframe z YouTube</label>
                             </div>
 
@@ -82,10 +82,12 @@
                             <!-- Podgląd filmu w modalu -->
                             <div class="checkup-content text-center">
                                 <a href="#" class="open-video" data-bs-toggle="modal" data-bs-target="#videoModal" data-url="{{ video.video_url }}">
-                                    <i class="far fa-play"></i>
+                                    <img src="https://img.youtube.com/vi/{{ video.video_url.split('embed/')[1].split('?')[0] }}/mqdefault.jpg" 
+                                         alt="Miniatura filmu" style="width: 100%; max-width: 300px; border-radius: 8px;">
                                 </a>
                                 <span>Zobacz film</span>
                             </div>
+                            
 
                             <!-- Ikony oczu + kosz -->
                             <div class="video-info d-flex justify-content-between align-items-center mt-3">
@@ -157,6 +159,13 @@
             success: function (response) {
                 console.log("Odpowiedź API:", response); // 🔍 Debug
                 if (response.success) {
+
+                    // Czyszczenie formularza
+                    $('#iframeCode').val('');
+                    $('#thumbnailPreviewContainer').hide();
+                    $('#thumbnailPreview').attr('src', '');
+                    $('#submitVideo').prop('disabled', true);
+
                     location.reload();
                 } else {
                     alert('Błąd podczas dodawania filmu: ' + response.message);
