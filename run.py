@@ -4092,28 +4092,33 @@ def parse_instagram_comments(raw_text):
     return {k: list(set(v)) for k, v in comments_dict.items()}
 
 def parse_facebook_comments(text):
-    comments = defaultdict(list)
+    comments_dict = defaultdict(list)
 
-    # Szukamy wpisów na podstawie układu: Nazwisko -> Komentarz
-    entries = re.split(r'\n(?=[A-ZŻŹĆĄŚĘŁÓŃ][a-zżźćńółęąś]+\s[A-ZŻŹĆĄŚĘŁÓŃ][a-zżźćńółęąś]+)', text)
+    # Dzielimy komentarze na wpisy, bazując na separatorze "Ukryj"
+    komentarze = text.split("    Ukryj")
 
-    for entry in entries:
-        lines = entry.strip().split("\n")
-        
-        if len(lines) < 2:
-            continue  # Pomijamy puste lub niewłaściwe wpisy
+    for komentarz in komentarze:
+        linie = komentarz.strip().split("\n")
 
-        author = lines[0].strip()  # Pierwsza linia to autor
-        content = " ".join(lines[1:])  # Reszta to treść komentarza
+        if len(linie) < 2:
+            continue  # Pomijamy niepełne wpisy (np. same oznaczenia)
 
-        # Wyszukujemy oznaczone osoby (imię + nazwisko)
+        # Pierwsza linia to **autor komentarza**
+        author = linie[0].strip()
+
+        # Reszta to treść komentarza
+        content = " ".join(linie[1:]).replace("    Edytowano", "").strip()
+
+        # Szukamy oznaczonych osób w treści komentarza
         tagged_people = re.findall(r'\b[A-ZŻŹĆĄŚĘŁÓŃ][a-zżźćńółęąś]+(?:\s[A-ZŻŹĆĄŚĘŁÓŃ][a-zżźćńółęąś]+)+\b', content)
-        
-        # Usuwamy ewentualne fałszywe oznaczenia wynikające z błędów w podziale tekstu
-        if author not in tagged_people:  
-            comments[author].extend(tagged_people)
 
-    return {k: list(set(v)) for k, v in comments.items()}
+        # **Filtrujemy przypadki, gdzie autor jest w oznaczonych osobach**
+        tagged_people = [person for person in tagged_people if person != author]
+
+        # **Dodajemy oznaczone osoby do autora**
+        comments_dict[author].extend(tagged_people)
+
+    return {k: list(set(v)) for k, v in comments_dict.items()}
 
 
 
