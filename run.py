@@ -8390,10 +8390,10 @@ Aneta Przedpełska
 
 dict_instagram_comments = parse_instagram_comments(komentarze_instagram)
 dict_facebook_comments = parse_facebook_comments(komentarze_facebook)
-list_lajki_posta_ig = lajki_posta_ig.split()
-list_lajki_posta_fb = lajki_posta_fb.split()
-list_followers_ig = followers_ig.split()
-list_followers_fb = followers_fb.split()
+list_lajki_posta_ig = lajki_posta_ig.split('\n')
+list_lajki_posta_fb = lajki_posta_fb.split('\n')
+list_followers_ig = followers_ig.split('\n')
+list_followers_fb = followers_fb.split('\n')
 
 uczestnicy_ig = []
 for author_ig, mentions_list in dict_instagram_comments.items():
