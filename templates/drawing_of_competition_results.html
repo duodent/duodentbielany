@@ -16,18 +16,15 @@
 
 <section class="review-area ptb-100">
     <div class="container">
-        
-
-        {{test}}
 
         <h1>Losowanie Zwycięzców Konkursu</h1>
 
         <h2>Facebook</h2>
-        <ul>
+        <div class="row">
             {% for uczestnik in uczestnicy_fb %}
-                <li>{{ uczestnik }}</li>
+                <div class="col p-2">{{ uczestnik }}</div>
             {% endfor %}
-        </ul>
+        </div>
         <p id="wynik-fb">
             {% if zwyciezca_fb %}
                 🎉 Zwycięzca: {{ zwyciezca_fb }}
@@ -37,11 +34,11 @@
         </p>
 
         <h2>Instagram</h2>
-        <ul>
+        <div class="row">
             {% for uczestnik in uczestnicy_ig %}
-                <li>{{ uczestnik }}</li>
+            <div class="col p-2">{{ uczestnik }}</div>
             {% endfor %}
-        </ul>
+        </div>
         <p id="wynik-ig">
             {% if zwyciezca_ig %}
                 🎉 Zwycięzca: {{ zwyciezca_ig }}
