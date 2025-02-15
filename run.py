@@ -4070,33 +4070,31 @@ def contest_valentain_rules():
 
 from collections import defaultdict
 def parse_instagram_comments(raw_text):
-    comments_dict = defaultdict(tuple)
-
+    comments_dict = defaultdict(list)
+    
     if isinstance(raw_text, str):
-        lines = raw_text.split()
+        lines = raw_text.split("\n")
     else:
         return {}
-    
-    author = None
 
+    author = None
     for line in lines:
         line = line.strip()
         
         # Sprawdzamy, czy linia wygląda jak nazwa użytkownika (autor komentarza)
         if re.match(r'^[a-zA-Z0-9._]+$', line):
-            author = line
-        elif author and line.startswith('@'):
-            # Pobieramy oznaczone osoby
-            mentions = tuple(re.findall(r'@[\w.]+', line))
-            if mentions:
-                comments_dict[author] = mentions
-    
-    return dict(comments_dict)
+            author = line  # Nowy autor komentarza
+        elif author:
+            # Pobieramy oznaczone osoby z komentarza
+            mentions = re.findall(r'@[\w.]+', line)
+            comments_dict[author].extend(mentions)
+
+    return {k: list(set(v)) for k, v in comments_dict.items()}
 
 def parse_facebook_comments(text):
-    comments = defaultdict(tuple)
-    
-    # Rozdzielamy tekst na wpisy na podstawie typowego układu nazwiska + treść
+    comments = defaultdict(list)
+
+    # Szukamy wpisów na podstawie układu: Nazwisko -> Komentarz
     entries = re.split(r'\n(?=[A-ZŻŹĆĄŚĘŁÓŃ][a-zżźćńółęąś]+\s[A-ZŻŹĆĄŚĘŁÓŃ][a-zżźćńółęąś]+)', text)
 
     for entry in entries:
@@ -4104,16 +4102,18 @@ def parse_facebook_comments(text):
         
         if len(lines) < 2:
             continue  # Pomijamy puste lub niewłaściwe wpisy
-        
+
         author = lines[0].strip()  # Pierwsza linia to autor
         content = " ".join(lines[1:])  # Reszta to treść komentarza
 
-        # Wyszukiwanie oznaczonych osób (imiona i nazwiska, oddzielone spacjami)
+        # Wyszukujemy oznaczone osoby (imię + nazwisko)
         tagged_people = re.findall(r'\b[A-ZŻŹĆĄŚĘŁÓŃ][a-zżźćńółęąś]+(?:\s[A-ZŻŹĆĄŚĘŁÓŃ][a-zżźćńółęąś]+)+\b', content)
+        
+        # Usuwamy ewentualne fałszywe oznaczenia wynikające z błędów w podziale tekstu
+        if author not in tagged_people:  
+            comments[author].extend(tagged_people)
 
-        comments[author] = tuple(tagged_people)
-
-    return dict(comments)
+    return {k: list(set(v)) for k, v in comments.items()}
 
 
 
