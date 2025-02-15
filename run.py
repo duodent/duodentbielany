@@ -4095,7 +4095,7 @@ def parse_facebook_comments(text):
     comments_dict = defaultdict(list)
 
     # Dzielimy komentarze na wpisy, bazując na separatorze "Ukryj"
-    komentarze = text.split("    Ukryj")
+    komentarze = text.replace("Edytowano", "").split("    Ukryj")
 
     for komentarz in komentarze:
         linie = komentarz.strip().split("\n")
@@ -4107,7 +4107,7 @@ def parse_facebook_comments(text):
         author = linie[0].strip()
 
         # Reszta to treść komentarza
-        content = " ".join(linie[1:]).replace("    Edytowano", "").strip()
+        content = " ".join(linie[1:]).strip()
 
         # Szukamy oznaczonych osób w treści komentarza
         tagged_people = re.findall(r'\b[A-ZŻŹĆĄŚĘŁÓŃ][a-zżźćńółęąś]+(?:\s[A-ZŻŹĆĄŚĘŁÓŃ][a-zżźćńółęąś]+)+\b', content)
