@@ -1,0 +1,205 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<!-- breadcrumb start -->
+<div id="breadcrumb-small" class="breadcrumb-small mb-0" style="display: none;">
+    <div class="container justify-content-center">
+        <div class="justify-content-center">
+            <ul class="breadcrumb-pages-list">
+                <li><a href="/"><i class="bi bi-houses-fill" style="font-size: 1rem;"></i></a></li>
+                <li>Losuj</li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!-- breadcrumb end -->
+
+<section class="review-area ptb-100">
+    <div class="container">
+        <!-- Sekcja tytułu -->
+        <div class="row align-items-center">
+            <div class="col-lg-6 mx-auto">
+                <div class="section-title-warp">
+                    <span class="sub-title">
+                        <i class="flaticon-hashtag-symbol"></i>
+                        Opinie widoczne na stronie
+                    </span>
+                    <h2>Opinie <span>widoczne</span> na stronie <span>www</span> dla Twoich klientów</h2>
+                    <p>
+                        Zarządzaj kolejnością i edytuj opinie opublikowane na stronie www.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        
+
+        <h1>Losowanie Zwycięzców Konkursu</h1>
+
+        <h2>Facebook</h2>
+        <ul>
+            {% for uczestnik in uczestnicy_fb %}
+                <li>{{ uczestnik }}</li>
+            {% endfor %}
+        </ul>
+        <p id="wynik-fb">
+            {% if zwyciezca_fb %}
+                🎉 Zwycięzca: {{ zwyciezca_fb }}
+            {% else %}
+                <button id="przycisk-fb" onclick="losuj('fb')">Losuj zwycięzcę FB</button>
+            {% endif %}
+        </p>
+
+        <h2>Instagram</h2>
+        <ul>
+            {% for uczestnik in uczestnicy_ig %}
+                <li>{{ uczestnik }}</li>
+            {% endfor %}
+        </ul>
+        <p id="wynik-ig">
+            {% if zwyciezca_ig %}
+                🎉 Zwycięzca: {{ zwyciezca_ig }}
+            {% else %}
+                <button id="przycisk-ig" onclick="losuj('ig')">Losuj zwycięzcę IG</button>
+            {% endif %}
+        </p>
+
+        <!-- Modal błędów -->
+        <div class="modal fade" id="error-modal" tabindex="-1" aria-labelledby="errorModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header bg-danger text-white">
+                        <h5 class="modal-title" id="errorModalLabel">Błąd</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p id="error-modal-message">Wystąpił nieoczekiwany błąd.</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Zamknij</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal sukcesów -->
+        <div class="modal fade" id="success-modal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header bg-success text-white">
+                        <h5 class="modal-title" id="successModalLabel">Sukces</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p id="success-modal-message">Operacja zakończona pomyślnie.</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Zamknij</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Modal potwierdzeń -->
+        <div class="modal fade" id="confirm-modal" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header bg-warning text-white">
+                        <h5 class="modal-title" id="confirmModalLabel">Potwierdź Działanie</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p id="confirm-modal-message">Czy na pewno chcesz wykonać tę operację?</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Anuluj</button>
+                        <button type="button" class="btn btn-danger" id="confirm-modal-confirm">Potwierdź</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+{% endblock %}
+{% block bottom_scripts %}
+<script src="https://cdn.jsdelivr.net/npm/sortablejs@1.14.0/Sortable.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        setTimeout(function () {
+            // Pokaż #breadcrumb-small
+            $("#breadcrumb-small")
+                .css({
+                    display: "block", // Ustaw widoczność
+                    textAlign: "center", // Wyrównanie tekstu do środka
+                    width: "100%", // Rozciągnij na całą szerokość
+                })
+                .animate(
+                    {
+                        height: "50px",
+                        paddingTop: "10px"
+                    },
+                    1200 // Czas animacji
+                );
+        }, 2000); 
+    });
+</script>
+<script>
+    // Funkcja wyświetlająca modal błędów
+    function showErrorModal(message) {
+        const errorModal = new bootstrap.Modal(document.getElementById('error-modal'));
+        document.getElementById('error-modal-message').textContent = message || 'Wystąpił nieoczekiwany błąd.';
+        errorModal.show();
+    }
+
+    // Funkcja wyświetlająca modal sukcesów
+    function showSuccessModal(message, callback) {
+        const successModal = new bootstrap.Modal(document.getElementById('success-modal'));
+        document.getElementById('success-modal-message').textContent = message || 'Operacja zakończona pomyślnie.';
+        successModal.show();
+
+        const modalElement = document.getElementById('success-modal');
+        modalElement.addEventListener('hidden.bs.modal', function onHidden() {
+            if (callback) callback();
+            modalElement.removeEventListener('hidden.bs.modal', onHidden);
+        });
+    }
+
+    // Funkcja wyświetlająca modal potwierdzeń
+    function showConfirmModal(message, onConfirm) {
+        const confirmModal = new bootstrap.Modal(document.getElementById('confirm-modal'));
+        document.getElementById('confirm-modal-message').textContent = message || 'Czy na pewno chcesz kontynuować?';
+        confirmModal.show();
+
+        const confirmButton = document.getElementById('confirm-modal-confirm');
+        const modalElement = document.getElementById('confirm-modal');
+
+        confirmButton.onclick = function () {
+            if (onConfirm) onConfirm();
+            confirmModal.hide();
+        };
+    }
+</script>
+<script>
+    function losuj(platforma) {
+        fetch("/admin/losuj", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ platform: platforma })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (platforma === "fb") {
+                document.getElementById("przycisk-fb").style.display = "none";
+                document.getElementById("wynik-fb").innerText = "🎉 Zwycięzca: " + data.zwyciezca_fb;
+            } else {
+                document.getElementById("przycisk-ig").style.display = "none";
+                document.getElementById("wynik-ig").innerText = "🎉 Zwycięzca: " + data.zwyciezca_ig;
+            }
+        });
+    }
+</script>
+{% endblock %}
