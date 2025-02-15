@@ -1,5 +1,59 @@
 {% extends 'base.html' %}
 {% block content %}
+{% block scripts%}
+<style>
+    body {
+        font-family: 'Arial', sans-serif;
+        background: #f4f4f4;
+        text-align: center;
+        padding: 20px;
+    }
+    .title {
+        font-size: 2rem;
+        font-weight: bold;
+        color: #333;
+    }
+    .section-title {
+        font-size: 1.5rem;
+        color: #444;
+        margin-top: 20px;
+    }
+    .row {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        margin-bottom: 20px;
+    }
+    .user-box {
+        background: white;
+        padding: 10px 15px;
+        border-radius: 8px;
+        box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+        margin: 5px;
+        font-size: 1rem;
+    }
+    .winner-box {
+        margin-top: 10px;
+        font-size: 1.2rem;
+    }
+    .winner-name {
+        font-weight: bold;
+        color: #007bff;
+    }
+    .default-btn {
+        background: #007bff;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: 0.3s ease;
+    }
+    .default-btn:hover {
+        background: #0056b3;
+    }
+</style>
+{% endblock %}
 
 <!-- breadcrumb start -->
 <div id="breadcrumb-small" class="breadcrumb-small mb-0" style="display: none;">
@@ -17,35 +71,44 @@
 <section class="review-area ptb-100">
     <div class="container">
 
-        <h1>Losowanie Zwycięzców Konkursu</h1>
+        <h1 class="title">🎉 Losowanie Zwycięzców Konkursu</h1>
 
-        <h2>Facebook</h2>
+        <!-- Facebook -->
+        <h2 class="section-title">🟦 Facebook</h2>
         <div class="row">
             {% for uczestnik in uczestnicy_fb %}
-                <div class="col-sm-6 col-lg-3 col-lg-2 p-2">{{ uczestnik }}</div>
+                <div class="col-sm-6 col-lg-3 col-lg-2 p-2 user-box">
+                    🧑‍💻 {{ uczestnik }}
+                </div>
             {% endfor %}
         </div>
-        <p id="wynik-fb">
+        <p id="wynik-fb" class="winner-box">
             {% if zwyciezca_fb %}
-                🎉 Zwycięzca: {{ zwyciezca_fb }}
+                🎉 <span class="winner-name">Zwycięzca:</span> <strong>{{ zwyciezca_fb }}</strong>
             {% else %}
-                <button id="przycisk-fb" onclick="losuj('fb')">Losuj zwycięzcę FB</button>
+                <button class="default-btn" id="przycisk-fb" onclick="losuj('fb')">🎲 Losuj zwycięzcę FB</button>
             {% endif %}
         </p>
 
-        <h2>Instagram</h2>
+        <!-- Instagram -->
+        <h2 class="section-title">📸 Instagram</h2>
         <div class="row">
             {% for uczestnik in uczestnicy_ig %}
-            <div class="col-sm-6 col-lg-3 col-lg-2 p-2">{{ uczestnik }}</div>
+                <div class="col-sm-6 col-lg-3 col-lg-2 p-2 user-box">
+                    🧑‍💻 {{ uczestnik }}
+                </div>
             {% endfor %}
         </div>
-        <p id="wynik-ig">
+        <p id="wynik-ig" class="winner-box">
             {% if zwyciezca_ig %}
-                🎉 Zwycięzca: {{ zwyciezca_ig }}
+                🎉 <span class="winner-name">Zwycięzca:</span> <strong>{{ zwyciezca_ig }}</strong>
             {% else %}
-                <button id="przycisk-ig" onclick="losuj('ig')">Losuj zwycięzcę IG</button>
+                <button class="default-btn" id="przycisk-ig" onclick="losuj('ig')">🎲 Losuj zwycięzcę IG</button>
             {% endif %}
         </p>
+
+        
+
 
         <!-- Modal błędów -->
         <div class="modal fade" id="error-modal" tabindex="-1" aria-labelledby="errorModalLabel" aria-hidden="true">
