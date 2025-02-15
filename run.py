@@ -8409,7 +8409,7 @@ zwyciezca_fb = None
 zwyciezca_ig = None
 
 @app.route('/admin/losowanie')
-def index():
+def drawing_of_competition_results():
     if not session.get('username'):
         return redirect(url_for('index'))
 
