@@ -4106,20 +4106,15 @@ def parse_facebook_comments(text):
         # Pierwsza linia to **autor komentarza**
         author = linie[0].strip()
 
-        # Reszta to treść komentarza
-        content = " ".join(linie[1:]).strip()
+        list_per = []
+        words = " ".join(linie[1:]).split()  # Łączymy linie i dzielimy na słowa
 
-        # Szukamy oznaczonych osób w treści komentarza
-        tagged_people = re.findall(r'\b[A-ZŻŹĆĄŚĘŁÓŃ][a-zżźćńółęąś]+(?:\s[A-ZŻŹĆĄŚĘŁÓŃ][a-zżźćńółęąś]+)+\b', content)
+        for i in range(0, len(words) - 1, 2):  # Tworzenie par słów
+            list_per.append(f"{words[i]} {words[i+1]}")
 
-        # **Filtrujemy przypadki, gdzie autor jest w oznaczonych osobach**
-        tagged_people = [person for person in tagged_people if person != author]
+        comments_dict[author] = list_per
 
-        # **Dodajemy oznaczone osoby do autora**
-        comments_dict[author].extend(tagged_people)
-
-    return {k: list(set(v)) for k, v in comments_dict.items()}
-
+    return comments_dict
 
 
 komentarze_instagram = """x_xkamil_x_x
