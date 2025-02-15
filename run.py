@@ -8406,9 +8406,6 @@ for author_fb, mentions_list in dict_facebook_comments.items():
     if author_fb in list_lajki_posta_fb and author_fb in list_followers_fb and len(mentions_list) >= 3:
         uczestnicy_fb.append(author_fb)
 
-zwyciezca_fb = None
-zwyciezca_ig = None
-
 @app.route('/admin/losowanie')
 def drawing_of_competition_results():
     if not session.get('username'):
@@ -8417,9 +8414,12 @@ def drawing_of_competition_results():
     if not direct_by_permision(session, permission_sought='administrator'):
         return redirect(url_for('index'))
 
+    # Pobieramy zwycięzców z sesji
+    zwyciezca_fb = session.get('zwyciezca_fb')
+    zwyciezca_ig = session.get('zwyciezca_ig')
+
     return render_template(
         "drawing_of_competition_results.html", 
-        test=(dict_instagram_comments, dict_facebook_comments, list_lajki_posta_ig, list_lajki_posta_fb, list_followers_ig, list_followers_fb),
         uczestnicy_fb=uczestnicy_fb, 
         uczestnicy_ig=uczestnicy_ig, 
         zwyciezca_fb=zwyciezca_fb, 
@@ -8434,16 +8434,17 @@ def losuj():
     if not direct_by_permision(session, permission_sought='administrator'):
         return jsonify({"success": False, "message": "Brak wymaganych uprawnień!"}), 403
 
-    global zwyciezca_fb, zwyciezca_ig
-
     platforma = request.json.get('platform')
 
     if platforma == "fb" and uczestnicy_fb:
-        zwyciezca_fb = random.choice(uczestnicy_fb)
+        session['zwyciezca_fb'] = random.choice(uczestnicy_fb)
     elif platforma == "ig" and uczestnicy_ig:
-        zwyciezca_ig = random.choice(uczestnicy_ig)
+        session['zwyciezca_ig'] = random.choice(uczestnicy_ig)
 
-    return jsonify({"zwyciezca_fb": zwyciezca_fb, "zwyciezca_ig": zwyciezca_ig})
+    return jsonify({
+        "zwyciezca_fb": session.get('zwyciezca_fb'),
+        "zwyciezca_ig": session.get('zwyciezca_ig')
+    })
 
 
 # Kontakt
