@@ -8395,15 +8395,16 @@ list_lajki_posta_fb = lajki_posta_fb.split()
 list_followers_ig = followers_ig.split()
 list_followers_fb = followers_fb.split()
 
-uczestnicy_ig = [
-    author_ig for author_ig in dict_instagram_comments
-    if author_ig in list_lajki_posta_ig and author_ig in list_followers_ig
-]
+uczestnicy_ig = []
+for author_ig, mentions_list in dict_instagram_comments.items():
+    if author_ig in list_lajki_posta_ig and author_ig in list_followers_ig and len(mentions_list) >= 3:
+        uczestnicy_ig.append(author_ig)
 
-uczestnicy_fb = [
-    author_fb for author_fb in dict_facebook_comments
-    if author_fb in list_lajki_posta_fb and author_fb in list_followers_fb
-]
+
+uczestnicy_fb = []
+for author_fb, mentions_list in dict_facebook_comments.items():
+    if author_fb in list_lajki_posta_fb and author_fb in list_followers_fb and len(mentions_list) >= 3:
+        uczestnicy_fb.append(author_fb)
 
 zwyciezca_fb = None
 zwyciezca_ig = None
