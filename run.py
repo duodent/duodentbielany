@@ -8418,6 +8418,7 @@ def drawing_of_competition_results():
 
     return render_template(
         "drawing_of_competition_results.html", 
+        test=(dict_instagram_comments, dict_facebook_comments, list_lajki_posta_ig, list_lajki_posta_fb, list_followers_ig, list_followers_fb),
         uczestnicy_fb=uczestnicy_fb, 
         uczestnicy_ig=uczestnicy_ig, 
         zwyciezca_fb=zwyciezca_fb, 
