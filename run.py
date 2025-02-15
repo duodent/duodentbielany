@@ -8418,9 +8418,7 @@ def drawing_of_competition_results():
     # Pobieramy zwycięzców z sesji
     zwyciezca_fb = session.get('zwyciezca_fb')
     zwyciezca_ig = session.get('zwyciezca_ig')
-    
-    del session['zwyciezca_fb']
-    del session['zwyciezca_ig']
+
 
     return render_template(
         "drawing_of_competition_results.html", 
