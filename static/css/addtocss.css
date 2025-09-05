@@ -538,3 +538,14 @@
     font-size: 14px; 
     color: #333;
 }
+
+.awards-area h2 span {
+  color: #C8A94B; /* złoty akcent */
+}
+
+.award-logo {
+  max-width: 300px;
+  width: 80%;
+  margin: 0 auto;
+  display: block;
+}
