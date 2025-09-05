@@ -2194,6 +2194,9 @@ img {
     border-radius: 10px;
 }
 
+.single-owner {
+    align-items: center;
+}
 .single-owner img {
     border-radius: 10px;
     max-width: 60%;
