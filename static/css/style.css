@@ -2194,6 +2194,11 @@ img {
     border-radius: 10px;
 }
 
+.single-owner img {
+    border-radius: 10px;
+    max-width: 60%;
+}
+
 .single-doctor .doctor-content {
     margin: -50px  20px 0 20px;
     position: relative;
