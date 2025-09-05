@@ -2195,8 +2195,10 @@ img {
 }
 
 .single-owner {
-    align-items: center;
+    display: flex;
+    justify-content: center;
 }
+
 .single-owner img {
     border-radius: 10px;
     max-width: 60%;
