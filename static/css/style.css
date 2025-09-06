@@ -2201,13 +2201,13 @@ img {
 
 .single-owner img {
     border-radius: 10px;
-    max-width: 60%;
+    max-width: 80%;
 }
 
 @media (max-width: 768px) {
     .single-owner img {
         border-radius: 5px;
-        max-width: 95%;
+        max-width: 100%;
     }
 }
 
