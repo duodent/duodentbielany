@@ -3978,6 +3978,33 @@ def for_patients():
         pageTitle=pageTitle
     )
 
+# Cennik
+@app.route('/cennik-dla-pacjentow-stomatologicznych')
+def price_list():
+    session['page'] = 'price_list'
+    pageTitle = 'Cennik'
+
+    priceAll = treatments_db_all_by_route_dict()
+    treatmentPrices = {}
+    for treatmentOne in priceAll.values():
+        treatmentOne['prizeTableSync'] = []
+        desc, prizes = validatorZip(treatmentOne['page_price_table_content_list_comma_section_5'][0], 
+                                    treatmentOne['page_price_table_content_list_comma_section_5'][1])
+        for item in zip(desc, prizes):
+            treatmentOne['prizeTableSync'].append(item)
+
+        main_key = treatmentOne["tytul_glowny"]
+        treatmentPrices[main_key] = {
+            'prizeTableSync': treatmentOne['prizeTableSync'],
+            "tytul_glowny": main_key
+        }
+
+    return render_template(
+        'price_list.html',
+        treatmentPrices=treatmentPrices,  # Lista kategorii z plikami
+        pageTitle=pageTitle
+    )
+
 # Zabiegi - lista
 @app.route('/zabiegi-stomatologiczne-kompleksowa-oferta')
 def treatments():
