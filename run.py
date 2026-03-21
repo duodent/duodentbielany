@@ -3985,7 +3985,7 @@ def price_list():
     pageTitle = 'Cennik'
 
     priceAll = treatments_db_all_by_route_dict()
-    treatmentPrices = {}
+    treatmentPrices = []
     for treatmentOne in priceAll.values():
         treatmentOne['prizeTableSync'] = []
         desc, prizes = validatorZip(treatmentOne['page_price_table_content_list_comma_section_5'][0], 
@@ -3993,17 +3993,18 @@ def price_list():
         for item in zip(desc, prizes):
             treatmentOne['prizeTableSync'].append(item)
 
-        main_key = treatmentOne["tytul_glowny"]
-        treatmentPrices[main_key] = {
-            'prizeTableSync': treatmentOne['prizeTableSync'],
-            "tytul_glowny": main_key,
-            "ready_route": treatmentOne['ready_route'],
-            "treatment_general_status": treatmentOne['treatment_general_status']
-        }
+        if treatmentOne['prizeTableSync'] and treatmentOne['prizeTableSync'] != [('', '')]:
+            main_key = treatmentOne["tytul_glowny"]
+            treatmentPrices.append({
+                'prizeTableSync': treatmentOne['prizeTableSync'],
+                "tytul_glowny": main_key,
+                "ready_route": treatmentOne['ready_route'],
+                "treatment_general_status": treatmentOne['treatment_general_status']
+            })
 
     return render_template(
         'price_list.html',
-        treatmentPrices=treatmentPrices,  # Lista kategorii z plikami
+        treatmentPrices=treatmentPrices,  # Lista kategorii
         pageTitle=pageTitle
     )
 
