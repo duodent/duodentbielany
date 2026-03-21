@@ -3996,7 +3996,9 @@ def price_list():
         main_key = treatmentOne["tytul_glowny"]
         treatmentPrices[main_key] = {
             'prizeTableSync': treatmentOne['prizeTableSync'],
-            "tytul_glowny": main_key
+            "tytul_glowny": main_key,
+            "ready_route": treatmentOne['ready_route'],
+            "treatment_general_status": treatmentOne['treatment_general_status']
         }
 
     return render_template(

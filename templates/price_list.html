@@ -58,31 +58,36 @@
             {% for item in treatmentPrices.values() %}
                 
                 {% if item.prizeTableSync and item.prizeTableSync!=[('', '')] %}
-                    <div class="col-lg-12 col-md-12 section-title-warp">
+                    <!-- <div class="col-lg-12 col-md-12 section-title-warp">
                         <span class="sub-title">
                             <i class="flaticon-hashtag-symbol"></i>
                             {{ item.tytul_glowny }}
                         </span>
-                    </div>
+                    </div> -->
                     
                     <div class="col-12">
                         <div class="single-blog">
                             <div class="blog-content">
+                                <h3>
+                                    <a 
+                                    {% if item.treatment_general_status %}
+                                    href="/{{ item.ready_route }}"
+                                    {% else %}
+                                    href="/umow-wizyte-online"
+                                    {% endif %}
+                                    >{{ item.tytul_glowny }}</a>
+                                </h3>
                                 <div>
-                                    
-
-                                        <ul class="list-group list-group-flush">
-                                            {% for desc, prize in item.prizeTableSync %}
-                                                <li class="list-group-item">
-                                                    <div class="row">
-                                                        <div class="col-8 prices-small">{{desc}}</div>
-                                                        <div class="col-4 border-start prices-small">{{prize}}</div>
-                                                    </div>
-                                                </li>
-                                            {% endfor %}
-                                        </ul>
-
-                                    
+                                    <ul class="list-group list-group-flush">
+                                        {% for desc, prize in item.prizeTableSync %}
+                                            <li class="list-group-item">
+                                                <div class="row">
+                                                    <div class="col-8 prices-small">{{desc}}</div>
+                                                    <div class="col-4 border-start prices-small">{{prize}}</div>
+                                                </div>
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
                                 </div>
                                 <ul class="entry-meta">
                                     <!-- <li>
