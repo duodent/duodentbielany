@@ -62,7 +62,7 @@
                     <div class="col-12">
                         <div class="single-blog">
                             <div class="blog-content">
-                                <h3>{{ item.tytul_glowny }}</h3>
+                                <h3><span>{{ item.tytul_glowny }}</span></h3>
                                 <div>
                                     <ul class="list-group list-group-flush">
                                         {% for desc, prize in item.prizeTableSync %}
@@ -83,7 +83,7 @@
                                     <li>
                                         <a
                                         {% if item.treatment_general_status %}
-                                        href="/{{ item.ready_route }}"
+                                        href="/zabieg-stomatologiczny/{{ item.ready_route }}"
                                         {% else %}
                                         href="/umow-wizyte-online"
                                         {% endif %}
