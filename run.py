@@ -4034,10 +4034,13 @@ def about_us():
     if len(generator_teamDB_v) > 2:
         generator_teamDB_v = generator_teamDB_v[:3]
 
+    get_opinion = opion_db()
+
     return render_template(
         'about_us.html',
         pageTitle=pageTitle,
-        members=generator_teamDB_v
+        members=generator_teamDB_v,
+        opinions=get_opinion
     )
 
 
